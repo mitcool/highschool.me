@@ -1,0 +1,54 @@
+$('#education_key_link').on('click',function(){
+    window.location.href = "/institute/education";
+});
+$('#conferences_key_link').on('click',function(){
+	 window.location.href = "/institute/conferences";
+});
+$('#publishing_key_link').on('click',function(){
+	window.location.href = "/institute/publishing";
+});
+$('#research_key_link').on('click',function(){
+	 window.location.href = "/institute/research";
+});
+$('#workshop_key_link').on('click',function(){
+	 window.location.href = "/institute/workshop";
+});
+$('#coaching_key_link').on('click',function(){
+	 window.location.href = "/institute/coaching";
+});
+$('#networking_key_link').on('click',function(){
+	 window.location.href = "/institute/networking";
+});
+$('#business_law_key_link').on('click',function(){
+	 window.location.href = "/departments/business-management-law";
+});
+$('#medicine_key_link').on('click',function(){
+	window.location.href = "/departments/medicine-health-social-science";
+});
+$('#humanities_key_link').on('click',function(){
+	window.location.href = "/departments/humanities";
+});
+$('#media_key_link').on('click',function(){
+	window.location.href = "/departments/media-communications-culture";
+});
+$('#engineering_key_link').on('click',function(){
+	window.location.href = "/departments/engineering-it";
+});
+$('#bachelor_key_link').on('click',function(){
+	window.location.href = "/studies/bachelor";
+});
+$('#master_key_link').on('click',function(){
+	window.location.href = "/studies/master";
+});
+$('#mba_key_link').on('click',function(){
+	window.location.href = "/studies/mba";
+});
+$('#dba_key_link').on('click',function(){
+	window.location.href = "/studies/dba";
+});
+$('#phd_key_link').on('click',function(){
+	window.location.href = "/studies/certificates-advanced-studies";
+});
+$('#certificates_key_link').on('click',function(){
+	window.location.href = "/studies/certified-business-economist";
+});

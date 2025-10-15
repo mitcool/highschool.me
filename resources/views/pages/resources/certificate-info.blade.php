@@ -1,0 +1,65 @@
+@extends('template')
+
+
+@section('seo')
+	<title>{{trans('examination-rules.meta-title')}}</title>
+	<meta itemprop="description" name="description" content="{{ trans('examination-rules.meta-description') }}" />
+
+	<meta itemprop="title" property="og:title" content="{{ trans('examination-rules.meta-title')}}"/>
+	<meta property="og:type" content="website"/>
+	@if(Session::get('applocale') == 'de')
+		<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/de/pruefungsordnung"/>
+	@else
+		<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/en/examination-regulations"/>
+	@endif
+	<meta property="og:description" content="{{ trans('examination-rules.meta-description') }}"/>
+	<x-meta-image itemprop="image" nickname="examination-rules"/>
+
+	<link rel="alternate" href="{{ config('app.url') }}/en/examination-regulations" hreflang="en" />
+	<link rel="alternate" href="{{ config('app.url') }}/de/pruefungsordnung" hreflang="de" />
+	<link rel="alternate" href="{{ config('app.url') }}/en/examination-regulations" hreflang="x-default" />
+@endsection
+
+@section('language-switcher')
+<div class="dropdown">
+	<button class="btn dropdown-toggle text-uppercase" style="background: #025297;color:white;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	  {{ app()->currentLocale() }}
+	  </button>
+	  <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
+		<div>
+			<a href="{{ config('app.url') }}/en/examination-regulations" class="text-uppercase btn d-inline-block bg-transparent">EN</a>
+		</div>
+		<div>
+			<a href="{{ config('app.url') }}/de/pruefungsordnung" class="text-uppercase btn d-inline-block bg-transparent">DE</a>
+		</div>
+	  </div> 
+  </div>
+@endsection
+
+@section('content')
+@php
+    $breadcrumb_title = strtok(trans('examination-rules.meta-title'), '|');
+@endphp
+<div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
+	<ol class="bg-white breadcrumb mb-0 p-0">
+		<li class="breadcrumb-item"><a href="{{ route('welcome-'.app()->currentLocale()) }}">Home</a></li>
+		<li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb_title }}</li>
+	</ol>
+</div>
+
+<div style="position: relative;right:20px;">
+    <x-image-component nickname="iso-cover" class="imprint-images main-pictures-pages" loading="eager"/>
+    <img src="{{ asset('images/iso') }}/{{ $certificate->icon }}" alt="" style="position: absolute;right:140px;width:400px;top:50%; transform: translateY(-50%);">
+</div>
+
+<div class="container-fluid main_page_container">
+	<div class="row justify-content-center" >
+		<div class="col-md-10 col-lg-8 container-style">
+			<h1 class="page-headings">{{$certificate->name}}</h1>
+			<div class="page-content">{!! $certificate->text !!}</div>
+			
+		</div>
+	</div>
+</div>
+
+@endsection

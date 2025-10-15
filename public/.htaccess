@@ -1,0 +1,38 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+		<IfModule mod_headers.c>
+   Header set Access-Control-Allow-Origin "*"
+</IfModule>
+<FilesMatch ".(eot|ttf|otf|woff)">
+   Header set Access-Control-Allow-Origin "*"
+</FilesMatch>
+    RewriteEngine On
+	
+	# Strip www from domain name
+	RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+	RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    RewriteBase /
+    # Rule 1: remove multiple leading slashes (directly after the TLD)
+    RewriteCond %{THE_REQUEST} \s/{2,}
+    RewriteRule (.*) $1 [R=301,L]
+    # Rule 2: remove multiple slashes in the requested path
+    RewriteCond %{REQUEST_URI} ^(.*)/{2,}(.*)$
+    RewriteRule (.*) %1/%2 [R=301,L]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>

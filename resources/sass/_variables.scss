@@ -1,0 +1,17 @@
+$main_color:#E8CDA2;
+$secondary_color:#42708B;
+
+// buttons 
+
+@mixin main_btn {
+  display: block;
+  background: $secondary_color;
+  color: white;
+  padding: 10px 17px;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  outline:none;
+  border:none;
+  margin:5px 0;
+}

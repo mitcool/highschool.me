@@ -1,0 +1,19 @@
+<?php echo '<?xml version="1.0" encoding="UTF-8"?> '?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Graduate.me</title>
+    <link>https://graduate.me</link>
+	<atom:link href="https://graduate.me/de/rss" rel="self" type="application/rss+xml"></atom:link>
+    <description>Du möchtest 100% online und berufsbegleitend studieren? Dann ist unser Fernstudium die richtige Wahl. ✔ Flexibel ✔ Praxisorientiert ✔ Akkreditiert. Jetzt klicken!</description>
+    <language>de</language>
+    @foreach ($news as $n )
+        <item>
+            <title>{{ $n->sections[0]->translated->content }}</title>
+            <link>{{ route('single-article-de',$n->all_translations[1]->slug) }}</link>
+            <guid>{{ route('single-article-de',$n->all_translations[1]->slug) }}</guid>
+            <description>{{ strip_tags(str_replace('&nbsp;', ' ',$n->sections[1]->translated->content)) }}</description>
+            <pubDate>{{ date('r',strtotime($n->created_at)) }}</pubDate>
+      </item>
+    @endforeach
+  </channel>
+</rss>
