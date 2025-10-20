@@ -137,7 +137,7 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-2">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome-'.app()->currentLocale()) }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{  Session::get('applocale') == 'de' ? 'Alle Programme' : 'All Programs' }}</li>
+		<li class="breadcrumb-item active" aria-current="page">{{  Session::get('applocale') == 'de' ? 'Alle Courses' : 'All Courses' }}</li>
 	</ol>
 </div>
 
@@ -149,11 +149,12 @@
         	<h1 style="word-wrap: break-word;">{{ trans('all-programs.heading') }}</h1>
 			<div >{!! trans('all-programs.description') !!}</div>
 		</div>
-        @foreach($studies as $study)
-            <div  style="padding:30px;">
-                <h2 class="text-center">{{ $study->translated->all_program_page_heading }}</h2>
-                <div class="row">
-                    @foreach($study->programs as $program)
+		<div class="row">
+			@foreach($studies as $study)
+         
+                {{-- <h2 class="text-center">{{ $study->translated->all_program_page_heading }}</h2> --}}
+              
+                 @foreach($study->programs as $program)
 					<div class="col-xl-4">
 						<div class="body" style="background-image:url( {{asset($program->image() )}});">
 							<a href="{{route('programs-'.app()->currentLocale(), [$study->translated->slug, $program->translated->slug])}}" class="link-to">
@@ -162,9 +163,11 @@
 						</div>
 					</div>
 				@endforeach
-                </div>
-            </div>
+              
+            
         @endforeach
+		</div>
+        
     </div>
 </div>
 

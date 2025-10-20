@@ -7,25 +7,23 @@ use App\Route as TranslatedRoute;
 
 Route::get('/404','MainController@notFound')->name('404');
 
-Route::get('/','MainController@showWelcome')->name('welcome-de');
-
 Route::get('/sitemap-images.xml', 'SitemapController@imageSitemap');
 
 Route::get('/send-newsletter','NewsletterSendController@send');
 
-Route::group(['prefix' => 'en','middleware'=>'translateUrl'],function(){
+Route::group(['middleware'=>'translateUrl'],function(){
 	$routes = TranslatedRoute::whereIn('sitemap',[0,1])->get();
 	foreach($routes as $route){
-		Route::get($route->route_en,$route->action)->name($route->slug.'-en');
+		Route::get($route->route_en,$route->action)->name($route->slug);
 	}
 });
 
-Route::group(['prefix' => 'de','middleware'=>'translateUrl'],function(){
-	$routes = TranslatedRoute::whereIn('sitemap',[0,1])->where('id','!=',1)->get();
-	foreach($routes as $route){
-		Route::get($route->route_de,$route->action)->name($route->slug.'-de');
-	}
-});
+// Route::group(['prefix' => 'de','middleware'=>'translateUrl'],function(){
+// 	$routes = TranslatedRoute::whereIn('sitemap',[0,1])->where('id','!=',1)->get();
+// 	foreach($routes as $route){
+// 		Route::get($route->route_de,$route->action)->name($route->slug.'-de');
+// 	}
+// });
 #By design the project should have 5 languages, but only 2 for now
 // Route::group(['prefix' => 'es','middleware'=>'translateUrl'],function(){
 // 	$routes = TranslatedRoute::whereIn('sitemap',[0,1])->get();

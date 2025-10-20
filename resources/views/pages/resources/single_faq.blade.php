@@ -38,21 +38,7 @@
 
 @endsection
 
-@section('language-switcher')
-<div class="dropdown">
-	<button class="btn dropdown-toggle text-uppercase" style="background: #025297;color:white;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	  {{ app()->currentLocale() }}
-	  </button>
-	  <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
-		<div>
-			<a href="{{ config('app.url') }}en/faq/{{ $hreflang_en }}" class="text-uppercase btn d-inline-block bg-transparent">EN</a>
-		</div>
-		<div>
-			<a href="{{ config('app.url') }}de/faq/{{ $hreflang_de }}" class="text-uppercase btn d-inline-block bg-transparent">DE</a>
-		</div>
-	  </div> 
-  </div>
-@endsection
+
 
 @section('content')
 @php
@@ -60,7 +46,7 @@
 @endphp
 <div aria-label="breadcrumb" class="col-md-10 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-1">
-		<li class="breadcrumb-item"><a href="{{ route('welcome-'.app()->currentLocale()) }}">Home</a></li>
+		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
 		<li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb_title }}</li>
 	</ol>
 </div>

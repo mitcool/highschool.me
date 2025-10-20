@@ -9,31 +9,15 @@
 @if(Session::get('applocale') == 'de')
 	<meta itemprop="url" property="og:url" content="{{  route('promotion-de') }}"/>
 @else
-	<meta itemprop="url" property="og:url" content="{{  route('promotion-en') }}"/>
+	<meta itemprop="url" property="og:url" content="{{  route('promotion') }}"/>
 @endif
 <meta property="og:description" content="{{ trans('promotion.meta-description') }}"/>
 <x-meta-image itemprop="image" nickname="coaching"/>
 
-<link rel="alternate" href="{{ route('promotion-en') }}" hreflang="en" />
-<link rel="alternate" href="{{ route('promotion-de') }}" hreflang="de" />
-<link rel="alternate" href="{{ route('promotion-en') }}" hreflang="x-default" />
+
 @endsection
 
-@section('language-switcher')
-<div class="dropdown">
-	<button class="btn dropdown-toggle text-uppercase" style="background: #025297;color:white;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	  {{ app()->currentLocale() }}
-	  </button>
-	  <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
-		<div>
-			<a href="{{ route('promotion-en') }}" class="text-uppercase btn d-inline-block bg-transparent">EN</a>
-		</div>
-		<div>
-			<a href="{{ route('promotion-de') }}" class="text-uppercase btn d-inline-block bg-transparent">DE</a>
-		</div>
-	  </div> 
-  </div>
-@endsection
+
 
 @section('headCSS')
 <style>
@@ -124,5 +108,9 @@
             </div>
         </div>
     </div>
+</div>
+
+<div style="background:#045397">
+    <a href="">View Courses</a>
 </div>
 @endsection

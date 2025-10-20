@@ -1,86 +1,83 @@
-<nav class="navbar navbar-expand-lg navbar-light row" style="padding: 0rem 0rem !important;">
+<nav class="navbar navbar-expand-lg navbar-light" style="padding: 0rem 0rem !important;">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavDropdown"  style="cursor: pointer">
     <ul class="navbar-nav" style="padding-left:0px;">
   
-      <li class="" style="position: relative" id="program-page-link-wrapper">
-        <div id="program-page-link" class="nav-link dropdown-toggle font-weight-bold header-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-           {{ trans('nav.study-programs-link') }}
+    <li class="nav-item dropdown">
+        <div class="nav-link dropdown-toggle font-weight-bold header-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; text-align: center;">
+        	COURSES
         </div>
-         <div class="program-dropdown-menu border p-3 mt-0 row d-none bg-white" style="position: absolute;left:-20px;">
-            @foreach($studies as $key => $study)
-                <div class="col-md my-2">
-                  <a 
-                    class="text-capitalize study-links" 
-                    style="padding-left:20px;"
-                    href="{{ route('studies-'.app()->currentLocale(),$study->translated->slug)}}">{{$study->translated->name}}
-
-                  </a>
-                  <ul class="" style="list-style:none;">
-                    @foreach($study->programs as $single_program)
-                        <li>
-                          <a 
-                            class="program-links"
-                            href="{{route('programs-'.app()->currentLocale(),[$study->translated->slug,$single_program->translated->slug])}}"
-                            >
-                            {{$single_program->translated->name}} {{-- @if($single_program->fast_track == 1 )<sup class="text-danger font-weight-bold" style="display:inline-block;font-size:10px;margin-top:-15px;">FAST TRACK</sup> @endif @if($single_program->is_new == 1 )<sup class="text-danger font-weight-bold" style="display:inline-block;font-size:10px;margin-top:-15px;">NEW</sup> @endif --}}
-                          </a>
-                        </li>
-                      @endforeach
-                  </ul>
-                </div>
-              @endforeach
-          </div>
+         <ul class="dropdown-menu p-0 mt-0">
+            <li><a class="dropdown-item" href="{{ route('about')}}">Course 1</a></li>
+            <li><a class="dropdown-item" href="{{ route('about')}}">Course 2</a></li>
+            <li><a class="dropdown-item" href="{{ route('about')}}">Course 3</a></li>
+            <li><a class="dropdown-item" href="{{ route('about')}}">Course 4</a></li>
+            <li><a class="dropdown-item" href="{{ route('about')}}">Course 5</a></li>
+         </ul>
       </li>
       
        <li class="nav-item dropdown">
         <div class="nav-link dropdown-toggle font-weight-bold header-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; text-align: center;">
-        	{{ trans('nav.digital-study-link') }}
+        	ABOUT
         </div>
          <ul class="dropdown-menu p-0 mt-0">
-            <li><a class="dropdown-item" href="{{ route('digital-studies-'.app()->currentLocale())}}">{{ trans('nav.digital-studies') }}</a></li>
-            <li><a class="dropdown-item" href="{{ route('recognition-'.app()->currentLocale()) }}">{{trans('nav.recognition')}}</a></li>
-            <li><a class="dropdown-item" href="{{ route('study-financing-'.app()->currentLocale()) }}">{{trans('nav.study-financing')}}</a></li>
-            <li><a class="dropdown-item" href="{{ route('student-advisory-service-'.app()->currentLocale()) }}">{{trans('nav.student-advisory-service')}}</a></li>
-            
+            <li><a class="dropdown-item" href="{{ route('school-overview')}}">School Overview</a></li>
+            <li><a class="dropdown-item" href="{{ route('mission-statement') }}">Mission Statement</a></li>
+            <li><a class="dropdown-item" href="{{ route('accreditation') }}">Accreditation</a></li>
+            <li><a class="dropdown-item" href="{{ route('leadership') }}">Leadership</a></li>
+            <li><a class="dropdown-item" href="{{ route('academics') }}">Faculty & Mentors</a></li>
+            <li><a class="dropdown-item" href="{{ route('students-in-spotlight') }}">Students in Spotlight</a></li>
+            <li><a class="dropdown-item" href="{{ route('partnership') }}">Partnership</a></li>
          </ul>
       </li>
       <li class="nav-item dropdown">
         <div class="nav-link dropdown-toggle font-weight-bold header-link"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; text-align: center;">
-          {{ trans('nav.research-link') }}
+          ACADEMICS
         </div>
          <ul class="dropdown-menu p-0 mt-0">
-            <li><a class="dropdown-item" href="{{ route('conferences-and-workshops-'.app()->currentLocale()) }}"> {{ trans('nav.conferences-and-workshops-link') }}</a></li>
-            <li><a class="dropdown-item" href="{{ route('coaching-'.app()->currentLocale()) }}"> {{ trans('nav.coaching-link') }}</a></li>
-            <li><a class="dropdown-item" href="{{ route('publishing-'.app()->currentLocale()) }}"> {{ trans('nav.publishing-link') }}</a></li> 
+            <li><a class="dropdown-item" href="{{ route('highschool-programs') }}"> High School Programs</a></li>
+            <li><a class="dropdown-item" href="{{ route('graduation-requirements') }}"> Graduation Requirements </a></li>
+            <li><a class="dropdown-item" href="{{ route('credit-recovery') }}"> Credit Recovery</a></li> 
+            <li><a class="dropdown-item" href="{{ route('credit-transfer') }}"> Credit Transfer</a></li> 
+             <li><a class="dropdown-item" href="{{ route('awards') }}"> Awards</a></li> 
+              <li><a class="dropdown-item" href="{{ route('international-students') }}"> International Students</a></li> 
          </ul>
       </li>
         <li class="nav-item dropdown">
         <div class="nav-link dropdown-toggle font-weight-bold header-link"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; text-align: center;">
-          {{ trans('nav.onsites-school') }}
+          CIRRUCULUM
         </div>
          <ul class="dropdown-menu p-0 mt-0">
-            <li><a class="dropdown-item" href="{{ route('about-'.app()->currentLocale()) }}">{{trans('nav.about')}}</a></li>
-			<li><a class="dropdown-item" href="{{ route('code-of-ethics-'.app()->currentLocale()) }}">{{trans('nav.code-of-ethics')}}</a></li>
-            <li><a class="dropdown-item" href="{{ route('academics-'.app()->currentLocale()) }}">{{trans('nav.academics')}}</a></li>
-            <li><a class="dropdown-item" href="{{ route('accreditation-'.app()->currentLocale()) }}">{{trans('nav.accreditation')}}</a></li>
-            <li><a class="dropdown-item" href="{{ route('blog-'.app()->currentLocale()) }}">{{trans('nav.blog')}}</a></li>
-            <li><a class="dropdown-item" href="{{ route('facts-hub-'.app()->currentLocale()) }}">FACTS HUB</a></li> 
-            <li><a class="dropdown-item" href="{{ route('press-release-'.app()->currentLocale()) }}">PRESS RELEASE</a></li> 
+            <li><a class="dropdown-item" href="{{ route('about') }}">Standard High School</a></li>
+			<li><a class="dropdown-item" href="{{ route('code-of-ethics') }}">Honors High School</a></li>
+            <li><a class="dropdown-item" href="{{ route('academics') }}">Advanced Placement</a></li>
+            <li><a class="dropdown-item" href="{{ route('accreditation') }}">PSAT/SAT/ACT</a></li>
+            <li><a class="dropdown-item" href="{{ route('blog') }}">Baccalaureate</a></li> 
          </ul>
       </li>
-      <li>
-        <a class="font-weight-bold buttonKit" href="{{ route('promotion-'.app()->currentLocale()) }}" style="padding:8px;text-decoration:none;display: inline-flex;text-align: center;">
+      <li class="nav-item dropdown">
+        <div class="nav-link dropdown-toggle font-weight-bold header-link"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; text-align: center;">
+          ADMISSIONS
+        </div>
+         <ul class="dropdown-menu p-0 mt-0">
+            <li><a class="dropdown-item" href="{{ route('about') }}">Admission process</a></li>
+			      <li><a class="dropdown-item" href="{{ route('code-of-ethics') }}">Enrolment criteria</a></li>
+            <li><a class="dropdown-item" href="{{ route('academics') }}">Enrolment options</a></li>
+            <li><a class="dropdown-item" href="{{ route('accreditation') }}">Tuition</a></li>
+            <li><a class="dropdown-item" href="{{ route('accreditation') }}">Tuition Assistance (PEP)</a></li>
+            <li><a class="dropdown-item" href="{{ route('accreditation') }}">Apply</a></li>
+            <li><a class="dropdown-item" href="{{ route('accreditation') }}">Loyality Program</a></li> 
+            <li><a class="dropdown-item" href="{{ route('accreditation') }}">ISO Certification</a></li> 
+         </ul>
+      </li>
+      {{-- <li>
+        <a class="font-weight-bold buttonKit" href="{{ route('promotion') }}" style="padding:8px;text-decoration:none;display: inline-flex;text-align: center;">
           {{trans('nav.kit-button')}}
         </a>
-      </li> 
+      </li>  --}}
     </ul>
     
   </div>
 </nav>
-
-
-
-

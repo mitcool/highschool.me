@@ -12,7 +12,7 @@
 		</video>
 		<div class="title">   
 		    <h1 style="text-align: center;margin-bottom: 20px;font-family:'Roboto','Helvetica';">Sorry, the page you are looking for could not be found.</h1>
-		    <a href="{{route('welcome-'.app()->currentLocale())}}" style="cursor: pointer;">
+		    <a href="{{route('welcome')}}" style="cursor: pointer;">
 		        <button style="font-size: 20px;padding:10px 20px;border:none;outline: none;cursor: pointer; ">
 		            Back to {{ Request::getHost() }}
 		        </button>

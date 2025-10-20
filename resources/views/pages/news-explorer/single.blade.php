@@ -77,21 +77,7 @@
 @endsection
 
 
-@section('language-switcher')
-<div class="dropdown">
-	<button class="btn dropdown-toggle text-uppercase" style="background: #025297;color:white;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	  {{ app()->currentLocale() }}
-	  </button>
-	  <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
-		<div>
-			<a href="{{ config('app.url') }}/en/blog/{{ $hreflang_en }}" class="text-uppercase btn d-inline-block bg-transparent">EN</a>
-		</div>
-		<div>
-			<a href="{{ config('app.url') }}/de/blog/{{ $hreflang_de }}" class="text-uppercase btn d-inline-block bg-transparent">DE</a>
-		</div>
-	  </div> 
-  </div>
-@endsection
+
 
 @section('headCSS')
 	<link rel="stylesheet" href="{{ asset('css/main/news.css') }}">
@@ -103,8 +89,8 @@
 @endphp
 <div aria-label="breadcrumb" class="col-md-6 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-1">
-		<li class="breadcrumb-item"><a href="{{ route('welcome-'.app()->currentLocale()) }}">Home</a></li>
-		<li class="breadcrumb-item"><a href="{{ route('blog-'.app()->currentLocale()) }}">Blog</a></li>
+		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
+		<li class="breadcrumb-item"><a href="{{ route('blog') }}">Blog</a></li>
 		<li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb_title }}</li>
 	</ol>
 </div>
@@ -190,7 +176,7 @@
 					<x-image-component itemprop="image" nickname="author-{{ $article->author_id }}" class="imprint-images main-pictures-pages" loading="eager"/>
 				</div>
 				<div class="col-sm-10 author-description-container">
-					<form action="{{ route('blog-'.app()->currentLocale()) }}">
+					<form action="{{ route('blog') }}">
 							<input type="hidden" name="author" value="{{ $article->author->translated->slug}}">
 							<button class="btn btn-link text-left">
 							<span itemprop="name" itemscope itemtype="https://schema.org/Person">
@@ -210,8 +196,8 @@
 					
 				</div>
 				<div class="col-lg-12 d-flex justify-content-between" style="margin-top:40px">
-					@if($prev) <a style="text-decoration:none" href="{{route('single-article-'.app()->currentLocale(), $prev->translated->slug)}}"><h3 style="color: #EA580D;"> &#8592; {{ trans('single-blog.previous') }} </h3> </a> @endif
-					@if($next) <a style="text-decoration:none" href="{{route('single-article-'.app()->currentLocale(), $next->translated->slug)}}"><h3 style="color: #EA580D;"> {{ trans('single-blog.next') }}  &#8594;    </h3> </a> @endif
+					@if($prev) <a style="text-decoration:none" href="{{route('single-article', $prev->translated->slug)}}"><h3 style="color: #EA580D;"> &#8592; {{ trans('single-blog.previous') }} </h3> </a> @endif
+					@if($next) <a style="text-decoration:none" href="{{route('single-article', $next->translated->slug)}}"><h3 style="color: #EA580D;"> {{ trans('single-blog.next') }}  &#8594;    </h3> </a> @endif
 				</div>
 			</div>
 		</div>
@@ -235,7 +221,7 @@
 								</div>
 							<div>
 								<div>
-									<form action="{{ route('blog-'.app()->currentLocale()) }}">
+									<form action="{{ route('blog') }}">
 									<input type="hidden" name="author" value="{{ $news->author->translated->slug}}">
 										<button class="btn p-0 btn-link text-left text-dark font-weight-bold">
 											{{ $news->author->translated->name }} <br/>
@@ -245,7 +231,7 @@
 								</div>
 								<div class="text-center mt-auto">
 									<hr/>
-									<a href="{{ route('single-article-'.app()->currentLocale(),$news->translated->slug) }}" class="btn read-more">{{ trans('welcome.read-more') }}</a>
+									<a href="{{ route('single-article',$news->translated->slug) }}" class="btn read-more">{{ trans('welcome.read-more') }}</a>
 								</div>  
 							</div> 
 						</div> 
@@ -256,7 +242,7 @@
 	</div>
 	<div class="col-lg-3"></div>
 	<div class="text-center my-5 col-lg-12">
-		<a class="btn w-auto orange-button" href="{{route('blog-'.app()->currentLocale())}}">{{trans('single-blog.all-news-button')}}</a>
+		<a class="btn w-auto orange-button" href="{{route('blog')}}">{{trans('single-blog.all-news-button')}}</a>
 	</div>
 </div>
 @endsection

@@ -22,7 +22,7 @@
         {{ csrf_field() }}
         <div class="row mt-1">
              <div class="col-md-6"></div>
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <label for="" class="font-weight-bold">Author:</label>
                 <select name="author_id" id=""  required class="form-control">
                     <option value="" disabled selected>Please select an author</option>
@@ -32,39 +32,27 @@
                 </select>
             </div>
            
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <label for="" class="font-weight-bold mb-0">Slug(EN)</label>
                 <input type="text" name="slug" class="form-control" required />
             </div>
-            <div class="col-md-6">
-                <label for="" class="font-weight-bold mb-0">Slug(DE)</label>
-                <input type="text" name="slug_de" class="form-control" required />
-            </div>
-            <div class="col-md-6">
+           
+            <div class="col-md-12">
                 <label for="" class="font-weight-bold mb-0">Key Facts(EN)</label>
                 <textarea  name="key_facts_en" class="form-control ckeditor"></textarea>
             </div>
-            <div class="col-md-6">
-                <label for="" class="font-weight-bold mb-0">Key Facts(DE)</label>
-                <textarea  name="key_facts_de" class="form-control ckeditor"></textarea>
-            </div>
-			<div class="col-md-6">
+            
+			<div class="col-md-12">
                 <label for="" class="font-weight-bold mb-0">Meta title(EN)</label>
 				<textarea  name="meta_title_en" class="form-control" required ></textarea>
             </div>
-            <div class="col-md-6">
-                <label for="" class="font-weight-bold mb-0">Meta title (DE)</label>
-                <textarea name="meta_title_de" class="form-control" required ></textarea>
-            </div>
-			<div class="col-md-6">
+           
+			<div class="col-md-12">
                 <label for="" class="font-weight-bold mb-0">Meta description (EN)</label>
                 <textarea  name="meta_description_en" class="form-control" required ></textarea>
             </div>
-            <div class="col-md-6">
-                <label for="" class="font-weight-bold mb-0">Meta description (DE)</label>
-                <textarea  name="meta_description_de" class="form-control" required ></textarea>
-            </div>
-            <div class="col-md-6">
+           
+            <div class="col-md-12">
                 <label for="" class="font-weight-bold mb-0">Min to read</label>
                 <input type="number" name="minutes" class="form-control" required />
             </div>
@@ -75,28 +63,22 @@
             <div class="col-md-12">
                 <h4>Main Heading section*</h4>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <label class="m-0 font-weight-bold">Content(EN)</label>
                 <textarea class="form-control" name="content[]"></textarea>
             </div>
-            <div class="col-md-6">
-                <label class="m-0 font-weight-bold">Content(DE)</label>
-                <textarea class="form-control" name="content_de[]"></textarea>
-            </div>
+            
             <input type="hidden" name="type[]" value="1" />
         </div>
         <div class="section row">
             <div class="col-md-12">
                 <h4>Main Description section*</h4>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <label class="m-0 font-weight-bold">Content(EN)</label>
                 <textarea class="form-control ckeditor" name="content[]"></textarea>
             </div>
-            <div class="col-md-6">
-                <label class="m-0 font-weight-bold">Content(DE)</label>
-                <textarea class="form-control ckeditor" name="content_de[]"></textarea>
-            </div>
+          
             <input type="hidden" name="type[]" value="1" />
         </div>
         
@@ -131,19 +113,19 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="row m-0">
-            <div class="col-md-6 p-2">
+            <div class="col-md-12 p-2">
                 <img src="{{ asset('images/admin/text.png') }}"  class="w-100 border options" data-value="1"/> 
                 <p class="font-weight-bold text-center">Text</p>  
             </div>
-            <div class="col-md-6 p-2">
+            <div class="col-md-12 p-2">
                 <img src="{{ asset('images/admin/image.jpg') }}" class="w-100 border options" data-value="2" />
                 <p class="font-weight-bold text-center">Image</p>
             </div> 
-            <div class="col-md-6 p-2">
+            <div class="col-md-12 p-2">
                 <img src="{{ asset('images/admin/blockquote.png') }}" class="w-100 border options" data-value="3" />
                 <p class="font-weight-bold text-center">Blockquote</p>
             </div> 
-            <div class="col-md-6 p-2">
+            <div class="col-md-12 p-2">
                 <img src="{{ asset('images/admin/table.png') }}"  class="w-100 border options" data-value="4"/>
                 <p class="font-weight-bold text-center">Table</p>
             </div>         
@@ -213,10 +195,7 @@
                                 <label class="m-0 font-weight-bold">Content(EN)</label>
                                 <textarea class="ckeditor" id="text-en-${section}" name="content[]"></textarea>
                             </div>
-                            <div class="col-md-6">
-                                <label class="m-0 font-weight-bold">Content(DE)</label>
-                                <textarea class="ckeditor" id="text-de-${section}" name="content_de[]"></textarea>
-                            </div>
+                            
                             <input type="hidden" name="type[]" value="1" />
                         </div>`;
                 $('#type_modal').modal('hide');
@@ -252,12 +231,7 @@
                                 <label class="m-0 font-weight-bold">Quote Author(En)</label>
                                 <input type="text" class="form-control my-1"  name="details[${section}][]" required/>
                             </div>
-                            <div class="col-md-6">
-                                <label class="m-0 font-weight-bold">Quote(De)</label>
-                                <textarea class="form-control" name="content_de[]"></textarea>
-                                <label class="m-0 font-weight-bold">Quote Author(De)</label>
-                                <input type="text" class="form-control my-1" required name="details_de[${section}][]"/>
-                            </div>
+                         
 
                             <input type="hidden" name="type[]" value="3" />
                            
@@ -285,16 +259,7 @@
                                 <label class="font-weight-bold mb-0">Box 3(EN)</label>
                                 <textarea class="form-control" name="details[${section}][]"></textarea>
                             </div>
-                            <div class="col-md-6">
-                                <label class="font-weight-bold mb-0">Heading(DE)</label>
-                                <textarea class="form-control" name="content_de[]"></textarea>
-                                <label class="font-weight-bold mb-0">Box 1(DE)</label>
-                                <textarea class="form-control" name="details_de[${section}][]"></textarea>
-                                <label class="font-weight-bold mb-0">Box 2(DE)</label>
-                                <textarea class="form-control" name="details_de[${section}][]"></textarea>
-                                <label class="font-weight-bold mb-0">Box 3(DE)</label>
-                                <textarea class="form-control" name="details_de[${section}][]"></textarea>
-                            </div>
+                          
                             <input type="hidden" name="type[]" value="4">
                         </div>`;
                 $('#type_modal').modal('hide');

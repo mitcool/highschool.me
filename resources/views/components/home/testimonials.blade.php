@@ -6,9 +6,14 @@
 					<div class="carousel-inner">
 						@foreach ($testimonials as $key => $testimonial )
 							<div class="carousel-item {{ $key==0 ? ' active ' : ''}} ">
-								<img class="d-block w-100" src="..." alt="First slide">
-								<h4>{!! $testimonial->translated->text !!}</h4>
-								<p>- {{ $testimonial->translated->name }}</p>				
+								<div class="d-flex justify-content-center">
+									<img class="d-block" style="width:10%" src="{{ asset('images/testimonials') }}/{{ $testimonial->translated->image }}" alt="First slide">
+								</div>
+								<div class="w-75 text-center mx-auto">
+									<h4>{!! $testimonial->translated->text !!}</h4>
+									<h5 style="color:#045397">- {{ $testimonial->translated->name }}</h5>		
+								</div>
+										
 						</div>
 						@endforeach
 					</div>
