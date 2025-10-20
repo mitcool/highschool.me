@@ -6,11 +6,7 @@
 
 	<meta itemprop="title" property="og:title" content="{{ $faq_category_questions->translated->meta_title }}"/>
 	<meta property="og:type" content="website"/>
-	@if(Session::get('applocale') == 'de')
-		<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/de/faq/{{ $hreflang_de }}"/>
-	@else
-		<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/en/faq/{{ $hreflang_en }}"/>
-	@endif
+	
 	<meta property="og:description" content="{{ $faq_category_questions->translated->meta_description }}"/>
 
 	<script type="application/ld+json">
@@ -32,9 +28,7 @@
       }
     </script>
 
-    <link rel="alternate" href="{{ config('app.url') }}/en/faq/{{ $hreflang_en }}" hreflang="en" />
-    <link rel="alternate" href="{{ config('app.url') }}/de/faq/{{ $hreflang_de }}" hreflang="de" />
-    <link rel="alternate" href="{{ config('app.url') }}/en/faq/{{ $hreflang_en }}" hreflang="x-default" />
+   
 
 @endsection
 

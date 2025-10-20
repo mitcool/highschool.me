@@ -16,21 +16,21 @@
 			<div class="col-md">
 				{{-- <p class="footerText" >{{trans('footer.research')}}</p> --}}
 				<ul class="footer-ul">
-					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('conferences-and-workshops') }}">
+					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('welcome') }}">
 						Home
 					</a></li>
-					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('coaching') }}">
+					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('school-overview') }}">
 						School Overview
 					</a></li>
-					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('publishing')}}">
+					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('mission-statement')}}">
 						Mission Statement
 					</a></li>
 					<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
-						<a href="{{ route('newsletter')}}">
+						<a href="{{ route('blog')}}">
 						News Explorer
 					</a></li>
 					<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
-						<a href="{{ route('newsletter')}}">
+						<a href="{{ route('facts-hub')}}">
 						Fact Hub
 					</a></li>
 				</ul>
@@ -38,22 +38,22 @@
 			 <div class="col-md">
 				{{-- <p class="footerText" >{{trans('footer.digital-studying')}}</p> --}}
 				<ul class="footer-ul">
-					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('about')}}">
+					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('highschool-programs')}}">
 						High School Programs
 					</a></li>
-					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('about') }}">
+					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('academics') }}">
 						Faculty & Mentors
 					</a></li>
-					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('academics') }}">
+					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('partnership') }}">
 						Partnerships
 					</a></li>
-					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('student-advisory-service')}}">
+					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('international-students')}}">
 						International Students
 					</a></li>
-					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('study-registration') }}">
+					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('accreditation') }}">
 						Accreditation
 					</a></li>
-					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('study-registration') }}">
+					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('starter-kit') }}">
 						Starter Kit
 					</a></li>
 				</ul>
@@ -65,13 +65,13 @@
 					)}}">
 						FAQ
 					</a></li>
-					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('code-of-ethics')}}">
+					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('awards')}}">
 						Awards
 					</a></li>
-					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('academics')}}">
+					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('code-of-ethics')}}">
 						Code of Ethics
 					</a></li>
-					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('accreditation')}}">
+					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('accessibility')}}">
 						Accessibility
 					</a></li>
 					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('blog')}}">

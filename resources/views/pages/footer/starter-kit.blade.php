@@ -6,18 +6,11 @@
 
 <meta itemprop="title" property="og:title" content="{{trans('promotion.meta-title')}}"/>
 <meta property="og:type" content="website"/>
-@if(Session::get('applocale') == 'de')
-	<meta itemprop="url" property="og:url" content="{{  route('promotion-de') }}"/>
-@else
-	<meta itemprop="url" property="og:url" content="{{  route('promotion') }}"/>
-@endif
+<meta itemprop="url" property="og:url" content="{{  route('starter-kit') }}"/>
 <meta property="og:description" content="{{ trans('promotion.meta-description') }}"/>
 <x-meta-image itemprop="image" nickname="coaching"/>
 
-
 @endsection
-
-
 
 @section('headCSS')
 <style>
@@ -110,7 +103,7 @@
     </div>
 </div>
 
-<div style="background:#045397">
-    <a href="">View Courses</a>
+<div style="background:#045397;padding:20px;text-center;display:flex;justify-content:center;">
+    <a href="" class="orange-button btn mx-auto">View Courses</a>
 </div>
 @endsection

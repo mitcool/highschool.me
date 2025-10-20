@@ -10,9 +10,7 @@
 	@else
 		<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/en/blog/{{ $hreflang_en }}"/>
 	@endif
-	<link rel="alternate" href="{{ config('app.url') }}/en/blog/{{ $hreflang_en }}" hreflang="en" />
-	<link rel="alternate" href="{{ config('app.url') }}/de/blog/{{ $hreflang_de }}" hreflang="de" />
-	<link rel="alternate" href="{{ config('app.url') }}/en/blog/{{ $hreflang_en }}" hreflang="x-default" />
+
 	<meta itemprop="image" property="og:image" content="{{ asset('news_images') }}/{{ $article->main_image->all_translations[0]->content }}"/>
 	<meta property="og:type" content="website">
 
@@ -77,21 +75,7 @@
 @endsection
 
 
-@section('language-switcher')
-<div class="dropdown">
-	<button class="btn dropdown-toggle text-uppercase" style="background: #025297;color:white;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	  {{ app()->currentLocale() }}
-	  </button>
-	  <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
-		<div>
-			<a href="{{ config('app.url') }}/en/blog/{{ $hreflang_en }}" class="text-uppercase btn d-inline-block bg-transparent">EN</a>
-		</div>
-		<div>
-			<a href="{{ config('app.url') }}/de/blog/{{ $hreflang_de }}" class="text-uppercase btn d-inline-block bg-transparent">DE</a>
-		</div>
-	  </div> 
-  </div>
-@endsection
+
 
 
 @section('headCSS')

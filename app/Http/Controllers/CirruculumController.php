@@ -13,7 +13,7 @@ class CirruculumController extends Controller
             return view('pages.cirriculum.honors-highschool');
     }
     public function advancedPlacement(){
-        return view('pages.cirriculum.advancedPlacement');
+        return view('pages.cirriculum.advanced-placement');
     }
     public function psat(){
         return view('pages.cirriculum.psat');

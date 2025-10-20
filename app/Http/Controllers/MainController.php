@@ -116,30 +116,8 @@ class MainController extends Controller
 
  
   
-  public function showFaq(Request $request){
-    $faqcategories  = FaqCategory::all();
-    return view('pages.resources.faq',compact('faqcategories'));
-  }
+ 
 
-  public function getSingleFaqCategory(Request $request,$slug){
-    $faq_translation = FaqCategoryTranslation::where('slug',$slug)->first() ?? abort(404);
-    $faq_category_questions = FaqCategory::find($faq_translation->category_id);
-    $hreflang_en = FaqCategoryTranslation::where('category_id',$faq_translation->category_id)->where('locale','en')->first()->slug;
-    $hreflang_de = FaqCategoryTranslation::where('category_id',$faq_translation->category_id)->where('locale','de')->first()->slug;
-    return view('pages.resources.single_faq',compact('faq_category_questions','hreflang_en','hreflang_de'));
-  }
-
-  public function showImprint(Request $request){
-    return view('pages.resources.imprint');
-  }
-
-  public function showPrivacyPolicy(Request $request){
-    return view('pages.resources.privacy_policy');
-  }
-
-  public function showTerms(Request $request){
-    return view('pages.resources.terms_and_conditions');
-  }
 
   public function sendEmail(AdvisoryRequest $request){
     if($request->name || $request->address || $request->age){
@@ -173,12 +151,6 @@ class MainController extends Controller
     return "Custom cookies accepted";
   }
   
-
- 
-  public function showPromotion(){
-      return view('pages.promotion');
-  }
-
   public function showNewsletter(){
     return view('pages.newsletter');
   }
@@ -339,8 +311,6 @@ class MainController extends Controller
           ->with('certificate',$certificate);
   }
 
-  public function accessibility(){
-      return view('pages.resources.accessibility');
-  }
+ 
  
 }

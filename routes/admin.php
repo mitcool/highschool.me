@@ -40,7 +40,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/delete-partner/{id}','AdminController@deletePartner')->name('delete-partner');
 
 	//Faq
-	Route::get('faq','AdminController@faq')->name('faq');
+	Route::get('faq','AdminController@faq')->name('admin-faq');
 	Route::post('/edit-faq/{id}','AdminController@editFaq')->name('edit-faq');
 	Route::post('/delete-faq/{id}','AdminController@deleteFaq')->name('delete-faq');
 	Route::post('/add-faq','AdminController@addFaq')->name('add-faq');

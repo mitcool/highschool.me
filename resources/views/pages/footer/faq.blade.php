@@ -29,20 +29,11 @@
 @section('seo')
 	<title>{{trans('faq.meta-title')}}</title>
 	<meta itemprop="description" name="description" content="{{ trans('faq.meta-description') }}" />
-
 	<meta itemprop="title" property="og:title" content="{{trans('faq.meta-title')}}"/>
 	<meta property="og:type" content="website"/>
-	@if(Session::get('applocale') == 'de')
-		<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/de/faq"/>
-	@else
-		<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/en/faq"/>
-	@endif
+	<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/faq"/>
 	<meta property="og:description" content="{{ trans('faq.meta-description') }}"/>
 	<x-meta-image itemprop="image" nickname="faqs"/>
-
-	<link rel="alternate" href="{{ config('app.url') }}/en/faq" hreflang="en" />
-	<link rel="alternate" href="{{ config('app.url') }}/de/faq" hreflang="de" />
-	<link rel="alternate" href="{{ config('app.url') }}/en/faq" hreflang="x-default" />
 @endsection
 
 

@@ -10,9 +10,7 @@
 	@else
 		<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/en/blog/{{ $hreflang_en }}"/>
 	@endif
-	<link rel="alternate" href="{{ config('app.url') }}/en/blog/{{ $hreflang_en }}" hreflang="en" />
-	<link rel="alternate" href="{{ config('app.url') }}/de/blog/{{ $hreflang_de }}" hreflang="de" />
-	<link rel="alternate" href="{{ config('app.url') }}/en/blog/{{ $hreflang_en }}" hreflang="x-default" />
+	
 	<meta itemprop="image" property="og:image" content="{{ asset('news_images') }}/{{ $article->main_image->all_translations[0]->content }}"/>
 	<meta property="og:type" content="website">
 
@@ -77,23 +75,6 @@
 @endsection
 
 
-@section('language-switcher')
-<div class="dropdown">
-	<button class="btn dropdown-toggle text-uppercase" style="background: #025297;color:white;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	  {{ app()->currentLocale() }}
-	  </button>
-	  <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
-		<div>
-			<a href="{{ config('app.url') }}/en/blog/{{ $hreflang_en }}" class="text-uppercase btn d-inline-block bg-transparent">EN</a>
-		</div>
-		<div>
-			<a href="{{ config('app.url') }}/de/blog/{{ $hreflang_de }}" class="text-uppercase btn d-inline-block bg-transparent">DE</a>
-		</div>
-	  </div> 
-  </div>
-@endsection
-
-
 @section('headCSS')
 	<link rel="stylesheet" href="{{ asset('css/main/news.css') }}">
 @endsection
@@ -106,8 +87,8 @@
 
 <div aria-label="breadcrumb" class="col-md-6 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-1">
-		<li class="breadcrumb-item"><a href="{{ route('welcome-'.app()->currentLocale()) }}">Home</a></li>
-		<li class="breadcrumb-item"><a href="{{ route('blog-'.app()->currentLocale()) }}">Blog</a></li>
+		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
+		<li class="breadcrumb-item"><a href="{{ route('blog') }}">Blog</a></li>
 		<li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb_title }}</li>
 	</ol>
 </div>

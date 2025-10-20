@@ -4,20 +4,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNavDropdown"  style="cursor: pointer">
     <ul class="navbar-nav" style="padding-left:0px;">
-  
-    <li class="nav-item dropdown">
-        <div class="nav-link dropdown-toggle font-weight-bold header-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; text-align: center;">
-        	COURSES
-        </div>
-         <ul class="dropdown-menu p-0 mt-0">
-            <li><a class="dropdown-item" href="{{ route('about')}}">Course 1</a></li>
-            <li><a class="dropdown-item" href="{{ route('about')}}">Course 2</a></li>
-            <li><a class="dropdown-item" href="{{ route('about')}}">Course 3</a></li>
-            <li><a class="dropdown-item" href="{{ route('about')}}">Course 4</a></li>
-            <li><a class="dropdown-item" href="{{ route('about')}}">Course 5</a></li>
-         </ul>
-      </li>
-      
+        
        <li class="nav-item dropdown">
         <div class="nav-link dropdown-toggle font-weight-bold header-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; text-align: center;">
         	ABOUT
@@ -50,11 +37,11 @@
           CIRRUCULUM
         </div>
          <ul class="dropdown-menu p-0 mt-0">
-            <li><a class="dropdown-item" href="{{ route('about') }}">Standard High School</a></li>
-			<li><a class="dropdown-item" href="{{ route('code-of-ethics') }}">Honors High School</a></li>
-            <li><a class="dropdown-item" href="{{ route('academics') }}">Advanced Placement</a></li>
-            <li><a class="dropdown-item" href="{{ route('accreditation') }}">PSAT/SAT/ACT</a></li>
-            <li><a class="dropdown-item" href="{{ route('blog') }}">Baccalaureate</a></li> 
+            <li><a class="dropdown-item" href="{{ route('standard-high-school') }}">Standard High School</a></li>
+			<li><a class="dropdown-item" href="{{ route('honors-high-school') }}">Honors High School</a></li>
+            <li><a class="dropdown-item" href="{{ route('advanced-placement') }}">Advanced Placement</a></li>
+            <li><a class="dropdown-item" href="{{ route('psat') }}">PSAT/SAT/ACT</a></li>
+            <li><a class="dropdown-item" href="{{ route('baccalaureate') }}">Baccalaureate</a></li> 
          </ul>
       </li>
       <li class="nav-item dropdown">
@@ -62,14 +49,14 @@
           ADMISSIONS
         </div>
          <ul class="dropdown-menu p-0 mt-0">
-            <li><a class="dropdown-item" href="{{ route('about') }}">Admission process</a></li>
-			      <li><a class="dropdown-item" href="{{ route('code-of-ethics') }}">Enrolment criteria</a></li>
-            <li><a class="dropdown-item" href="{{ route('academics') }}">Enrolment options</a></li>
-            <li><a class="dropdown-item" href="{{ route('accreditation') }}">Tuition</a></li>
-            <li><a class="dropdown-item" href="{{ route('accreditation') }}">Tuition Assistance (PEP)</a></li>
-            <li><a class="dropdown-item" href="{{ route('accreditation') }}">Apply</a></li>
-            <li><a class="dropdown-item" href="{{ route('accreditation') }}">Loyality Program</a></li> 
-            <li><a class="dropdown-item" href="{{ route('accreditation') }}">ISO Certification</a></li> 
+            <li><a class="dropdown-item" href="{{ route('admission-process') }}">Admission process</a></li>
+			      <li><a class="dropdown-item" href="{{ route('enrolment-criteria') }}">Enrolment criteria</a></li>
+            <li><a class="dropdown-item" href="{{ route('enrolment-options') }}">Enrolment options</a></li>
+            <li><a class="dropdown-item" href="{{ route('tuition') }}">Tuition</a></li>
+            <li><a class="dropdown-item" href="{{ route('tuition-assistance') }}">Tuition Assistance (PEP)</a></li>
+            <li><a class="dropdown-item" href="{{ route('apply') }}">Apply</a></li>
+            <li><a class="dropdown-item" href="{{ route('loyality-program') }}">Loyality Program</a></li> 
+            <li><a class="dropdown-item" href="{{ route('iso') }}">ISO Certification</a></li> 
          </ul>
       </li>
       {{-- <li>

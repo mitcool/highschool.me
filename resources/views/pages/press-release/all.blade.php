@@ -3,41 +3,23 @@
 @section('seo')
 		<meta itemprop="title" property="og:title" content="{{ trans('blog.meta-title') }}"/>
 		<meta property="og:description" content="{{ trans('blog.meta-description') }}"/>
-		<meta itemprop="url" property="og:url" content="{{ Session::get('applocale') == 'de' ? route('blog-de') : route('blog-en') }}"/>
+		<meta itemprop="url" property="og:url" content="{{  route('blog') }}"/>
 		
 		@if(request()->page)
 			<title>{{ trans('blog.meta-title') }} | {{request()->segment(1) =='de' ? 'Seite' :  'Page'}} {{request()->page}}</title>
 			<meta itemprop="description" name="description" content="{{ trans('blog.meta-description') }} | {{request()->segment(1) =='de' ? 'Seite' :  'Page'}} {{request()->segment(1)}}" />
-			<link rel="alternate" href="{{ config('app.url') }}/en/blog?page={{request()->page}}" hreflang="en"/>
-			<link rel="alternate" href="{{ config('app.url') }}/de/blog?page={{request()->page}}" hreflang="de"/>
-			<link rel="alternate" href="{{ config('app.url') }}/en/blog?page={{request()->page}}" hreflang="x-default" />
+			
 		@else
 			<title>{{ trans('blog.meta-title') }}</title>
 			<meta itemprop="description" name="description" content="{{ trans('blog.meta-description') }}" />
-			<link rel="alternate" href="{{ config('app.url') }}/en/blog" hreflang="en"/>
-			<link rel="alternate" href="{{ config('app.url') }}/de/blog" hreflang="de"/>
-			<link rel="alternate" href="{{ config('app.url') }}/en/blog" hreflang="x-default" />
+			
 		@endif
 		
 	<meta property="og:type" content="website"/>
 	<x-meta-image itemprop="image" nickname="blog-cover"/>
 @endsection
 
-@section('language-switcher')
-<div class="dropdown">
-	<button class="btn dropdown-toggle text-uppercase" style="background: #025297;color:white;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	  {{ app()->currentLocale() }}
-	  </button>
-	  <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
-		<div>
-			<a href="{{ route('blog-en') }}" class="text-uppercase btn d-inline-block bg-transparent">EN</a>
-		</div>
-		<div>
-			<a href="{{ route('blog-de') }}" class="text-uppercase btn d-inline-block bg-transparent">DE</a>
-		</div>
-	  </div> 
-  </div>
-@endsection
+
 
 @section('headCSS')
 <style type="text/css">
@@ -79,7 +61,7 @@
 	@endphp
 	<div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 		<ol class="bg-white breadcrumb mb-0 p-0">
-			<li class="breadcrumb-item"><a href="{{ route('welcome-'.app()->currentLocale()) }}">Home</a></li>
+			<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
 			<li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb_title }}</li>
 		</ol>
 	</div>
@@ -99,7 +81,7 @@
 			<div class="row" id="blog">
 				@foreach($news as $n)
 					<div class="news-body my-2">
-						<a href="{{ route('single-press-release-'.app()->currentLocale(),$n->translated->slug) }}">
+						<a href="{{ route('single-press-release',$n->translated->slug) }}">
 							<div>
 								<h2>{{ $n->title }}</h2>
 								<p class="mb-0">{{ $n->teaser }}</p>
