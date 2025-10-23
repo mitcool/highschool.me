@@ -104,8 +104,6 @@ class MainController extends Controller
     return view('pages.collegium-excellentia.code-of-ethics');
   }
 
-
-
   public function showStudiesPages(Request $request,$slug){
     $translation = StudyTranslation::where('locale',app()->currentLocale())->where('slug',$slug)->first() ?? abort(404);
     $study = Study::find($translation->study_id);
@@ -113,11 +111,6 @@ class MainController extends Controller
     $hreflang_de = StudyTranslation::where('study_id',$study->id)->where('locale','de')->first()->slug;
     return view('pages.programs.studies',compact('study','hreflang_de','hreflang_en'));
   }
-
- 
-  
- 
-
 
   public function sendEmail(AdvisoryRequest $request){
     if($request->name || $request->address || $request->age){
@@ -135,7 +128,7 @@ class MainController extends Controller
 
   public function logout(){
     Session::flush();
-    return redirect()->route('welcome-'.app()->currentLocale(),[],301);
+    return redirect()->route('welcome',[],301);
   }
 
   public function acceptCookies() {

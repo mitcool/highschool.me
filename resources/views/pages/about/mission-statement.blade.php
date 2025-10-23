@@ -14,13 +14,8 @@
 <meta property="og:description" content="{{ trans('recognition.meta-description')}}"/>
 <x-meta-image itemprop="image" nickname="recognition_of_previous_achievemnts"/>
 
-<link rel="alternate" href="{{ config('app.url') }}/en/recognition-of-prior-learning" hreflang="en" />
-<link rel="alternate" href="{{ config('app.url') }}/de/studium-verkuerzen" hreflang="de" />
-<link rel="alternate" href="{{ config('app.url') }}/en/recognition-of-prior-learning" hreflang="x-default" />
+
 @endsection
-
-
-
 
 @section('content')
 @php
@@ -32,7 +27,7 @@
 		<li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb_title }}</li>
 	</ol>
 </div>
-<x-image-component nickname="recognition_of_previous_achievemnts" class="recognition_of_previous_achievemnts-images main-pictures-pages" loading="eager"/>
+<x-image-component nickname="mission" class="recognition_of_previous_achievemnts-images main-pictures-pages" loading="eager"/>
 
 <div class="container-fluid main_page_container">
 	

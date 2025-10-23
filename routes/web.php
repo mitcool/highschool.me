@@ -11,12 +11,17 @@ Route::get('/sitemap-images.xml', 'SitemapController@imageSitemap');
 
 Route::get('/send-newsletter','NewsletterSendController@send');
 
+Auth::routes();
+
+Route::get('/parent/dashboard', 'ParentController@dashboard');
+
 Route::group(['middleware'=>'translateUrl'],function(){
 	$routes = TranslatedRoute::whereIn('sitemap',[0,1])->get();
 	foreach($routes as $route){
 		Route::get($route->route_en,$route->action)->name($route->slug);
 	}
 });
+
 
 // Route::group(['prefix' => 'de','middleware'=>'translateUrl'],function(){
 // 	$routes = TranslatedRoute::whereIn('sitemap',[0,1])->where('id','!=',1)->get();
@@ -50,12 +55,7 @@ Route::post('/get-selected-program', 'MainController@getSelectedProgram')->name(
 
 Route::post('/use-redeem-code', 'MainController@useRedeemCode')->name('use-redeem-code');
 	
-	
-Auth::routes(['register' => false]);
 
-Route::get('/register',function(){
-	return redirect()->to('/');
-});
 
 Route::post('/apply-now/{conference_id}','MainController@postApplyNow')->name('apply-now');
 

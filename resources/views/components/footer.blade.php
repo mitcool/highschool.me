@@ -1,4 +1,4 @@
-<footer id="footer" class="container-fluid px-0" style="padding-bottom:25px;">
+<footer id="footer" class="container-fluid px-0 bg-white" style="padding-bottom:25px;">
 	<div class="row justify-content-center" style="padding-left:15px;">
 		
 	

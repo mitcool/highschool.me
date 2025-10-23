@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\UserRole;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -54,7 +55,12 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
     }
-
+    public function showRegistrationForm()
+    {
+        $user_roles = UserRole::all();
+        return view('auth.register')
+            ->with('user_roles',$user_roles);
+    }
     /**
      * Create a new user instance after a valid registration.
      *

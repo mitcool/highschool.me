@@ -18,7 +18,22 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect('/admin/dashboard');
+            if(auth()->user()->role_id == 1){
+                return redirect('/admin/dashboard');
+            }
+            elseif(auth()->user()->role_id == 2){
+                return redirect('/parent/dashboard');
+            }
+            elseif(auth()->user()->role_id == 3){
+                return redirect('/partner/dashboard');
+            }
+            elseif(auth()->user()->role_id == 4){
+                return redirect('/student/dashboard');
+            }
+            elseif(auth()->user()->role_id == 5){
+                return redirect('/teacher/dashboard');
+            }
+            
         }
 
         return $next($request);
