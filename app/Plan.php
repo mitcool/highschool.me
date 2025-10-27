@@ -10,6 +10,6 @@ class Plan extends Model
     use HasFactory;
 
     public function features(){
-        return $this->hasMany('App\PlanFeature','plan_id','id');
+        return $this->hasMany('App\PlanFeature','plan_id','id')->orderBy('_order');
     }
 }

@@ -32,76 +32,6 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/faq-categories/{category_id}','AdminController@editFaqCategories')->name('edit-faq-category');
 	Route::get('/edit-faq-by-category/{category_id}', 'AdminController@getFaqByCategory')->name('edit-faq-by-category');
 
-	//Programs
-	Route::get('/programs', 'AdminProgramController@showPrograms')->name('programs');
-	Route::get('/program-update/{slug}', 'AdminProgramController@showUpdateProgram')->name('update-program-page');
-	Route::get('/program/edit/{id}','AdminProgramController@editSingleProgram')->name('edit-single-program');
-	Route::post('/update-single-program', 'AdminProgramController@updateProgram')->name('update-single-program');
-	Route::post('/add-redeem-code', 'AdminProgramController@addRedeemCode')->name('admin-add-redeem-code');
-	Route::get('/studies','AdminProgramController@studies')->name('studies');
-	Route::post('/edit-study/{study_id}','AdminProgramController@editStudy')->name('edit-study');
-
-	//Program page sections
-	#step 1
-	Route::get('/add-program', 'AdminProgramController@showAddProgram')->name('add-program-page');
-	Route::post('/add-program-form', 'AdminProgramController@addProgram')->name('add-program-form');
-	#step 2
-	Route::get('/program-video/{id}','AdminProgramController@programVideo')->name('program-video');
-	Route::post('/program-video','AdminProgramController@addProgramVideo')->name('add-program-video');
-	#step 3
-	Route::get('/program-benefits/{id}','AdminProgramController@programBenefits')->name('program-benefits');
-	Route::post('/program-benefits','AdminProgramController@addProgramBenefits')->name('add-program-benefits');
-	#step 4
-	Route::get('/iso-certificate/{id}','AdminProgramController@isoCertificate')->name('iso-certificate');
-	Route::post('/iso-certificate-text','AdminProgramController@isoCertificateText')->name('iso-certificate-text');
-	#step 5
-	Route::get('/ai-support/{id}','AdminProgramController@aiSupport')->name('ai-support');
-	Route::post('ai-support-add','AdminProgramController@addAiSupportText')->name('add-ai-support');
-	#step 6
-	Route::get('/program-facts/{id}','AdminProgramController@programFacts')->name('program-facts');
-	Route::post('program-facts-add','AdminProgramController@addProgramFacts')->name('add-program-facts');
-	#step 7
-	Route::get('/study-program-content/{id}','AdminProgramController@studyProgramContent')->name('study-program-content');
-	Route::post('study-program-content-add','AdminProgramController@addStudyProgramContent')->name('add-study-program-content');
-	#step 8
-	Route::get('/study-requirements/{id}','AdminProgramController@studyRequirements')->name('study-requirements');
-	Route::post('study-requirements-add','AdminProgramController@addStudyRequirements')->name('add-study-requirements');
-	#step 9
-	Route::get('/required-documents/{id}','AdminProgramController@requiredDocuments')->name('required-documents');
-	Route::post('required-documents-add','AdminProgramController@addRequiredDocuments')->name('add-required-documents');
-	#step 10
-	Route::get('/tuition-fees/{id}','AdminProgramController@tuitionFees')->name('tuition-fees');
-	Route::post('tuition-fees-add','AdminProgramController@addTuitionFees')->name('add-tuition-fees');
-	#step 11
-	Route::get('/financing/{id}','AdminProgramController@financing')->name('financing');
-	Route::post('financing-add','AdminProgramController@addFinancing')->name('add-financing');
-	#step 12
-	Route::get('/career-path/{id}','AdminProgramController@careerPath')->name('career-paths');
-	Route::post('career-path-add','AdminProgramController@addCareerPath')->name('add-career-paths');
-	#step 13
-	Route::get('/partners/{id}','AdminProgramController@partners')->name('partners');
-	Route::post('partners-add','AdminProgramController@addPartner')->name('add-partners');
-	#step 14
-	Route::get('/testimonials/{id}','AdminProgramController@testimonials')->name('testimonials');
-	Route::post('testimonials-add','AdminProgramController@addTestimonial')->name('add-testimonials');
-	#step 15
-	Route::get('/knowledge-for-success/{id}','AdminProgramController@knowledgeForSuccess')->name('knowledge-for-success');
-	Route::post('knowledge-for-success-add','AdminProgramController@addKnowledgeForSuccess')->name('add-knowledge-for-success');
-
-	//Tutorials HelpDesk
-    Route::get('/tutorials','AdminController@showTutorials')->name('admin-tutorials');
-	Route::post('/tutorial/create','AdminController@addTutorial')->name('add-tutorial');
-	Route::post('/tutorial/delete/{tutorial_id}','AdminController@deleteTutorial')->name('delete-tutorial');
-	Route::get('/tutorial/edit/{id}','AdminController@editTutorial')->name('edit-tutorial');
-	Route::post('/tutorial/edit/{id}','AdminController@editTutorialPost')->name('edit-tutorial-post');
-
-	//Testimonials
-	Route::get('/testimonials','AdminController@testimonials')->name('admin-testimonials');
-	Route::post('/testimonial/add','AdminController@addTestimonial')->name('add-testimonial');
-	Route::get('/testimonial/edit/{id}','AdminController@editTestimonial')->name('edit-testimonial');
-	Route::post('/testimonial/edit/{id}','AdminController@editTestimonialPost')->name('edit-testimonial-post');
-	Route::post('/testimonial/delete/{id}','AdminController@deleteTestimonial')->name('delete-testimonial');
-
 	//Images
 	Route::get('/images','AdminController@images')->name('images');
 	Route::post('/images/add','AdminController@addImage')->name('add-image');
@@ -110,12 +40,6 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	//Applications
 	Route::get('/applications','AdminController@applications')->name('applications');
 	Route::get('/applications/{id}','AdminController@application')->name('application');
-
-	//Requests
-	Route::get('/general-requests','RequestsController@generalRequests')->name('general-requests');
-	Route::get('/program-requests','RequestsController@programlRequests')->name('program-requests');
-	Route::get('/phone-requests','RequestsController@phoneRequests')->name('phone-requests');
-	Route::get('/fact-sheet-requests','RequestsController@factSheetRequests')->name('fact-sheet-requests');
 
 	//Dynamic news
 	Route::get('/news','NewsController@index')->name('dynamic-news');
@@ -193,4 +117,8 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	//Meetings
 	Route::get('/meetings','AdminController@meetings')->name('admin-meetings');
 	Route::post('/meeting/add','AdminController@createMeeting')->name('meeting.add');
+
+	//Courses
+	Route::get('/courses','AdminController@courses')->name('admin-courses');
+	Route::post('/courses/add','AdminController@addCourse')->name('course.add');
 });

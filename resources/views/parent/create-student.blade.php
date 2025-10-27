@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="shadow container jumbotron bg-white">
-    <h1 class="text-center">Add student to account</h1>
+    <h1 class="text-center">Add a student account</h1>
     <form action="{{ route('student.add') }}" method="POST">
         {{ csrf_field() }}
         <div>

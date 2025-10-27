@@ -59,6 +59,7 @@ use App\AiCategory;
 use App\AiText;
 use App\User;
 use App\Meeting;
+use App\Course;
 
 use App\Http\Requests\CreateConferenceRequest;
 use App\Http\Requests\AiServiceRequest;
@@ -78,20 +79,13 @@ class AdminController extends Controller
     return $filename;
     }
    private function createImage($nickname,$path){
-
-        $image_id = Image::insertGetId([
+        Image::insert([
             'nickname' => $nickname,
-            'src' => $path
+            'src' => $path,
+            'alt'=> '-',
+            'title'=> '-',
 
         ]);
-        foreach(Config('languages') as $lang => $language) {
-            ImageAttribute::insert([
-                'alt'=> '-',
-                'title'=> '-',
-                'image_id'=>$image_id,
-                'locale' => $lang,
-            ]);
-        }
    }
 
    private function deleteImage($nickname){
@@ -100,7 +94,6 @@ class AdminController extends Controller
         try{
             unlink(base_path().'/public/'.$image->src);
             Image::find($image->id)->delete();
-            ImageAttribute::where('image_id', $image->id)->delete();
         }catch(\Exception $e){
             info($e->getMessage());
         }
@@ -316,83 +309,6 @@ class AdminController extends Controller
                 ->with('partners',$partners);
     }
 	
-	public function showTutorials(){
-        $help_desk_tutorials = Tutorial::where('type',0)->get();
-        $program_tutorials = Tutorial::where('type',1)->get();
-        $programs = Program::all();
-        return view('admin.tutorials',compact('help_desk_tutorials','program_tutorials','programs'));
-    } 
-
-    public function addTutorial(Request $request){
-        $type = $request->type ?? 0;
-        $input = $request->all();
-        $tutorial_id = Tutorial::insertGetId(['type' => $type]);
-        foreach(Config('languages') as $lang => $language){
-
-           $slug = $type == 1 
-                ? ProgramTranslation::where('program_id',$input['program'])->where('locale',$lang)->first()->slug 
-                : $input['slug_'.$lang];
-
-            $tutorial_same_slug = TutorialTranslation::where('locale', $lang)->where('slug', $input['slug_'.$lang])->exists();
-            if ($tutorial_same_slug == 1) {
-                $tutorial_id_remove = Tutorial::where('id', $tutorial_id)->delete();
-                return redirect()->back()->with('error','The slug already exists!');
-            }
-
-            $translation_id = TutorialTranslation::insertGetId([
-                'video' => $input['video_'.$lang],
-                'name' => $input['name_'.$lang],
-                'slug' => $slug,
-                'tutorial_id' => $tutorial_id,
-                'text' => $input['text_'.$lang],
-                'locale' => $lang
-            ]);
-            if($type == 0){
-                $request->validate([
-                    'cover_'.$lang => 'max:300'
-                ]);
-                $image = $request->file('cover_'.$lang);
-                $pictureName = $image->getClientOriginalName();
-                $destinationPath = public_path('/images');
-                $image->move($destinationPath, $pictureName);
-               
-                $nickname = 'tutorial-'.$lang.'-'.$tutorial_id;
-                $path = '/images/'.$pictureName;
-                $this->createImage($nickname,$path);
-            }           
-        }
-
-        return redirect()->back();
-    }
-    public function editTutorial($tutorial_id){
-        $tutorial = Tutorial::find($tutorial_id);
-        $programs = Program::all();
-        return view('admin.edit-tutorial')
-                ->with('programs',$programs)
-                ->with('tutorial',$tutorial);
-    }
-
-    public function editTutorialPost(Request $request,$tutorial_id){
-        $input = $request->all();
-        $tutorial = Tutorial::find($tutorial_id);
-      
-        foreach(Config('languages') as $lang => $language){
-
-            $slug = $tutorial->type == 1 
-            ? ProgramTranslation::where('program_id',$input['program'])->where('locale',$lang)->first()->slug 
-            : $input['slug_'.$lang];
-
-            TutorialTranslation::where('tutorial_id',$tutorial_id)->where('locale',$lang)->update([
-                'name' =>$input['name_'.$lang],
-                'text' =>$input['text_'.$lang],
-                'slug' =>$slug
-            ]);
-        }
-
-        return redirect()->back()->with('success_message','Tutorial edited successfully!');
-    }
-
-
     public function deleteTutorial($tutorial_id){
         Tutorial::find($tutorial_id)->delete();
         TutorialTranslation::where('tutorial_id',$tutorial_id)->delete();
@@ -769,163 +685,6 @@ class AdminController extends Controller
             ->with('subscribers_count',$subscribers_count);
     }
 
-    public function jobs(){
-        $jobs = Job::all();
-        $job_categories = JobCategory::all();
-        $job = null;
-        return view('admin.jobs')
-            ->with('job_categories',$job_categories)
-            ->with('job',$job)
-            ->with('jobs',$jobs);
-    }
-
-    public function addJob(Request $request){
-        $request->validate([
-            "slug" => 'required',
-            "slug_de" => 'required',
-            "name" => 'required',
-            "name_de" => 'required',
-            "description" => 'required',
-            "description_de" => 'required',
-            "meta_title" => 'required',
-            "meta_title_de" => 'required',
-            "meta_description" => 'required',
-            "meta_description_de" => 'required',
-            "category_id" => 'required',
-            "id" => 'sometimes',
-            "cover" => 'sometimes'
-        ]);
-
-        if($request->cover){
-            $image = $request->file('cover');
-            $pictureName = $image->getClientOriginalName();
-            $destinationPath = public_path('/images/');   
-            $image->move($destinationPath, $pictureName);
-            $nickname = 'job-'.Job::max('id') + 1;
-            $path = '/images/'.$pictureName;
-            $this->createImage($nickname,$path);
-        }
-        $job = $request->except('_token','text_pages');
-        Job::updateOrCreate(['id' => $job['id']],$job);
-        return redirect()->back()->with('success_message','Job created successfully');
-    }
-    public function deleteJob($id){
-        Job::where('id',$id)->delete();
-        return redirect()->back();
-    }
-
-    public function jobsCategories(){
-        $job_categories = JobCategory::all();
-        return view('admin.job-categories')
-            ->with('job_categories',$job_categories);
-    }
-
-    public function addJobCategory(Request $request){
-        $category = $request->only('name','name_de');
-        JobCategory::create($category);
-        return redirect()->back()->with('success_message','Job category created successfully');
-    }
-    public function editJobCategory(Request $request,$category_id){
-        $category = $request->only('name','name_de');
-        JobCategory::where('id',$category_id)->update($category);
-        return redirect()->back()->with('success_message','Job category updated successfully');
-    }
-
-    public function deleteJobCategory($category_id){
-        JobCategory::where('id',$category_id)->delete();
-        return redirect()->back()->with('success_message','Job category deleted successfully');
-    }
-
-    public function editSingleJob($job_id){
-        $job = Job::find($job_id);
-        $jobs = Job::all();
-        $job_categories = JobCategory::all();
-        return view('admin.jobs')
-            ->with('job',$job)
-            ->with('job_categories',$job_categories)
-            ->with('jobs',$jobs);
-    }
-
-    public function aiUsers (){
-        $ai_users = AiUser::all();
-        return view('admin.ai.users')
-            ->with('ai_users',$ai_users);
-    }
-
-    public function aiServices(){
-        $services = AiService::paginate(10);
-        $categories = AiCategory::all();
-        return view('admin.ai.services')
-                ->with('categories',$categories)
-                ->with('services',$services);
-    }
-
-    public function addAiUser(Request $request){
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'],
-            'tokens' => 'required',
-        ]);
-        if(AiUser::where('email',$request->email)->count() > 0){
-            return redirect()->back()->with('wront_message','The user already exists');
-        }
-        $user = $request->only('name','email','tokens');
-        $password = Str::random(10);
-        $user['password'] = Hash::make($password);
-        //email to user
-        $email_data = AiUser::create($user);
-        $email_data['password'] = $password;
-        try{
-            Mail::to($user['email'])->send(new AIUserMail($email_data));
-        }catch(\Exception $e){
-            info($e->getMessage());
-        }
-
-        return redirect()->back()->with('success_message','The user was created successfully');
-    }
-
-    public function editAiUser(Request $request, $id){
-        $user = $request->only('name','email','tokens');
-        AiUser::where('id',$id)->update($user);
-        return redirect()->back()->with('success_message','The user was updated successfully');
-    }
-    public function addAiService(AiServiceRequest $request){
-        $service = $request->validated();
-        AiService::create($service);
-        return redirect()->back()->with('success_message','The service was created successfully');
-    }
-    public function editAiService(AiServiceRequest $request,$id){
-        $service = $request->validated();
-        AiService::where('id',$id)->update($service);
-        return redirect()->back()->with('success_message','The service was updated successfully');
-    }
-
-    public function deleteAiService($id) {
-        AiService::where('id',$id)->delete();
-        return redirect()->back()->with('success_message','The service was deleted successfully');
-    }
-     public function aiTexts(){
-        $texts = AiText::all();
-        return view('admin.ai.texts')
-            ->with('texts',$texts);
-     }
-
-     public function editAiTexts(Request $request){
-        
-        $text_en = $request->text_en;
-        $text_de = $request->text_de;
-        $ids = $request->ids;
-
-        foreach($ids as  $i => $id){
-            AiText::where('id',$id)->update([
-                'text_en' => $text_en[$i],
-                'text_de' => $text_de[$i]
-            ]);
-        }
-
-         return redirect()->back()->with('success_message','The texts have been updated successfully'); 
-     }
-
      public function plans(){
         $plans = Plan::all();
         $features = Feature::all();
@@ -951,10 +710,13 @@ class AdminController extends Controller
      public function addPlans(Request $request){
          $features = $request->features;
          $plan_id = $request->plan_id;
-         foreach($features as $feature_id){
+         $order = $request->order;
+         PlanFeature::where('plan_id',$plan_id)->delete();
+         foreach($features as $key => $feature_id){
             PlanFeature::insert([
                 'feature_id' => $feature_id,
-                'plan_id' => $plan_id
+                'plan_id' => $plan_id,
+                '_order' => $order[$key] #order is key word in SQL
             ]);
          }
          return redirect()->back()->with('success_message','Plan Features updated successfully');
@@ -971,5 +733,22 @@ class AdminController extends Controller
         $meeting = $request->except('_token');
         Meeting::create($meeting);
         return redirect()->back()->with('success_message','Meeting created successfully');
+     }
+
+     public function courses(){
+        
+        return view('admin.courses');
+     }
+
+     public function addCourse(Request $request){
+        $course = $request->only('name','description');
+        $course = Course::create($course);
+        $file = $request->file('image');
+        $pic_name = $file->getClientOriginalName();
+        $request->file('image')->move(base_path()."/public/images/courses", $pic_name);
+        $nickname = 'course-'.$course->id;
+        $path = "/images/courses/".$pic_name;
+        $this->createImage($nickname,$path);
+        return redirect()->back()->with('success_message','Course created successfully');
      }
 }

@@ -12,8 +12,13 @@
             <form action="{{ route('plans.add') }}" method="POST">
                 {{ csrf_field() }}
                 @foreach($features as $feature)
-                    <div>
+                    <div class="my-3">
                         <input type="checkbox" name="features[]" value="{{ $feature->id }}"> {{ $feature->feature }}
+                        <select name="order[]">
+                            @for ($i = 1 ; $i <= count($features); $i++)
+                                <option value="{{ $i }}">{{ $i }}</option>
+                            @endfor
+                        </select>
                     </div>
                 @endforeach
                 <input type="hidden" name="plan_id" value="{{ $plan->id }}">

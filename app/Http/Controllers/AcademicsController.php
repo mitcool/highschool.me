@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Course;
 
 class AcademicsController extends Controller
 {
     public function highSchoolPrograms(){
-        return view('pages.academics.highschool-programs');
+        $courses = Course::all();
+        return view('pages.academics.highschool-programs')->with('courses',$courses);
 
     }
      public function graduationRequirements(){
