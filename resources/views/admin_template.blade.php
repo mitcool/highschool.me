@@ -967,7 +967,7 @@ a:hover {
                     <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="min-height:1500vh;padding:10px;background: linear-gradient(115deg, #62cff4, #2c67f2)
 ">
                         <li class="nav-item active">
-                            <a class="nav-link" href="{{route('welcome-'.app()->currentLocale())}}">
+                            <a class="nav-link" href="{{route('welcome')}}">
                                 <i class="fas fa-fw fa-home"></i>
                                 <span>HomePage</span>
                             </a>
@@ -981,13 +981,19 @@ a:hover {
                             </a>
                         </li>
                         <hr class="sidebar-divider">
-                        <div class="sidebar-heading">Request & Applications</div>
-                        {{-- <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('applications')}}">
+                        <div class="sidebar-heading">Plans and features</div>
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" href="{{route('admin-plans')}}">
                                 <i class="fas fa-fw fa-cog"></i>
-                                <span>Applications</span>
+                                <span>Plans</span>
                             </a>
-                        </li> --}}
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" href="{{route('admin-features')}}">
+                                <i class="fas fa-fw fa-cog"></i>
+                                <span>Features</span>
+                            </a>
+                        </li>
                         {{-- <li class="nav-item">
                             <a class="nav-link collapsed" id="requests">
                                 <i class="fas fa-fw fa-cog"></i>

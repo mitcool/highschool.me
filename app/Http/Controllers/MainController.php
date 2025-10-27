@@ -72,6 +72,7 @@ use App\GeneralRequest;
 use App\UnsubscribeReason;
 use App\IsoIcon;
 use App\Job;
+use App\Plan;
 
 use App\Http\Requests\ContactRequest;
 use App\Http\Requests\AdvisoryRequest;
@@ -304,6 +305,9 @@ class MainController extends Controller
           ->with('certificate',$certificate);
   }
 
- 
- 
+  public function plans(){
+      $plans = Plan::all();
+      return view('pages.plans')->with('plans',$plans);
+  }
+
 }

@@ -199,4 +199,11 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/delete-ai-service/{id}','AdminController@deleteAiService')->name('delete-ai-service');
 	Route::get('/admin-ai-texts','AdminController@aiTexts')->name('admin-ai-texts');
 	Route::post('/edit-ai-text','AdminController@editAiTexts')->name('edit-ai-text');
+
+	//Plans and features
+	Route::get('/plans','AdminController@plans')->name('admin-plans');
+	Route::get('/features','AdminController@features')->name('admin-features');
+	Route::post('/feature/add','AdminController@addFeature')->name('feature.add');
+	Route::post('/feature/delete/{feature_id}','AdminController@deleteFeature')->name('feature.delete');
+	Route::post('/plans/add','AdminController@addPlans')->name('plans.add');
 });

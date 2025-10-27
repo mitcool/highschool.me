@@ -63,6 +63,10 @@ use App\Http\Requests\AiServiceRequest;
 
 use App\Mail\AIUserMail;
 
+use App\Plan;
+use App\Feature;
+use App\PlanFeature;
+
 class AdminController extends Controller
 {
 
@@ -1093,5 +1097,39 @@ class AdminController extends Controller
         }
 
          return redirect()->back()->with('success_message','The texts have been updated successfully'); 
+     }
+
+     public function plans(){
+        $plans = Plan::all();
+        $features = Feature::all();
+        return view('admin.plans')
+        ->with('features',$features)
+        ->with('plans',$plans);
+     }
+     public function features(){
+        $features = Feature::all();
+        return view('admin.features')
+            ->with('features',$features);
+     }
+
+     public function addFeature(Request $request){
+        Feature::insert(['feature' => $request->feature]);
+        return redirect()->back()->with('success_message','Feature added successfully');
+     }
+
+     public function deleteFeature($feature_id){
+        Feature::find($feature_id)->delete();
+        return redirect()->back()->with('success_message','Feature deleted successfully');
+     }
+     public function addPlans(Request $request){
+         $features = $request->features;
+         $plan_id = $request->plan_id;
+         foreach($features as $feature_id){
+            PlanFeature::insert([
+                'feature_id' => $feature_id,
+                'plan_id' => $plan_id
+            ]);
+         }
+         return redirect()->back()->with('success_message','Plan Features updated successfully');
      }
 }
