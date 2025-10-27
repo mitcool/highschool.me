@@ -994,6 +994,16 @@ a:hover {
                                 <span>Features</span>
                             </a>
                         </li>
+                          <hr class="sidebar-divider">    
+                        <div class="sidebar-heading">
+                            Meetings
+                        </div>
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" href="{{route('admin-meetings')}}">
+                                <i class="fas fa-fw fa-cog"></i>
+                                <span>Meetings</span>
+                            </a>
+                        </li>
                         {{-- <li class="nav-item">
                             <a class="nav-link collapsed" id="requests">
                                 <i class="fas fa-fw fa-cog"></i>
@@ -1098,32 +1108,7 @@ a:hover {
                                 <span>Texts</span>
                             </a>
                         </li>
-                        <hr class="sidebar-divider">
-                        <div class="sidebar-heading">Publications & Conferences</div>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('all-publications')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Publications</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('add-new-publication')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Add Publication</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('all-conferences')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Conferences</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('add-new-conference')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Add Conference</span>
-                            </a>
-                        </li>
+                       
                         <hr class="sidebar-divider">    
 
                         <div class="sidebar-heading">

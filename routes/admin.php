@@ -9,23 +9,6 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/single-text/{slug}','AdminController@showSingleTexts')->name('single-text');
 	Route::post('/change-text','AdminController@changeText')->name('change-text');
 
-	//Conferences
-	Route::get('/all-conferences', 'AdminController@showAdminAllConferences')->name('all-conferences');
-	Route::get('/edit-conference/{id}', 'AdminController@showAdminEditConference')->name('edit-conference');
-	Route::post('/delete-conference-image', 'AdminController@deleteConferenceImage')->name('delete-conference-image');
-	Route::post('/edit-conference-post/{id}', 'AdminController@editConferencePost')->name('edit-conference-post');
-	Route::get('/add-new-conference', 'AdminController@showAdminAddNewConference')->name('add-new-conference');
-	Route::post('/publish-new-conference', 'AdminController@publishAdminNewConference')->name('publish-new-conference');
-	Route::post('/delete-conference/{confernce_id}', 'AdminController@deleteConference')->name('delete-conference');
-
-	//Publications
-	Route::get('/all-publications', 'AdminController@showAdminAllPublications')->name('all-publications');
-	Route::get('/edit-publication/{id}', 'AdminController@showAdminEditPublication')->name('edit-publication');
-	Route::post('/delete-publication/{id}', 'AdminController@deletePublication')->name('delete-publication');
-	Route::post('/edit-publication-post/{id}', 'AdminController@editPublicationPost')->name('edit-publication-post');
-	Route::get('/add-new-publication', 'AdminController@showAdminAddNewPublication')->name('add-new-publication');
-	Route::post('/publish-new-publication', 'AdminController@publishAdminNewPublication')->name('publish-new-publication');
-
 	// Academics
 	Route::get('/academics','AdminController@getAdminAcademics')->name('admin-academics');
 	Route::post('/add-academic','AdminController@addAcademic')->name('add-academic');
@@ -206,4 +189,8 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/feature/add','AdminController@addFeature')->name('feature.add');
 	Route::post('/feature/delete/{feature_id}','AdminController@deleteFeature')->name('feature.delete');
 	Route::post('/plans/add','AdminController@addPlans')->name('plans.add');
+
+	//Meetings
+	Route::get('/meetings','AdminController@meetings')->name('admin-meetings');
+	Route::post('/meeting/add','AdminController@createMeeting')->name('meeting.add');
 });

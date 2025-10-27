@@ -13,7 +13,15 @@ Route::get('/send-newsletter','NewsletterSendController@send');
 
 Auth::routes();
 
-Route::get('/parent/dashboard', 'ParentController@dashboard');
+Route::group(['prefix' => 'parent'],function(){
+	Route::get('/dashboard', 'ParentController@dashboard')->name('parent.dashboard');
+
+	Route::get('/meeting','ParentController@meetings')->name('parent.meetings');
+
+	Route::get('/create-student','ParentController@createStudent')->name('parent.create.student');
+});
+
+
 
 Route::group(['middleware'=>'translateUrl'],function(){
 	$routes = TranslatedRoute::whereIn('sitemap',[0,1])->get();

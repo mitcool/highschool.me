@@ -57,6 +57,8 @@ use App\AiUser;
 use App\AiService;
 use App\AiCategory;
 use App\AiText;
+use App\User;
+use App\Meeting;
 
 use App\Http\Requests\CreateConferenceRequest;
 use App\Http\Requests\AiServiceRequest;
@@ -117,7 +119,7 @@ class AdminController extends Controller
     }
 
     public function showAdminWelcome(Request $request) {
-        return view('admin.welcome', ['text_pages' => $request->all()['text_pages']]);
+        return view('admin.welcome');
     }
 
     public function showTexts(){
@@ -132,182 +134,7 @@ class AdminController extends Controller
                 ->with('texts',$texts);
     }
 
-    public function showAdminAllConferences(Request $request) {
-        $conferences = Conference::orderBy('id', 'desc')->get();
-        return view('admin.all_conferences', ['text_pages' => $request->all()['text_pages'], 'conferences' => $conferences]);
-    }
-
-    public function showAdminEditConference(Request $request, $id) {
-        $conference = Conference::where('id', '=', $id)->first();
-        return view('admin.edit_conference', ['text_pages' => $request->all()['text_pages'], 'conference' => $conference]);
-    }
-
-
-    public function editConferencePost(Request $request, $id) {
-        #todo Validation
-        $input = $request->except(['text_pages']);
-
-        Conference::where('id', '=', $id)->update([
-            'date_from' => $input['date_from'], 
-            'date_to' => $input['date_to'], 
-            'application_deadline' => $input['application_deadline'], 
-            'places' => $input['places'], 
-            'updated_at' => Carbon::now()->format("d.m.Y")
-        ]);
-
-        foreach(Config('languages') as $lang => $language){
-
-            ConferenceTranslation::where("conference_id",$id)->where("locale",$lang)->update([
-                'heading' => $input['heading_'.$lang],
-                'long_description' => $input['long_description_'.$lang],
-                'short_description' => $input['short_description_'.$lang],
-                'slug' => $input['slug_'.$lang],
-            ]);
-        }
-
-        return redirect()->back()->with('success_message', 'Conference was updated Successfully.'); 
-    }
-
-    public function deleteConference($id){
-        
-        Conference::find($id)->delete();
-        ConferenceTranslation::where('conference_id', '=', $id)->delete();
-        $this->deleteImage('conference-'.$id);
-        return redirect()->route('all-conferences')->with('success_message', 'Conference was deleted successfully.');
-        
-    }
-
-    public function showAdminAddNewConference(Request $request) {
-        return view('admin.add_new_conference', ['text_pages' => $request->all()['text_pages']]);
-    }
-
-    public function publishAdminNewConference(CreateConferenceRequest $request) {
-        $input = $request->validated();
-        $file = $request->file('picture');
-        $pic_name = $file->getClientOriginalName();
-        $request->file('picture')->move(base_path()."/public/images/", $pic_name);
-        $id = Conference::insertGetId([
-            'date_from' => $input['date_from'],
-            'date_to' => $input['date_to'],
-            'application_deadline' => $input['application_deadline'],
-            'places' => $input['places'],
-            'created_at' => Carbon::now()->format("Y.m.d")
-        ]);
-
-        foreach(Config('languages') as $lang => $language){
-
-            ConferenceTranslation::insert([
-                'conference_id' => $id,
-                'heading' => $input['heading_'.$lang],
-                'long_description' => $input['long_description_'.$lang],
-                'short_description' => $input['short_description_'.$lang],
-                'locale' => $lang,
-                'slug' => $input['slug_'.$lang],
-            ]);
-        }
-
-        $nickname = 'conference-'.$id;
-        $path = "/images/".$pic_name;
-        $this->createImage($nickname,$path);
-        
-        return redirect()->back()->with('success_message', 'Conference was successfully added.');
-    } 
-
-    public function showAdminAllPublications(Request $request) {
-        $publications = Publication::orderBy('id', 'desc')->get();
-        return view('admin.all_publications', ['text_pages' => $request->all()['text_pages'], 'publications' => $publications]);
-    }
-
-    public function showAdminEditPublication(Request $request, $id) {
-        $publication = Publication::where('id', '=', $id)->first();
-        return view('admin.edit_publication', ['text_pages' => $request->all()['text_pages'], 'publication' => $publication]);
-    }
-
-    public function deletePublication($id) {
-       
-        Publication::find($id)->delete();
-        PublicationTranslation::where('publication_id',$id)->delete();
-        $this->deleteImage('publication-'.$id);
-        return redirect()->route('all-publications')->with('success_message', 'Publication was successfully deleted.');
-    }
-	
-    public function editPublicationPost(Request $request, $id) {
-
-        $input = $request->except(['text_pages']);
-            
-        Publication::where('id', $id)->update([
-            'pages' => $input['pages'],
-            'edition' => $input['edition'], 
-            'year' => $input['year'],
-            'created_at' => Carbon::now()->format("d.m.Y")
-        ]);
-
-        foreach(Config('languages') as $lang => $language){
-            $publication_same_slug = PublicationTranslation::where('locale', $lang)->where('slug', $input['slug_'.$lang])->where('publication_id' , '!=', $id)->exists();
-            if ($publication_same_slug == 1) {
-                return redirect()->back()->with('error','The slug already exists!');
-            }
-            PublicationTranslation::where('publication_id',$id)->where('locale',$lang)->update([
-                'ISBN' => $input['isbn_'.$lang],
-                'heading' => $input['heading_'.$lang],
-                'summary' => $input['summary_'.$lang],
-                'language' => $input['language_'.$lang],
-                'slug' => $input['slug_'.$lang],
-                'authors' => $input['authors_'.$lang]
-            ]);
-        }
-
-        return redirect()->back()->with('success_message', 'Publication was successfully updated.');
-      
-    }
-	
-    public function showAdminAddNewPublication(Request $request) {
-        return view('admin.add_new_publication', ['text_pages' => $request->all()['text_pages']]);
-    }
-
-    public function publishAdminNewPublication(Request $request) {
-        $request->validate([
-            'picture' => 'max:300'
-        ]);
-        $input = $request->except(['text_pages']);
-       
-        if($request->hasFile('picture')) {
-            $file = $request->file('picture');
-            $pic_name = $file->getClientOriginalName();
-            $request->file('picture')->move(base_path()."/public/images/", $pic_name);
-          
-            $publication_id = Publication::insertGetId([
-                'pages' => $input['pages'],
-                'edition' => $input['edition'], 
-                'year' => $input['year'],
-                'created_at' => Carbon::now()->format("d.m.Y")
-            ]);
-
-            foreach(Config::get('languages') as $lang => $language){
-                $publication_same_slug = PublicationTranslation::where('locale', $lang)->where('slug', $input['slug_'.$lang])->exists();
-                if ($publication_same_slug == 1) {
-                    $publication_id_remove = Publication::where('id', $publication_id)->delete();
-                    return redirect()->back()->with('error','The slug already exists!');
-                }
-
-                PublicationTranslation::insert([
-                    'publication_id' => $publication_id,
-                    'locale' => $lang,
-                    'ISBN' => $input['isbn_'.$lang],
-                    'heading' => $input['heading_'.$lang],
-                    'summary' => $input['summary_'.$lang],
-                    'language' => $input['language_'.$lang],
-                    'slug' => $input['slug_'.$lang],
-                    'authors' => $input['authors_'.$lang]
-                ]); 
-            }
-            $path = "/images/" . $pic_name;
-            $nickaname = 'publication-'.$publication_id;
-            $this->createImage($nickaname,$path);
-        }
-        return redirect()->back()->with('success_message', 'Publication was successfully updated.');
-    }
-
+   
     public function getAdminAcademics(){
         $academics = Academic::all();
         return view('admin.academics')
@@ -1131,5 +958,18 @@ class AdminController extends Controller
             ]);
          }
          return redirect()->back()->with('success_message','Plan Features updated successfully');
+     }
+
+     public function meetings(){
+        $educators = User::where('role_id',5)->get();
+        $parents = User::where('role_id',2)->get();
+        return view('admin.meetings')
+            ->with('educators',$educators)
+            ->with('parents',$parents);
+     }
+     public function createMeeting(Request $request){
+        $meeting = $request->except('_token');
+        Meeting::create($meeting);
+        return redirect()->back()->with('success_message','Meeting created successfully');
      }
 }

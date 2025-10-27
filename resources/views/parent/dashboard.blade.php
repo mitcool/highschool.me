@@ -982,21 +982,21 @@ a:hover {
                         </li>
                         <hr class="sidebar-divider">
                         <li class="nav-item active">
-                            <a class="nav-link" href="{{route('admin-dashboard')}}">
+                            <a class="nav-link" href="{{route('parent.dashboard')}}">
                                 <i class="fas fa-fw fa-tachometer-alt"></i>
                                 <span>Create student</span>
                             </a>
                         </li>
                         <hr class="sidebar-divider">
                         <li class="nav-item active">
-                            <a class="nav-link" href="{{route('admin-dashboard')}}">
+                            <a class="nav-link" href="{{route('parent.meetings')}}">
                                 <i class="fas fa-fw fa-tachometer-alt"></i>
                                 <span>My meetings</span>
                             </a>
                         </li>
                         <hr class="sidebar-divider">
                         <li class="nav-item active">
-                            <a class="nav-link" href="{{route('admin-dashboard')}}">
+                            <a class="nav-link" href="{{route('parent.create.student')}}">
                                 <i class="fas fa-fw fa-tachometer-alt"></i>
                                 <span>My payments</span>
                             </a>

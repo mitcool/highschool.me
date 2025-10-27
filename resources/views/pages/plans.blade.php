@@ -9,12 +9,12 @@
             <div class="col-md-4">
                 <div class="shadow bg-light" style="padding:20px;">
                     <h2 class="text-center" style="color:#045397">{{ $plan->name }}</h2>
-                    <ul class="list-group bg-light">
+                    <ul class="list-group bg-light text-center p-0">
                         @foreach($plan->features as $feature)
-                            <li class="list-group-item border-0 bg-light"> <span style="color:orange">✔</span> {{ $feature->featureObject->feature }}</li>   
+                            <li class="list-group-item border-0 bg-light">  {{ $feature->featureObject->feature }}</li>   
                         @endforeach
                         <br>
-                        <button class="btn btn-warning font-weight-bold">Start now</button>
+                        <button class="w-50 mx-auto btn btn-warning font-weight-bold">Start now</button>
                     </ul>
                 </div>
             </div>

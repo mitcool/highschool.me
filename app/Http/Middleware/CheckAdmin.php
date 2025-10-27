@@ -22,8 +22,6 @@ class CheckAdmin
         if(!Auth::check() || Auth::user()->role_id != 1) {
             return redirect()->back();
         }
-        $text_pages = TextsPage::all();
-        $request->merge(array('text_pages' => $text_pages));
         return $next($request);
     }
 }
