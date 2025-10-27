@@ -13,6 +13,17 @@
                 <th>Link</th>
             </tr>
         </thead>
+        <tbody>
+            @foreach ($meetings as $meeting)
+                <tr>
+                    <td>{{ $meeting->date }}</td>
+                    <td>{{ $meeting->time }}</td>
+                    <td>{{ $meeting->type }}</td>
+                    <td>{{ $meeting->link }}</td>
+                </tr>
+            @endforeach
+            
+        </tbody>
     </table>
 </div>
 @endsection

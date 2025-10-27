@@ -982,7 +982,7 @@ a:hover {
                         </li>
                         <hr class="sidebar-divider">
                         <li class="nav-item active">
-                            <a class="nav-link" href="{{route('parent.dashboard')}}">
+                            <a class="nav-link" href="{{route('parent.create.student')}}">
                                 <i class="fas fa-fw fa-tachometer-alt"></i>
                                 <span>Create student</span>
                             </a>

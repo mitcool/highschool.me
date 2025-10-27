@@ -309,5 +309,5 @@ class MainController extends Controller
       $plans = Plan::all();
       return view('pages.plans')->with('plans',$plans);
   }
-
+  
 }

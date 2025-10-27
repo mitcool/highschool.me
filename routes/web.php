@@ -18,7 +18,9 @@ Route::group(['prefix' => 'parent'],function(){
 
 	Route::get('/meeting','ParentController@meetings')->name('parent.meetings');
 
-	Route::get('/create-student','ParentController@createStudent')->name('parent.create.student');
+	Route::get('/student/add','ParentController@createStudent')->name('parent.create.student');
+
+	Route::post('/student/create','ParentController@addStudent')->name('student.add');
 });
 
 
