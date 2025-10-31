@@ -73,6 +73,7 @@ use App\UnsubscribeReason;
 use App\IsoIcon;
 use App\Job;
 use App\Plan;
+use App\FeatureCategory;
 
 use App\Http\Requests\ContactRequest;
 use App\Http\Requests\AdvisoryRequest;
@@ -306,8 +307,11 @@ class MainController extends Controller
   }
 
   public function plans(){
+      $feature_categories = FeatureCategory::all();
       $plans = Plan::all();
-      return view('pages.plans')->with('plans',$plans);
+      return view('pages.plans')
+        ->with('feature_categories',$feature_categories)
+        ->with('plans',$plans);
   }
   
 }

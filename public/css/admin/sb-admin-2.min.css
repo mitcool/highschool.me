@@ -10921,7 +10921,7 @@ a:focus {
     padding: 1rem;
     font-weight: bold;
     font-size: 0.95rem;
-    background:rgba(0, 0, 0, 0.05);
+    background:#003A6B;
     font-style: italic;
 }
 
@@ -11139,39 +11139,40 @@ a:focus {
 }
 
 .sidebar-dark .sidebar-heading {
-    color: rgba(0,0,0,0.7);
+    background-color:#003A6B;
+    color:white;
 }
 
 .sidebar-dark .nav-item .nav-link {
-    color: black;
+    color: white;
 }
 
 .sidebar-dark .nav-item .nav-link i {
-    color: black;
+    color: white;
 }
 
 .sidebar-dark .nav-item .nav-link:active,
 .sidebar-dark .nav-item .nav-link:focus,
 .sidebar-dark .nav-item .nav-link:hover {
-    color: black;
+    color: white;
 }
 
 .sidebar-dark .nav-item .nav-link:active i,
 .sidebar-dark .nav-item .nav-link:focus i,
 .sidebar-dark .nav-item .nav-link:hover i {
-    color: black;
+    color: white;
 }
 
 .sidebar-dark .nav-item .nav-link[data-toggle="collapse"]::after {
-    color: black;
+    color: white;
 }
 
 .sidebar-dark .nav-item.active .nav-link {
-    color: black;
+    color: white;
 }
 
 .sidebar-dark .nav-item.active .nav-link i {
-    color: black;
+    color: white;
 }
 
 .sidebar-dark #sidebarToggle {

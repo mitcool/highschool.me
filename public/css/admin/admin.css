@@ -361,6 +361,9 @@ a:hover {
     color: tomato;
     
 }
+.nav-item.black{
+    background-color: black;
+}
 .nav-link{
     opacity: 0.8;
 }

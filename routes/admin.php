@@ -111,9 +111,12 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/plans','AdminController@plans')->name('admin-plans');
 	Route::get('/features','AdminController@features')->name('admin-features');
 	Route::post('/feature/add','AdminController@addFeature')->name('feature.add');
+	Route::get('/feature/edit/{feature_id}','AdminController@editFeature')->name('feature.edit');
+	Route::post('/feature/update/{feature_id}','AdminController@updateFeature')->name('feature.update');
 	Route::post('/feature/delete/{feature_id}','AdminController@deleteFeature')->name('feature.delete');
-	Route::post('/plans/add','AdminController@addPlans')->name('plans.add');
-
+	Route::post('/plans/edit','AdminController@editPlans')->name('plans.edit');
+	Route::get('/features/order','AdminController@featureOrder')->name('admin-features-order');
+	Route::post('/features/reorder','AdminController@reOrderFeatures')->name('features-reorder');
 	//Meetings
 	Route::get('/meetings','AdminController@meetings')->name('admin-meetings');
 	Route::post('/meeting/add','AdminController@createMeeting')->name('meeting.add');

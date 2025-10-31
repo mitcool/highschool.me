@@ -43,4 +43,16 @@ class ParentController extends Controller
          //TODO:: Email
         return redirect()->back()->with('success_message','Student account created successfuly');
     }
+
+    public function documentation(){
+        return view('parent.documentation');
+    }
+
+    public function payments(){
+        return view('parent.payments');
+    }
+
+    public function invoices(){
+        return view('parent.invoices');
+    }
 }

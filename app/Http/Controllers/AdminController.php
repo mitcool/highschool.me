@@ -60,15 +60,15 @@ use App\AiText;
 use App\User;
 use App\Meeting;
 use App\Course;
+use App\FeatureCategory;
+use App\Plan;
+use App\Feature;
 
 use App\Http\Requests\CreateConferenceRequest;
 use App\Http\Requests\AiServiceRequest;
 
 use App\Mail\AIUserMail;
 
-use App\Plan;
-use App\Feature;
-use App\PlanFeature;
 
 class AdminController extends Controller
 {
@@ -694,31 +694,53 @@ class AdminController extends Controller
      }
      public function features(){
         $features = Feature::all();
+        $categories = FeatureCategory::all();
         return view('admin.features')
+            ->with('categories', $categories)
             ->with('features',$features);
      }
 
      public function addFeature(Request $request){
-        Feature::insert(['feature' => $request->feature]);
+        $feature = $request->except('_token');
+        $feature['_order'] = 1; //After that admin order them in separate section
+        Feature::create($feature);
         return redirect()->back()->with('success_message','Feature added successfully');
      }
 
+     public function editFeature($feature_id){
+        $categories = FeatureCategory::all();
+        $feature = Feature::find($feature_id);
+        return view('admin.feature-edit')
+            ->with('categories',$categories)
+            ->with('feature',$feature);
+     }
+     public function updateFeature(Request $request,$feature_id){
+        $feature = $request->except('_token');
+        Feature::find($feature_id)->update($feature);
+        return redirect()->back()->with('success_message','Feature updated successfully');
+     }
      public function deleteFeature($feature_id){
         Feature::find($feature_id)->delete();
         return redirect()->back()->with('success_message','Feature deleted successfully');
      }
-     public function addPlans(Request $request){
-         $features = $request->features;
+
+     public function featureOrder(){
+        $categories = FeatureCategory::all();
+        return view('admin.feature-order')->with('categories',$categories);
+     }
+
+     public function reOrderFeatures(Request $request){
+        $ids = $request->ids;
+       
+        $order = $request->order;
+        foreach($ids as $key => $id){
+            Feature::where('id',$id)->update(['_order'=>$order[$key]]);
+        }
+        return redirect()->back()->with('success_message','Features re-ordered successfully');
+     }
+     public function editPlans(Request $request){
          $plan_id = $request->plan_id;
-         $order = $request->order;
-         PlanFeature::where('plan_id',$plan_id)->delete();
-         foreach($features as $key => $feature_id){
-            PlanFeature::insert([
-                'feature_id' => $feature_id,
-                'plan_id' => $plan_id,
-                '_order' => $order[$key] #order is key word in SQL
-            ]);
-         }
+         Plan::find($plan_id)->update(['name' => $request->name]);
          return redirect()->back()->with('success_message','Plan Features updated successfully');
      }
 

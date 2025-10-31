@@ -14,6 +14,7 @@ Route::get('/send-newsletter','NewsletterSendController@send');
 Auth::routes();
 
 Route::group(['prefix' => 'parent'],function(){
+
 	Route::get('/dashboard', 'ParentController@dashboard')->name('parent.dashboard');
 
 	Route::get('/meeting','ParentController@meetings')->name('parent.meetings');
@@ -21,6 +22,12 @@ Route::group(['prefix' => 'parent'],function(){
 	Route::get('/student/add','ParentController@createStudent')->name('parent.create.student');
 
 	Route::post('/student/create','ParentController@addStudent')->name('student.add');
+
+	Route::get('/payments','ParentController@payments')->name('parent.payments');
+
+	Route::get('/documentation','ParentController@documentation')->name('parent.documentation');
+
+	Route::get('/invoices','ParentController@invoices')->name('parent.invoices');
 });
 
 

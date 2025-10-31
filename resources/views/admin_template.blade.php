@@ -24,8 +24,8 @@
     <div class="container-fluid px-0">
         <div class="row">
            
-                <div id="wrapper">
-                    <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="min-height:1500vh;padding:10px;background: linear-gradient(115deg, #62cff4, #2c67f2)
+                <div id="wrapper" style="padding:0 0px;">
+                    <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="min-height:1500vh;padding-left:10px;background:#045397"
 ">
                         <li class="nav-item active">
                             <a class="nav-link" href="{{route('welcome')}}">
@@ -61,6 +61,12 @@
                             <a class="nav-link collapsed" href="{{route('admin-features')}}">
                                 <i class="fas fa-fw fa-cog"></i>
                                 <span>Features</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" href="{{route('admin-features-order')}}">
+                                <i class="fas fa-fw fa-cog"></i>
+                                <span>Features order</span>
                             </a>
                         </li>
                           <hr class="sidebar-divider">    
