@@ -64,6 +64,7 @@ use App\FactHubTranslation;
 use App\FactHubImageAttribute;
 use App\PressRelease;
 use App\PressReleaseTranslation;
+use App\Course;
 
 use App\Country;
 use App\Subscriber;
@@ -309,8 +310,10 @@ class MainController extends Controller
   public function plans(){
       $feature_categories = FeatureCategory::all();
       $plans = Plan::all();
+      $courses = Course::all();
       return view('pages.plans')
         ->with('feature_categories',$feature_categories)
+        ->with('courses',$courses)
         ->with('plans',$plans);
   }
   

@@ -1,23 +1,25 @@
 @extends('admin_template')
 
 @section('content')
+@extends('admin_template')
+
+@section('content')
 
 <div class="jumbotron container shadow bg-white">
     <h1 class="text-center">Courses</h1>
 
-    <form action="{{ route('course.add') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('course.update',$course->id) }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
         <label for="" class="font-weight-bold my-2">Name</label>
-        <input class="form-control" type="text" name="name" required>
+        <input class="form-control" type="text" name="name" required value="{{ $course->name }}">
         <label for="" class="font-weight-bold my-2">Description</label>
-        <input class="form-control" type="text" name="description" required>
+        <input class="form-control" type="text" name="description" required value="{{ $course->description }}">
         <label for="" class="font-weight-bold my-2">Price</label>
-        <input class="form-control" type="number" name="price" required>
-        <label for="" class="font-weight-bold my-4">File</label>
-        <input type="file" name="image" required>
+        <input class="form-control" type="number" name="price" required value="{{ $course->price }}">
+        
         <hr>
         <div class="text-center">
-            <button class="btn btn-info">Add course</button>
+            <button class="btn btn-info">Update course</button>
         </div>
     </form>
     <hr>

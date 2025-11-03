@@ -124,4 +124,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	//Courses
 	Route::get('/courses','AdminController@courses')->name('admin-courses');
 	Route::post('/courses/add','AdminController@addCourse')->name('course.add');
+	Route::get('/course/edit/{course_id}','AdminController@editCourse')->name('course.edit');
+	Route::post('/courses/update/{course_id}','AdminController@updateCourse')->name('course.update');
+	Route::post('/courses/delete','AdminController@deleteCourse')->name('course.delete');
 });

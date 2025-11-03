@@ -759,12 +759,14 @@ class AdminController extends Controller
      }
 
      public function courses(){
-        
-        return view('admin.courses');
+        $courses = Course::all();
+        return view('admin.courses')
+            ->with('courses',$courses);
      }
 
      public function addCourse(Request $request){
-        $course = $request->only('name','description');
+        $course = $request->only('name','description','price');
+        $course['type'] = 0;
         $course = Course::create($course);
         $file = $request->file('image');
         $pic_name = $file->getClientOriginalName();
@@ -773,5 +775,19 @@ class AdminController extends Controller
         $path = "/images/courses/".$pic_name;
         $this->createImage($nickname,$path);
         return redirect()->back()->with('success_message','Course created successfully');
+     }
+
+     public function editCourse($course_id){
+        $course = Course::find($course_id);
+        $courses = Course::all();
+        return view('admin.edit-single-course')
+            ->with('courses',$courses)
+            ->with('course',$course);
+     }
+
+     public function updateCourse(Request $request, $course_id){
+        $course = $request->except('_token');
+        Course::find($course_id)->update($course);
+        return redirect()->back()->with('success_message','Course updated successfully');
      }
 }
