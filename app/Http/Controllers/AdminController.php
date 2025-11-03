@@ -740,7 +740,8 @@ class AdminController extends Controller
      }
      public function editPlans(Request $request){
          $plan_id = $request->plan_id;
-         Plan::find($plan_id)->update(['name' => $request->name]);
+         $plan = $request->except('_token','plan_id');
+         Plan::find($plan_id)->update($plan);
          return redirect()->back()->with('success_message','Plan Features updated successfully');
      }
 

@@ -28,9 +28,20 @@ Route::group(['prefix' => 'parent'],function(){
 	Route::get('/documentation','ParentController@documentation')->name('parent.documentation');
 
 	Route::get('/invoices','ParentController@invoices')->name('parent.invoices');
+
+	Route::get('/inquiries','ParentController@inquiries')->name('parent.inquiries');
+
+	Route::get('/new-inquiry','ParentController@newInquiry')->name('parent.new-inquiry');
+
+	Route::get('/student/profile/{student_id}','ParentController@studentProfile')->name('parent.student.profile');
 });
 
 
+Route::get('/application-fee/{student_id}','PaymentController@applicationFee')->name('application-fee');
+
+Route::get('/enrollment-fee/{student_id}','PaymentController@enrollmentFee')->name('enrollment-fee');
+
+Route::get('/update-student-status/{status}/{student_id}','ParentController@updateStudentStatus')->name('parent.update-student-status');
 
 Route::group(['middleware'=>'translateUrl'],function(){
 	$routes = TranslatedRoute::whereIn('sitemap',[0,1])->get();

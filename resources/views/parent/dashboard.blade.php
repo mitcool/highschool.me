@@ -66,6 +66,16 @@
                                 <span>Add Child</span>
                             </a>
                         </li>
+                        @if(auth()->user()->students)
+                          @foreach (auth()->user()->students as $student)
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="{{route('parent.student.profile',$student->student->id)}}">
+                                        <i class="fas fa-fw fa-cog"></i>
+                                        <span>{{ $student->student->name }}</span>
+                                    </a>
+                                </li>
+                          @endforeach
+                        @endif
                        <div class="sidebar-heading">Payments and invoices</div>
                         <li class="nav-item active">
                             <a class="nav-link" href="{{route('parent.payments')}}">
@@ -77,6 +87,13 @@
                             <a class="nav-link" href="{{route('parent.invoices')}}">
                                 <i class="fas fa-fw fa-cog"></i>
                                 <span>Invoices</span>
+                            </a>
+                        </li>
+                        <div class="sidebar-heading">Inquiries</div>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{route('parent.inquiries')}}">
+                                <i class="fas fa-fw fa-cog"></i>
+                                <span>Inquiries</span>
                             </a>
                         </li>
                         <li class="nav-item">

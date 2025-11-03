@@ -8,12 +8,13 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.4",
+        "php": "^8.2",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^7.8",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^3.0"
+        "laravel/ui": "^3.0",
+        "stripe/stripe-php": "^18.1"
     },
     "require-dev": {
         "bennett-treptow/laravel-migration-generator": "*",

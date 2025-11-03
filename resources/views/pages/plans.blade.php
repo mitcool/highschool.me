@@ -28,15 +28,83 @@
     .td-row.feature{
         border:none;
     }
-    
+    .plan-name{
+        color:white;
+        border-top-left-radius:10px;
+         border-top-right-radius: 10px;
+         padding:10px;
+         font-size: 1.5rem;
+    }
+    .plan-name:nth-of-type(1){
+        background-color:#f08a54;
+    }
+    .plan-name:nth-of-type(2){
+        background-color:#ec7130;
+    }
+    .plan-name:nth-of-type(3){
+        background-color:#E9580C;
+    }
+    .tuition{
+        background-color:#f3f3f3;
+        color:#E9580C;
+        padding:10px;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+    .price{
+        font-size:1.5rem;
+        text-align: right;
+        font-weight: 600;
+    }
+    .wrapper{
+        margin:10px;
+    }
+    .or{
+        text-align: right;
+        color:#E9580C;
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+    .or::before{
+        border-top: 2px solid #E9580C;
+        display: block;
+        position: relative;
+        top: 15px;   
+        width: 88%;
+        content: "";
+    }
+    .per-year{
+        font-size:1.1rem;
+    }
 </style>
 @endsection
 @section('content')
 
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
     <h1 class="text-center page-headings">Pick the perfect plan for you</h1> <br>
+
     <p class="page-content">Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique.</p>
-    <div class="row" style="min-height: 50vh">
+    <h2 class="font-weight-bold text-center">High School Tuition Options</h2>
+    <hr>
+    <div class="row text-center container mx-auto">
+        @foreach($plans as $plan)
+            <div class="col-md-4 p-4">
+                <div class="shadow wrapper">
+                    <div class="plan-name"><span class="font-weight-bold">{{ $plan->name }}</span> Package</div>
+                    <div class="tuition">Tuition</div>
+                    <div style="padding: 10px;">
+                        <div class="price">${{ $plan->price_per_month() }}</div>
+                        <div class="text-right per-year">per Month</div>
+                        <div class="or">OR</div>
+                        <div class="price">${{ $plan->price_per_year() }}</div>
+                        <div class="text-right per-year">per Year</div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+    <div class="row">
         @foreach($feature_categories as $category)
             <div class="col-md-12 text-center">
                 <h2 class="h3" style="margin-top:50px;margin-bottom:20px;">{{ $category->name }}</h2>
@@ -56,8 +124,9 @@
                 @endforeach
             </div>
         @endforeach
-    
     </div>
+    <h2 class="font-weight-bold text-center">High School Tuition Options</h2>
+    <hr>
     <p class="page-content">Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique.</p>
     <div class="text-center"><button>Apply now</button></div>
 </div>

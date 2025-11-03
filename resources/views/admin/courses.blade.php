@@ -11,6 +11,8 @@
         <input class="form-control" type="text" name="name" required>
         <label for="" class="font-weight-bold my-2">Description</label>
         <input class="form-control" type="text" name="description" required>
+        <label for="" class="font-weight-bold my-2">Price</label>
+        <input class="form-control" type="number" name="price" required>
         <label for="" class="font-weight-bold my-4">File</label>
         <input type="file" name="image" required>
         <button class="btn btn-info">Add course</button>
