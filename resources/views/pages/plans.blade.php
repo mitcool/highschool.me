@@ -44,6 +44,18 @@
     .plan-name:nth-of-type(3){
         background-color:#E9580C;
     }
+    .course-name{
+        background: #045397;
+         color:white;
+         border-top-left-radius:10px;
+         border-top-right-radius: 10px;
+         padding:10px;
+         font-size: 1.5rem;
+         min-height: 100px;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+    }
     .tuition{
         background-color:#f3f3f3;
         color:#E9580C;
@@ -127,8 +139,24 @@
     </div>
     <h2 class="font-weight-bold text-center">High School Tuition Options</h2>
     <hr>
+    <div class="row text-center container mx-auto">
+        @foreach ($courses as $key => $course)
+       
+         <div class="{{ $key == 0 ? 'col-md-12 ' : 'col-md-4 ' }} p-4">
+                <div class="shadow wrapper">
+                    <div class="course-name text-center"> {{ $course->name }}</div>
+                    <div class="text-center tuition">Tuition</div>
+                    <div style="padding: 20px;text-align:center;">
+                        <div class="price text-center">${{ $course->price() }}</div>
+                        <div class="text-right per-year text-center">{{ $course->course_type->name }}</div>
+                    </div>
+                </div>
+            </div>
+    @endforeach
+    </div>
+    
     <p class="page-content">Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique.</p>
-    <div class="text-center"><button>Apply now</button></div>
+    <div class="text-center"><button class="btn orange-button">Apply now</button></div>
 </div>
 
 @endsection
