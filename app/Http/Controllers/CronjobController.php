@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\ParentStudent;
 
 use Mail;
+use App\Mail\SubscribtionExpired;
 
 
 class CronjobController extends Controller
@@ -21,6 +22,12 @@ class CronjobController extends Controller
                     'status' => 1,
                     'expired_at' => null
                 ]);
+
+                try{
+                    Mail::to($subscribtion->parent->email)->send(new SubscribtionExpired);
+                }catch(\Exception $e){
+                    info($e->getMessage());
+                }
             }
         }
         return;

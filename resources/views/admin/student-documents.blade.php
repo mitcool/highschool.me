@@ -3,9 +3,9 @@
 @section('content')
 
 <div class="jumbotron container">
-    <h1 class="text-center">List of pending approvement students applications</h1>
+    <h2 class="text-center">List of pending approvement students applications</h2>
     <hr>
-    @foreach ($students as $student )
+    @forelse ($students as $student )
         <div class="d-flex align-items-center my-3 justify-content-between">
              <p class="mb-0 font-weight-bold">{{ $student->student->name }}</p>
         </div>
@@ -17,11 +17,18 @@
                 </li>
             @endforeach
         </ul>
-        <form action="{{ route('approve.student',$student->student_id) }}" method="POST" class="text-center my-3">
+      
+        <hr>
+          <form action="{{ route('approve.student',$student->student_id) }}" method="POST" class="text-center my-3">
             {{ csrf_field() }}
+            <div>
+                <input type="checkbox" name="is_disabled"> Is disabled
+            </div>
             <button class="btn btn-info">Approve</button>
         </form>
-        <hr>
-    @endforeach
+    @empty
+        <h4 class="text-center text-primary">No pending requests</h4> 
+    @endforelse
+
 </div>
 @endsection

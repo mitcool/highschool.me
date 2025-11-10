@@ -33,8 +33,20 @@ class ParentController extends Controller
     }
 
     public function addStudent(Request $request){
-        //TODO:: Validation !!!!!
-         $data = $request->only('name','email');
+         
+        $request->validate([
+            'name'  => 'required',
+            'email' => 'required',
+            'parent_id' => 'required|max:5000',
+            'custody_document' => 'required|max:5000',
+            'proof_of_residence' => 'required|max:5000',
+            'student_id' => 'required|max:5000',
+            'birth_certificate' => 'required|max:5000',
+            'school_transcript' => 'max:5000',
+            'withdrawal_confirmation' => 'max:5000',
+
+        ]);
+         $data = $request->only('name','email','grade','date_of_birth');
          $password  = Str::random(10);
          $student_role_id = 4;
          $student = User::create([
@@ -96,7 +108,10 @@ class ParentController extends Controller
         ParentStudent::insert([
             'student_id' => $student->id,
             'parent_id' => auth()->id(),
-            'status' => 0 #pending application fee payment
+            'status' => 0, #pending application fee payment,
+            'grade' => $data['grade'],
+            'date_of_birth' => Carbon::parse($data['date_of_birth'])
+           
         ]);
         
         try{
@@ -136,7 +151,7 @@ class ParentController extends Controller
         $parent_student = [];
       
         if(isset($payment_type)){
-            $payment_type == 0 
+            $payment_type == 0 // monthly or yearly
                 ? $parent_student['expired_at'] = Carbon::now()->addMonths(1) 
                 : $parent_student['expired_at']= Carbon::now()->addYears(1);
         }

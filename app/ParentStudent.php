@@ -11,9 +11,13 @@ class ParentStudent extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['status','expired_at'];
+    protected $fillable = ['status','expired_at','is_disabled','grade','date_of_birth'];
 
     public function student(){
         return $this->hasOne('App\User','id','student_id');
+    }
+
+    public function parent(){
+        return $this->hasOne('App\User','id','parent_id');
     }
 }
