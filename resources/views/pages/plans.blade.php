@@ -128,7 +128,7 @@
                 </div>
                 @foreach ($category->features as $feature )
                     <div class="row">
-                        <div class="td-row td-border col-md-3 text-left font-weight-bold"  @if($loop->last) style="border-bottom-left-radius:15px;" @endif>{{ $feature->feature }}</div>
+                        <div class="td-row td-border col-md-3 text-left font-weight-bold"  @if($loop->last) style="border-bottom-left-radius:15px;" @endif> <a class="text-dark" href="{{ route('single-feature',$feature->slug) }}">{{ $feature->feature }}</a>  </div>
                         <div class="td-row td-border col-md-3" @if($feature->core_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->core_tooltip !!}" style="cursor:pointer" @endif>{!! $feature->core() !!}</div>
                         <div class="td-row td-border col-md-3" @if($feature->pro_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->pro_tooltip !!}"  style="cursor:pointer" @endif>{!! $feature->pro() !!}</div>
                         <div class="td-row td-border col-md-3" @if($feature->elite_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->elite_tooltip !!}"  style="cursor:pointer" @endif @if($loop->last) style="border-bottom-right-radius:15px;" @endif>{!! $feature->elite() !!}</div>

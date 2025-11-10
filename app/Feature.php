@@ -14,37 +14,37 @@ class Feature extends Model
     public $timestamps = false;
 
     public function pro(){
-        if($this->pro == 'Yes'){
-            return '<i class="fas fa-check" style="color:green"></i>';
-        }
-        elseif($this->pro == 'No'){
-            return '<i class="fas fa-ban" style="color:red"></i>';
-        }
-        else{
+        // if($this->pro == 'Yes'){
+        //     return '<i class="fas fa-check" style="color:green"></i>';
+        // }
+        // elseif($this->pro == 'No'){
+        //     return '<i class="fas fa-ban" style="color:red"></i>';
+        // }
+        // else{
             return $this->pro;
-        }
+        //}
     }
 
      public function core(){
-        if($this->core == 'Yes'){
-            return '<i class="fas fa-check" style="color:green"></i>';
-        }
-        elseif($this->core == 'No'){
-            return '<i class="fas fa-ban" style="color:red"></i>';
-        }
-        else{
+        // if($this->core == 'Yes'){
+        //     return '<i class="fas fa-check" style="color:green"></i>';
+        // }
+        // elseif($this->core == 'No'){
+        //     return '<i class="fas fa-ban" style="color:red"></i>';
+        // }
+        // else{
             return $this->core;
-        }
+        //}
     }
      public function elite(){
-        if($this->elite == 'Yes'){
-            return '<i class="fas fa-check" style="color:green"></i>';
-        }
-        elseif($this->elite == 'No'){
-            return '<i class="fas fa-ban" style="color:red"></i>';
-        }
-        else{
+        // if($this->elite == 'Yes'){
+        //     return '<i class="fas fa-check" style="color:green"></i>';
+        // }
+        // elseif($this->elite == 'No'){
+        //     return '<i class="fas fa-ban" style="color:red"></i>';
+        // }
+        // else{
             return $this->elite;
-        }
+        //}
     }
 }

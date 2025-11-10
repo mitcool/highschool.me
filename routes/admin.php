@@ -127,4 +127,8 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/course/edit/{course_id}','AdminController@editCourse')->name('course.edit');
 	Route::post('/courses/update/{course_id}','AdminController@updateCourse')->name('course.update');
 	Route::post('/courses/delete','AdminController@deleteCourse')->name('course.delete');
+
+	//Student documents 
+	Route::get('/students/documents','AdminStudentController@studentDocuments')->name('admin-student-documents');
+	Route::post('/students/documents/{student_id}','AdminStudentController@approveDocuments')->name('approve.student');
 });

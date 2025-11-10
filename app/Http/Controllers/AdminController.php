@@ -790,4 +790,5 @@ class AdminController extends Controller
         Course::find($course_id)->update($course);
         return redirect()->back()->with('success_message','Course updated successfully');
      }
+     
 }

@@ -134,6 +134,16 @@
                                 <span>Newsletter Stats</span>
                             </a>
                         </li>
+                          <hr class="sidebar-divider">
+                        <div class="sidebar-heading">
+                            Newsletter
+                        </div>
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" href="{{route('admin-student-documents')}}">
+                                <i class="fas fa-fw fa-cog"></i>
+                                <span>Student Documents</span>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <hr>
                             <form action="{{ route('logout') }}" method="post">

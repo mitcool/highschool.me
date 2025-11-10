@@ -40,4 +40,9 @@ class User extends Authenticatable
     public function students(){
         return $this->hasMany('App\ParentStudent','parent_id','id');
     }
+
+    #related to student
+    public function documents(){
+        return $this->hasMany('App\StudentDocument','student_id','id');
+    }
 }

@@ -11,6 +11,8 @@ class ParentStudent extends Model
 
     public $timestamps = false;
 
+    protected $fillable = ['status','expired_at'];
+
     public function student(){
         return $this->hasOne('App\User','id','student_id');
     }

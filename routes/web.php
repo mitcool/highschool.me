@@ -39,9 +39,11 @@ Route::group(['prefix' => 'parent'],function(){
 
 Route::get('/application-fee/{student_id}','PaymentController@applicationFee')->name('application-fee');
 
-Route::get('/enrollment-fee/{student_id}','PaymentController@enrollmentFee')->name('enrollment-fee');
+Route::get('/enrollment-fee/{student_id}/{plan_id}/{payment_type}','PaymentController@enrollmentFee')->name('enrollment-fee');
 
-Route::get('/update-student-status/{status}/{student_id}','ParentController@updateStudentStatus')->name('parent.update-student-status');
+Route::get('/update-student-status/{status}/{student_id}/{payment_type?}','ParentController@updateStudentStatus')->name('parent.update-student-status');
+
+Route::post('/parent/pay/plan/{student_id}','ParentController@parentPayPlan')->name('parent.pay.plan');
 
 Route::group(['middleware'=>'translateUrl'],function(){
 	$routes = TranslatedRoute::whereIn('sitemap',[0,1])->get();
@@ -50,6 +52,9 @@ Route::group(['middleware'=>'translateUrl'],function(){
 	}
 });
 
+Route::get('/check-subscriptions','CronjobController@checkSubscribtions')->name('check-subscriptions');
+
+Route::get('/feature/{slug}','MainController@feature')->name('single-feature');
 
 // Route::group(['prefix' => 'de','middleware'=>'translateUrl'],function(){
 // 	$routes = TranslatedRoute::whereIn('sitemap',[0,1])->where('id','!=',1)->get();

@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Plan;
+
 class PaymentController extends Controller
 {
     public function applicationFee($student_id){
-        $application_fee_paid_status = 1;
+        $application_fee_paid_status = 0;
 
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
@@ -31,8 +33,13 @@ class PaymentController extends Controller
         return redirect()->away($session->url);
     }
 
-    public function enrollmentFee($student_id){
+    public function enrollmentFee($student_id,$plan_id,$payment_type){
 
+        $enrollment_fee = 30000;
+        $plan = Plan::find($plan_id);
+        $plan_price = $payment_type == 0 ? $plan->price_per_month : $plan->price_per_year;
+        $period = $payment_type == 0 ? 'per month' : 'per year';
+        $amount = $plan_price + $enrollment_fee;
         $enrollment_fee_status = 2;
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
@@ -42,18 +49,20 @@ class PaymentController extends Controller
                     'price_data' => [
                         'currency'     => 'usd',
                         'product_data' => [
-                            'name' => 'Enrollment fee',
+                            'name' => 'Enrollment fee and '.$plan->name. ' package ('. $period .')',
                         ],
-                        'unit_amount'  => 30000, 
+                        'unit_amount'  => $amount, 
                     ],
                     'quantity'   => 1,
                 ],
             ],
             'mode'        => 'payment',
-             'success_url' => route('parent.update-student-status',[$enrollment_fee_status,$student_id]),
-            'cancel_url'  => route('parent.student.profile'),
+            'success_url' => route('parent.update-student-status',[$enrollment_fee_status,$student_id,$payment_type]),
+            'cancel_url'  => route('parent.student.profile',$plan_id),
         ]);
         return redirect()->away($session->url);
     }
+
+   
 
 }

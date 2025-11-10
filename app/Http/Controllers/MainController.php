@@ -75,6 +75,7 @@ use App\IsoIcon;
 use App\Job;
 use App\Plan;
 use App\FeatureCategory;
+use App\Feature;
 
 use App\Http\Requests\ContactRequest;
 use App\Http\Requests\AdvisoryRequest;
@@ -315,6 +316,17 @@ class MainController extends Controller
         ->with('feature_categories',$feature_categories)
         ->with('courses',$courses)
         ->with('plans',$plans);
+  }
+
+  public function contact(){
+    
+    return view('pages.footer.contact-us-page');
+  }
+
+  public function feature($feature_slug){
+     $feature = Feature::where('slug',$feature_slug)->first();
+     return view('pages.feature')
+      ->with('feature',$feature);
   }
   
 }
