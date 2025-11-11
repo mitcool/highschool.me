@@ -22,35 +22,49 @@
 
 @section('headCSS')
 <style type="text/css">
-	.news-image{
-		width: 100%;
+	.news-card {
+	    border-radius: 10px;
+	    overflow: hidden;
+	    transition: all 0.3s ease-in-out;
+	    background-color: #fff;
 	}
-	.news-body{
-		padding:20px;
-		height:100%;
+
+	.news-card:hover {
+	    transform: translateY(-5px);
+	    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 	}
-	.news-link{
-		color:black;
+
+	.news-image {
+	    height: 200px;
+	    width: 100%;
+	    object-fit: cover;
 	}
-	.news-link:hover{
-		text-decoration: none;
-		color:black;
+
+	.btn-orange {
+	    background-color: #ff6600;
+	    color: white;
+	    border-radius: 20px;
+	    transition: background 0.3s ease;
 	}
-	.news-wrapper{
-		margin-top:20px;
-		height: 100%;
+
+	.btn-orange:hover {
+	    background-color: #e65500;
+	    color: #fff;
 	}
-	.news-heading{
-		min-height: 100px;
+
+	.card-title {
+	    font-size: 1.05rem;
 	}
-	.news-description{
-		min-height: 180px;
-		font-size:15px;
-		line-height:1.6;
+
+	.card-text {
+	    font-size: 0.9rem;
+	    line-height: 1.4;
 	}
-	.article-date{
-		font-size:13px;
-		color: #EE6123;
+	#footer {
+		margin-top: 0px!important;
+	}
+	.main-container-back {
+		background-color: #F1F1F1;
 	}
 </style>
 @endsection
@@ -78,57 +92,57 @@
 @endif
 
 <x-image-component nickname="blog-cover" id="cover" class="main-pictures-pages" loading="eager"/>
-<div itemscope itemtype="http://schema.org/Blog" class="container-fluid main_page_container">
+<div itemscope itemtype="http://schema.org/Blog" class="container-fluid main-container-back">
 	<div id="blog_row" class="row justify-content-center">
-		<div class="col-md-10 col-lg-8 container-style" >
+		<div class="col-md-10 col-lg-8" >
 			@if(request()->routeIs('blog'))
-			<h1 class="page-headings">{{trans('blog.heading')}}
+			<h1 class="page-headings mb-2">{{trans('blog.heading')}}
 				@if(request()->page != '')
 				<br>
 				<span style="opacity: 0;">{{(session()->get('locale')=='en' ? 'Page ' : 'Seite ')}} {{request()->page}}</span>
 				@endif
 			</h1>
 			@else
-			<h1 class="page-headings">{{ $news[0]->category->translated->headline }}
+			<h1 class="page-headings mb-2">{{ $news[0]->category->translated->headline }}
 				@if(request()->page != '')
 				<br>
 				<span style="opacity: 0;">{{(session()->get('locale')=='en' ? 'Page ' : 'Seite ')}} {{request()->page}}</span>
 				@endif
 			</h1>
 			@endif
+			<div class="text-center mb-5">
+				<p>Regular and concise updates about the ONSITES High School.</p>
+			</div>
 			
 			<div class="row" id="blog">
-				@foreach($news as $n)
-				<div itemprop="blogPosts" itemscope itemtype="http://schema.org/BlogPosting" class="col-lg-4 news-wrapper">
-					<div itemprop="articleBody" class="news_container shadow">
-						<img 
-							class="news-image" 
-							src="{{ asset('news_images') }}/{{ $n->main_image->all_translations[0]->content }}" 
-							alt="{{ $n->main_image->attributes ? $n->main_image->attributes->alt() : '' }}"
-							title="{{ $n->main_image->attributes ? $n->main_image->attributes->title() : '' }}"
-						/>
-						<div class="news-body">
-							<h2 itemprop="name" class="news-heading mt-2 text-center font-weight-bold h6">{{ $n->sections[0]->translated->content }}</h2>
-							
-							<div class="minutes">
-								<p class="font-weight-bold mb-0"><i class="fas fa-clock"></i> {{ $n->minutes }} min.</p>
-							</div>
-							<div class="d-flex justify-content-between" itemprop="author" itemscope itemtype="https://schema.org/Person">
-								<form  action="{{ route('blog') }}">
-									<input type="hidden" name="author" value="{{ $n->author->translated->slug}}">
-									<button class="btn mr-2 p-0 btn-link text-left text-dark font-weight-bold">
-										<span itemprop="name">{{ $n->author->translated->name }}</span><br/>
-									</button>
-								</form>
-							</div>
-						</div>
-						<div class="text-center mt-auto">
-							<hr class="my-2"/>
-							<a itemprop="url" href="{{ route('single-article',$n->translated->slug) }}" class="btn read-more mb-2">{{ trans('welcome.read-more') }}</a>
-						</div>  
-					</div> 
-				</div>
-				@endforeach
+			    @foreach($news as $n)
+			    <div itemprop="blogPosts" itemscope itemtype="http://schema.org/BlogPosting" class="col-lg-4 col-md-6 mb-4">
+			        <div class="card h-100 shadow-sm border-0 news-card">
+			            <img 
+			                class="card-img-top news-image"
+			                src="{{ asset('news_images') }}/{{ $n->main_image->all_translations[0]->content }}" 
+			                alt="{{ $n->main_image->attributes ? $n->main_image->attributes->alt() : '' }}"
+			                title="{{ $n->main_image->attributes ? $n->main_image->attributes->title() : '' }}"
+			            />
+
+			            <div class="card-body d-flex flex-column">
+			                <h5 itemprop="name" class="card-title fw-bold mb-2 text-truncate">
+			                    {!! $n->sections[0]->translated->content !!}
+			                </h5>
+			                <div style="width: 150px; height: 3px; background-color: #045397; margin: 10px 5px 10px 0px;"></div>
+			                <p class="card-text text-muted small mb-3">
+			                    {!! \Illuminate\Support\Str::limit(strip_tags($n->sections[1]->translated->content ?? ''), 120, '...') !!}
+			                </p>
+			                
+			                <div class="mt-auto text-right">
+			                    <a itemprop="url" href="{{ route('single-article',$n->translated->slug) }}" class="btn btn-sm btn-orange px-4">
+			                        {{ trans('welcome.read-more') }}
+			                    </a>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			    @endforeach
 			</div>
 			<div class="d-flex justify-content-center mt-3">{{$news->links()}}</div>
 		</div>

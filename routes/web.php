@@ -36,6 +36,10 @@ Route::group(['prefix' => 'parent'],function(){
 	Route::get('/student/profile/{student_id}','ParentController@studentProfile')->name('parent.student.profile');
 });
 
+Route::group(['prefix' => 'student'],function(){
+	Route::get('/dashboard', 'StudentController@dashboard')->name('student.dashboard');
+	Route::get('/reset-password', 'StudentController@resetPassPage')->name('student.reset.password.page');
+});
 
 Route::get('/application-fee/{student_id}','PaymentController@applicationFee')->name('application-fee');
 

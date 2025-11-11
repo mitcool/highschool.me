@@ -51,7 +51,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/news/images/attributes/{image_id}','NewsController@changeImageAttributes')->name('change-image-attributes');
 
 	//Facts hub
-	Route::get('/facts-hub','FactsHubController@index')->name('facts-hub');
+	Route::get('/facts-hub','FactsHubController@index')->name('admin-facts-hub');
 	Route::post('/facts-hub/create','FactsHubController@store')->name('facts-hub-create');
 	Route::get('/facts-hub/edit/{news_id}','FactsHubController@show')->name('edit-facts-hub');
 	Route::post('/facts-hub/delete/{news_id}','FactsHubController@destroy')->name('delete-facts-hub');
@@ -127,8 +127,12 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/course/edit/{course_id}','AdminController@editCourse')->name('course.edit');
 	Route::post('/courses/update/{course_id}','AdminController@updateCourse')->name('course.update');
 	Route::post('/courses/delete','AdminController@deleteCourse')->name('course.delete');
-
+	
 	//Student documents 
 	Route::get('/students/documents','AdminStudentController@studentDocuments')->name('admin-student-documents');
 	Route::post('/students/documents/{student_id}','AdminStudentController@approveDocuments')->name('approve.student');
+
+	//Payments
+	Route::get('/invoices', 'AdminController@showInvoices')->name('admin-invoices');
+	Route::get('/invoices/{invoice_id}', 'AdminController@singleInvoice')->name('admin-single-invoice');
 });

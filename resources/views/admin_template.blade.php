@@ -25,8 +25,7 @@
         <div class="row">
            
                 <div id="wrapper" style="padding:0 0px;">
-                    <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="min-height:1500vh;padding-left:10px;background:#045397"
-">
+                    <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="min-height:1500vh;padding-left:10px;background:#045397">
                         <li class="nav-item active">
                             <a class="nav-link" href="{{route('welcome')}}">
                                 <i class="fas fa-fw fa-home"></i>
@@ -142,6 +141,16 @@
                             <a class="nav-link collapsed" href="{{route('admin-student-documents')}}">
                                 <i class="fas fa-fw fa-cog"></i>
                                 <span>Student Documents</span>
+                            </a>
+                        </li>
+            <hr class="sidebar-divider">
+                        <div class="sidebar-heading">
+                            Payments & Invoices
+                        </div>
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" href="{{ route('admin-invoices') }}">
+                                <i class="fas fa-fw fa-cog"></i>
+                                <span>Invoices</span>
                             </a>
                         </li>
                         <li class="nav-item">

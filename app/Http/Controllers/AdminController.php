@@ -63,6 +63,7 @@ use App\Course;
 use App\FeatureCategory;
 use App\Plan;
 use App\Feature;
+use App\Invoice;
 
 use App\Http\Requests\CreateConferenceRequest;
 use App\Http\Requests\AiServiceRequest;
@@ -178,7 +179,7 @@ class AdminController extends Controller
 
     public function deleteAcademic($id){
         $academic = Academic::find($id);
-       	$this->deleteImage('academic-'.$id);
+        $this->deleteImage('academic-'.$id);
         Academic::where('id',$id)->delete();
         AcademicTranslation::where('academic_id',$id)->delete();
         return redirect()->route('admin-academics')->with('success_message','Academic deleted successfully');
@@ -308,7 +309,7 @@ class AdminController extends Controller
         return view('admin.partners')
                 ->with('partners',$partners);
     }
-	
+    
     public function deleteTutorial($tutorial_id){
         Tutorial::find($tutorial_id)->delete();
         TutorialTranslation::where('tutorial_id',$tutorial_id)->delete();
@@ -441,7 +442,7 @@ class AdminController extends Controller
       if($input['name'] && $request->file('picture')){
 
         $old_image_path = Image::find($image_id)->src;
-			
+            
         try{
             unlink(public_path($old_image_path ));
         }catch(\Exception $e){
@@ -522,7 +523,7 @@ class AdminController extends Controller
             'description' => $request->description_en,
             'occupation' => $request->occupation_en,
             'author_id' => $author_id,
-			'name' => $request->name_en,
+            'name' => $request->name_en,
             'slug' => $request->slug_en,
             'avatar' => $pictureName 
         ]);
@@ -532,7 +533,7 @@ class AdminController extends Controller
             'description' => $request->description_de,
             'occupation' => $request->occupation_de,
             'author_id' => $author_id,
-			'name' => $request->name_de,
+            'name' => $request->name_de,
             'slug' => $request->slug_de,
             'avatar' => $pictureName 
         ]);
@@ -790,5 +791,16 @@ class AdminController extends Controller
         Course::find($course_id)->update($course);
         return redirect()->back()->with('success_message','Course updated successfully');
      }
-     
+
+    public function showInvoices() {
+        $invoices = Invoice::all();
+
+        return view('admin.invoices')->with('invoices', $invoices);
+    }
+
+    public function singleInvoice(Request $request, $id) {
+        $invoice = Invoice::where('id', $id)->first();
+
+        return view('admin.single-invoice')->with('invoice', $invoice);
+    }
 }
