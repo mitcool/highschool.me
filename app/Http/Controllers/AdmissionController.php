@@ -29,7 +29,7 @@ class AdmissionController extends Controller
      public function ambassadorProgram(){
         $ambassador_services = AmbassadorService::all();
         $ambassador_rewards = AmbassadorReward::all();
-        return view('pages.admissions.loyality-program')
+        return view('pages.admissions.ambassador-program')
             ->with('ambassador_rewards',$ambassador_rewards)
             ->with('ambassador_services',$ambassador_services);
     }
