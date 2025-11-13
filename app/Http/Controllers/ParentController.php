@@ -11,6 +11,8 @@ use App\User;
 use App\ParentStudent;
 use App\Plan;
 use App\StudentDocument;
+use App\InvoiceDetail;
+
 use Mail;
 
 use App\Mail\StudentCreated;
@@ -177,5 +179,17 @@ class ParentController extends Controller
          $plan_id = $request->plan;
          return redirect()->route('enrollment-fee',[$student_id,$plan_id,$payment_type]);
 
+    }
+
+    public function profile(){
+        return view('parent.profile');
+    }
+
+    public function updateInfo(Request $request){
+        $user = $request->email;
+        $details = $request->only('city','street','street_number','zip');
+        $details['user_id'] = auth()->id();
+        InvoiceDetail::updateOrCreate(['user_id'=>auth()->user()->id],$details);
+        return redirect()->back()->with('success_message','User info updated successfully');
     }
 }

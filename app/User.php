@@ -45,4 +45,9 @@ class User extends Authenticatable
     public function documents(){
         return $this->hasMany('App\StudentDocument','student_id','id');
     }
+
+    public function invoice_details(){
+
+        return $this->hasOne('App\InvoiceDetail','user_id','id');
+    }
 }

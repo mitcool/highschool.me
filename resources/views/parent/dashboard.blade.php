@@ -50,13 +50,7 @@
                                 <span>Meetings</span>
                             </a>
                         </li>
-                        <div class="sidebar-heading">Documents</div>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{{route('parent.documentation')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Upload Documentation</span>
-                            </a>
-                        </li>
+                        
                         <div class="sidebar-heading">Child Information</div>
                         
                        
@@ -94,6 +88,13 @@
                             <a class="nav-link" href="{{route('parent.inquiries')}}">
                                 <i class="fas fa-fw fa-cog"></i>
                                 <span>Inquiries</span>
+                            </a>
+                        </li>
+                        <div class="sidebar-heading">Profile</div>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{route('parent.profile')}}">
+                                <i class="fas fa-fw fa-cog"></i>
+                                <span>Profile</span>
                             </a>
                         </li>
                         <li class="nav-item">

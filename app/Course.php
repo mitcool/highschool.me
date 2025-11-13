@@ -14,7 +14,7 @@ class Course extends Model
     public $timestamps = false;
 
     public function price(){
-            return number_format(($this->price/100),2,'.','');
+            return number_format(($this->price/100),2,'.',',');
     }
 
     public function course_type(){

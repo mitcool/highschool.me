@@ -13,7 +13,7 @@
         <label for="" class="font-weight-bold my-2">Name</label>
         <input class="form-control" type="text" name="name" required value="{{ $course->name }}">
         <label for="" class="font-weight-bold my-2">Description</label>
-        <input class="form-control" type="text" name="description" required value="{{ $course->description }}">
+        <textarea class="ckeditor form-control" type="text" name="description" required >{!! $course->description !!}</textarea>
         <label for="" class="font-weight-bold my-2">Price</label>
         <input class="form-control" type="number" name="price" required value="{{ $course->price }}">
         
@@ -38,4 +38,8 @@
     @endforeach
 </div>
 
+@endsection
+
+@section('scripts')
+    <script src="https://cdn.ckeditor.com/4.12.1/full/ckeditor.js"></script>
 @endsection

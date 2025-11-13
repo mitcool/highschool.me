@@ -13,7 +13,7 @@ Route::get('/send-newsletter','NewsletterSendController@send');
 
 Auth::routes();
 
-Route::group(['prefix' => 'parent'],function(){
+Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::get('/dashboard', 'ParentController@dashboard')->name('parent.dashboard');
 
@@ -34,12 +34,17 @@ Route::group(['prefix' => 'parent'],function(){
 	Route::get('/new-inquiry','ParentController@newInquiry')->name('parent.new-inquiry');
 
 	Route::get('/student/profile/{student_id}','ParentController@studentProfile')->name('parent.student.profile');
+
+	Route::get('/parent/profile','ParentController@profile')->name('parent.profile');
+
 });
 
 Route::group(['prefix' => 'student'],function(){
 	Route::get('/dashboard', 'StudentController@dashboard')->name('student.dashboard');
 	Route::get('/reset-password', 'StudentController@resetPassPage')->name('student.reset.password.page');
 });
+
+Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');
 
 Route::get('/application-fee/{student_id}','PaymentController@applicationFee')->name('application-fee');
 
@@ -49,54 +54,108 @@ Route::get('/update-student-status/{status}/{student_id}/{payment_type?}','Paren
 
 Route::post('/parent/pay/plan/{student_id}','ParentController@parentPayPlan')->name('parent.pay.plan');
 
-Route::group(['middleware'=>'translateUrl'],function(){
-	$routes = TranslatedRoute::whereIn('sitemap',[0,1])->get();
-	foreach($routes as $route){
-		Route::get($route->route_en,$route->action)->name($route->slug);
-	}
-});
+//Public routes
+Route::get('/','MainController@showWelcome')->name('welcome');
 
-Route::get('/check-subscriptions','CronjobController@checkSubscribtions')->name('check-subscriptions');
+Route::get('/school-overview','AboutController@showhighschoolOverview')->name('school-overview');
+
+Route::get('/mission-statement','AboutController@showMissionStatement')->name('mission-statement');
+
+Route::get('/contact','MainController@contact')->name('student-advisory-service');
+
+Route::get('/academics','AboutController@showAcademics')->name('academics');
+
+Route::get('/accreditation','AboutController@showAccreditation')->name('accreditation');
+
+Route::get('/blog','MainController@showBlog')->name('blog');
+
+Route::get('/blog/{slug}','MainController@showSingleBlog')->name('single-article');
+
+Route::get('/faq','FooterController@showFaq')->name('faq');
+
+Route::get('/faq/{category}','FooterController@getSingleFaqCategory')->name('single-faq-category');
+
+Route::get('/students-in-spotlight','AboutController@showStudentsInSpotlight')->name('students-in-spotlight');
 
 Route::get('/feature/{slug}','MainController@feature')->name('single-feature');
 
-// Route::group(['prefix' => 'de','middleware'=>'translateUrl'],function(){
-// 	$routes = TranslatedRoute::whereIn('sitemap',[0,1])->where('id','!=',1)->get();
-// 	foreach($routes as $route){
-// 		Route::get($route->route_de,$route->action)->name($route->slug.'-de');
-// 	}
-// });
-#By design the project should have 5 languages, but only 2 for now
-// Route::group(['prefix' => 'es','middleware'=>'translateUrl'],function(){
-// 	$routes = TranslatedRoute::whereIn('sitemap',[0,1])->get();
-// 	foreach($routes as $route){
-// 		Route::get($route->route_es,$route->action)->name($route->slug.'-es');
-// 	}
-// });
+Route::get('/code-of-ethics','FooterController@showCodeOfEtics')->name('code-of-ethics');
 
-// Route::group(['prefix' => 'ru','middleware'=>'translateUrl'],function(){
-// 	$routes = TranslatedRoute::whereIn('sitemap',[0,1])->get();
-// 	foreach($routes as $route){
-// 		Route::get($route->route_ru,$route->action)->name($route->slug.'-ru');
-// 	}
-// });
+Route::get('/starter-kit','FooterController@starterKit')->name('starter-kit');
 
-// Route::group(['prefix' => 'bg','middleware'=>'translateUrl'],function(){
-// 	$routes = TranslatedRoute::whereIn('sitemap',[0,1])->get();
-// 	foreach($routes as $route){
-// 		Route::get($route->route_bg,$route->action)->name($route->slug.'-bg');
-// 	}
-// });
+Route::get('/newsletter','MainController@showNewsletter')->name('newsletter');
+
+Route::get('/facts-hub','MainController@showFactsHub')->name('facts-hub');
+
+Route::get('/facts-hub/{slug}','MainController@showSingleFactsHub')->name('single-facts-hub');
+
+Route::get('/press-release','MainController@showPressRelease')->name('press-release');
+
+Route::get('/press-release/{slug}','MainController@showSinglePressRelease')->name('single-press-release');
+
+Route::get('/accessibility','FooterController@accessibility')->name('accessibility');
+
+Route::get('/leadership','AboutController@showLeadership')->name('leadership');
+
+Route::get('/partnership','AboutController@showPartnership')->name('partnership');
+
+Route::get('/highschool-programs','AcademicsController@highSchoolPrograms')->name('highschool-programs');
+
+Route::get('/graduation-requirements','AcademicsController@graduationRequirements')->name('graduation-requirements');
+
+Route::get('/credit-recovery','AcademicsController@creditRecovery')->name('credit-recovery');
+
+Route::get('/credit-transfer','AcademicsController@creditTransfer')->name('credit-transfer');
+
+Route::get('/awards','AcademicsController@awards')->name('awards');
+
+Route::get('/international-students','AcademicsController@internationalStudents')->name('international-students');
+
+Route::get('/standard-high-school','CirruculumController@standardHighSchool')->name('standard-high-school');
+
+Route::get('/honors-high-school','CirruculumController@honorsHighSchool')->name('honors-high-school');
+
+Route::get('/advanced-placement','CirruculumController@advancedPlacement')->name('advanced-placement');
+
+Route::get('/psat','CirruculumController@psat')->name('psat');
+
+Route::get('/baccalaureate','CirruculumController@baccalaureate')->name('baccalaureate');
+
+Route::get('/admission-process','CirruculumController@admissionProcess')->name('admission-process');
+
+Route::get('/enrolment-criteria','AdmissionController@enrolmentCriteria')->name('enrolment-criteria');
+
+Route::get('/enrolment-options','AdmissionController@enrolmentOptions')->name('enrolment-options');
+
+Route::get('/tuition','AdmissionController@tuition')->name('tuition');
+
+Route::get('/tuition-assistance','AdmissionController@tuitionAssistance')->name('tuition-assistance');
+
+Route::get('/apply','AdmissionController@apply')->name('apply');
+
+Route::get('/loyality-program','AdmissionController@loyalityProgram')->name('loyality-program');
+
+Route::get('/iso','AdmissionController@iso')->name('iso');
+
+Route::get('/plans','MainController@plans')->name('plans');
+
+
+#cronjob
+Route::get('/check-subscriptions','CronjobController@checkSubscribtions')->name('check-subscriptions');
+
+#sitemaps
+Route::get('/sitemap','SitemapController@showSitemapHTML')->name('sitemap');
+Route::get('/sitemap.xml','SitemapController@sitemap')->name('sitemap-xml');
+
+
 		
-Route::post('/get-selected-program', 'MainController@getSelectedProgram')->name('get-selected-program');
+// Route::post('/get-selected-program', 'MainController@getSelectedProgram')->name('get-selected-program');
 
-Route::post('/use-redeem-code', 'MainController@useRedeemCode')->name('use-redeem-code');
+// Route::post('/use-redeem-code', 'MainController@useRedeemCode')->name('use-redeem-code');
 	
+// Route::post('/apply-now/{conference_id}','MainController@postApplyNow')->name('apply-now');
 
-
-Route::post('/apply-now/{conference_id}','MainController@postApplyNow')->name('apply-now');
-
-Route::post('/receive-application', 'MainController@receiveApplication')->name('receive-application');
+// Route::post('/receive-application', 'MainController@receiveApplication')->name('receive-application');
 
 Route::post('/logout','MainController@logout')->name('logout');
 
@@ -104,27 +163,23 @@ Route::post('/accept-cookies','MainController@acceptCookies');
 
 Route::post('/custom-cookies','MainController@customCookies');
 
-#single program contact form (modal when you click learn more)
-Route::post('/request-information', 'ContactController@sendRequestForProgram')->name('request-information');
+// #single program contact form (modal when you click learn more)
+// Route::post('/request-information', 'ContactController@sendRequestForProgram')->name('request-information');
 
-#phone modal on bottom right icon
-Route::post('/phone-contact','ContactController@sendPhoneContact')->name('phone-contact');
+// #phone modal on bottom right icon
+// Route::post('/phone-contact','ContactController@sendPhoneContact')->name('phone-contact');
 
-#home page contact form
-Route::post('/contact','ContactController@sendContact')->name('contact');
+// #home page contact form
+// Route::post('/contact','ContactController@sendContact')->name('contact');
 
-#assitent page request
-Route::post('/general-request','ContactController@generalRequest')->name('general-request');
+// #assitent page request
+// Route::post('/general-request','ContactController@generalRequest')->name('general-request');
 
-Route::post('/get-programs','MainController@getPrograms')->name('get-programs');
+// Route::post('/get-programs','MainController@getPrograms')->name('get-programs');
 
-Route::post('/get-payments-options','MainController@getPaymentOption')->name('get-payments-options');
+// Route::post('/get-payments-options','MainController@getPaymentOption')->name('get-payments-options');
 
 Route::post('/subscribe','MainController@subscribe')->name('subscribe');
-
-Route::post('/appoint-hour','CalendarController@appointHour')->name('appoint-hour');
-
-Route::post('/record-appointment-details','CalendarController@recordAppointment')->name('record-appointment-details');
 
 Route::post('/unsubscribe-user/{id}','MainController@unsubscribeUser')->name('unsubscribe-user');
 

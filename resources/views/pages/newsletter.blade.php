@@ -7,32 +7,14 @@
 <meta itemprop="title" property="og:title" content="{{trans('newsletter.meta-title')}}"/>
 <meta property="og:type" content="website"/>
 @if(Session::get('applocale') == 'de')
-	<meta itemprop="url" property="og:url" content="{{  route('newsletter-de') }}"/>
+	<meta itemprop="url" property="og:url" content="{{  route('newsletter') }}"/>
 @else
-	<meta itemprop="url" property="og:url" content="{{  route('newsletter-en') }}"/>
+	<meta itemprop="url" property="og:url" content="{{  route('newsletter') }}"/>
 @endif
 <meta property="og:description" content="{{ trans('newsletter.meta-description') }}"/>
 <x-meta-image itemprop="image" nickname="coaching"/>
 
-<link rel="alternate" href="{{ route('newsletter-en') }}" hreflang="en" />
-<link rel="alternate" href="{{ route('newsletter-de') }}" hreflang="de" />
-<link rel="alternate" href="{{ route('newsletter-en') }}" hreflang="x-default" />
-@endsection
 
-@section('language-switcher')
-<div class="dropdown">
-	<button class="btn dropdown-toggle text-uppercase" style="background: #025297;color:white;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	  {{ app()->currentLocale() }}
-	  </button>
-	  <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
-		<div>
-			<a href="{{ route('newsletter-en') }}" class="text-uppercase btn d-inline-block bg-transparent">EN</a>
-		</div>
-		<div>
-			<a href="{{ route('newsletter-de') }}" class="text-uppercase btn d-inline-block bg-transparent">DE</a>
-		</div>
-	  </div> 
-  </div>
 @endsection
 
 

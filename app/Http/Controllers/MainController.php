@@ -104,9 +104,6 @@ class MainController extends Controller
     return view('pages.welcome');
   }
 
-  public function showCodeOfEtics(Request $request){
-    return view('pages.collegium-excellentia.code-of-ethics');
-  }
 
   public function showStudiesPages(Request $request,$slug){
     $translation = StudyTranslation::where('locale',app()->currentLocale())->where('slug',$slug)->first() ?? abort(404);
@@ -181,33 +178,6 @@ class MainController extends Controller
       ? 'Successfully registered to newsletter'
       : '';
     return redirect()->back()->with('success_message',$success_message);
-  }
-
-  public function unsubscribePage($code){
-    $subscriber =  Subscriber::where('code', $code)->first();
-    return view('pages.resources.unsubscribe')
-      ->with('subscriber',$subscriber);
-  }
-
-  public function unsubscribeUser(Request $request,$subscriber_id){
-      $reasons = $request->reasons;
-      $feedback = $request->feedback;
-      Subscriber::where('id',$subscriber_id)->update(['is_active' => 0]);
-      UnsubscribeReason::where('subscriber_id',$subscriber_id)->delete();
-      foreach($reasons as $reason){
-        UnsubscribeReason::insert([
-          'subscriber_id' => $subscriber_id,
-          'reason' => $reason,
-          'feedback' => $feedback
-        ]);
-      }
-      return redirect()->back();
-  }
-  
-  public function allPrograms(){
-     $studies = Study::with('programs')->get();
-     return view('pages.programs.all-programs')
-            ->with('studies', $studies);
   }
 
 
@@ -302,12 +272,7 @@ class MainController extends Controller
     $prev =  PressRelease::where('id','<',$article->id)->with('sections')->first() ?? PressRelease::orderBy('id','desc')->first();
     return view('pages.press-release.single',compact('news','article','prev','next','hreflang_en','hreflang_de','last_three_articles'));
   }
-  public function certification($slug){
-      $certificate = IsoIcon::where('slug',$slug)->first() ?? abort(404);
-      return view('pages.resources.certificate-info')
-          ->with('certificate',$certificate);
-  }
-
+ 
   public function plans(){
       $feature_categories = FeatureCategory::all();
       $plans = Plan::all();

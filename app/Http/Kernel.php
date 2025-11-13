@@ -65,7 +65,7 @@ class Kernel extends HttpKernel
         'Translation' => \App\Http\Middleware\Translation::class,
 		'IpCheck' =>\App\Http\Middleware\IpCheck::class,
         'translateUrl' => \App\Http\Middleware\TranslateUrl::class,
-       
+        'parent' =>  \App\Http\Middleware\CheckParent::class,
         
     ];
 
