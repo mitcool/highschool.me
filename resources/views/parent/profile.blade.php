@@ -20,6 +20,15 @@
                 <label for="">Email:</label>
                 <input name="email" required type="text" class="form-control" value="{{ auth()->user()->email }}">
             </div>
+              <div>
+                <label for="">Country:</label>
+                <select name="country_id" required type="text" class="form-control" value="{{ auth()->user()->invoice_details ? auth()->user()->invoice_details->city : '' }}">
+                    <option value="" selected disabled>Please select</option>
+                    @foreach ($countries as $country )
+                        <option value="{{ $country->id }}" {{ auth()->user()->invoice_details ? auth()->user()->invoice_details->country_id == $country->id ?' selected ' : '' : '' }}>{{ $country->nicename }}</option>
+                    @endforeach
+                </select>
+            </div>
             <div>
                 <label for="">City:</label>
                 <input name="city" required type="text" class="form-control" value="{{ auth()->user()->invoice_details ? auth()->user()->invoice_details->city : '' }}">

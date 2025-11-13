@@ -133,7 +133,7 @@ Route::get('/tuition-assistance','AdmissionController@tuitionAssistance')->name(
 
 Route::get('/apply','AdmissionController@apply')->name('apply');
 
-Route::get('/loyality-program','AdmissionController@loyalityProgram')->name('loyality-program');
+Route::get('/ambassador-program-program','AdmissionController@ambassadorProgram')->name('ambassador-program');
 
 Route::get('/iso','AdmissionController@iso')->name('iso');
 

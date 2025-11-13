@@ -12,6 +12,7 @@ use App\ParentStudent;
 use App\Plan;
 use App\StudentDocument;
 use App\InvoiceDetail;
+use App\Country;
 
 use Mail;
 
@@ -182,12 +183,14 @@ class ParentController extends Controller
     }
 
     public function profile(){
-        return view('parent.profile');
+        $countries = Country::all();
+        return view('parent.profile')
+        ->with('countries',$countries);
     }
 
     public function updateInfo(Request $request){
         $user = $request->email;
-        $details = $request->only('city','street','street_number','zip');
+        $details = $request->only('city','street','street_number','zip','country_id');
         $details['user_id'] = auth()->id();
         InvoiceDetail::updateOrCreate(['user_id'=>auth()->user()->id],$details);
         return redirect()->back()->with('success_message','User info updated successfully');
