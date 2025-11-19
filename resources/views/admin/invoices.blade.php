@@ -70,7 +70,7 @@
     <div class="invoice-row">
 		<span class="invoice-date">{{ $invoice->created_at->format('d/m/Y') }}</span>
 		<span class="invoice-number">{{ $invoice->invoice_number }}</span>
-		<span class="invoice-amount">$ {{ $invoice->price }}</span>
+		<span class="invoice-amount">${{ $invoice->formatted_price() }}</span>
 		<a class="view" href="{{ route('admin-single-invoice', $invoice->id) }}">View</a>
     </div>
     @endforeach

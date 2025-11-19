@@ -13,16 +13,30 @@ use App\Plan;
 use App\StudentDocument;
 use App\InvoiceDetail;
 use App\Country;
+use App\Invoice;
 
 use Mail;
 
 use App\Mail\StudentCreated;
 use App\Mail\StudentCredentials;
+use App\Mail\StudentCreatedAdmin;
+use App\Mail\PaymentSuccessFull;
 
 use Carbon\Carbon;
 
 class ParentController extends Controller
 {
+    private function setInvoiceNumber(){
+    	$next_invoice = Invoice::count() == 0 ? 1 : Invoice::count() + 1;
+        $numlength = strlen((string)$next_invoice);
+    	$invoice_number = '01';
+       
+        for ($i = 3; $i <= (10 - $numlength); $i++) {
+            $invoice_number .= '0';
+        }
+        $invoice_number .= $next_invoice;
+    	return $invoice_number;
+    }
     public function dashboard(){
         return view('parent.dashboard');
     }
@@ -49,64 +63,55 @@ class ParentController extends Controller
             'withdrawal_confirmation' => 'max:5000',
 
         ]);
-         $data = $request->only('name','email','grade','date_of_birth');
+         $data = $request->only('name','surname','email','grade','date_of_birth');
          $password  = Str::random(10);
          $student_role_id = 4;
          $student = User::create([
             'name' => $data['name'],
+            'surname' => $data['surname'],
             'email' => $data['email'],
             'role_id' => $student_role_id,
             'password' => Hash::make($password),
         ]);
-        $parent_id= $request->file('parent_id');
-        $custody_document = $request->file('custody_document');
-        $proof_of_residence= $request->file('proof_of_residence');
-        $student_id= $request->file('student_id');
-        $birth_certificate= $request->file('birth_certificate');
-        $school_transcript= $request->file('school_transcript');
-        $withdrawal_confirmation= $request->file('withdrawal_confirmation');
-        $iep= $request->file('iep');
 
+        $path = base_path()."/public/documents/".$student->id;
+        
         #Parent Id (document 1) required
-        $parent_id_name = $parent_id->getClientOriginalName();
-        $request->file('parent_id')->move(base_path()."/public/documents/".$student->id, $parent_id_name);
+        $parent_id_name = $this->upload_file($request->file('parent_id'),$path);
         StudentDocument::insert(['file'=>$parent_id_name,'type'=>1,'student_id'=>$student->id]);
         
         #custody_document (document 2) required
-        $custody_document_name = $custody_document->getClientOriginalName();
-        $request->file('custody_document')->move(base_path()."/public/documents/".$student->id, $custody_document_name);
+        $custody_document_name = $this->upload_file($request->file('custody_document'),$path); 
         StudentDocument::insert(['file'=>$custody_document_name,'type'=>2,'student_id'=>$student->id]);
 
         #proof_of_residence (document 3) required
-        $proof_of_residence_name = $parent_id->getClientOriginalName();
-        $request->file('proof_of_residence')->move(base_path()."/public/documents/".$student->id, $proof_of_residence_name);
+        $proof_of_residence_name =  $this->upload_file($request->file('proof_of_residence'),$path); 
         StudentDocument::insert(['file'=>$proof_of_residence_name,'type'=>3,'student_id'=>$student->id]);
 
         #student id (document 4) required
-        $student_id_name = $parent_id->getClientOriginalName();
-        $request->file('student_id')->move(base_path()."/public/documents/".$student->id, $student_id_name);
+        $student_id_name =  $this->upload_file($request->file('student_id'),$path); 
         StudentDocument::insert(['file'=>$student_id_name,'type'=>4,'student_id'=>$student->id]);
 
         #birth certificete (document 5) required
-        $birth_certificate_name = $parent_id->getClientOriginalName();
-        $request->file('birth_certificate')->move(base_path()."/public/documents/".$student->id, $birth_certificate_name);
-         StudentDocument::insert(['file'=>$birth_certificate_name,'type'=>5,'student_id'=>$student->id]);
+        $birth_certificate_name =    $this->upload_file($request->file('birth_certificate'),$path); 
+        StudentDocument::insert(['file'=>$birth_certificate_name,'type'=>5,'student_id'=>$student->id]);
 
         #school transcript (document 6) required
-        $school_transcript_name = $school_transcript->getClientOriginalName();
-        $request->file('school_transcript')->move(base_path()."/public/documents/".$student->id, $school_transcript_name);
+        $school_transcript_name = $request->file('school_transcript')->move(base_path()."/public/documents/".$student->id, $student_id_name);
         StudentDocument::insert(['file'=>$school_transcript_name,'type'=>6,'student_id'=>$student->id]);
 
         #withdrawal_confirmation (document 7) optinal
-        $withdrawal_confirmation_name = $withdrawal_confirmation->getClientOriginalName();
-        $request->file('withdrawal_confirmation')->move(base_path()."/public/documents/".$student->id, $withdrawal_confirmation_name);
-        StudentDocument::insert(['file'=>$withdrawal_confirmation_name,'type'=>7,'student_id'=>$student->id]);
-
-         #withdrawal_confirmation (document 8) optinal
-        $iep_name = $iep->getClientOriginalName();
-        $request->file('iep')->move(base_path()."/public/documents/".$student->id, $iep_name);
-        StudentDocument::insert(['file'=>$iep_name,'type'=>8,'student_id'=>$student->id]);
+        if($request->hasFile('withdrawal_confirmation')){
+            $withdrawal_confirmation_name =  $this->upload_file($request->file('withdrawal_confirmation'),$path); 
+            StudentDocument::insert(['file'=>$withdrawal_confirmation_name,'type'=>7,'student_id'=>$student->id]);
+        }
         
+         #withdrawal_confirmation (document 8) optinal
+        if($request->hasFile('iep')){
+            $iep_name =  $this->upload_file($request->file('iep'),$path); 
+            StudentDocument::insert(['file'=>$iep_name,'type'=> 8,'student_id'=>$student->id]);
+        }
+
         #ParentStudent::where('parent_id','student_id')->delete();
         ParentStudent::insert([
             'student_id' => $student->id,
@@ -114,7 +119,6 @@ class ParentController extends Controller
             'status' => 0, #pending application fee payment,
             'grade' => $data['grade'],
             'date_of_birth' => Carbon::parse($data['date_of_birth'])
-           
         ]);
         
         try{
@@ -127,11 +131,12 @@ class ParentController extends Controller
         }catch(\Exception $e){
             info($e->getMessage());
         }
+        try{
+             Mail::to($data['email'])->send(new StudentCreatedAdmin);
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
         return redirect()->route('application-fee',$student->id);
-    }
-
-    public function documentation(){
-        return view('parent.documentation');
     }
 
     public function payments(){
@@ -139,7 +144,14 @@ class ParentController extends Controller
     }
 
     public function invoices(){
-        return view('parent.invoices');
+        $invoices = Invoice::where('user_email',auth()->user()->email)->get();
+        return view('parent.invoices')
+            ->with('invoices',$invoices);
+    }
+
+    public function singleInvoice($id) {
+        $invoice = Invoice::where('id', $id)->first();
+        return view('parent.single-invoice')->with('invoice', $invoice);
     }
 
     public function inquiries(){
@@ -150,17 +162,44 @@ class ParentController extends Controller
         return view('parent.new-inquiry');
     }
 
-    public function updateStudentStatus($status,$student_id,$payment_type = null){
+    public function updateStudentStatus($status,$student_id,$invoice_description,$amount,$payment_type = null){
         $parent_student = [];
-      
         if(isset($payment_type)){
-            $payment_type == 0 // monthly or yearly
-                ? $parent_student['expired_at'] = Carbon::now()->addMonths(1) 
-                : $parent_student['expired_at']= Carbon::now()->addYears(1);
+            $exprires_at = $payment_type == 0  
+                ? Carbon::now()->addMonths(1) 
+                : Carbon::now()->addYears(1); // monthly or yearly
+               
+            StudentPlan::insert([
+                'plan_id' => $plan_id,
+                'student_id' => $student_id,
+                'expires_at' => $exprires_at,
+                'payment_period' => $payment_type
+            ]);
         }
         $parent_student['status'] = $status;
       
         ParentStudent::where('student_id',$student_id)->update($parent_student);
+
+        Invoice::insert([
+            'invoice_number' => $this->setInvoiceNumber(),
+            'user_email' => auth()->user()->email,
+            'price' => $amount,
+            'name' => auth()->user()->name ,
+            'created_at' => Carbon::now() ,
+            'surname' => auth()->user()->surname,
+            'street' => auth()->user()->invoice_details->street,
+            'street_number' => auth()->user()->invoice_details->street_number,
+            'city' => auth()->user()->invoice_details->city ,
+            'ZIPcode' => auth()->user()->invoice_details->zip,
+            'country_id' => auth()->user()->invoice_details->country_id,
+            'description' => $invoice_description
+        ]);
+
+        try{
+            Mail::to(auth()->user()->email)->send(new PaymentSuccessFull);
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
         return redirect()->route('parent.create.student')
             ->with('success_message','Payment successfull');
     }
@@ -175,7 +214,7 @@ class ParentController extends Controller
             ->with('status',$status);
     }
 
-     public function parentPayPlan(Request $request, $student_id){
+    public function parentPayPlan(Request $request, $student_id){
          $payment_type = $request->payment_type; # 0 => monthly 1 => yearly
          $plan_id = $request->plan;
          return redirect()->route('enrollment-fee',[$student_id,$plan_id,$payment_type]);

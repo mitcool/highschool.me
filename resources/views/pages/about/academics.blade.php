@@ -71,32 +71,30 @@
 	</ol>
 </div>
 <x-image-component  id="cover" class="main-pictures-pages" nickname="academics-cover" loading="eager" />
-<div class="container-fluid main_page_container">	
+<div class="container-fluid main_page_container" style="background:#F3F3F3;">	
 	<div class="row justify-content-center">
-		<div class="col-md-12 col-lg-10">
-			<div class="container" style="padding:30px;">
-				<h1 class="page-headings">{{ trans('academics.heading') }}</h1>
-				<div class="page-content">{!! trans('academics.content') !!}</div>
-				<div class="row">
-					@foreach($academics as $key => $academic)	
-						<div class="col-md-6 gap-2 my-2 px-3 w-100 bg-white"  data-id="{{$academic->id}}" data-key="{{ $key }}" data-name="{{$academic->translated->name }}"data-description="{{ $academic->translated->description }}">
-							<div style="border:1px solid grey;position:relative;cursor:pointer;">
-								<div class="row p-2 my-3">
-								<div class="col-md-5">
-									<x-image-component nickname="academic-{{$academic->id}}" class="w-100" style="display:block;" id="test"/>
-								</div>
-								<div class="col-md-7">
-									<h5 class="name mt-3" style="color:#035397;font-weight-bold;">{{ $academic->translated->name }}</h5>
-									<p class="description">{{ $academic->translated->description }}</p>
-								</div>		
-							</div>		
+		<div class="col-md-12 col-lg-10" style="padding:30px;">
+			<h1 class="page-headings">{{ trans('academics.heading') }}</h1>
+			<div class="page-content">{!! trans('academics.content') !!}</div>
+			<div class="row">
+				@foreach($academics as $key => $academic)	
+					<div class="col-md-6 gap-2 my-2 px-3 w-100 "  data-id="{{$academic->id}}" data-key="{{ $key }}" data-name="{{$academic->name }}"data-description="{{ $academic->description }}">
+						<div style="border:1px solid lightgrey;position:relative;cursor:pointer;background:white;">
+							<div class="row p-2 my-3">
+							<div class="col-md-5">
+								<x-image-component nickname="academic-{{$academic->id}}" class="w-100" style="display:block;" id="test"/>
 							</div>
-																
+							<div class="col-md-7">
+								<h5 class="name mt-3" style="color:#035397;font-weight-bold;">{{ $academic->name }}</h5>
+								<p class="description">{{ $academic->description }}</p>
+							</div>		
+						</div>		
 						</div>
-						
-					@endforeach
-				</div>
-			</div>
+															
+					</div>
+					
+				@endforeach
+			</div>		
 		</div>	
 	</div>
 </div>

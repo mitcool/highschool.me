@@ -273,16 +273,6 @@ class MainController extends Controller
     return view('pages.press-release.single',compact('news','article','prev','next','hreflang_en','hreflang_de','last_three_articles'));
   }
  
-  public function plans(){
-      $feature_categories = FeatureCategory::all();
-      $plans = Plan::all();
-      $courses = Course::all();
-      return view('pages.plans')
-        ->with('feature_categories',$feature_categories)
-        ->with('courses',$courses)
-        ->with('plans',$plans);
-  }
-
   public function contact(){
     
     return view('pages.footer.contact-us-page');

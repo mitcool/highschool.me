@@ -25,9 +25,9 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::get('/payments','ParentController@payments')->name('parent.payments');
 
-	Route::get('/documentation','ParentController@documentation')->name('parent.documentation');
-
 	Route::get('/invoices','ParentController@invoices')->name('parent.invoices');
+
+	Route::get('/invoices/{invoice_id}', 'ParentController@singleInvoice')->name('parent.single-invoice');
 
 	Route::get('/inquiries','ParentController@inquiries')->name('parent.inquiries');
 
@@ -50,7 +50,7 @@ Route::get('/application-fee/{student_id}','PaymentController@applicationFee')->
 
 Route::get('/enrollment-fee/{student_id}/{plan_id}/{payment_type}','PaymentController@enrollmentFee')->name('enrollment-fee');
 
-Route::get('/update-student-status/{status}/{student_id}/{payment_type?}','ParentController@updateStudentStatus')->name('parent.update-student-status');
+Route::get('/update-student-status/{status}/{student_id}/{invoice_description}/{amount}/{payment_type?}','ParentController@updateStudentStatus')->name('parent.update-student-status');
 
 Route::post('/parent/pay/plan/{student_id}','ParentController@parentPayPlan')->name('parent.pay.plan');
 
@@ -135,10 +135,7 @@ Route::get('/apply','AdmissionController@apply')->name('apply');
 
 Route::get('/ambassador-program','AdmissionController@ambassadorProgram')->name('ambassador-program');
 
-Route::get('/iso','AdmissionController@iso')->name('iso');
-
-Route::get('/plans','MainController@plans')->name('plans');
-
+// Route::get('/iso','AdmissionController@iso')->name('iso');
 
 #cronjob
 Route::get('/check-subscriptions','CronjobController@checkSubscribtions')->name('check-subscriptions');

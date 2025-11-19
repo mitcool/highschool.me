@@ -65,7 +65,7 @@
                                 <li class="nav-item active">
                                     <a class="nav-link" href="{{route('parent.student.profile',$student->student->id)}}">
                                         <i class="fas fa-fw fa-cog"></i>
-                                        <span>{{ $student->student->name }}</span>
+                                        <span>{{ $student->student->name }} {{ $student->student->surname }}</span>
                                     </a>
                                 </li>
                           @endforeach

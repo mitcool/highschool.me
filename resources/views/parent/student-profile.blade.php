@@ -4,9 +4,9 @@
 
 <div class="container jumbotron bg-white">
     <div class="shadow page-content" style="padding:20px;">
-            <h4 style="color:#045397">{{ $student->name }}</h4>
+            <h4 style="color:#045397">{{ $student->name }} {{ $student->surname }}</h4>
             <p class="mb-0">Born:</p>
-            <p class="mb-0">Grade:</p>
+            <p class="mb-0">Grade: {{ $student->grade }}</p>
             <hr>
     {{-- Pending documention --}}
      @if($status == 0)
@@ -40,11 +40,11 @@
         </div>
        
         
-        <p class="mb-0 font-weight-bold mt-3">You can find more information about the Payment Plans <a href="{{ route('plans') }}">HERE.</a></p>
+        <p class="mb-0 font-weight-bold mt-3">You can find more information about the Payment Plans <a href="{{ route('tuition') }}">HERE.</a></p>
         <hr>
          <div class="d-flex justify-content-between">
             <div class="total">
-                Total: <span id="total">$345.90</span>
+                Total: <span id="total"></span>
             </div>
             <button class="orange-button">Proceed to Payment</button>
         </div>
@@ -62,21 +62,25 @@
 @section('scripts')
 <script>
     $(document).ready(function(){
+        let payment_type = $('input[name=payment_type]:checked').val();
+        let plan =  $('input[name=plan]:checked').attr('data-price-per-month');
+        let total = plan/100 + 300;
+        
+     $('#total').html('$' + total.toFixed(2));
         // Note price is in cents
         $('.plans').on('click',function(){
             let payment_type = $('input[name=payment_type]:checked').val();
             let plan_price = payment_type == 0 ? $(this).attr('data-price-per-month') : $(this).attr('data-price-per-year');
             let total = plan_price/100 + 300;
-            $('#total').html('$' + total);
+            $('#total').html('$' + total.toFixed(2));
         });
 
         $('.payment-type').on('click',function(){
-             let payment_type = $(this).val();
-            
-             let plan =  $('input[name=plan]:checked');
-             let plan_price = payment_type == 0 ? plan.attr('data-price-per-month') : plan.attr('data-price-per-year');
+            let payment_type = $(this).val();
+            let plan =  $('input[name=plan]:checked');
+            let plan_price = payment_type == 0 ? plan.attr('data-price-per-month') : plan.attr('data-price-per-year');
             let total = plan_price/100 + 300;
-            $('#total').html('$' + total);
+            $('#total').html('$' + total.toFixed(2));
         })
     })
 </script>

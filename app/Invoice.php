@@ -24,4 +24,12 @@ class Invoice extends Model
     	'phone_code',
     	'phone_number'
     ];
+
+	public function country(){
+		return $this->hasOne('App\Country','id','country_id');
+	}
+
+	public function formatted_price(){
+		return number_format(($this->price/100),2,'.',',');
+	}
 }

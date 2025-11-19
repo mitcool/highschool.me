@@ -284,23 +284,14 @@ class AdminController extends Controller
         
         $ids = $request->id;
         $text_en = $request->text_en;
-        $text_de = $request->text_de;
-        // $text_bg = $request->text_bg;
-        // $text_es = $request->text_es;
-        // $text_ru = $request->text_ru;
-
+       
         for($i=0;$i<count($ids);$i++){
             
             Text::where('id',$ids[$i])->update([
                 'text_en'=> $text_en[$i],
-                'text_de'=> $text_de[$i],
-                // 'text_bg'=> $text_bg[$i],
-                // 'text_es'=> $text_es[$i],
-                // 'text_ru'=> $text_ru[$i],
             ]);
         }
        
-
         return redirect()->back()->with('success_message','The text was successfully updated');
     }
 

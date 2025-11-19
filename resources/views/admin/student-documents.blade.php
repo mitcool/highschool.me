@@ -7,7 +7,7 @@
     <hr>
     @forelse ($students as $student )
         <div class="d-flex align-items-center my-3 justify-content-between">
-             <p class="mb-0 font-weight-bold">{{ $student->student->name }}</p>
+             <p class="mb-0 font-weight-bold">{{ $student->student->name }} {{ $student->student->surname }}</p>
         </div>
         <ul class="list-group">
             @foreach ($student->student->documents as $document )
