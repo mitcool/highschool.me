@@ -111,17 +111,25 @@ Route::get('/awards','AcademicsController@awards')->name('awards');
 
 Route::get('/international-students','AcademicsController@internationalStudents')->name('international-students');
 
-Route::get('/standard-high-school','CirruculumController@standardHighSchool')->name('standard-high-school');
+Route::get('/standard-high-school','CurruculumController@standardHighSchool')->name('standard-high-school');
 
-Route::get('/honors-high-school','CirruculumController@honorsHighSchool')->name('honors-high-school');
+Route::get('/transfer-program','CurruculumController@transferProgram')->name('transfer-program');
 
-Route::get('/advanced-placement','CirruculumController@advancedPlacement')->name('advanced-placement');
+Route::get('/honors-high-school','CurruculumController@honorsHighSchool')->name('honors-high-school');
 
-Route::get('/psat','CirruculumController@psat')->name('psat');
+Route::get('/advanced-placement','CurruculumController@advancedPlacement')->name('advanced-placement');
 
-Route::get('/baccalaureate','CirruculumController@baccalaureate')->name('baccalaureate');
+Route::get('/psat','CurruculumController@psat')->name('psat');
 
-Route::get('/admission-process','CirruculumController@admissionProcess')->name('admission-process');
+Route::get('/cte','CurruculumController@cte')->name('cte');
+
+Route::get('/clep','CurruculumController@clep')->name('clep');
+
+Route::get('/esol','CurruculumController@esol')->name('esol'); #a.k.a english courses
+
+Route::get('/learning-mentoring','CurruculumController@learningMentoring')->name('learning-mentoring');
+
+Route::get('/admission-process','CurruculumController@admissionProcess')->name('admission-process');
 
 Route::get('/enrolment-criteria','AdmissionController@enrolmentCriteria')->name('enrolment-criteria');
 
@@ -134,6 +142,8 @@ Route::get('/tuition-assistance','AdmissionController@tuitionAssistance')->name(
 Route::get('/apply','AdmissionController@apply')->name('apply');
 
 Route::get('/ambassador-program','AdmissionController@ambassadorProgram')->name('ambassador-program');
+
+Route::post('parent/reupload/document/{student_id}','ParentController@reuploadDocuments')->name('parent.reupload.document');
 
 // Route::get('/iso','AdmissionController@iso')->name('iso');
 

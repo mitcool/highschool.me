@@ -34,14 +34,18 @@
       </li>
         <li class="nav-item dropdown">
         <div class="nav-link dropdown-toggle font-weight-bold header-link"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; text-align: center;">
-          CIRRUCULUM
+          CURRUCULUM
         </div>
          <ul class="dropdown-menu p-0 mt-0">
-            <li><a class="dropdown-item" href="{{ route('standard-high-school') }}">Standard High School</a></li>
-			<li><a class="dropdown-item" href="{{ route('honors-high-school') }}">Honors High School</a></li>
-            <li><a class="dropdown-item" href="{{ route('advanced-placement') }}">Advanced Placement</a></li>
-            <li><a class="dropdown-item" href="{{ route('psat') }}">PSAT/SAT/ACT</a></li>
-            <li><a class="dropdown-item" href="{{ route('baccalaureate') }}">Baccalaureate</a></li> 
+            <li><a class="dropdown-item" href="{{ route('standard-high-school') }}">High School Diploma Tracks</a></li>
+            <li><a class="dropdown-item" href="{{ route('transfer-program') }}">High School International Transfer Program</a></li>
+			      <li><a class="dropdown-item" href="{{ route('honors-high-school') }}">Module & Honors Courses</a></li>
+            <li><a class="dropdown-item" href="{{ route('psat') }}">PSAT/SAT/PreACT/ACT Prep-Courses</a></li>
+            <li><a class="dropdown-item" href="{{ route('advanced-placement') }}">Advances Placement Courses</a></li>
+            <li><a class="dropdown-item" href="{{ route('cte') }}">CTE Prep-Courses</a></li> 
+            <li><a class="dropdown-item" href="{{ route('clep') }}">CLEP Prep-Courses</a></li>
+            <li><a class="dropdown-item" href="{{ route('esol') }}">English Courses (ESOL)</a></li>
+            <li><a class="dropdown-item" href="{{ route('learning-mentoring') }}">Learning/Mentoring/Coaching</a></li> 
          </ul>
       </li>
       <li class="nav-item dropdown">

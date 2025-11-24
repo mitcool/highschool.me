@@ -5,8 +5,8 @@
 <div class="container jumbotron bg-white">
     <div class="shadow page-content" style="padding:20px;">
             <h4 style="color:#045397">{{ $student->name }} {{ $student->surname }}</h4>
-            <p class="mb-0">Born:</p>
-            <p class="mb-0">Grade: {{ $student->grade }}</p>
+            <p class="mb-0">Born: {{ $student->student_details->date_of_birth()}}</p>
+            <p class="mb-0">Grade: {{ $student->student_details->grade }}</p>
             <hr>
     {{-- Pending documention --}}
      @if($status == 0)
@@ -52,7 +52,26 @@
     {{-- Pending --}}
     @elseif($status == 2)
         <h1 class="text-center">Student is active</h1>
+    
+    @elseif($status == 4)
+    <form action="{{ route('parent.reupload.document',$student->id) }}" method="POST" enctype="multipart/form-data">
+        {{ csrf_field() }}
         
+        @foreach ($student->documents as $document )
+            @if($document->is_approved == 2)
+            <div class="mb-3 d-flex  justify-content-between">
+                <label  class="font-weight-bold mb-0 "> {{ $document->document_type->name }} <span class="text-danger">*</span></label>
+                <input name="documents[]" required type="file" id="formFile">
+                <input type="hidden" name="types[]" value="{{ $document->type }}">
+            </div>
+            @endif
+        @endforeach
+        <p><span class="text-danger">*</span> Required fields</p>
+        <hr>
+        <div class="text-right">
+            <button class="shadow orange-button">Send</button>
+        </div>
+    </form>
     @endif
     </div>
 </div>

@@ -166,19 +166,7 @@
 </div>
 <div class="container-fluid">
     <div class="row text-center  mx-auto">
-        @foreach ($courses as $key => $course)
        
-         <div class="@if($key == 0)  col-md-12 @elseif($key < 4 || $key > 9) col-md-4  @else col-md-6  @endif p-4">
-                <div class="shadow wrapper h-100">
-                    <div class="course-name text-center"> {{ $course->name }}</div>
-                    <div class="description">{!! $course->description!!}</div>
-                    <div class="text-center tuition">{{ $course->course_type->fee_type }}</div>
-                    <div style="padding: 20px;text-align:center;">
-                        <div class="price text-center">${{ $course->price() }}</div>
-                    </div>
-                </div>
-            </div>
-    @endforeach
     </div>
     <div class="container">
         <p class="page-content">Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique.</p>

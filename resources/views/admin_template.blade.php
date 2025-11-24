@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
     <link href="{{asset('css/admin/sb-admin-2.min.css')}}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{asset('/assets/fontawesome-free-5.5.0-web/css/all.min.css')}}">
@@ -42,6 +43,12 @@
                         </li>
                         <hr class="sidebar-divider">
                         <div class="sidebar-heading">Courses</div>
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" href="{{route('admin-courses-types')}}">
+                                <i class="fas fa-fw fa-cog"></i>
+                                <span>Courses Types</span>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link collapsed" href="{{route('admin-courses')}}">
                                 <i class="fas fa-fw fa-cog"></i>

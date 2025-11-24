@@ -53,23 +53,19 @@ use App\ProgramPartner;
 use App\UnsubscribeReason;
 use App\Job;
 use App\JobCategory;
-use App\AiUser;
-use App\AiService;
-use App\AiCategory;
-use App\AiText;
 use App\User;
 use App\Meeting;
 use App\Course;
+use App\CourseType;
 use App\FeatureCategory;
 use App\Plan;
 use App\Feature;
 use App\Invoice;
+use App\StudentDocument;
+use App\ParentStudent;
 
 use App\Http\Requests\CreateConferenceRequest;
 use App\Http\Requests\AiServiceRequest;
-
-use App\Mail\AIUserMail;
-
 
 class AdminController extends Controller
 {
@@ -750,12 +746,51 @@ class AdminController extends Controller
         return redirect()->back()->with('success_message','Meeting created successfully');
      }
 
-     public function courses(){
+     public function courseTypes(){
+        $courses = CourseType::all();
+        return view('admin.course-types')
+            ->with('courses',$courses);
+     }
+
+    public function editCourseType($type_id){
+        $course = CourseType::find($type_id);
+        $courses = CourseType::all();
+        return view('admin.edit-single-course-type')
+            ->with('courses',$courses)
+            ->with('course',$course);
+     }
+
+     public function addCourseType(Request $request){
+        $course = $request->only('name','description','price');
+        $course['type'] = 0;
+        $course = CourseType::create($course);
+        $file = $request->file('image');
+        $pic_name = $file->getClientOriginalName();
+        $request->file('image')->move(base_path()."/public/images/courses", $pic_name);
+        $nickname = 'course-'.$course->id;
+        $path = "/images/courses/".$pic_name;
+        $this->createImage($nickname,$path);
+        return redirect()->back()->with('success_message','Course created successfully');
+     }
+
+     public function editCourse($course_id){
+        $course = CourseType::find($course_id);
+        $courses = CourseType::all();
+        return view('admin.edit-single-course')
+            ->with('courses',$courses)
+            ->with('course',$course);
+     }
+
+     public function updateCourse(Request $request, $course_id){
+        $course = $request->except('_token');
+        Course::find($course_id)->update($course);
+        return redirect()->back()->with('success_message','Course updated successfully');
+     } 
+    public function courses(){
         $courses = Course::all();
         return view('admin.courses')
             ->with('courses',$courses);
      }
-
      public function addCourse(Request $request){
         $course = $request->only('name','description','price');
         $course['type'] = 0;
@@ -769,19 +804,19 @@ class AdminController extends Controller
         return redirect()->back()->with('success_message','Course created successfully');
      }
 
-     public function editCourse($course_id){
-        $course = Course::find($course_id);
-        $courses = Course::all();
-        return view('admin.edit-single-course')
-            ->with('courses',$courses)
-            ->with('course',$course);
-     }
+    //  public function editCourse($course_id){
+    //     $course = Course::find($course_id);
+    //     $courses = Course::all();
+    //     return view('admin.edit-single-course')
+    //         ->with('courses',$courses)
+    //         ->with('course',$course);
+    //  }
 
-     public function updateCourse(Request $request, $course_id){
-        $course = $request->except('_token');
-        Course::find($course_id)->update($course);
-        return redirect()->back()->with('success_message','Course updated successfully');
-     }
+    //  public function updateCourse(Request $request, $course_id){
+    //     $course = $request->except('_token');
+    //     Course::find($course_id)->update($course);
+    //     return redirect()->back()->with('success_message','Course updated successfully');
+    //  }
 
     public function showInvoices() {
         $invoices = Invoice::all();

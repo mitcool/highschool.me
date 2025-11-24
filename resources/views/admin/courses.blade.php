@@ -9,24 +9,31 @@
         {{ csrf_field() }}
         <label for="" class="font-weight-bold my-2">Name</label>
         <input class="form-control" type="text" name="name" required>
-        <label for="" class="font-weight-bold my-2">Description</label>
-        <input class="form-control" type="text" name="description" required>
-        <label for="" class="font-weight-bold my-2">Price</label>
-        <input class="form-control" type="number" name="price" required>
-        <label for="" class="font-weight-bold my-4">File</label>
-        <input type="file" name="image" required>
-        <hr>
+        <label for="" class="font-weight-bold my-2">Code</label>
+        <input class="form-control" type="number" name="code" required>
+        <label for="" class="font-weight-bold my-2">Type</label>
+        <select class="form-control" type="number" name="type" required>
+            @foreach ($courses as $course)
+                <option value="0">Core Course</option>
+                <option value="{{ $course->id }}">{{ $course->name }}</option>
+            @endforeach
+        </select>
+        <label for="" class="font-weight-bold my-4">Credits</label>
+        <div>
+            <input type="checkbox" name="is_required" > Is course required
+        </div>
+        <hr> 
         <div class="text-center">
             <button class="btn btn-info">Add course</button>
         </div>
     </form>
     <hr>
     <h2 class="text-center">Course list</h2>
-    @foreach ($courses as $course )
+    @foreach ($courses_type as $type )
         <li class="list-group-item d-flex justify-content-between">
-            {{ $course->name }}   
+            {{ $type->name }}   
             <div class="d-flex">
-                <a class="btn btn-warning" href="{{ route('course.edit',$course->id) }}">Edit Course</a> &nbsp; 
+                <a class="btn btn-warning" href="{{ route('course-type.edit',$course->id) }}">Edit Course</a> &nbsp; 
                 <form action="{{ route('course.delete',$course->id) }}" class="confirm-first">
                     {{ csrf_field() }}
                      <button class="btn btn-danger">Delete Course</button>

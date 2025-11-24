@@ -21,6 +21,7 @@ use App\Mail\StudentCreated;
 use App\Mail\StudentCredentials;
 use App\Mail\StudentCreatedAdmin;
 use App\Mail\PaymentSuccessFull;
+use App\Mail\ParentReuploadDocument;
 
 use Carbon\Carbon;
 
@@ -78,38 +79,38 @@ class ParentController extends Controller
         
         #Parent Id (document 1) required
         $parent_id_name = $this->upload_file($request->file('parent_id'),$path);
-        StudentDocument::insert(['file'=>$parent_id_name,'type'=>1,'student_id'=>$student->id]);
+        StudentDocument::insert(['file'=>$parent_id_name,'type'=>1,'student_id'=>$student->id,'is_approved' => 0]);
         
         #custody_document (document 2) required
         $custody_document_name = $this->upload_file($request->file('custody_document'),$path); 
-        StudentDocument::insert(['file'=>$custody_document_name,'type'=>2,'student_id'=>$student->id]);
+        StudentDocument::insert(['file'=>$custody_document_name,'type'=>2,'student_id'=>$student->id,'is_approved' => 0]);
 
         #proof_of_residence (document 3) required
         $proof_of_residence_name =  $this->upload_file($request->file('proof_of_residence'),$path); 
-        StudentDocument::insert(['file'=>$proof_of_residence_name,'type'=>3,'student_id'=>$student->id]);
+        StudentDocument::insert(['file'=>$proof_of_residence_name,'type'=>3,'student_id'=>$student->id,'is_approved' => 0]);
 
         #student id (document 4) required
         $student_id_name =  $this->upload_file($request->file('student_id'),$path); 
-        StudentDocument::insert(['file'=>$student_id_name,'type'=>4,'student_id'=>$student->id]);
+        StudentDocument::insert(['file'=>$student_id_name,'type'=>4,'student_id'=>$student->id,'is_approved' => 0]);
 
         #birth certificete (document 5) required
         $birth_certificate_name =    $this->upload_file($request->file('birth_certificate'),$path); 
-        StudentDocument::insert(['file'=>$birth_certificate_name,'type'=>5,'student_id'=>$student->id]);
+        StudentDocument::insert(['file'=>$birth_certificate_name,'type'=>5,'student_id'=>$student->id,'is_approved' => 0]);
 
         #school transcript (document 6) required
         $school_transcript_name = $request->file('school_transcript')->move(base_path()."/public/documents/".$student->id, $student_id_name);
-        StudentDocument::insert(['file'=>$school_transcript_name,'type'=>6,'student_id'=>$student->id]);
+        StudentDocument::insert(['file'=>$school_transcript_name,'type'=>6,'student_id'=>$student->id,'is_approved' => 0]);
 
         #withdrawal_confirmation (document 7) optinal
         if($request->hasFile('withdrawal_confirmation')){
             $withdrawal_confirmation_name =  $this->upload_file($request->file('withdrawal_confirmation'),$path); 
-            StudentDocument::insert(['file'=>$withdrawal_confirmation_name,'type'=>7,'student_id'=>$student->id]);
+            StudentDocument::insert(['file'=>$withdrawal_confirmation_name,'type'=>7,'student_id'=>$student->id,'is_approved' => 0]);
         }
         
          #withdrawal_confirmation (document 8) optinal
         if($request->hasFile('iep')){
             $iep_name =  $this->upload_file($request->file('iep'),$path); 
-            StudentDocument::insert(['file'=>$iep_name,'type'=> 8,'student_id'=>$student->id]);
+            StudentDocument::insert(['file'=>$iep_name,'type'=> 8,'student_id'=>$student->id,'is_approved' => 0]);
         }
 
         #ParentStudent::where('parent_id','student_id')->delete();
@@ -233,5 +234,36 @@ class ParentController extends Controller
         $details['user_id'] = auth()->id();
         InvoiceDetail::updateOrCreate(['user_id'=>auth()->user()->id],$details);
         return redirect()->back()->with('success_message','User info updated successfully');
+    }
+
+    public function reuploadDocuments(Request $request,$student_id){
+        $student = User::find($student_id);
+        $documents = $request->documents;
+        $types = $request->types;
+        $path = base_path()."/public/documents/".$student->id;
+       
+        foreach($documents as $key => $document){
+             $old_document = StudentDocument::where('type',$types[$key])->where('student_id',$student_id)->first();
+             try{
+                unlink($path.'/'.$old_document->file);
+             }catch(\Exception $e){
+                info($e->getMessage());
+             }
+             $old_document->delete();
+             $filename = $this->upload_file($document,$path);
+             StudentDocument::insert([
+                'file'=>$filename,
+                'type'=> $types[$key],
+                'student_id'=>$student->id,
+                'is_approved' => 0
+            ]);
+            ParentStudent::where('student_id',$student_id)->first()->update(['status' => 0]);
+        }
+        try{
+            Mail::to('mathias.kunze@onsites.com')->send(new ParentReuploadDocument);
+        }catch(\Excetpion $e){
+                info($e->getMessage());
+        }
+         return redirect()->back();
     }
 }

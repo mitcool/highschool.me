@@ -114,18 +114,18 @@
 @section('content')
 
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
-    <h1 class="text-center page-headings">Advances Placement Courses</h1> <br>
-    <h2 class="text-center font-weight-bold" style="margin-bottom:20px;">Lorem ipsum</h2>
+    <h1 class="text-center page-headings">High School International Transfer Program</h1> <br>
+    <h2 class="text-center font-weight-bold" style="margin-bottom:20px;">Global Diploma Transfer, College Prep & More: Upgrade to an Excellent Academic Future</h2>
     <p class="page-content">All paths include full access to every graduation track, rolling enrollment, 12-month schooling, cross-grade learning, and credit-transfer options. Students benefit from subject-specific AI mentors, human educator support, real-time performance tracking, and access to awards programs and parent services. Higher tiers add personal mentoring, college & career coaching, and extended family support – creating a complete learning experience that adapts to every life situation.</p>
     <hr>
 </div>
 <div class="container-fluid">
-    <div class="row text-center w-75  mx-auto">
+    <div class="row text-center container mx-auto">
         <div class="col-md-12">
             <div class="shadow wrapper h-100">
                 <div class="course-name text-center"> {{ $course->name }}</div>
                 <div class="description">{!! $course->description!!}</div>
-                <div class="text-center tuition">Course fee</div>
+                <div class="text-center tuition">Program Fee</div>
                 <div style="padding: 20px;text-align:center;">
                     <div class="price text-center">${{ $course->price() }}</div>
                 </div>

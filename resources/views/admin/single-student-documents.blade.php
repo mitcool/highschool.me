@@ -5,18 +5,50 @@
 <div class="jumbotron container">
     <h2 class="text-center">List of pending approvement students applications</h2>
     <hr>
-    <ul class="list-group">
-
-    @forelse ($students as $student )
-        <li class="list-group-item d-flex align-items-center my-1 justify-content-between">
+        <div class="d-flex align-items-center my-3 justify-content-between">
              <p class="mb-0 font-weight-bold">{{ $student->student->name }} {{ $student->student->surname }}</p>
-             <a href="{{ route('single-student-documents',$student->student->id) }}">Check documents</a>
-        </li>
-    @empty
-        <li class="text-center text-primary">No pending requests</li> 
-    @endforelse
-    
-    </ul>
+        </div>
+       <table class="table table-striped">
+            @foreach ($student->student->documents as $document )
+                <tr>
+                    <td class="font-weight-bold">{{ $document->document_type->name }}:</td> 
+                    <td><a target="_blank" href="{{ asset('documents') }}/{{ $student->student_id }}/{{ $document->file }}">{{ $document->file }}</a></td>
+                    <td class="text-center"> 
+                        <button 
+                            class="approve-button btn  @if($document->is_approved == 1) btn-success @else btn-secondary @endif"  
+                            data-value="{{ $document->id }}">@if($document->is_approved == 1) Approved @else Approve @endif
+                        </button>
+                    </td>
+                           
+                    <td class="text-center">
+                        @if($document->is_approved != 1)
+                        <button class="reject-button btn @if($document->is_approved == 2) btn-danger @else btn-secondary @endif"  data-value="{{ $document->id }}">@if($document->is_approved == 2) Rejected @else Reject @endif</button></td>
+                        @endif
+                </tr>
+            @endforeach
+        </table>
+      
+        <hr>
+        <form action="{{ route('approve.student',$student->student_id) }}" method="POST" class="text-center my-3 {{ $student->approved_documents_count() > 5 ? ' d-block ' : 'd-none' }} " id="approve-student-form">
+            {{ csrf_field() }}
+            <div class="">
+                <input type="checkbox" name="is_disabled"> Is disabled
+            </div>
+            <button class="btn btn-info mt-4">Approve Student</button>
+        </form>
+      
+         <form action="{{ route('wrong-document') }}" method="POST" class="text-center my-3 {{ $student->rejected_documents_count() > 0 ? ' d-block ' : 'd-none' }}" id="wrong-document">
+            {{ csrf_field() }}
+            <div>
+               <label class="font-weight-bold" for="">Feedback</label>
+               <textarea name="feedback" id="" cols="30" rows="10" class="form-control"></textarea>
+               <input type="hidden" name="student_id" value="{{ $student->student_id }}">
+               <input type="hidden" name="parent_id" value="{{ $student->parent_id }}">
+            </div>
+            <button class="btn btn-dark mt-2">Send Feedback</button>
+        </form>
+   
+
 </div>
 @endsection
 

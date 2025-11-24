@@ -127,11 +127,20 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/course/edit/{course_id}','AdminController@editCourse')->name('course.edit');
 	Route::post('/courses/update/{course_id}','AdminController@updateCourse')->name('course.update');
 	Route::post('/courses/delete','AdminController@deleteCourse')->name('course.delete');
+
+	//Courses
+	Route::get('/courses-types','AdminController@courseTypes')->name('admin-courses-types');
+	Route::post('/courses-types/add','AdminController@addCourseType')->name('course-types.add');
+	Route::get('/course-types/edit/{course_id}','AdminController@editCourseType')->name('course-type.edit');
+	Route::post('/courses-types/update/{course_id}','AdminController@updateCourseType')->name('course-type.update');
+	Route::post('/courses-types/delete','AdminController@deleteCourseType')->name('course-type.delete');
 	
 	//Student documents 
 	Route::get('/students/documents','AdminStudentController@studentDocuments')->name('admin-student-documents');
+	Route::get('/student/documents/{student_id}','AdminStudentController@singleStudentDocument')->name('single-student-documents');
 	Route::post('/students/documents/{student_id}','AdminStudentController@approveDocuments')->name('approve.student');
-
+	Route::post('/approve/document/{action}','AdminStudentController@approveSingleDocument')->name('approve-document');
+	Route::post('/approve/document','AdminStudentController@wrongDocument')->name('wrong-document');
 	//Payments
 	Route::get('/invoices', 'AdminController@showInvoices')->name('admin-invoices');
 	Route::get('/invoices/{invoice_id}', 'AdminController@singleInvoice')->name('admin-single-invoice');

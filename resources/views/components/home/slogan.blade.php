@@ -1,6 +1,6 @@
 <section class="row">
     <div class="col-md-12">
-        <img src="{{ asset('images/main.jpg') }}" alt="" class="w-100" style="opacity: 0.5">
+        <img src="{{ asset('images/main.jpg') }}" alt="" class="w-100" >
        <div id="slogan" style="padding:20px;">
             <h1 class="font-weight-bold "><br/>
            {{ trans('welcome.slogan-second-part') }}</h1>

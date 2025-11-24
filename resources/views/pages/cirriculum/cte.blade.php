@@ -114,10 +114,10 @@
 @section('content')
 
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
-    <h1 class="text-center page-headings">Advances Placement Courses</h1> <br>
-    <h2 class="text-center font-weight-bold" style="margin-bottom:20px;">Lorem ipsum</h2>
-    <p class="page-content">All paths include full access to every graduation track, rolling enrollment, 12-month schooling, cross-grade learning, and credit-transfer options. Students benefit from subject-specific AI mentors, human educator support, real-time performance tracking, and access to awards programs and parent services. Higher tiers add personal mentoring, college & career coaching, and extended family support – creating a complete learning experience that adapts to every life situation.</p>
-    <hr>
+    <h1 class="text-center page-headings">CTE Prep-Courses</h1> <br>
+    <h2 class="text-center font-weight-bold" style="margin-bottom:20px;">Lorem Ipsum</h2>
+    <p class="page-content">Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique.</p>
+    <hr> 
 </div>
 <div class="container-fluid">
     <div class="row text-center w-75  mx-auto">
@@ -130,7 +130,7 @@
                     <div class="price text-center">${{ $course->price() }}</div>
                 </div>
             </div>
-        </div>
+        </div>  
     </div>
     <div class="container-fluid px-0" style="margin-top:20px;padding:20px 0;background-color:#F1F1F1;">
         <p class="page-content container">Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique.</p>
