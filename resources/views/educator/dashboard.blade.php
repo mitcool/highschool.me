@@ -34,7 +34,7 @@
                     <hr class="sidebar-divider my-0">
 
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{route('student.dashboard')}}">
+                        <a class="nav-link" href="{{route('educator.dashboard')}}">
                             <i class="fas fa-fw fa-tachometer-alt"></i>
                             <span>Dashboard</span>
                         </a>
@@ -42,38 +42,9 @@
                    
                     <div class="sidebar-heading">Meetings</div>
                     <li class="nav-item active">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="{{route('educator.meetings')}}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Meetings</span>
-                        </a>
-                    </li>
-                    <div class="sidebar-heading">Documents</div>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="">
-                            <i class="fas fa-fw fa-cog"></i>
-                            <span>Upload Documentation</span>
-                        </a>
-                    </li>
-
-                    <div class="sidebar-heading">Education</div>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ route('student.my-courses') }}">
-                            <i class="fas fa-fw fa-cog"></i>
-                            <span>My Courses</span>
-                        </a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="">
-                            <i class="fas fa-fw fa-cog"></i>
-                            <span>My Exams</span>
-                        </a>
-                    </li>
-
-                    <div class="sidebar-heading">Rewards</div>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ route('student.ambassador-program') }}">
-                            <i class="fas fa-fw fa-cog"></i>
-                            <span>Ambassador Program</span>
                         </a>
                     </li>
 
@@ -127,15 +98,6 @@
                         {{ $error }}
                     </div>
                 @endforeach
-            @endif
-
-            @if(Route::is('student.dashboard') )
-                <div class="col-md-10 mt-5 -textcenter">
-                    <h2>Your progress</h2>
-                    <div class="progress mt-2">
-                        <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                    </div>
-                </div>
             @endif
 
             @yield('content')

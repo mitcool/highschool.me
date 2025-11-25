@@ -63,6 +63,14 @@ use App\Feature;
 use App\Invoice;
 use App\StudentDocument;
 use App\ParentStudent;
+use App\ApDetail;
+use App\CatalogCourse;
+use App\ClepDetail;
+use App\CourseCategory;
+use App\CurriculumCourse;
+use App\CurriculumType;
+use App\EsolDetail;
+use App\SubjectArea;
 
 use App\Http\Requests\CreateConferenceRequest;
 use App\Http\Requests\AiServiceRequest;
@@ -828,5 +836,114 @@ class AdminController extends Controller
         $invoice = Invoice::where('id', $id)->first();
 
         return view('admin.single-invoice')->with('invoice', $invoice);
+    }
+
+    public function showAddEnrollmentCourse() {
+        $curriculumTypes = CurriculumType::get();
+        $categories = CourseCategory::get();
+
+        return view('admin.enrollment-courses')->with('curriculumTypes', $curriculumTypes)->with('categories', $categories);
+    }
+
+    public function AddEnrollmentCourse(Request $request) {
+        // Get the curriculum type first so we know which extra fields are required
+        $curriculumType = CurriculumType::findOrFail($request->input('curriculum_type_id'));
+
+        // Base validation rules (common for all types)
+        $rules = [
+            'curriculum_type_id' => ['required', 'exists:curriculum_types,id'],
+            'title'              => ['required', 'string', 'max:255'],
+            'fldoe_course_code'  => ['nullable', 'string', 'max:20'],
+            'course_number'      => ['nullable', 'string', 'max:20'],
+            'default_credits'    => ['nullable', 'numeric', 'min:0'],
+            'category_id'        => ['nullable', 'exists:course_categories,id'],
+            'required_flag'      => ['nullable', 'boolean'],
+            'credits_override'   => ['nullable', 'numeric', 'min:0'],
+            'requirement_text'   => ['nullable', 'string', 'max:255'],
+            'notes'              => ['nullable', 'string'],
+        ];
+
+        // Add type-specific validation rules
+        switch ($curriculumType->code) {
+            case 'AP':
+                $rules = array_merge($rules, [
+                    'ap_subject_code' => ['required', 'string', 'max:20'],
+                    'ap_exam_code'    => ['required', 'string', 'max:10'],
+                ]);
+                break;
+
+            case 'ESOL':
+                $rules = array_merge($rules, [
+                    'lld_level'   => ['required', 'string', 'max:50'],
+                    'cefr_level'  => ['required', 'string', 'max:10'],
+                ]);
+                break;
+
+            case 'CLEP':
+                // nothing extra required, but you could add optional fields here later
+                break;
+
+            default:
+                // CORE / ELECTIVE / CTE / PSAT / SAT / PREACT / ACT etc.
+                break;
+        }
+
+        $data = $request->validate($rules);
+
+        // Normalize some values
+        $requiredFlag    = isset($data['required_flag']) ? (bool)$data['required_flag'] : false;
+        $creditsOverride = $data['credits_override'] ?? null;
+
+        DB::transaction(function () use ($curriculumType, $data, $requiredFlag, $creditsOverride) {
+            // 1) Create catalog course
+            $course = CatalogCourse::create([
+                'fldoe_course_code' => $data['fldoe_course_code'] ?? null,
+                'course_number'     => $data['course_number'] ?? null,
+                'title'             => $data['title'],
+                'default_credits'   => $data['default_credits'] ?? null,
+            ]);
+
+            // 2) Link into curriculum (curriculum_courses)
+            $curriculumCourse = CurriculumCourse::create([
+                'curriculum_type_id' => $curriculumType->id,
+                'course_id'          => $course->id,
+                'category_id'        => $data['category_id'] ?? null,
+                'required_flag'      => $requiredFlag,
+                'requirement_text'   => $data['requirement_text'] ?? null,
+                'credits_override'   => $creditsOverride,
+                'notes'              => $data['notes'] ?? null,
+            ]);
+
+            // 3) Type-specific tables
+
+            // AP
+            if ($curriculumType->code === 'AP') {
+                ApDetail::create([
+                    'course_id'       => $course->id,
+                    'ap_subject_code' => $data['ap_subject_code'],
+                    'ap_exam_code'    => $data['ap_exam_code'],
+                ]);
+            }
+
+            // ESOL
+            if ($curriculumType->code === 'ESOL') {
+                EsolDetail::create([
+                    'course_id'  => $course->id,
+                    'lld_level'  => $data['lld_level'],
+                    'cefr_level' => $data['cefr_level'],
+                ]);
+            }
+
+            // CLEP
+            if ($curriculumType->code === 'CLEP') {
+                ClepDetail::create([
+                    'course_id' => $course->id,
+                ]);
+            }
+        });
+
+        return redirect()
+            ->back()
+            ->with('status', 'Course created successfully and linked to curriculum type: ' . $curriculumType->code);
     }
 }

@@ -1,16 +1,31 @@
 @extends('template')
 
 @section('headCSS')
-
+<style>
+    body {
+        min-height: 100%;
+    }
+    .login-container {
+        background-color: #045397;
+    }
+    .head-text {
+        color: white;
+    }
+    .btn-log-reg {
+        background-color: #E9580C!important;
+        border-color: #E9580C!important;
+    }
+</style>
 @endsection
 
 @section('content')
-<div class="container">
+<div class="login-container pt-5 pb-5">
+    <div class="text-center mb-5 head-text">
+        <h1>Login</h1>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
-
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
@@ -43,7 +58,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group row mb-1">
                             <div class="col-md-6 offset-md-4">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
@@ -55,9 +70,15 @@
                             </div>
                         </div>
 
+                        <div class="form-group row mb-4">
+                            <div class="text-center" style="margin: 0 auto;">
+                                <div class="g-recaptcha mt-4" data-sitekey={{config('services.recaptcha.key')}}></div>
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary btn-log-reg">
                                     {{ __('Login') }}
                                 </button>
 

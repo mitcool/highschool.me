@@ -128,12 +128,16 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/courses/update/{course_id}','AdminController@updateCourse')->name('course.update');
 	Route::post('/courses/delete','AdminController@deleteCourse')->name('course.delete');
 
-	//Courses
+	//Public Courses
 	Route::get('/courses-types','AdminController@courseTypes')->name('admin-courses-types');
 	Route::post('/courses-types/add','AdminController@addCourseType')->name('course-types.add');
 	Route::get('/course-types/edit/{course_id}','AdminController@editCourseType')->name('course-type.edit');
 	Route::post('/courses-types/update/{course_id}','AdminController@updateCourseType')->name('course-type.update');
 	Route::post('/courses-types/delete','AdminController@deleteCourseType')->name('course-type.delete');
+
+	//Courses for the enrollment process
+	Route::get('enrollment-courses', 'AdminController@showAddEnrollmentCourse')->name('enrollment-courses');
+	Route::post('add-enrollment-course', 'AdminController@AddEnrollmentCourse')->name('add-enrollment-course');
 	
 	//Student documents 
 	Route::get('/students/documents','AdminStudentController@studentDocuments')->name('admin-student-documents');

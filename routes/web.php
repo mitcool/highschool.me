@@ -42,9 +42,16 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 Route::group(['prefix' => 'student'],function(){
 	Route::get('/dashboard', 'StudentController@dashboard')->name('student.dashboard');
 	Route::get('/reset-password', 'StudentController@resetPassPage')->name('student.reset.password.page');
+	Route::get('/ambassador-program', 'StudentController@ambassadorPage')->name('student.ambassador-program');
+	Route::get('/my-courses', 'StudentController@myCoursesPage')->name('student.my-courses');
 });
 
 Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');
+
+Route::group(['prefix' => 'educator'],function(){
+	Route::get('/dashboard', 'EducatorController@dashboard')->name('educator.dashboard');
+	Route::get('/meetings','EducatorController@meetings')->name('educator.meetings');
+});
 
 Route::get('/application-fee/{student_id}','PaymentController@applicationFee')->name('application-fee');
 

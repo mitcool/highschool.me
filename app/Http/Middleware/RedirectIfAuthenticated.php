@@ -31,7 +31,7 @@ class RedirectIfAuthenticated
                 return redirect('/student/dashboard');
             }
             elseif(auth()->user()->role_id == 5){
-                return redirect('/teacher/dashboard');
+                return redirect('/educator/dashboard');
             }
             
         }

@@ -50,9 +50,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('admin-courses')}}">
+                            <a class="nav-link collapsed" href="{{route('enrollment-courses')}}">
                                 <i class="fas fa-fw fa-cog"></i>
-                                <span>Courses</span>
+                                <span>Enrollment Courses</span>
                             </a>
                         </li>
                         <hr class="sidebar-divider">
