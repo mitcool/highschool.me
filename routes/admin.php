@@ -145,7 +145,14 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/students/documents/{student_id}','AdminStudentController@approveDocuments')->name('approve.student');
 	Route::post('/approve/document/{action}','AdminStudentController@approveSingleDocument')->name('approve-document');
 	Route::post('/approve/document','AdminStudentController@wrongDocument')->name('wrong-document');
+
 	//Payments
 	Route::get('/invoices', 'AdminController@showInvoices')->name('admin-invoices');
 	Route::get('/invoices/{invoice_id}', 'AdminController@singleInvoice')->name('admin-single-invoice');
+
+	//Ambassador program
+	Route::get('/ambassador-links', "AdminController@showAmbassadorLinks")->name('admin.ambassador-links');
+	Route::post('/update-ambassador-activity', 'AdminController@updateAmbassadorStatus')->name('admin.update-ambassador-activity');
+	Route::get('/ambassador-rewards', 'AdminController@showAmbassadorRewards')->name('admin.ambassador-rewards');
+	Route::get('/add-reward', 'AdminController@showAddRewardPage')->name('admin.add-reward');
 });

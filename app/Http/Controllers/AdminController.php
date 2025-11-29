@@ -73,6 +73,10 @@ use App\EsolDetail;
 use App\SubjectArea;
 use App\CourseFile;
 use App\CourseVideo;
+use App\AmbassadorService;
+use App\AmbassadorReward;
+use App\AmbassadorServiceAction;
+use App\AmbassadorActivity;
 
 use App\Http\Requests\CreateConferenceRequest;
 use App\Http\Requests\AiServiceRequest;
@@ -1010,5 +1014,38 @@ class AdminController extends Controller
         return redirect()
             ->back()
             ->with('success_message', 'Course created successfully and linked to curriculum type: ' . $curriculumType->code);
+    }
+
+    public function showAmbassadorLinks() {
+        $activities = AmbassadorActivity::with(['user', 'action'])
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        return view('admin.ambassador-program.links')
+            ->with('activities', $activities);
+    }
+
+    public function updateAmbassadorStatus(Request $request) {
+        $request->validate([
+            'id' => 'required|integer',
+            'status' => 'required|string'
+        ]);
+
+        $activity = AmbassadorActivity::findOrFail($request->id);
+        $activity->status = $request->status;
+        $activity->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function showAmbassadorRewards() {
+        $ambassador_rewards = AmbassadorReward::all();
+
+        return view('admin.ambassador-program.rewards')->with('ambassador_rewards', $ambassador_rewards);
+    }
+
+    public function showAddRewardPage() {
+
+        return view('admin.ambassador-program.add-reward');
     }
 }
