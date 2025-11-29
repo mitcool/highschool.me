@@ -14,6 +14,7 @@ class ApDetail extends Model
     protected $primaryKey = 'course_id';
     public $incrementing = false;
     protected $keyType = 'int';
+    public $timestamps = false;
 
     protected $fillable = [
         'course_id',

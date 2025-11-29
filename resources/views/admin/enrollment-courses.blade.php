@@ -38,7 +38,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('add-enrollment-course') }}" method="POST">
+                    <form action="{{ route('add-enrollment-course') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         {{-- STEP 1: Curriculum Type --}}
@@ -308,8 +308,7 @@
                         {{-- CLEP info (no extra fields but a notice) --}}
                         <div id="clep-fields" class="type-section alert alert-warning d-none">
                             <strong>CLEP course:</strong>
-                            This course will be marked as a CLEP-aligned course. No extra fields are required,
-                            but make sure the catalog course matches a CLEP exam in your policy docs.
+                            This course will be marked as a CLEP course. No extra fields are required.
                         </div>
 
                         {{-- Other types: CORE, ELECTIVE, CTE, PSAT, SAT, PREACT, ACT --}}
@@ -318,11 +317,142 @@
                             Only the common catalog and curriculum fields are needed for this type.
                         </div>
 
+                        {{-- FILES --}}
+                        <div class="card border-0 mb-3">
+                            <div class="card-body bg-light rounded">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-semibold mb-0">Course Files</h6>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" id="add-file-row">
+                                        + Add file
+                                    </button>
+                                </div>
+                                <p class="text-muted small mb-3">
+                                    Upload PDFs, slides, docs, etc. You can attach multiple files.
+                                </p>
+
+                                <div id="file-rows">
+                                    {{-- initial file row --}}
+                                    <div class="row g-2 align-items-center mb-2 file-row">
+                                        <div class="col-md-8">
+                                            <input
+                                                type="file"
+                                                name="resource_files[]"
+                                                class="form-control"
+                                            >
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input
+                                                type="text"
+                                                name="resource_files_labels[]"
+                                                class="form-control"
+                                                placeholder="Optional description"
+                                                value="{{ old('resource_files_labels.0') }}"
+                                            >
+                                        </div>
+                                        <div class="col-md-1 text-end">
+                                            {{-- remove button appears only on cloned rows (via JS) --}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- hidden template for file row --}}
+                        <template id="file-row-template">
+                            <div class="row g-2 align-items-center mb-2 file-row">
+                                <div class="col-md-8">
+                                    <input
+                                        type="file"
+                                        name="resource_files[]"
+                                        class="form-control"
+                                    >
+                                </div>
+                                <div class="col-md-3">
+                                    <input
+                                        type="text"
+                                        name="resource_files_labels[]"
+                                        class="form-control"
+                                        placeholder="Optional description"
+                                    >
+                                </div>
+                                <div class="col-md-1 text-end">
+                                    <button type="button" class="btn btn-sm btn-outline-danger remove-file-row">&times;</button>
+                                </div>
+                            </div>
+                        </template>
+
+                        {{-- VIDEOS --}}
+                        <div class="card border-0 mb-3">
+                            <div class="card-body bg-light rounded">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-semibold mb-0">Video Links</h6>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" id="add-video-row">
+                                        + Add video
+                                    </button>
+                                </div>
+                                <p class="text-muted small mb-3">
+                                    Add links to external videos (YouTube, Vimeo, etc.) and give each a friendly name.
+                                </p>
+
+                                <div id="video-rows">
+                                    {{-- initial video row --}}
+                                    <div class="row g-2 align-items-center mb-2 video-row">
+                                        <div class="col-md-4">
+                                            <input
+                                                type="text"
+                                                name="video_titles[]"
+                                                class="form-control"
+                                                placeholder="Video title"
+                                                value="{{ old('video_titles.0') }}"
+                                            >
+                                        </div>
+                                        <div class="col-md-7">
+                                            <input
+                                                type="url"
+                                                name="video_urls[]"
+                                                class="form-control"
+                                                placeholder="https://..."
+                                                value="{{ old('video_urls.0') }}"
+                                            >
+                                        </div>
+                                        <div class="col-md-1 text-end">
+                                            {{-- remove button on clones only --}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- hidden template for video row --}}
+                        <template id="video-row-template">
+                            <div class="row g-2 align-items-center mb-2 video-row">
+                                <div class="col-md-4">
+                                    <input
+                                        type="text"
+                                        name="video_titles[]"
+                                        class="form-control"
+                                        placeholder="Video title"
+                                    >
+                                </div>
+                                <div class="col-md-7">
+                                    <input
+                                        type="url"
+                                        name="video_urls[]"
+                                        class="form-control"
+                                        placeholder="https://..."
+                                    >
+                                </div>
+                                <div class="col-md-1 text-end">
+                                    <button type="button" class="btn btn-sm btn-outline-danger remove-video-row">&times;</button>
+                                </div>
+                            </div>
+                        </template>
+
                         <div class="d-flex justify-content-end mt-4">
                             <a href="{{ url()->previous() }}" class="btn btn-outline-secondary me-2">
                                 Cancel
                             </a>
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary" style="margin-left: 30px;">
                                 Save Course
                             </button>
                         </div>
@@ -378,6 +508,34 @@
         if (typeSelect.value) {
             updateSections();
         }
+
+        // ------- dynamic FILE rows -------
+        const fileRowsContainer = document.getElementById('file-rows');
+        const fileTemplate = document.getElementById('file-row-template');
+        document.getElementById('add-file-row').addEventListener('click', function () {
+            const clone = fileTemplate.content.cloneNode(true);
+            fileRowsContainer.appendChild(clone);
+        });
+        fileRowsContainer.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-file-row')) {
+                const row = e.target.closest('.file-row');
+                if (row) row.remove();
+            }
+        });
+
+        // ------- dynamic VIDEO rows -------
+        const videoRowsContainer = document.getElementById('video-rows');
+        const videoTemplate = document.getElementById('video-row-template');
+        document.getElementById('add-video-row').addEventListener('click', function () {
+            const clone = videoTemplate.content.cloneNode(true);
+            videoRowsContainer.appendChild(clone);
+        });
+        videoRowsContainer.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-video-row')) {
+                const row = e.target.closest('.video-row');
+                if (row) row.remove();
+            }
+        });
     });
 </script>
 @endsection

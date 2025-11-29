@@ -84,4 +84,22 @@ class CatalogCourse extends Model
     {
         return $this->hasOne(EsolDetail::class, 'course_id');
     }
+
+    /**
+     * Attached files for this course.
+     */
+    public function files()
+    {
+        return $this->hasMany(CourseFile::class, 'course_id')
+            ->orderBy('position')->orderBy('id');
+    }
+
+    /**
+     * Video links for this course.
+     */
+    public function videos()
+    {
+        return $this->hasMany(CourseVideo::class, 'course_id')
+            ->orderBy('position')->orderBy('id');
+    }
 }

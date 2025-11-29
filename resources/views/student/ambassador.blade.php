@@ -137,10 +137,13 @@
                             <strong>Ambassador Status:</strong> <span class="text-success">Active</span>
                         </div>
                         <div class="status-info">
-                            <strong>Last activity:</strong> September 21, 2025
+                            <strong>Last activity:</strong>
+                            @if($lastActivity)
+                                {{ $lastActivity->created_at->format('F d, Y') }}
+                            @endif
                         </div>
                         <div class="points-info">
-                            <strong>Points collected:</strong> <span class="points-number">40</span>
+                            <strong>Points collected:</strong> <span class="points-number">{{ $totalPoints }}</span>
                         </div>
                     </div>
                 </div>
@@ -157,37 +160,27 @@
                                 <th scope="col">Points</th>
                             </tr>
                         </thead>
+
                         <tbody>
-                            <tr>
-                                <td>January 12, 2026</td>
-                                <td>Facebook</td>
-                                <td>Like + follow official page</td>
-                                <td class="points-cell">2</td>
-                            </tr>
-                            <tr>
-                                <td>January 17, 2026</td>
-                                <td>Instagram</td>
-                                <td>Story w/ tag + hashtag</td>
-                                <td class="points-cell">5</td>
-                            </tr>
-                            <tr>
-                                <td>January 21, 2026</td>
-                                <td>Facebook</td>
-                                <td>Post a story tagging school</td>
-                                <td class="points-cell">5</td>
-                            </tr>
-                            <tr>
-                                <td>February 10, 2026</td>
-                                <td>Facebook</td>
-                                <td>Create a personal post about the school</td>
-                                <td class="points-cell">10</td>
-                            </tr>
-                            <tr>
-                                <td>February 17, 2026</td>
-                                <td>YouTube</td>
-                                <td>Create reaction video</td>
-                                <td class="points-cell">20</td>
-                            </tr>
+                            @forelse ($activities as $activity)
+                                <tr>
+                                    <td>{{ $activity->created_at->format('F d, Y') }}</td>
+
+                                    <td>{{ $activity->service->name ?? '—' }}</td>
+
+                                    <td>{{ $activity->action->name ?? '—' }}</td>
+
+                                    <td class="points-cell">
+                                        {{ $activity->action->value ?? 0 }}
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">
+                                        No activities submitted yet.
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -197,32 +190,29 @@
         <div class="card form-card shadow mx-auto mt-5">
             <div class="card-body p-4">
                 <h3 class="text-center mb-4 form-title">Submit Activity</h3>
-                <form>
+                <form method="POST" action="{{ route('student.store-activity') }}">
+                    @csrf
                     <div class="row mb-3">
                         <div class="col-6">
-                            <label for="platformSelect" class="form-label">Platform</label>
-                            <select class="form-control" id="platformSelect" aria-label="Platform selection">
-                                <option value="Facebook" selected>Facebook</option>
-                                <option value="Instagram">Instagram</option>
-                                <option value="YouTube">YouTube</option>
-                                <option value="LinkedIn">LinkedIn</option>
+                            <label for="platform" class="form-label">Platform</label>
+                            <select class="form-control" id="platform" aria-label="Platform selection" name="service_id">
+                                <option value="">Select Platform</option>
+                                @foreach($ambassador_services as $service)
+                                    <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-6">
-                            <label for="activitySelect" class="form-label">Activity</label>
-                            <select class="form-control" id="activitySelect" aria-label="Activity selection">
-                                <option value="1" selected>Like + follow official page</option>
-                                <option value="2">Story w/ tag + hashtag</option>
-                                <option value="3">Post a story tagging school</option>
-                                <option value="4">Create a personal post about the school</option>
-                                <option value="5">Create reaction video</option>
+                            <label for="activity" class="form-label">Activity</label>
+                            <select class="form-control" id="activity" aria-label="Activity selection" name="action_id">
+                                <option value="">Select Activity</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="mb-4">
                         <label for="linkInput" class="form-label">Link</label>
-                        <input type="url" class="form-control" id="linkInput" placeholder="Insert Link for Approval here">
+                        <input type="url" class="form-control" id="linkInput" placeholder="Insert Link for Approval here" name="link">
                     </div>
 
                     <div class="text-right">
@@ -257,7 +247,7 @@
 	                    @foreach ($service->actions as $action )
 	                        <div class="d-flex justify-content-between">
 	                            <div>{{ $action->name }}</div>
-	                            <div>{{ $action->value }}</div>
+	                            <div>{{ $action->value }} {{ $action->additional_information }}</div>
 	                        </div>
 	                        <hr class="my-1">
 	                    @endforeach
@@ -330,6 +320,35 @@
              $(this).removeClass('fa-chevron-down')
              $(this).addClass('fa-chevron-up')
         }
-    })
+    });
+
+    const activityUrl = "{{ route('student.get-activity', ['platform_id' => '__ID__']) }}";
+
+    $('#platform').on('change', function () {
+        let platformId = $(this).val();
+        let activitySelect = $('#activity');
+
+        activitySelect.html('<option value="">Select Activity</option>');
+
+        if (platformId) {
+
+            let url = activityUrl.replace('__ID__', platformId);
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(data) {
+                    $.each(data, function(index, activity) {
+                        activitySelect.append(
+                            '<option value="' + activity.id + '">' + activity.name + '</option>'
+                        );
+                    });
+                },
+                error: function(xhr) {
+                    console.log("Error:", xhr.responseText);
+                }
+            });
+        }
+    });
 </script>
 @endsection

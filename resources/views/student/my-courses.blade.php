@@ -85,7 +85,7 @@
 
         .custom-tabs .nav-link.active {
             background-color: #e65100;
-            color: orange;
+            color: #fff;
         }
 
         /* Accordion - Adapted for BS4 Card Structure */
@@ -122,7 +122,6 @@
             box-shadow: none;
         }
 
-        /* Custom Chevron using ::after on the button */
         .custom-accordion .btn-header::after {
             content: '';
             width: 16px;
@@ -133,7 +132,6 @@
             transition: transform 0.2s;
         }
 
-        /* Rotate chevron when collapsed (BS4 logic: collapsed class is added when closed) */
         .custom-accordion .btn-header.collapsed::after {
             transform: rotate(-90deg);
         }
@@ -155,7 +153,7 @@
             border-radius: 6px;
         }
         .btn-enroll:hover {
-            background-color: #cc4400;
+            background-color: #b33b00;
             color: white;
         }
 </style>
@@ -200,74 +198,181 @@
     </div>
 
     <div class="section-spacer"></div>
-
-    <h2 class="text-center mb-4">Enroll</h2>
     
+    <h2 class="text-center mb-4">Enroll</h2>
+
+    @php
+        $typeLabels = [
+            'CORE'   => 'Core',
+            'ELECTIVE' => 'Elective',
+            'AP'     => 'AP',
+            'CTE'    => 'CTE',
+            'CLEP'   => 'CLEP',
+            'PSAT'   => 'PSAT',
+            'SAT'    => 'SAT',
+            'PREACT' => 'PreACT',
+            'ACT'    => 'ACT',
+            'ESOL'   => 'ESOL',
+        ];
+
+        $displayTypes = $curriculumTypes->filter(function ($type) use ($typeLabels) {
+            return isset($typeLabels[$type->code]);
+        });
+    @endphp
+
+    {{-- Tabs --}}
     <ul class="nav nav-pills custom-tabs mb-3" id="enrollTabs" role="tablist">
-        <li class="nav-item"><a class="nav-link active" id="core-tab" data-toggle="pill" href="#core" role="tab">Core</a></li>
-        <li class="nav-item"><a class="nav-link" id="elective-tab" data-toggle="pill" href="#elective" role="tab">Elective</a></li>
-        <li class="nav-item"><a class="nav-link" id="ap-tab" data-toggle="pill" href="#ap" role="tab">AP</a></li>
-        <li class="nav-item"><a class="nav-link" id="cte-tab" data-toggle="pill" href="#cte" role="tab">CTE</a></li>
+        @foreach($displayTypes as $type)
+            @php $tabId = strtolower($type->code); @endphp
+            <li class="nav-item">
+                <a
+                    class="nav-link {{ $loop->first ? 'active' : '' }}"
+                    id="{{ $tabId }}-tab"
+                    data-toggle="pill"
+                    href="#{{ $tabId }}"
+                    role="tab"
+                    aria-controls="{{ $tabId }}"
+                    aria-selected="{{ $loop->first ? 'true' : 'false' }}"
+                >
+                    {{ $typeLabels[$type->code] }}
+                </a>
+            </li>
+        @endforeach
     </ul>
 
+    {{-- Tab content --}}
     <div class="tab-content" id="enrollTabsContent">
-        
-        <div class="tab-pane fade show active" id="core" role="tabpanel">
-            
-            <div class="accordion custom-accordion" id="coreAccordion">
-                
-                <div class="card">
-                    <div class="card-header" id="headingEnglish">
-                        <button class="btn btn-header" type="button" data-toggle="collapse" data-target="#collapseEnglish" aria-expanded="true" aria-controls="collapseEnglish">
-                            English Language Arts
-                        </button>
-                    </div>
-                    <div id="collapseEnglish" class="collapse show" aria-labelledby="headingEnglish" data-parent="#coreAccordion">
-                        <div class="card-body pt-0">
-                            <div class="course-row d-flex justify-content-between align-items-center">
-                                <div>English 1 - Lit & Comp <span class="credit-text">(1.0 Credit)</span></div>
-                                <button class="btn btn-enroll">Enroll</button>
+        @foreach($displayTypes as $type)
+            @php
+                $tabId = strtolower($type->code);
+
+                // curriculum_courses that have NO category
+                $uncategorized = $type->curriculumCourses
+                    ->where('category_id', null)
+                    ->sortBy('course.title');
+            @endphp
+
+            <div
+                class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
+                id="{{ $tabId }}"
+                role="tabpanel"
+                aria-labelledby="{{ $tabId }}-tab"
+            >
+                @if($type->categories->count() || $uncategorized->count())
+                    <div class="accordion custom-accordion" id="{{ $tabId }}Accordion">
+
+                        {{-- CATEGORY CARDS --}}
+                        @foreach($type->categories as $category)
+                            @php
+                                $collapseId = $tabId . '-cat-' . $category->id;
+                                $hasCourses = $category->curriculumCourses->count() > 0;
+                            @endphp
+
+                            <div class="card">
+                                <div class="card-header" id="heading-{{ $collapseId }}">
+                                    <button
+                                        class="btn btn-header {{ $loop->first ? '' : 'collapsed' }}"
+                                        type="button"
+                                        data-toggle="collapse"
+                                        data-target="#collapse-{{ $collapseId }}"
+                                        aria-expanded="{{ $loop->first ? 'true' : 'false' }}"
+                                        aria-controls="collapse-{{ $collapseId }}"
+                                    >
+                                        {{ $category->name }}
+                                    </button>
+                                </div>
+                                <div
+                                    id="collapse-{{ $collapseId }}"
+                                    class="collapse {{ $loop->first ? 'show' : '' }}"
+                                    aria-labelledby="heading-{{ $collapseId }}"
+                                    data-parent="#{{ $tabId }}Accordion"
+                                >
+                                    <div class="card-body pt-0">
+                                        @if($hasCourses)
+                                            @foreach($category->curriculumCourses as $cc)
+                                                @php
+                                                    $course  = $cc->course;
+                                                    $credits = $cc->credits_override ?? $course->default_credits;
+                                                @endphp
+                                                <div class="course-row d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        {{ $course->title }}
+                                                        @if(!is_null($credits))
+                                                            <span class="credit-text">
+                                                                ({{ number_format($credits, 1) }} Credit{{ $credits == 1 ? '' : 's' }})
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                    <button class="btn btn-enroll">Enroll</button>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <p class="text-muted p-3 mb-0">No courses available in this category yet.</p>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
-                            <div class="course-row d-flex justify-content-between align-items-center">
-                                <div>English 2 - Read & Rhetoric <span class="credit-text">(1.0 Credit)</span></div>
-                                <button class="btn btn-enroll">Enroll</button>
+                        @endforeach
+
+                        {{-- UNCATEGORIZED COURSES CARD (e.g. CLEP) --}}
+                        @if($uncategorized->count())
+                            @php
+                                $otherCollapseId = $tabId . '-other';
+                                $headerTitle = ($type->code === 'CLEP')
+                                    ? 'CLEP Courses'
+                                    : 'Other Courses';
+                            @endphp
+
+                            <div class="card">
+                                <div class="card-header" id="heading-{{ $otherCollapseId }}">
+                                    <button
+                                        class="btn btn-header {{ $type->categories->count() ? 'collapsed' : '' }}"
+                                        type="button"
+                                        data-toggle="collapse"
+                                        data-target="#collapse-{{ $otherCollapseId }}"
+                                        aria-expanded="{{ $type->categories->count() ? 'false' : 'true' }}"
+                                        aria-controls="collapse-{{ $otherCollapseId }}"
+                                    >
+                                        {{ $headerTitle }}
+                                    </button>
+                                </div>
+                                <div
+                                    id="collapse-{{ $otherCollapseId }}"
+                                    class="collapse {{ $type->categories->count() ? '' : 'show' }}"
+                                    aria-labelledby="heading-{{ $otherCollapseId }}"
+                                    data-parent="#{{ $tabId }}Accordion"
+                                >
+                                    <div class="card-body pt-0">
+                                        @foreach($uncategorized as $cc)
+                                            @php
+                                                $course  = $cc->course;
+                                                $credits = $cc->credits_override ?? $course->default_credits;
+                                            @endphp
+                                            <div class="course-row d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    {{ $course->title }}
+                                                    @if(!is_null($credits))
+                                                        <span class="credit-text">
+                                                            ({{ number_format($credits, 1) }} Credit{{ $credits == 1 ? '' : 's' }})
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                                <button class="btn btn-enroll">Enroll</button>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        @endif
 
-                <div class="card">
-                    <div class="card-header" id="headingMath">
-                        <button class="btn btn-header collapsed" type="button" data-toggle="collapse" data-target="#collapseMath" aria-expanded="false" aria-controls="collapseMath">
-                            Mathematics
-                        </button>
                     </div>
-                    <div id="collapseMath" class="collapse" aria-labelledby="headingMath" data-parent="#coreAccordion">
-                        <div class="card-body">
-                            <p class="text-muted p-3 mb-0">Mathematics courses available...</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header" id="headingScience">
-                        <button class="btn btn-header collapsed" type="button" data-toggle="collapse" data-target="#collapseScience" aria-expanded="false" aria-controls="collapseScience">
-                            Science
-                        </button>
-                    </div>
-                    <div id="collapseScience" class="collapse" aria-labelledby="headingScience" data-parent="#coreAccordion">
-                        <div class="card-body">
-                            <p class="text-muted p-3 mb-0">Science courses available...</p>
-                        </div>
-                    </div>
-                </div>
-
+                @else
+                    <p class="text-muted text-center py-4 mb-0">
+                        No courses available for {{ $typeLabels[$type->code] }} yet.
+                    </p>
+                @endif
             </div>
-        </div>
-
-        <div class="tab-pane fade" id="elective" role="tabpanel"><p class="text-center pt-3">Elective Content...</p></div>
-        <div class="tab-pane fade" id="ap" role="tabpanel"><p class="text-center pt-3">AP Content...</p></div>
-        <div class="tab-pane fade" id="cte" role="tabpanel"><p class="text-center pt-3">CTE Content...</p></div>
+        @endforeach
     </div>
 </div>
 @endsection

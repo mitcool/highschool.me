@@ -21,171 +21,242 @@
 </head>
 
 <body id="page-top">
-    
     <div class="container-fluid px-0">
         <div class="row">
-           
-                <div id="wrapper" style="padding:0 0px;">
-                    <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="min-height:1500vh;padding-left:10px;background:#045397">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{{route('welcome')}}">
-                                <i class="fas fa-fw fa-home"></i>
-                                <span>HomePage</span>
-                            </a>
-                        </li>
-                        <hr class="sidebar-divider my-0">
+            <div id="wrapper" style="padding:0 0px;">
+                <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="min-height:1500vh;padding-left:10px;background:#045397">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{route('welcome')}}">
+                            <i class="fas fa-fw fa-home"></i>
+                            <span>HomePage</span>
+                        </a>
+                    </li>
 
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{{route('admin-dashboard')}}">
-                                <i class="fas fa-fw fa-tachometer-alt"></i>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
+                    <hr class="sidebar-divider my-0">
+
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{route('admin-dashboard')}}">
+                            <i class="fas fa-fw fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+
+                    <hr class="sidebar-divider">
+
+                    <div class="sidebar-heading">Courses</div>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('admin-courses-types')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Courses Types</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('enrollment-courses')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Enrollment Courses</span>
+                        </a>
+                    </li>
+
+                    <hr class="sidebar-divider">
+
+                    <div class="sidebar-heading">Plans and features</div>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('admin-plans')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Plans</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('admin-features')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Features</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('admin-features-order')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Features order</span>
+                        </a>
+                    </li>
+
+                    <hr class="sidebar-divider">  
+
+                    <div class="sidebar-heading">
+                        Meetings
+                    </div>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('admin-meetings')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Group Session for Students</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Mentoring Session for Students</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>College and Career Coaching</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Family Consultation</span>
+                        </a>
+                    </li>
+
+                    <hr class="sidebar-divider">  
+
+                    <div class="sidebar-heading">
+                        Ambassador
+                    </div>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Ambassador Links</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Ambassador Activities</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Ambassador Rewards</span>
+                        </a>
+                    </li>
+
+                    <hr class="sidebar-divider">
+                    
+                    <div class="sidebar-heading">
+                        News
+                    </div>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('dynamic-news')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>News Explorer</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Facts Hub</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Press Release</span>
+                        </a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('edit-authors')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Author's Information</span>
+                        </a>
+                    </li>
+
+                    <hr class="sidebar-divider"> 
+
+                    <div class="sidebar-heading">
+                        Texts
+                    </div>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('faq-categories')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>FAQ Categories</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('faq')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>FAQ</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('texts')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Texts</span>
+                        </a>
+                    </li>
+                   
+                    <hr class="sidebar-divider">
+
+                    <div class="sidebar-heading">
+                        Newsletter
+                    </div>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('admin-newsletter')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Create Newsletter</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('admin-newsletter-stats')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Newsletter Stats</span>
+                        </a>
+                    </li>
+
+                    <hr class="sidebar-divider">
+
+                    <div class="sidebar-heading">
+                        Student Management System
+                    </div>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Overview</span>
+                        </a>
+                        <a class="nav-link collapsed" href="{{route('admin-student-documents')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Documents</span>
+                        </a>
+                    </li>
+
+                    <hr class="sidebar-divider">
+
+                    <div class="sidebar-heading">
+                        Payments & Invoices
+                    </div>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{ route('admin-invoices') }}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Invoices</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <hr class="sidebar-divider">
-                        <div class="sidebar-heading">Courses</div>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('admin-courses-types')}}">
+                        <form action="{{ route('logout') }}" method="post">
+                            {{ csrf_field() }}
+                            <button class="nav-link collapsed bg-transparent border-0">
                                 <i class="fas fa-fw fa-cog"></i>
-                                <span>Courses Types</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('enrollment-courses')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Enrollment Courses</span>
-                            </a>
-                        </li>
-                        <hr class="sidebar-divider">
-                        <div class="sidebar-heading">Plans and features</div>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('admin-plans')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Plans</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('admin-features')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Features</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('admin-features-order')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Features order</span>
-                            </a>
-                        </li>
-                          <hr class="sidebar-divider">    
-                        <div class="sidebar-heading">
-                            Meetings
-                        </div>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('admin-meetings')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Meetings</span>
-                            </a>
-                        </li>
-                        
-                        <div class="sidebar-heading">
-                            News
-                        </div>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('dynamic-news')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>News Explorer</span>
-                            </a>
-                        </li>
-                         <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('edit-authors')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Edit News Author's</span>
-                            </a>
-                        </li>
-                        <hr class="sidebar-divider">    
-                        <div class="sidebar-heading">
-                            Texts
-                        </div>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('texts')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Texts</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('faq')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>FAQ</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('faq-categories')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>FAQ Categories</span>
-                            </a>
-                        </li>
-                       
-                        <hr class="sidebar-divider">
-                        <div class="sidebar-heading">
-                            Newsletter
-                        </div>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('admin-newsletter')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Create Newsletter</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('admin-newsletter-stats')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Newsletter Stats</span>
-                            </a>
-                        </li>
-                          <hr class="sidebar-divider">
-                        <div class="sidebar-heading">
-                            Newsletter
-                        </div>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{route('admin-student-documents')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Student Documents</span>
-                            </a>
-                        </li>
-            <hr class="sidebar-divider">
-                        <div class="sidebar-heading">
-                            Payments & Invoices
-                        </div>
-                        <li class="nav-item">
-                            <a class="nav-link collapsed" href="{{ route('admin-invoices') }}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Invoices</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <hr>
-                            <form action="{{ route('logout') }}" method="post">
-                                {{ csrf_field() }}
-                                <button class="nav-link collapsed bg-transparent border-0">
-                                    <i class="fas fa-fw fa-cog"></i>
-                                    <span>Logout</span>
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
+                                <span>Logout</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
 
-    <x-flash-messages />
+            <x-flash-messages />
 
-    @yield('content')
-                
+            @yield('content')          
 
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+            </a>
+        </div>
+    </div>
 
     @yield('scripts')
-
     <script type="text/javascript">
-        
        $('#requests').on('click', function(){
            if($('.requests').css('display') == 'block'){
              $('.requests').css('display', 'none');
@@ -193,12 +264,10 @@
            else{
              $('.requests').css('display', 'block');
            }
-           
-       })
+       });
        
        let forms = document.querySelectorAll('.confirm-first');
        for(let form of forms){
-        
         form.addEventListener('submit',function(e){
             if(form.getAttribute('id')=='logout_form' ){
                 form.submit();

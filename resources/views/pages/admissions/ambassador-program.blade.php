@@ -47,7 +47,7 @@
                         @foreach ($service->actions as $action )
                             <div class="d-flex justify-content-between">
                                 <div>{{ $action->name }}</div>
-                                <div>{{ $action->value }}</div>
+                                <div>{{ $action->value }} {{ $action->additional_information }}</div>
                             </div>
                             <hr class="my-1">
                         @endforeach

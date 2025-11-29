@@ -79,6 +79,7 @@
 			
 			
 			<div class="row" id="blog">
+				{{--
 				@foreach($news as $n)
 					<div class="news-body my-2">
 						<a href="{{ route('single-press-release',$n->translated->slug) }}">
@@ -92,6 +93,7 @@
 				@endforeach
 			</div>
 			<div class="d-flex justify-content-center mt-3">{{$news->links()}}</div>
+			--}}
 		</div>
 	</div>	
 </div>

@@ -43,6 +43,8 @@ Route::group(['prefix' => 'student'],function(){
 	Route::get('/dashboard', 'StudentController@dashboard')->name('student.dashboard');
 	Route::get('/reset-password', 'StudentController@resetPassPage')->name('student.reset.password.page');
 	Route::get('/ambassador-program', 'StudentController@ambassadorPage')->name('student.ambassador-program');
+	Route::get('/activities/{platform_id}', 'StudentController@getActivities')->name('student.get-activity');
+	Route::post('/store-activity', 'StudentController@storeActivity')->name('student.store-activity');
 	Route::get('/my-courses', 'StudentController@myCoursesPage')->name('student.my-courses');
 });
 

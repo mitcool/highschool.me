@@ -71,6 +71,8 @@ use App\CurriculumCourse;
 use App\CurriculumType;
 use App\EsolDetail;
 use App\SubjectArea;
+use App\CourseFile;
+use App\CourseVideo;
 
 use App\Http\Requests\CreateConferenceRequest;
 use App\Http\Requests\AiServiceRequest;
@@ -846,6 +848,7 @@ class AdminController extends Controller
     }
 
     public function AddEnrollmentCourse(Request $request) {
+        Log::info($request);
         // Get the curriculum type first so we know which extra fields are required
         $curriculumType = CurriculumType::findOrFail($request->input('curriculum_type_id'));
 
@@ -861,6 +864,18 @@ class AdminController extends Controller
             'credits_override'   => ['nullable', 'numeric', 'min:0'],
             'requirement_text'   => ['nullable', 'string', 'max:255'],
             'notes'              => ['nullable', 'string'],
+
+            //files
+            'resource_files'           => ['nullable', 'array'],
+            'resource_files.*'         => ['nullable', 'max:51200'], // ~50MB
+            'resource_files_labels'    => ['nullable', 'array'],
+            'resource_files_labels.*'  => ['nullable', 'string', 'max:255'],
+
+            //video
+            'video_titles'             => ['nullable', 'array'],
+            'video_titles.*'           => ['nullable', 'string', 'max:255'],
+            'video_urls'               => ['nullable', 'array'],
+            'video_urls.*'             => ['nullable', 'url', 'max:2048'],
         ];
 
         // Add type-specific validation rules
@@ -940,10 +955,60 @@ class AdminController extends Controller
                     'course_id' => $course->id,
                 ]);
             }
+
+            // 4) Save FILES (if any)
+            $files  = request()->file('resource_files', []);
+            $labels = request()->input('resource_files_labels', []);
+
+            if (is_array($files)) {
+                foreach ($files as $index => $uploadedFile) {
+                    if (!$uploadedFile) {
+                        continue;
+                    }
+                    Log::info($uploadedFile);
+                    $path = $this->uploadFile($uploadedFile, '/public/courses_files');
+
+                    CourseFile::create([
+                        'course_id'     => $course->id,
+                        'label'         => isset($labels[$index]) ? $labels[$index] : null,
+                        'original_name' => $uploadedFile->getClientOriginalName(),
+                        'stored_path'   => '/public/courses_files/'.$path,
+                        'mime_type'     => $uploadedFile->getClientMimeType(),
+                        'position'      => $index,
+                    ]);
+                }
+            }
+
+            // 5) Save VIDEOS (if any)
+            $videoTitles = request()->input('video_titles', []);
+            $videoUrls   = request()->input('video_urls', []);
+
+            if (is_array($videoUrls)) {
+                foreach ($videoUrls as $index => $url) {
+                    $title = isset($videoTitles[$index]) ? trim($videoTitles[$index]) : null;
+                    $url   = trim((string) $url);
+
+                    // skip completely empty rows
+                    if ($url === '' && ($title === '' || $title === null)) {
+                        continue;
+                    }
+
+                    if ($title === '' || $title === null) {
+                        $title = 'Video ' . ($index + 1);
+                    }
+
+                    CourseVideo::create([
+                        'course_id' => $course->id,
+                        'title'     => $title,
+                        'url'       => $url,
+                        'position'  => $index,
+                    ]);
+                }
+            }
         });
 
         return redirect()
             ->back()
-            ->with('status', 'Course created successfully and linked to curriculum type: ' . $curriculumType->code);
+            ->with('success_message', 'Course created successfully and linked to curriculum type: ' . $curriculumType->code);
     }
 }
