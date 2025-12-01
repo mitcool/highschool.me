@@ -34,7 +34,7 @@
       </li>
         <li class="nav-item dropdown">
         <div class="nav-link dropdown-toggle font-weight-bold header-link"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; text-align: center;">
-          CURRUCULUM
+          CURRICULUM
         </div>
          <ul class="dropdown-menu p-0 mt-0">
             <li><a class="dropdown-item" href="{{ route('standard-high-school') }}">High School Diploma Tracks</a></li>
@@ -54,11 +54,11 @@
         </div>
          <ul class="dropdown-menu p-0 mt-0">
             <li><a class="dropdown-item" href="{{ route('admission-process') }}">Admission process</a></li>
-			      <li><a class="dropdown-item" href="{{ route('enrolment-criteria') }}">Enrolment criteria</a></li>
-            <li><a class="dropdown-item" href="{{ route('enrolment-options') }}">Enrolment options</a></li>
+			      <li><a class="dropdown-item" href="{{ route('enrollment-criteria') }}">Enrollment criteria</a></li>
+            <li><a class="dropdown-item" href="{{ route('enrollment-options') }}">Enrollment options</a></li>
             <li><a class="dropdown-item" href="{{ route('tuition') }}">Tuition</a></li>
             <li><a class="dropdown-item" href="{{ route('tuition-assistance') }}">Tuition Assistance (PEP)</a></li>
-            <li><a class="dropdown-item" href="{{ route('apply') }}">Apply</a></li>
+            {{-- <li><a class="dropdown-item" href="{{ route('apply') }}">Apply</a></li> --}}
             <li><a class="dropdown-item" href="{{ route('ambassador-program') }}">Ambassador Program</a></li> 
             {{-- <li><a class="dropdown-item" href="{{ route('iso') }}">ISO Certification</a></li>  --}}
          </ul>

@@ -141,9 +141,9 @@ Route::get('/learning-mentoring','CurriculumController@learningMentoring')->name
 
 Route::get('/admission-process','CurriculumController@admissionProcess')->name('admission-process');
 
-Route::get('/enrolment-criteria','AdmissionController@enrolmentCriteria')->name('enrolment-criteria');
+Route::get('/enrollment-criteria','AdmissionController@enrolmentCriteria')->name('enrollment-criteria');
 
-Route::get('/enrolment-options','AdmissionController@enrolmentOptions')->name('enrolment-options');
+Route::get('/enrollment-options','AdmissionController@enrolmentOptions')->name('enrollment-options');
 
 Route::get('/tuition','AdmissionController@tuition')->name('tuition');
 
