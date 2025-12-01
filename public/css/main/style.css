@@ -81,7 +81,7 @@ input[type="color"]:focus {
 }
 #slogan {
     position: absolute;
-    top: 50px;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
     color: #045397;
@@ -525,8 +525,11 @@ a:hover {
     background-color: white;
     height: 100%;
     border-radius: 30px;
+    cursor: pointer;
 }
-
+.fact-icon{
+    font-size: 70px;
+}
 #menu {
     display: none;
 }
@@ -616,6 +619,13 @@ a:hover {
     /* font-size: 22px; */
 }
 
+.space{
+    padding:50px;
+}
+
+.white-section{
+    background-image:url('/images/BG_WORMHOLE.png') ;
+}
 /*
   * And let's fade it in from the left
   */
@@ -1452,6 +1462,26 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 #phone-contact-agree p{
     margin-bottom: 0 !important;
 }
+blockquote {
+   color:#045397;
+   font-family: Tahoma, sans-serif;
+   font-size: 2rem;
+   width: 100%;
+   margin: 0 auto;
+}
+blockquote h1 {
+   font-size: 2rem;
+}
+blockquote p {
+   font-style: italic;
+   margin-bottom: 0;
+}
+
+blockquote p::before,
+blockquote p::after {
+   content: "“";
+
+}
 @keyframes colorChange {
     0% {
         color: #025297;
@@ -1459,4 +1489,15 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
     100% {
         color: #ffb300;
     }
+}
+
+.white-hr{
+    border:2px solid #ffffff;
+    width: 325px;
+    margin: 10px auto;
+}
+.blue-hr{
+    border:2px solid #045397;
+    width: 325px;
+    margin: 10px auto;
 }

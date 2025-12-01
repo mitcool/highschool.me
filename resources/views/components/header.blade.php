@@ -36,14 +36,26 @@
 		</div> --}}
 
 		<div class="twoButtons col-lg-3 col-md-3 justify-content-end align-items-center" style="padding-right:40px">
-			<a class="btn contact_btn_header" style="background: #025297;color:white;" href="{{ route('student-advisory-service') }}">CONTACT</a>	
-			{{-- @if(!Auth::user())
-				<a class="btn mx-2 contact_btn_header" style="background: #025297;color:white;" href="{{ route('study-registration-'.app()->currentLocale()) }}">{{trans('nav.study-registration')}}</a>
-			@else
-				<a class="btn mx-2 contact_btn_header" style="background: #025297;color:white;" href="{{route('admin-dashboard')}}">DASHBOARD</a>
-			@endif
+			@auth
+				@if(auth()->user()->role_id == 1)
+					<a class="btn mx-2 orange-button" href="{{ route('admin-dashboard') }}">DASHBOARD</a>
+				@elseif(auth()->user()->role_id == 2)
+					<a class="btn mx-2 orange-button" href="{{ route('parent.dashboard') }}">DASHBOARD</a>
+				@elseif(auth()->user()->role_id == 3)
+					<a class="btn mx-2 orange-button" href="{{ route('partner.dashboard') }}">DASHBOARD</a>
+				@elseif(auth()->user()->role_id == 4)
+					<a class="btn mx-2 orange-button" href="{{ route('student.dashboard') }}">DASHBOARD</a>
+				@elseif(auth()->user()->role_id == 5)
+					<a class="btn mx-2 orange-button" href="{{ route('teacher.dashboard') }}">DASHBOARD</a>
+				@endif
 				
-			@yield('language-switcher')   --}}
+			@else
+				<a class="btn mx-1 orange-button" href="{{route('register')}}">REGISTER</a>
+				<a class="btn mx-1 orange-button" href="{{route('login')}}">LOGIN</a>
+			@endauth
+			<a class="btn mx-1 contact_btn_header" style="background: #025297;color:white;" href="{{ route('student-advisory-service') }}">CONTACT</a>	
+		
+				
 		</div>
 	</div>
 </header>

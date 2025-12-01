@@ -60,7 +60,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/facts-hub/images/attributes/{image_id}','FactsHubController@changeImageAttributes')->name('change-facts-hub-attributes');
 
 	//Facts hub
-	Route::get('/press-release','PressReleaseController@index')->name('press-release');
+	Route::get('/press-release','PressReleaseController@index')->name('admin-press-release');
 	Route::post('/press-release/create','PressReleaseController@store')->name('press-release-create');
 	Route::get('/press-release/edit/{news_id}','PressReleaseController@show')->name('edit-press-release');
 	Route::post('/press-release/delete/{news_id}','PressReleaseController@destroy')->name('delete-press-release');
@@ -117,7 +117,11 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/plans/edit','AdminController@editPlans')->name('plans.edit');
 	Route::get('/features/order','AdminController@featureOrder')->name('admin-features-order');
 	Route::post('/features/reorder','AdminController@reOrderFeatures')->name('features-reorder');
+
 	//Meetings
+	Route::get('/group-session','AdminMeetingController@groupSessions')->name('admin-group-sessions');
+	Route::get('/add-group-session','AdminMeetingController@addGroupSession')->name('add-group-session');
+	Route::post('/create-group-session','AdminMeetingController@createGroupSession')->name('create-group-session');
 	Route::get('/meetings','AdminController@meetings')->name('admin-meetings');
 	Route::post('/meeting/add','AdminController@createMeeting')->name('meeting.add');
 

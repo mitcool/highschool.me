@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
+use Mail;
+use Carbon\Carbon;
+
 use App\Meeting;
 use App\User;
 use App\ParentStudent;
@@ -14,16 +17,13 @@ use App\StudentDocument;
 use App\InvoiceDetail;
 use App\Country;
 use App\Invoice;
-
-use Mail;
+use App\StudentPlan;
 
 use App\Mail\StudentCreated;
 use App\Mail\StudentCredentials;
 use App\Mail\StudentCreatedAdmin;
 use App\Mail\PaymentSuccessFull;
 use App\Mail\ParentReuploadDocument;
-
-use Carbon\Carbon;
 
 class ParentController extends Controller
 {
@@ -37,6 +37,27 @@ class ParentController extends Controller
         }
         $invoice_number .= $next_invoice;
     	return $invoice_number;
+    }
+
+    private function createInvoice($amount,$description){
+
+        Invoice::insert([
+            'invoice_number' => $this->setInvoiceNumber(),
+            'user_email' => auth()->user()->email,
+            'price' => $amount,
+            'name' => auth()->user()->name ,
+            'created_at' => Carbon::now() ,
+            'surname' => auth()->user()->surname,
+            'street' => auth()->user()->invoice_details->street,
+            'street_number' => auth()->user()->invoice_details->street_number,
+            'city' => auth()->user()->invoice_details->city ,
+            'ZIPcode' => auth()->user()->invoice_details->zip,
+            'country_id' => auth()->user()->invoice_details->country_id,
+            'description' => $description,
+        ]);
+
+        return;
+
     }
     public function dashboard(){
         return view('parent.dashboard');
@@ -64,9 +85,12 @@ class ParentController extends Controller
             'withdrawal_confirmation' => 'max:5000',
 
         ]);
-         $data = $request->only('name','surname','email','grade','date_of_birth');
+
+         $data = $request->only('name','surname','email');
+         $student_data = $request->only('grade','date_of_birth','email');
          $password  = Str::random(10);
          $student_role_id = 4;
+
          $student = User::create([
             'name' => $data['name'],
             'surname' => $data['surname'],
@@ -112,36 +136,71 @@ class ParentController extends Controller
             $iep_name =  $this->upload_file($request->file('iep'),$path); 
             StudentDocument::insert(['file'=>$iep_name,'type'=> 8,'student_id'=>$student->id,'is_approved' => 0]);
         }
+        session()->put('student_data',$student_data);
+        return redirect()->route('application-fee',$student->id);
+    }
+     public function applicationFee($student_id){
 
-        #ParentStudent::where('parent_id','student_id')->delete();
-        ParentStudent::insert([
-            'student_id' => $student->id,
-            'parent_id' => auth()->id(),
-            'status' => 0, #pending application fee payment,
-            'grade' => $data['grade'],
-            'date_of_birth' => Carbon::parse($data['date_of_birth'])
+        $application_fee = 150;
+
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $session = \Stripe\Checkout\Session::create([
+            'line_items'  => [
+                [
+                    'price_data' => [
+                        'currency'     => 'usd',
+                        'product_data' => [
+                            'name' => 'Application fee',
+                        ],
+                        'unit_amount'  =>  $application_fee*100, 
+                    ],
+                    'quantity'   => 1,
+                ],
+            ],
+            'mode'        => 'payment',
+            'success_url' => route('application-fee-success',$student_id),
+            'cancel_url'  => route('parent.create.student'),
         ]);
-        
+        return redirect()->away($session->url);
+    }
+
+    public function applicationFeeSuccess($student_id){
+        $application_fee = 150;
+        $student_data = session()->get('student_data');
+        ParentStudent::insert([
+            'student_id' => $student_id,
+            'parent_id' => auth()->id(),
+            'status' => 0,
+            'grade' => $student_data['grade'],
+            'date_of_birth' => Carbon::parse($student_data['date_of_birth'])
+        ]);
+        $this->createInvoice($application_fee,'Application Fee');
+
         try{
             Mail::to(auth()->user()->email)->send(new StudentCreated);
         }catch(\Exception $e){
             info($e->getMessage());
         }
         try{
-            Mail::to($data['email'])->send(new StudentCredentials);
+            Mail::to($student_data['email'])->send(new StudentCredentials);
         }catch(\Exception $e){
             info($e->getMessage());
         }
         try{
-             Mail::to($data['email'])->send(new StudentCreatedAdmin);
+             Mail::to('mathias.kunze@onsites.com')->send(new StudentCreatedAdmin);
         }catch(\Exception $e){
             info($e->getMessage());
         }
-        return redirect()->route('application-fee',$student->id);
+        session()->forget('student_data');
+        return redirect()->route('parent.create.student');
     }
 
     public function payments(){
-        return view('parent.payments');
+        $student_ids = ParentStudent::where('parent_id',auth()->user()->id)->pluck('student_id');
+        $student_plans = StudentPlan::whereIn('student_id',$student_ids)->get();
+        return view('parent.payments')
+            ->with('student_plans',$student_plans);
     }
 
     public function invoices(){
@@ -163,28 +222,27 @@ class ParentController extends Controller
         return view('parent.new-inquiry');
     }
 
-    public function updateStudentStatus($status,$student_id,$invoice_description,$amount,$payment_type = null){
+    public function updateStudentStatus(){
+        $student_data = session()->get('student_data');
+        $invoice_data = session()->get('invoice_data');
         $parent_student = [];
-        if(isset($payment_type)){
-            $exprires_at = $payment_type == 0  
+        if(array_key_exists('payment_type',$student_data)){
+            $exprires_at = $student_data['payment_type'] == 0  
                 ? Carbon::now()->addMonths(1) 
                 : Carbon::now()->addYears(1); // monthly or yearly
                
             StudentPlan::insert([
-                'plan_id' => $plan_id,
-                'student_id' => $student_id,
+                'plan_id' => $student_data['plan_id'],
+                'student_id' => $student_data['student_id'],
                 'expires_at' => $exprires_at,
-                'payment_period' => $payment_type
             ]);
-        }
-        $parent_student['status'] = $status;
-      
-        ParentStudent::where('student_id',$student_id)->update($parent_student);
+        }      
+        ParentStudent::where('student_id',$student_data['student_id'])->update(['status' => $student_data['status']]);
 
         Invoice::insert([
             'invoice_number' => $this->setInvoiceNumber(),
             'user_email' => auth()->user()->email,
-            'price' => $amount,
+            'price' => $invoice_data['amount'],
             'name' => auth()->user()->name ,
             'created_at' => Carbon::now() ,
             'surname' => auth()->user()->surname,
@@ -193,7 +251,7 @@ class ParentController extends Controller
             'city' => auth()->user()->invoice_details->city ,
             'ZIPcode' => auth()->user()->invoice_details->zip,
             'country_id' => auth()->user()->invoice_details->country_id,
-            'description' => $invoice_description
+            'description' => $invoice_data['description'],
         ]);
 
         try{
@@ -201,6 +259,10 @@ class ParentController extends Controller
         }catch(\Exception $e){
             info($e->getMessage());
         }
+
+        session()->forget('student_data');
+        session()->forget('invoice_data');
+
         return redirect()->route('parent.create.student')
             ->with('success_message','Payment successfull');
     }

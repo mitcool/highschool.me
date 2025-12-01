@@ -7,7 +7,7 @@ use App\FeatureCategory;
 use App\Plan;
 use App\CourseType;
 
-class CurruculumController extends Controller
+class CurriculumController extends Controller
 {
     public function standardHighSchool(){
       $feature_categories = FeatureCategory::all();

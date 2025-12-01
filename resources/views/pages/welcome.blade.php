@@ -56,13 +56,24 @@
 		<x-home.slogan />
 	</section>
 	<div class="container-fluid m-0">
+
+		<x-home.mission />
+
 		<x-home.benefits />
+
+		<x-home.about />
+
+		<x-home.facts />
+
+		<x-home.media/>
+
+		<x-home.accreditation/>
 
 		<x-home.testimonials/>
 
 		<x-home.news />
 
-		<x-home.reasons-accordion />
+		<x-home.cte />
 
 		{{-- <x-home.contact-form /> --}}
 	</div>
@@ -70,4 +81,14 @@
 
 @endsection
 
+@section('footerScripts')
+<script>
+	$('.benefit-box').on('mouseenter',function(){
+		$(this).css('transform', 'scale(1.1, 1.1)').css('transition','0.4s').css('font-size:1.1rem;')
+	})
+	$('.benefit-box').on('mouseleave',function(){
+		$(this).css('transform', 'none').css('transition','0.4s')
+	})
+</script>
+@endsection
 

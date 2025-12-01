@@ -83,14 +83,14 @@
     $(document).ready(function(){
         let payment_type = $('input[name=payment_type]:checked').val();
         let plan =  $('input[name=plan]:checked').attr('data-price-per-month');
-        let total = plan/100 + 300;
+        let total = Number(plan) + 300;
         
      $('#total').html('$' + total.toFixed(2));
         // Note price is in cents
         $('.plans').on('click',function(){
             let payment_type = $('input[name=payment_type]:checked').val();
             let plan_price = payment_type == 0 ? $(this).attr('data-price-per-month') : $(this).attr('data-price-per-year');
-            let total = plan_price/100 + 300;
+            let total = Number(plan_price) + 300;
             $('#total').html('$' + total.toFixed(2));
         });
 
@@ -98,7 +98,7 @@
             let payment_type = $(this).val();
             let plan =  $('input[name=plan]:checked');
             let plan_price = payment_type == 0 ? plan.attr('data-price-per-month') : plan.attr('data-price-per-year');
-            let total = plan_price/100 + 300;
+            let total = Number(plan_price) + 300;
             $('#total').html('$' + total.toFixed(2));
         })
     })

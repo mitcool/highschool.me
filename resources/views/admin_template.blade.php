@@ -85,7 +85,7 @@
                         Meetings
                     </div>
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="{{route('admin-meetings')}}">
+                        <a class="nav-link collapsed" href="{{route('admin-group-sessions')}}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Group Session for Students</span>
                         </a>
@@ -145,13 +145,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="">
+                        <a class="nav-link collapsed" href="{{ route('admin-facts-hub') }}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Facts Hub</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="">
+                        <a class="nav-link collapsed" href="{{ route('admin-press-release') }}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Press Release</span>
                         </a>

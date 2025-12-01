@@ -3,11 +3,11 @@
 @section('content')
 
 <div class="jumbotron container">
-    <h2 class="text-center">List of pending approvement students applications</h2>
+    <h2 class="text-center">Documents </h2>
+    <h5 class="text-center text-primary"> <span class="font-weight-bold">Student:</span> <span class="font-italic">"{{ $student->student->name }} {{ $student->student->surname }}"</span> </h5>
+    <h5 class="text-center text-primary"> <span class="font-weight-bold">Parent:</span> <span class="font-italic">"{{ $student->parent->name }} {{ $student->parent->surname }}"</span> </h5>
     <hr>
-        <div class="d-flex align-items-center my-3 justify-content-between">
-             <p class="mb-0 font-weight-bold">{{ $student->student->name }} {{ $student->student->surname }}</p>
-        </div>
+        
        <table class="table table-striped">
             @foreach ($student->student->documents as $document )
                 <tr>
@@ -73,7 +73,7 @@
                 $(`.reject-button[data-value=${response.document_id}]`).remove();
                 if(response.count > 5){
                     $('#approve-student-form').removeClass('d-none');
-                    $('#wrong-documents').addClass('d-none')
+                    $('#wrong-document').addClass('d-none')
                 }
             })
             .catch(error => {
@@ -101,7 +101,6 @@
                 $(`.approve-button[data-value=${response.document_id}]`).removeClass('btn-success').addClass('btn-secondary').html('Approve');
                 $('#wrong-document').removeClass('d-none')
                 $('#approve-student-form').addClass('d-none');
-                $('#document_id').val(response.document_id)
             })
             .catch(error => {
                 console.error("Error:", error);

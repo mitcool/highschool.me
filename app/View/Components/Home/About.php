@@ -4,7 +4,7 @@ namespace App\View\Components\Home;
 
 use Illuminate\View\Component;
 
-class ReasonsAccordion extends Component
+class About extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class ReasonsAccordion extends Component
      */
     public function render()
     {
-        return view('components.home.reasons-accordion');
+        return view('components.home.about');
     }
 }

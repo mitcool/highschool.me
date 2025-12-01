@@ -54,12 +54,13 @@ Route::group(['prefix' => 'educator'],function(){
 	Route::get('/dashboard', 'EducatorController@dashboard')->name('educator.dashboard');
 	Route::get('/meetings','EducatorController@meetings')->name('educator.meetings');
 });
+Route::get('/application-fee/{student_id}','ParentController@applicationFee')->name('application-fee');
 
-Route::get('/application-fee/{student_id}','PaymentController@applicationFee')->name('application-fee');
+Route::get('/application-fee-success/{student_id}','ParentController@applicationFeeSuccess')->name('application-fee-success');
 
 Route::get('/enrollment-fee/{student_id}/{plan_id}/{payment_type}','PaymentController@enrollmentFee')->name('enrollment-fee');
 
-Route::get('/update-student-status/{status}/{student_id}/{invoice_description}/{amount}/{payment_type?}','ParentController@updateStudentStatus')->name('parent.update-student-status');
+Route::get('/update-student-status','ParentController@updateStudentStatus')->name('parent.update-student-status');
 
 Route::post('/parent/pay/plan/{student_id}','ParentController@parentPayPlan')->name('parent.pay.plan');
 
@@ -120,25 +121,25 @@ Route::get('/awards','AcademicsController@awards')->name('awards');
 
 Route::get('/international-students','AcademicsController@internationalStudents')->name('international-students');
 
-Route::get('/standard-high-school','CurruculumController@standardHighSchool')->name('standard-high-school');
+Route::get('/standard-high-school','CurriculumController@standardHighSchool')->name('standard-high-school');
 
-Route::get('/transfer-program','CurruculumController@transferProgram')->name('transfer-program');
+Route::get('/transfer-program','CurriculumController@transferProgram')->name('transfer-program');
 
-Route::get('/honors-high-school','CurruculumController@honorsHighSchool')->name('honors-high-school');
+Route::get('/honors-high-school','CurriculumController@honorsHighSchool')->name('honors-high-school');
 
-Route::get('/advanced-placement','CurruculumController@advancedPlacement')->name('advanced-placement');
+Route::get('/advanced-placement','CurriculumController@advancedPlacement')->name('advanced-placement');
 
-Route::get('/psat','CurruculumController@psat')->name('psat');
+Route::get('/psat','CurriculumController@psat')->name('psat');
 
-Route::get('/cte','CurruculumController@cte')->name('cte');
+Route::get('/cte','CurriculumController@cte')->name('cte');
 
-Route::get('/clep','CurruculumController@clep')->name('clep');
+Route::get('/clep','CurriculumController@clep')->name('clep');
 
-Route::get('/esol','CurruculumController@esol')->name('esol'); #a.k.a english courses
+Route::get('/esol','CurriculumController@esol')->name('esol'); #a.k.a english courses
 
-Route::get('/learning-mentoring','CurruculumController@learningMentoring')->name('learning-mentoring');
+Route::get('/learning-mentoring','CurriculumController@learningMentoring')->name('learning-mentoring');
 
-Route::get('/admission-process','CurruculumController@admissionProcess')->name('admission-process');
+Route::get('/admission-process','CurriculumController@admissionProcess')->name('admission-process');
 
 Route::get('/enrolment-criteria','AdmissionController@enrolmentCriteria')->name('enrolment-criteria');
 

@@ -4,15 +4,15 @@
 		<div class="modal-content">
 			<div class="modal-body">
 				<div class="text-justify">
-					{!! trans('modals.cookies-description') !!}
+					By clicking on the button, you agree to the use of cookies described here by the platform universitaet.com. At this point you can also object to the use of cookies or revoke your consent. Cookies are used to analyze your use of our websites and to personalize our services. Web cookies from third-party providers also give you personalized advertising, even if you no longer access our website. The storage period for cookies is 90 days.
 				</div>
 			</div>
 			<div class="modal-footer d-flex justify-content-center">
 				<button id="accept_cookies_btn" class="mr-5 p-2" type="button" style="width: initial; height:50px;">
-					{{ trans('modals.cookies-accept-button') }}
+					Accept and Continue
 				</button>  
 				<button id="cookie_settings_btn" class="ml-5 p-2" type="button" style="width: initial; height:50px; ">
-					{{ trans('modals.cookies-custom-button') }}
+					Cookie Settings
 				</button> 
 			</div>
 		</div>
@@ -24,249 +24,96 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-body">
-            <div>{!!trans('modals.settings-heading')!!}</div>
+          In order to provide various features on our website, better evaluate activities on our website, and always present to you suitable offers, we use cookies. Decide for yourself which cookies you would like to allow. By moving the respective cookie bar to blue and clicking on “Save settings“, you activate the corresponding cookie and agree that the cookie in question may be placed. You can reverse this on this page at any time.
             <div class="row mt-3 mobile-text">
                 <div class="col-md-4 mt-4">
-                    <b>{!!trans('modals.required-cookies')!!}</b>
+                    <b>Required Cookies</b>
                     <div>
                         <div class="wrapper">
-                            <span>{!! trans('modals.lang-conversion')!!}</span>
+                            <span>Language Conversion</span>
                             <label class="switch mt-3">
                                 <input name="lang_conversion" type="checkbox" checked> 
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="settings-descr mt-2">{!!trans('modals.required-cookies-info')!!}</div>
+                        <div class="settings-descr mt-2">To ensure that you can use our website in other languages as well.</div>
                     </div> 
                 </div>
                 <div class="col-md-4 mt-4">
-                    <b>{!!trans('modals.functional-cookies')!!}</b>
+                    <b>Functional Cookies</b>
                     <div>
                         <div class="wrapper">
-                            <span>{!!trans('modals.youtube')!!}</span>
+                            <span>YouTube</span>
                             <label class="switch mt-3">
                                 <input name="youtube" type="checkbox" checked> 
                                 <span class="slider round"></span>
                             </label>
                         </div>
                         <div class="settings-descr mt-2">
-                    		{!!trans('modals.youtube-info')!!} 
+                    		In order to show you videos on our portal, we use YouTube.
                     	</div>
                     </div>
                    <div>
                         <div class="wrapper">
-                            <span>{!!trans('modals.landbot')!!}</span>
+                            <span>Landbot</span>
                             <label class="switch mt-3">
                                 <input name="landbot" type="checkbox" checked> 
                                 <span class="slider round"></span>
                             </label>
                         </div>
                         <div class="settings-descr mt-2">
-                        	{!!trans('modals.landbot-info')!!}
+                        	To improve the user experience, we make use of the tool Landbot.
                     	</div>
                     </div>
                     <div>
                         <div class="wrapper">
-                            <span>{{trans('modals.google-maps')}}</span>
+                            <span>Google Maps</span>
                             <label class="switch mt-3">
                                 <input name="google_maps" type="checkbox" checked> 
                                 <span class="slider round"></span>
                             </label>
                         </div>
                         <div class="settings-descr mt-2">		           
-                            {{trans('modals.google-maps-info')}}
+                            In order for us to display the locations of stakeholders appearing on our portal, we use Google Maps.
                     	</div>
                     </div>
                 </div>
                  <div class="col-md-4 mt-4">
-                    <b>{!!trans('modals.tracking')!!}</b>
+                    <b>Tracking & Marketing Cookies</b>
                     <div class="wrapper">
-                        <span>{!!trans('modals.google-ads')!!}</span>
+                        <span>Google Ads</span>
                         <label class="switch mt-3">
                             <input name="google_ads" type="checkbox" checked> 
                             <span class="slider round"></span>
                         </label>
                     </div>
                     <div class="wrapper">
-                        <span>{!!trans('modals.facebook')!!}</span>
+                        <span>Facebook</span>
                         <label class="switch mt-3">
                             <input name="facebook" type="checkbox" checked> 
                             <span class="slider round"></span>
                         </label>
                     </div>
                     <div class="wrapper">
-                        <span>{!!trans('modals.google-analitics')!!}</span>
+                        <span>Google Analytics</span>
                         <label class="switch mt-3">
                             <input name="google_analytics" type="checkbox" checked> 
                             <span class="slider round"></span>
                         </label>
                     </div>
                     <div class="settings-descr mt-2">    	
-                    	{!!trans('modals.tracking-cookies-info')!!}
+                    	Anonymized data relating to the use of the website is analyzed in order to further improve the offer on the website.
                 	</div>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button id="back_btn" class="mr-5 p-2" type="button">{!!trans('modals.back-to-description')!!}</button>  
-            <button id="save_settings_btn" class="mx-5 p-2" type="button">{!!trans('modals.save-all')!!}</button> 
-            <button id="accept_all_btn" class="ml-5 p-2" type="button">{!!trans('modals.accept-all')!!}</button> 
+            <button id="back_btn" class="mr-5 p-2" type="button">Back To Description</button>  
+            <button id="save_settings_btn" class="mx-5 p-2" type="button">Save Custom Settings</button> 
+            <button id="accept_all_btn" class="ml-5 p-2" type="button">Accept All Cookies</button> 
         </div>
       </div>
     </div>
 </div> 
 
-{{-- Share modal --}}
-<div class="modal fade" id="share_modal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body text-center">
-            <div class="row">
-                <div class="col-12 d-flex justify-content-between">
-                    <x-image-component nickname="logo-header" class="logo-header-images" style="width: 150px;"/>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 50px; color:black; margin-bottom: 15px;">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="col-12">
-                    <div class="d-flex icons justify-content-between">
-                        <a rel="nofollow" class="share_social_icons fs-5 d-flex align-items-center justify-content-center" data-value='1'><i class="fab fa-facebook-f p-2"></i></a>
-                        <a rel="nofollow" class="share_social_icons fs-5 d-flex align-items-center justify-content-center" data-value='2'><i class="fab fa-twitter p-2"></i></a>
-                        <a rel="nofollow" class="share_social_icons fs-5 d-flex align-items-center justify-content-center" data-value='3'><i class="fab fa-linkedin-in p-2"></i></a>
-                        <a rel="nofollow" class="share_social_icons fs-5 d-flex align-items-center justify-content-center" data-value='4'><i class="fab fa-instagram p-2"></i></a>
-                    </div>
-                </div>
-                <div class="col-12 d-flex justify-content-center">
-                    <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal" style="border-color: transparent !important; ">{!!trans('modals.dismiss')!!}</button>
-                    &nbsp;
-                    <a id="share_ok_button"  class="btn read-more btn btn-primary text-white btn-lg" style="background:#EE6123; border-color: transparent !important; margin-bottom:0 !important">{!!trans('modals.share')!!}</a>
-                    <br>
-                </div>
-                <div class="col-12 d-flex justify-content-start" style="padding-top:10px;">
-                    <p class="page-content">{{trans('modals.text-share-modal')}}</p>
-                    
-                </div>
-                <div class="col-12 d-flex justify-content-start">
-                    <div class="input-group mb-3">
-                        <input id="receiver" type="text" class="copy-link-input" value=""  readonly>
-                        <div>&nbsp;&nbsp;</div>
-                        <div class="d-flex icons justify-content-between" style="margin-top: 0px; margin-bottom: 0px;">
-                            <a onclick="copyLinkData()" href="#" class="share_social_icons fs-5 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; ">
-                            <i class="far fa-copy p-2" style="font-size:20px;"></i></a>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>      
-      </div>
-    </div>
-  </div>
-</div> 
 
-{{--  Publishing modal --}}
-<div class="modal fade p-0" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <p class="modal-title" id="exampleModalLabel">{{trans('publishing.button-compare')}}</p>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:black">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <table class="table table-bordered">
-                    <thead style="background:#F2F9FF">
-                        <tr>
-                            <th scope="col" >{{trans('modals.tabel-heading-one')}}</th>
-                            <th scope="col">{{trans('modals.tabel-option-one')}}</th>
-                            <th scope="col">{{trans('modals.tabel-option-two')}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{trans('modals.tabel-row-one')}}</td>
-                            <td><i class="fas fa-check"></i></td>
-                            <td><i class="fas fa-check"></i></td>					
-                        </tr>
-                        <tr>
-                            <td>{{trans('modals.tabel-row-two')}}</td>
-                            <td><i class="fas fa-check"></i></td>
-                            <td><i class="fas fa-check"></i></td>
-                        </tr>
-                        <tr>
-                            <td>{{trans('modals.tabel-row-three')}}</td>
-                            <td><i class="fas fa-check"></i></td>
-                            <td><i class="fas fa-check"></i></td>
-                        </tr>
-                        <tr>
-                            <td>{{trans('modals.tabel-row-four')}}</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>{{trans('modals.tabel-row-five')}}</td>
-                            <td></td>
-                            <td><i class="fas fa-check"></i></td>
-                        </tr>
-                    </tbody>
-                    <thead style="background:#F2F9FF">
-                        <tr>
-                            <th scope="col" >{{trans('modals.tabel-heading-one')}}</th>
-                            <th scope="col">{{trans('modals.tabel-option-one')}}</th>
-                            <th scope="col">{{trans('modals.tabel-option-two')}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Druck der Erstauflage und Folgeauflagen</td>
-                            <td><i class="fas fa-check"></i></td>
-                            <td><i class="fas fa-check"></i></td>					
-                        </tr>
-                        <tr>
-                            <td>Erstellung eines professionelles Textlayouts</td>
-                            <td><i class="fas fa-check"></i></td>
-                            <td><i class="fas fa-check"></i></td>
-                        </tr>
-                        <tr>
-                            <td>Gestaltung eines individuellen Buchcovers</td>
-                            <td><i class="fas fa-check"></i></td>
-                            <td><i class="fas fa-check"></i></td>
-                        </tr>
-                    </tbody>
-                    <thead style="background:#F2F9FF">
-                        <tr>
-                            <th scope="col" >{{trans('modals.tabel-heading-three')}}</th>
-                            <th scope="col">{{trans('modals.tabel-option-one')}}</th>
-                            <th scope="col">{{trans('modals.tabel-option-two')}}</th>
-                        </tr>
-                    </thead>
-                    <thead style="background:#F2F9FF">
-                        <tr>
-                            <th scope="col" >{{trans('modals.tabel-heading-four')}}</th>
-                            <th scope="col">{{trans('modals.tabel-option-one')}}</th>
-                            <th scope="col">{{trans('modals.tabel-option-two')}}</th>
-                        </tr>
-                    </thead>
-                    <thead style="background:#F2F9FF">
-                        <tr>
-                            <th scope="col" >{{trans('modals.tabel-heading-five')}}</th>
-                            <th scope="col">{{trans('modals.tabel-option-one')}}</th>
-                            <th scope="col">{{trans('modals.tabel-option-two')}}</th>
-                        </tr>
-                    </thead>
-                    <thead style="background:#F2F9FF">
-                        <tr>
-                            <th scope="col" >{{trans('modals.tabel-heading-six')}}</th>
-                            <th scope="col">{{trans('modals.tabel-option-one')}}</th>
-                            <th scope="col">{{trans('modals.tabel-option-two')}}</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-            <!-- <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div> -->
-        </div>
-    </div>
-</div>

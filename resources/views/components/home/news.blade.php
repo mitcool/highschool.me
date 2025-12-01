@@ -1,8 +1,9 @@
-<section class="row section" style="padding-top:20px; padding-bottom:20px;background-image:url('images/BG_WORMHOLE.png')">
+<section class="row section" style="padding-top:20px; padding-bottom:20px;background-color:#045397">
     <div class="col-md-8 offset-md-2">
         <div>
             <div class="p-3">
-                <h2 class="section-headings">{{ trans('welcome.news-section-heading') }}</h2>
+                <h2 class="text-center text-white" >News</h2>
+                <hr class="white-hr">
                 <div class="row section" id="news_box">
                     
                     @foreach($last_three_news as $news)

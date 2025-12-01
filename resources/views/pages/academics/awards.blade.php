@@ -40,191 +40,51 @@
 
 @endsection
 @section('content')
-@php
-    $breadcrumb_title = strtok(trans('study-registration.meta-title'), '|');
-@endphp
+
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb_title }}</li>
+		<li class="breadcrumb-item active" aria-current="page">Awards</li>
 	</ol>
 </div>
-<x-image-component nickname="study_registration" class="study_registration-images main-pictures-pages" loading="eager"/>
-	<div class="container-fluid bg-white main_page_container">	
+<img src="{{ asset('images/awards.png') }}" alt="">	
+<div class="container-fluid bg-white main_page_container">	
 		<div class="row justify-content-center" >		
-			<div class="col-lg-8 shadow text-center p-4" style="margin: 0 auto;">
-				<h1 class="text-center font-weight-bold">{{ trans('study-registration.heading') }}</h1><hr>
-			
-
+			<div class="col-lg-8 shadow text-center p-4 bg-white" style="margin: 20px auto;">
+				<h1 class="page-headings">Awards</h1>
+				<div class="page-content">Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Studieren und Promovieren sind nicht nur akademische </div>
+				<hr>
+				<div class="row p-2">
+					<div class="col-md-3">
+						<img src="{{ asset('images/award-1.png') }}" alt="">
+					</div>
+					<div class="col-md-9">
+						<h3 class="font-weight-bold text-left">President's Award for Educational Excellence</h3>
+						<div class="page-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse a repudiandae soluta molestiae dicta harum deleniti in laboriosam ipsum, quaerat alias ipsam eos facilis consequuntur ad. Nulla, eligendi tempora! Praesentium modi in maxime. Esse, labore vitae. Nesciunt ratione rerum labore dignissimos facilis necessitatibus minima omnis consectetur, nostrum delectus eum?	</div>
+					</div>
 				</div>
+				<hr>
+				<div class="row p-2">
+					<div class="col-md-9">
+						<h3 class="font-weight-bold text-left">President's Award for Educational Achievement</h3>
+						<div class="page-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse a repudiandae soluta molestiae dicta harum deleniti in laboriosam ipsum, quaerat alias ipsam eos facilis consequuntur ad. Nulla, eligendi tempora! Praesentium modi in maxime. Esse, labore vitae. Nesciunt ratione rerum labore dignissimos facilis necessitatibus minima omnis consectetur, nostrum delectus eum?	</div>
+					</div>
+					<div class="col-md-3">
+						<img src="{{ asset('images/award-2.png') }}" alt="">
+					</div>
+				</div>
+				<hr>
+				<div class="row p-2">
+					<div class="col-md-3">
+						<img src="{{ asset('images/award-3.png') }}" alt="">
+					</div>
+					<div class="col-md-9">
+						<h3 class="font-weight-bold text-left">American Citizenship Award</h3>
+						<div class="page-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse a repudiandae soluta molestiae dicta harum deleniti in laboriosam ipsum, quaerat alias ipsam eos facilis consequuntur ad. Nulla, eligendi tempora! Praesentium modi in maxime. Esse, labore vitae. Nesciunt ratione rerum labore dignissimos facilis necessitatibus minima omnis consectetur, nostrum delectus eum?	</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 @endsection
 
-@section('footerScripts')
-	<script type="text/javascript">
-		$(document).ready(function(){
-
-			$('.studies-button').on('click', function(){
-				$('#fee').html('');
-				$('#payment-option').html('');
-				$('#program-select').html('');
-				$('.studies-button').removeClass('selected-button');
-				$('#start_date').removeClass('d-block').addClass('d-none')
-				$(this).addClass('selected-button');
-				$('.program-option').prop('disabled', true).addClass('d-none');
-
-				let study_id = $(this).attr('data-id');
-
-				$.ajax({
-					data: {study_id: study_id},
-					method: "POST",
-					url: "{{route('get-programs')}}",
-					headers: {
-						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-					}
-				}).done(function(response) {
-					
-					if(response.id == 1 || response.id == 4 || response.id == 5){
-						let programs_html = '';
-						for (const program of response.programs) {
-							programs_html += `<option value="${program.id}">${program.translated.name}</option>`;
-						}
-						$('#program-select').html(programs_html);
-
-						let time_period_html = '';
-
-						for (const period of response.studies_periods) {
-							time_period_html += `
-							<div class="col-md-3">
-								<label data-study="${study_id}" data-study-period="${period.id}" class="time-button time-period form-control" for="${period.period.key}">${period.period.translated.name}</label>
-								<input  id="${period.period.key}" name="learning_period"  type="radio" value="${period.period.key}" class="d-none time-checkbox">
-							</div>`;
-						}
-						$('#time_periods').html(time_period_html);
-					}
-					else{
-						let programs_html = '';
-						let time_period_html = '';
-						
-						for (const r of response) {
-							for (const program of r.programs) {
-								programs_html += `<option value="${program.id}">${program.translated.name}</option>`;
-							}
-							for (const period of r.studies_periods) {
-								time_period_html += `
-								<div class="col-md-3">
-									<label data-study="${study_id}" data-study-period="${period.id}" class="time-button time-period form-control" for="${period.period.key}">${period.period.translated.name}</label>
-									<input  id="${period.period.key}" name="learning_period"  type="radio" value="${period.period.key}" class="d-none time-checkbox">
-								</div>`;
-							}
-						}
-						
-						$('#program-select').html(programs_html);
-						$('#time_periods').html(time_period_html);
-
-					}
-					
-
-				});
- 
-			});
-
-			$('#program_day').on('change', function(){
-				$('#date-error').html('')
-				validateDate()
-			})
-
-			$('#program_month').on('change', function(){
-				$('#date-error').html('')
-				validateDate()
-			})
-
-			$('#program_year').on('change', function(){
-				$('#date-error').html('')
-				validateDate()
-			});
-
-			$('.custom-file-input').on('change', function(e){
-				$('#file-validation-error').html('');
-				let name = e.target.files[0].name;
-				let extention = name.split('.').pop();
-				let allowed_extentions = ['docx','pdf'];
-				let message  = `{!! __('study-registration.incorrect-file') !!}`;
-
-				if(!allowed_extentions.includes(extention)){ 
-					$('#file-validation-error').html(message);
-					$(this).val("");
-					return;
-				}
-				$(this)
-					.closest('.custom-file')
-					.find('.custom-file-label')
-					.css('background','#D1FFBE')
-					.css('color','green')
-					.html(name);
-			});
-
-
-		});
-		$(document).on('click','.time-period',function() {
-				$('#fee').html('');
-				$('#payment-option').html('');
-				$('.time-period').removeClass('selected-button');
-				$('.time-checkbox').prop('checked', false);
-				$(this).addClass('selected-button');
-				$('#start_date').removeClass('d-block').addClass('d-none')
-				let study_period = $(this).attr('data-study-period');
-				$.ajax({
-					data: {study_period: study_period},
-					method: "POST",
-					url: "{{route('get-payments-options')}}",
-					headers: {
-						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-					}
-				}).done(function(payment_options) {
-					payment_html = '<option value="" selected disabled>{!! __('study-registration.select-option') !!}</option>`;';
-					for (const option of payment_options) {
-						payment_html += `
-						<option data-price="${option.price}">${option.payment.translated.name}</option>`;
-					}
-					$('#payment-option').html(payment_html);
-						$('#start_date').removeClass('d-none').addClass('d-block')
-				});
-				
-		});
-		
-		$(document).on('change','#payment-option',function() {
-			const formatter = new Intl.NumberFormat('en-US', {
-				style: 'currency',
-				currency: 'EUR'
-			});
-			let value = formatter.format($('#payment-option option:selected').attr('data-price'));
-			$('#fee').html(value);
-		})
-		function validateDate(){	
-
-			let message  = `{!! __('study-registration.incorrect-date') !!}`;
-			let day = +$('#program_day').val();
-			let month = $('#program_month option:selected').attr('data-value');
-			let year = $('#program_year').val();
-			let date = new Date(year,month,day);
-			let daysInMonth = new Date(year, month, 0).getDate();
-
-			if(day > daysInMonth || day < 1){
-				$('#date-error').html(message)
-				return 0;
-			}
-			else if(year < date.getFullYear() || year.length != 4 ){
-				$('#date-error').html(message)
-				return 0;
-			}
-			else if(date < new Date()){
-				$('#date-error').html(message)
-				return 0;
-			}
-
-			return 1;
-		}
-	</script>
-@endsection	

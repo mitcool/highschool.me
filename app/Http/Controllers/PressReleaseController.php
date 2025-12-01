@@ -34,17 +34,13 @@ class PressReleaseController extends Controller
        $slug = $request->slug;
        $slug_de = $request->slug_de;
 
-
        if(PressReleaseTranslation::where('slug',$slug)->count() > 0){
           return redirect()->back()->with('error','The English slug you selected has already exists');
        }
-       if(PressReleaseTranslation::where('slug',$slug_de)->count() > 0){
-            return redirect()->back()->with('error','The German slug you selected has already exists');
-       }
+      
 
        $request->validate([
         'slug' => 'required|unique:dynamic_news_translations,slug',
-        'slug_de' => 'required|unique:dynamic_news_translations,slug,'
     ]);
 
        $news_id = PressRelease::insertGetId([
@@ -62,15 +58,7 @@ class PressReleaseController extends Controller
             'meta_description' => $request->meta_description_en
         ]);
 
-       PressReleaseTranslation::insert([
-            'locale' => 'de',
-            'slug' => $slug_de,
-            'news_id' => $news_id,
-            'key_facts' => $request->key_facts_de,
-            'meta_title' => $request->meta_title_de,
-            'meta_description' => $request->meta_description_de
-            
-        ]);
+      
 
        foreach($contents as $key => $content){
             if($types[$key] == 1){
@@ -83,11 +71,7 @@ class PressReleaseController extends Controller
                     'locale' => 'en',
                     'section_id'=> $section_id,
                 ]);
-                PressReleaseSectionTranslation::insert([
-                    'content' => $contents_de[$key],
-                    'locale' => 'de',
-                    'section_id'=> $section_id,
-                ]);
+                
             }
             else if($types[$key] == 2){
                 
@@ -116,11 +100,7 @@ class PressReleaseController extends Controller
                     'locale' => 'en',
                     'section_id'=> $section_id,
                 ]);
-                PressReleaseSectionTranslation::insert([
-                    'content' => $contents_de[$key],
-                    'locale' => 'de',
-                    'section_id'=> $section_id,
-                ]);
+                
                 foreach($details[$key+1] as $index => $content ){
 
                     $detail_id =PressReleaseSectionDetail::insertGetId([
@@ -131,11 +111,7 @@ class PressReleaseController extends Controller
                         'locale' => 'en',
                         'detail_id'=> $detail_id,
                     ]);
-                   PressReleaseSectionDetailTranslation::insert([
-                        'content' => $details_de[$key+1][$index],
-                        'locale' => 'de',
-                        'detail_id'=> $detail_id,
-                    ]);
+                   
                 }
             }
             else if($types[$key] == 4){
@@ -148,11 +124,7 @@ class PressReleaseController extends Controller
                     'locale' => 'en',
                     'section_id'=> $section_id,
                 ]);
-                PressReleaseSectionTranslation::insert([
-                    'content' => $contents_de[$key],
-                    'locale' => 'de',
-                    'section_id'=> $section_id,
-                ]);
+                
                 foreach($details[$key+1] as $index => $content ){
 
                     $detail_id = PressReleaseSectionDetail::insertGetId([
@@ -163,29 +135,10 @@ class PressReleaseController extends Controller
                         'locale' => 'en',
                         'detail_id'=> $detail_id,
                     ]);
-                    PressReleaseSectionDetailTranslation::insert([
-                        'content' => $details_de[$key+1][$index],
-                        'locale' => 'de',
-                        'detail_id'=> $detail_id,
-                    ]);
+                   
                 }
             }
-            else if($types[$key] == 5){
-                $section_id = FactHubSection::insertGetId([
-                    'news_id' => $news_id,
-                    'type' => $types[$key]
-                ]);
-                PressReleaseSectionTranslation::insert([
-                    'content' => $content,
-                    'locale' => 'en',
-                    'section_id'=> $section_id,
-                ]);
-                PressReleaseSectionTranslation::insert([
-                    'content' => $contents_de[$key],
-                    'locale' => 'de',
-                    'section_id'=> $section_id,
-                ]);
-            }
+           
        }
 
        return redirect()->back()->with('success_message'," Facts Hub article created successfully");

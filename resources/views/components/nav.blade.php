@@ -24,7 +24,7 @@
           ACADEMICS
         </div>
          <ul class="dropdown-menu p-0 mt-0">
-            <li><a class="dropdown-item" href="{{ route('highschool-programs') }}"> High School Programs</a></li>
+            <li><a class="dropdown-item" href="{{ route('highschool-programs') }}">High School Diploma Tracks</a></li>
             <li><a class="dropdown-item" href="{{ route('graduation-requirements') }}"> Graduation Requirements </a></li>
             <li><a class="dropdown-item" href="{{ route('credit-recovery') }}"> Credit Recovery</a></li> 
             <li><a class="dropdown-item" href="{{ route('credit-transfer') }}"> Credit Transfer</a></li> 

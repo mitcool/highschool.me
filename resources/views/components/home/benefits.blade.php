@@ -1,4 +1,4 @@
-<section class="row" style="background-color: #045397;padding:20px;">
+<section class="row" style="background-color: #045397;padding:50px;">
     <div class="col-md-8 offset-md-2" >
         <!-- <div class="d-flex" id="benefit_wrapper"> -->
         <div class="row col-md-12 ml-0 mr-0" >

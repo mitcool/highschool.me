@@ -30,20 +30,13 @@
     }
     .plan-name{
         color:white;
-        border-top-left-radius:10px;
+         border-top-left-radius:10px;
          border-top-right-radius: 10px;
          padding:10px;
          font-size: 1.5rem;
+         text-align: left;
     }
-    .plan-name:nth-of-type(1){
-        background-color:#f08a54;
-    }
-    .plan-name:nth-of-type(2){
-        background-color:#ec7130;
-    }
-    .plan-name:nth-of-type(3){
-        background-color:#E9580C;
-    }
+    
     .course-name{
          background: #045397;
          color:white;
@@ -113,69 +106,44 @@
 @endsection
 @section('content')
 
+<img src="{{ asset('images/crop-schoolgirl-sitting-with-studies-chair.png') }}" alt="">
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
-    <h1 class="text-center page-headings">Online High School Diploma Tracks: Graduate with Power and no Barriers</h1> <br>
-    <h2 class="text-center font-weight-bold" style="margin-bottom:20px;">Three Paths – One High School Diploma: The World Is Your Classroom</h2>
-    <p class="page-content">All paths include full access to every graduation track, rolling enrollment, 12-month schooling, cross-grade learning, and credit-transfer options. Students benefit from subject-specific AI mentors, human educator support, real-time performance tracking, and access to awards programs and parent services. Higher tiers add personal mentoring, college & career coaching, and extended family support – creating a complete learning experience that adapts to every life situation.</p>
-    <h2 class="font-weight-bold text-center" style="margin:50px 0;">High School Tuition Options</h2>
-    <hr>
-    <div class="row text-center container mx-auto">
-        @foreach($plans as $plan)
-            <div class="col-md-4 p-4">
-                <div class="shadow wrapper">
-                    <div class="plan-name"><span class="font-weight-bold">{{ $plan->name }}</span> Package</div>
-                    <div class="tuition">Tuition fee</div>
-                    <div style="padding: 10px;">
-                        <div class="price">${{ $plan->price_per_month() }}</div>
-                        <div class="text-right per-year">per Month</div>
-                        <div class="or">OR</div>
-                        <div class="price">${{ $plan->price_per_year() }}</div>
-                        <div class="text-right per-year">per Year</div>
-                    </div>
+        <div class="row text-center container mx-auto">
+            <div class="col-md-12">
+                <h1 class="text-center page-headings">Tuition</h1> <br>
+                <h2 class="text-center font-weight-bold" style="margin-bottom:20px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tortor augue, ullamcorper vel dui nec, posuere sodales est.</h2>
+                <div class="page-content">
+                    <p>Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Studieren und Promovieren sind nicht nur akademische Meilensteine – sie sind Herausforderungen, die von intensiver Forschung, kreativem Denken und strategischer Planung geprägt sind. Um Dir diese Herausforderung so effizient und produktiv wie möglich zu gestalten, stellen wir Dir das kostenfreie Empowerment-Kit zur Verfügung. Dieses Kit umfasst innovative Tools, um Dir den Weg zu einem erfolgreichen Studienabschluss oder zu einer erfolgreichen Promotion erheblich zu verkürzen und zu erleichtern. Entdecke sieben ultrastarke Features, die speziell darauf ausgelegt sind, Dich auf höchstem Niveau zu unterstützen.Studieren und Promovieren sind nicht nur akademische Meilensteine – sie sind Herausforderungen, die von intensiver Forschung, kreativem Denken und strategischer Planung geprägt sind. Um Dir diese Herausforderung so effizient und produktiv wie möglich zu gestalten, stellen wir Dir das kostenfreie Empowerment-Kit zur Verfügung. Dieses Kit umfasst innovative Tools, um Dir den Weg zu einem erfolgreichen Studienabschluss oder zu einer erfolgreichen Promotion erheblich zu verkürzen und zu erleichtern.\ Entdecke sieben ultrastarke Features, die speziell darauf ausgelegt sind, Dich auf höchstem Niveau zu unterstützen. Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin.</p>
                 </div>
+
+                <h2 class="font-weight-bold text-center" style="margin:50px 0;">High School Tuition Options</h2>
             </div>
-        @endforeach
-    </div>
-    <div class="row">
-        @foreach($feature_categories as $category)
-            <div class="col-md-12 text-center">
-                <h2 class="h3 text-left" style="margin-top:50px;margin-bottom:20px;">{{ $category->name }}</h2>
-                <div class="row">
-                    <div class="td-row col-md-3 feature font-weight-bold">Features</div>
-                    <div class="td-row col-md-3 core font-weight-bold">Core</div>
-                    <div class="td-row col-md-3 pro font-weight-bold">Pro</div>
-                    <div class="td-row col-md-3 elite font-weight-bold">Elite</div>
-                </div>
-                @foreach ($category->features as $feature )
-                    <div class="row">
-                        <div class="td-row td-border col-md-3 text-left font-weight-bold"  @if($loop->last) style="border-bottom-left-radius:15px;" @endif> <a  style="color: #045397;" href="{{ route('single-feature',$feature->slug) }}">{{ $feature->feature }}</a>  </div>
-                        <div class="td-row td-border col-md-3" @if($feature->core_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->core_tooltip !!}" style="cursor:pointer;color:#045397" @endif>{!! $feature->core() !!}</div>
-                        <div class="td-row td-border col-md-3" @if($feature->pro_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->pro_tooltip !!}"  style="cursor:pointer;color:#045397" @endif>{!! $feature->pro() !!}</div>
-                        <div class="td-row td-border col-md-3" @if($feature->elite_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->elite_tooltip !!}"  style="cursor:pointer;color:#045397" @endif @if($loop->last) style="border-bottom-right-radius:15px;" @endif>{!! $feature->elite() !!}</div>
-                    </div>
-                @endforeach
-            </div>
-        @endforeach
-    </div>
-    <div style="margin:40px 0;">
-        <h2 class="font-weight-bold text-center">Global Diploma Transfer, College Prep & More: Upgrade to an Excellent Academic Future</h2>
-        <p>Designed for ambitious students aiming beyond the standard diploma. These add-on programs and courses expand learning to advanced academic levels and international standards. Options include the International Florida U.S. High School Diploma Transfer Program (Florida), college and university entry preparation, AP and CTE readiness, and targeted mentoring sessions. Every module is accessible worldwide and fully online – enabling students to accelerate, specialize, and position themselves for academic, professional, and personal success anywhere in the world.</p>
-    </div>
-   
-    
-</div>
-<div class="container-fluid">
-    <div class="row text-center  mx-auto">
        
-    </div>
-    <div class="container">
-        <p class="page-content">Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique.</p>
-        <div class="text-center">
-            <button class="btn blue-button btn-lg">Apply now</button>
-        </div>
-    </div>
+       
     
+        
+        @foreach($plans as $plan)
+
+                <div class="shadow wrapper  p-2 {{ strtolower($plan->name) }}">
+                    <div class="plan-name"><span class="font-weight-bold">{{ $plan->name }}</span> Package</div>
+                    <div style="text-align:justify;">
+                        <p>Promovieren sind nicht nur akademische Meilensteine – sie sind Herausforderungen, die von intensiver Forschung, kreativem Denken und strategischer Planung geprägt sind. Um Dir diese Herausforderung so effizient und produktiv wie möglich zu gestalten, stellen wir Dir das kostenfreie Empowerment-Kit zur Verfügung. Dieses Kit umfasst innovative Tools, um Dir den Weg zu einem erfolgreichen Studienabschluss oder zu einer erfolgreichen Promotion erheblich zu verkürzen und zu erleichtern. </p>
+                    </div>
+                </div>
+          
+        @endforeach
+
+        <div class="col-md-12" style="margin:30px 0;">
+            <p class="page-content">Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique.</p>
+            <div class="text-center" style="margin:40px 0;">
+                <a href="{{ route('standard-high-school') }}" class="btn orange-button btn-lg">Read more</a>
+                <a href="{{ route('student-advisory-service') }}" class="btn blue-button btn-lg">Contact</a>
+            </div>
+        </div>
+        
+    </div>
 </div>
+    
 
 @endsection
 

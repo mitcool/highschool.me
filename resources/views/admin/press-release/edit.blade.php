@@ -15,10 +15,10 @@
 
 @section('content')
 <div class="jumbotron container">
-    
-    <h2 class="text-center">Edit "Press Release" article</h2>
-    <hr>
-    
+    @if(!Cookie::has('watched'))
+        <h2>Please watch the tutorial before you start!</h2>
+    @endif
+    <h2>Edit News a news</h2>
     <form action="{{ route('press-release-update',$news->id) }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div class="row mt-2">
@@ -30,7 +30,7 @@
                     @endforeach
                 </select>
             </div>
-
+           
             <div class="col-md-6">
                 <label for="" class="font-weight-bold mb-0">Min to read</label>
                 <input type="number" name="minutes" value="{{ $news->minutes }}" class="form-control" required />
@@ -38,28 +38,28 @@
 
        
             @foreach($news->all_translations as $translation)
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <label for="" class="font-weight-bold mb-0">Slug({{ $translation->locale }})</label>
                     <input type="text" name="slug_{{ $translation->locale }}" class="form-control" required value="{{ $translation->slug }}"/>
                 </div>
             @endforeach
 
             @foreach($news->all_translations as $translation)
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <label for="" class="font-weight-bold mb-0">Meta title({{ $translation->locale }})</label>
                 <input type="text" name="meta_title_{{ $translation->locale }}" value="{!! $translation->meta_title !!}" class="form-control" required />
             </div>
             @endforeach
 
             @foreach($news->all_translations as $translation)
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <label for="" class="font-weight-bold mb-0">Meta description({{ $translation->locale }})</label>
-                <textarea rows="5" name="meta_description_{{ $translation->locale }}" class="form-control" required >{!! $translation->meta_description !!}</textarea>
+                <input type="text" name="meta_description_{{ $translation->locale }}" value="{!! $translation->meta_description !!}" class="form-control" required />
             </div>
             @endforeach
 
             @foreach($news->all_translations as $translation)
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <label for="" class="font-weight-bold mb-0">Key facts({{ $translation->locale }})</label>
                 <textarea required class="form-control ckeditor" name="key_facts_{{ $translation->locale }}">{!! $translation->key_facts !!}</textarea>
             </div>
@@ -75,7 +75,7 @@
                         <h4>Text section:</h4>
                     </div>
                     @foreach ($section->all_translations as $section_translation)
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label class="m-0 font-weight-bold">Content({{ $section_translation->locale }})</label>
                             <textarea required class="{{$key == 0 ? 'form-control' : 'ckeditor'}}" id="text-en-${section}" name="section_translations[{{ $section_translation->id }}]">{{ $section_translation->content }}</textarea>
                         </div>
@@ -100,7 +100,7 @@
                     <h4>Blockquote section:</h4>
                 </div>
                 @foreach($section->all_translations as $bqst)
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <label class="m-0 font-weight-bold">Quote({{ $bqst->locale }})</label>
                     <textarea required class="form-control" name="section_translations[{{ $bqst->id }}]">{{ $bqst->content }}</textarea>
                 </div>
@@ -108,7 +108,7 @@
 
                 @foreach($section->details as $detail)
                     @foreach ($detail->all_translations as $translation)
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label class="m-0 font-weight-bold">Quote Author({{ $translation->locale }})</label>
                             <input required type="text" class="form-control my-1" value="{{ $translation->content}}"  name="details[{{$translation->id}}]"/>
                         </div>
@@ -123,7 +123,7 @@
                 </div>
 
                 @foreach ($section->all_translations as $st)
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label class="font-weight-bold mb-0">Heading({{ $st->locale }})</label>
                         <textarea class="form-control" required name="section_translations[{{ $st->id }}]">{{ $st->content }}</textarea>
                     </div>
@@ -131,7 +131,7 @@
 
                 @foreach($section->details as $detail)
                     @foreach ($detail->all_translations as $translation)
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label class="font-weight-bold mb-0">Box 1({{ $translation->locale }})</label>
                             <textarea required class="form-control" name="details[{{ $translation->id }}]">{{ $translation->content }}</textarea>
                         </div>
@@ -156,5 +156,4 @@
 
 @section('scripts')
     <script src="https://cdn.ckeditor.com/4.12.1/full/ckeditor.js"></script>
-   
 @endsection
