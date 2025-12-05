@@ -7,10 +7,8 @@ use App\Testimonial;
 
 class Testimonials extends Component
 {
-    public $testimonials;
     public function __construct()
     {
-        $this->testimonials = Testimonial::inRandomOrder()->take(3)->get();
     }
 
     public function render()

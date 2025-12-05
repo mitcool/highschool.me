@@ -7,10 +7,8 @@ use App\Program;
 
 class Slogan extends Component
 {
-    public $programs;
     public function __construct()
     {
-        $this->programs = Program::orderBy('study_id')->get();
     }
 
     /**
