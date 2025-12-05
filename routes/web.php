@@ -37,6 +37,20 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::get('/parent/profile','ParentController@profile')->name('parent.profile');
 
+	Route::get('/application-fee/{student_id}','ParentController@applicationFee')->name('application-fee');
+
+	Route::get('/application-fee-success/{student_id}','ParentController@applicationFeeSuccess')->name('application-fee-success');
+
+	Route::get('/enrollment-fee/{student_id}/{plan_id}/{payment_type}','ParentController@enrollmentFee')->name('enrollment-fee');
+
+	Route::get('/enrollment-fee-success','ParentController@enrollmentFeeSuccess')->name('enrollment-fee-success');
+
+	Route::post('/extend-plan/{student_id}','ParentController@extendPlan')->name('extend-plan');
+
+	Route::get('/extend-plan-success','ParentController@extendPlanSuccess')->name('extend-plan-success');
+
+	Route::post('/request-family-consultation','ParentController@requestFamilyConsultation')->name('request-family-consultation');
+
 });
 
 Route::group(['prefix' => 'student'],function(){
@@ -54,13 +68,6 @@ Route::group(['prefix' => 'educator'],function(){
 	Route::get('/dashboard', 'EducatorController@dashboard')->name('educator.dashboard');
 	Route::get('/meetings','EducatorController@meetings')->name('educator.meetings');
 });
-Route::get('/application-fee/{student_id}','ParentController@applicationFee')->name('application-fee');
-
-Route::get('/application-fee-success/{student_id}','ParentController@applicationFeeSuccess')->name('application-fee-success');
-
-Route::get('/enrollment-fee/{student_id}/{plan_id}/{payment_type}','PaymentController@enrollmentFee')->name('enrollment-fee');
-
-Route::get('/update-student-status','ParentController@updateStudentStatus')->name('parent.update-student-status');
 
 Route::post('/parent/pay/plan/{student_id}','ParentController@parentPayPlan')->name('parent.pay.plan');
 

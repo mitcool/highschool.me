@@ -413,6 +413,22 @@ input:checked + .slider:before {
     background: #ee6123;
     color: white !important;
 }
+.page-content .font-italic{
+    font-size:1.4rem;
+}
+.welcome-icon{
+    height: 100px;
+    margin-bottom:15px;
+}
+.orange-button-outline {
+    background: white;
+    border: 1px solid #ee6123 !important;
+    color:#ee6123;
+}
+.blue-button {
+    background: #045397;
+    color: white !important;
+}
 .orange-button:hover {
     background: #ee6123;
     color: white;
@@ -1462,12 +1478,16 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 #phone-contact-agree p{
     margin-bottom: 0 !important;
 }
+.blue-color{
+    color:#045397;
+}
 blockquote {
    color:#045397;
    font-family: Tahoma, sans-serif;
-   font-size: 2rem;
+   font-size: 1.7rem;
    width: 100%;
    margin: 0 auto;
+   text-align: justify;
 }
 blockquote h1 {
    font-size: 2rem;

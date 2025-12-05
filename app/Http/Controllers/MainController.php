@@ -128,7 +128,7 @@ class MainController extends Controller
   }
 
   public function logout(){
-    Session::flush();
+    auth()->logout();
     return redirect()->route('welcome',[],301);
   }
 

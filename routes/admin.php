@@ -125,6 +125,10 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/meetings','AdminController@meetings')->name('admin-meetings');
 	Route::post('/meeting/add','AdminController@createMeeting')->name('meeting.add');
 
+	Route::get('/family-consultations','AdminMeetingController@familyConsultations')->name('admin-family-consultations');
+	Route::get('/add-family-consultation/{request_id}','AdminMeetingController@addFamilyConsultation')->name('add-family-consultation');
+	Route::post('/create-family-consultation/{request_id}','AdminMeetingController@createFamilyConsultation')->name('create-family-consultation');
+	Route::post('/mark-family-consultation-as-completed/{request_id}','AdminMeetingController@markFamilyConsultationAsCompleted')->name('mark-family-consultation-as-completed');
 	//Courses
 	Route::get('/courses','AdminController@courses')->name('admin-courses');
 	Route::post('/courses/add','AdminController@addCourse')->name('course.add');

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\GroupSession;
+use App\FamilyConsultation;
+use App\FamilyConsultationRequest;
+use App\User;
 
 class AdminMeetingController extends Controller
 {
@@ -30,5 +34,50 @@ class AdminMeetingController extends Controller
 
         //TODO::emails
         return redirect()->route('admin-group-sessions')->with('success_message','Group session created successfully');
+    }
+
+    public function familyConsultations(){
+        $family_consultations = FamilyConsultationRequest::all();
+        return view('admin.meetings.family-consultations')
+            ->with('family_consultations',$family_consultations);
+    }
+
+    public function addFamilyConsultation($request_id){
+        $family_consultations = FamilyConsultation::all();
+        $parents = User::where('role_id',2)->get();
+        $educators = User::where('role_id',4)->get();
+        return view('admin.meetings.add-family-consultation')
+            ->with('educators',$educators)
+            ->with('request_id',$request_id)
+            ->with('parents',$parents);
+    }
+
+    public function createFamilyConsultation(Request $request , $request_id){
+        $dates = $request->date;
+        $starts = $request->start;
+        $ends = $request->end;
+        $links = $request->link;
+        $educator_id = $request->educator_id;
+        $parent_id = $request->parent_id;
+        
+        foreach($dates as $key => $date){
+           FamilyConsultation::create([
+                'educator_id' => $educator_id,
+                'parent_id' => $parent_id,
+                'date' => $dates[$key],
+                'start' => $starts[$key],
+                'end' => $ends[$key],
+                'link' => $links[$key],
+                'request_id' => $request_id //#pending confirmation
+           ]);
+        }
+
+        return redirect()->route('admin-family-consultations')->with('success_message','Family consultation created successfully');
+    }
+
+    public function markFamilyConsultationAsCompleted($request_id){
+        FamilyConsultationRequest::find($request_id)->update(['status' => 2]);
+        return redirect()->route('admin-family-consultations')->with('success_message','Family consultation updated successfully');
+
     }
 }

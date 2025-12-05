@@ -34,4 +34,8 @@ class ParentStudent extends Model
     public function date_of_birth(){
         return Carbon::parse($this->date_of_birth)->format('d.m.Y');
     }
+
+    public function plans(){
+        return $this->hasMany('App\StudentPlan','student_id','student_id');
+    }
 }

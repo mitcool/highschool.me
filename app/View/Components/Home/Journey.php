@@ -4,7 +4,7 @@ namespace App\View\Components\Home;
 
 use Illuminate\View\Component;
 
-class Cte extends Component
+class Journey extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class Cte extends Component
      */
     public function render()
     {
-        return view('components.home.cte');
+        return view('components.home.journey');
     }
 }

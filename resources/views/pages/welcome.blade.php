@@ -65,15 +65,23 @@
 
 		<x-home.facts />
 
+		<x-home.recognition />
+
+		<x-home.tracks />
+
+		<x-home.edge />
+
+		<x-home.journey />
+
 		<x-home.media/>
 
-		<x-home.accreditation/>
+		{{-- <x-home.accreditation/> --}}
 
 		<x-home.testimonials/>
 
 		<x-home.news />
 
-		<x-home.cte />
+		<x-home.contact />
 
 		{{-- <x-home.contact-form /> --}}
 	</div>

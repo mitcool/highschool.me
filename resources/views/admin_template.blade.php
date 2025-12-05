@@ -24,7 +24,7 @@
     <div class="container-fluid px-0">
         <div class="row">
             <div id="wrapper" style="padding:0 0px;">
-                <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="min-height:1500vh;padding-left:10px;background:#045397">
+                <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="padding-left:10px;background:#045397">
                     <li class="nav-item active">
                         <a class="nav-link" href="{{route('welcome')}}">
                             <i class="fas fa-fw fa-home"></i>
@@ -103,7 +103,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="">
+                        <a class="nav-link collapsed" href="{{ route('admin-family-consultations') }}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Family Consultation</span>
                         </a>

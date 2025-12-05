@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use Mail;
 use Carbon\Carbon;
 
-use App\Meeting;
+use App\FamilyConsultation;
 use App\User;
 use App\ParentStudent;
 use App\Plan;
@@ -18,12 +18,16 @@ use App\InvoiceDetail;
 use App\Country;
 use App\Invoice;
 use App\StudentPlan;
+use App\FamilyConsultationRequest as FamilyConsultationRequestModel;
 
 use App\Mail\StudentCreated;
 use App\Mail\StudentCredentials;
 use App\Mail\StudentCreatedAdmin;
 use App\Mail\PaymentSuccessFull;
 use App\Mail\ParentReuploadDocument;
+use App\Mail\FamilyConsultationRequest;
+use App\Mail\FamilyConsultationRequestAdmin;
+
 
 class ParentController extends Controller
 {
@@ -66,9 +70,9 @@ class ParentController extends Controller
         return view('parent.create-student');
     }
     public function meetings(){
-        $meetings = Meeting::where('parent_id',auth()->id())->get();
+        $family_consultations_requests = FamilyConsultationRequestModel::where('parent_id',auth()->user()->id)->get();
         return view('parent.meetings')
-            ->with('meetings',$meetings);
+            ->with('family_consultations_requests',$family_consultations_requests);
     }
 
     public function addStudent(Request $request){
@@ -164,7 +168,6 @@ class ParentController extends Controller
         ]);
         return redirect()->away($session->url);
     }
-
     public function applicationFeeSuccess($student_id){
         $application_fee = 150;
         $student_data = session()->get('student_data');
@@ -203,6 +206,153 @@ class ParentController extends Controller
             ->with('student_plans',$student_plans);
     }
 
+    public function enrollmentFee($student_id,$plan_id,$payment_type){
+
+        $enrollment_fee = 300;
+        $plan = Plan::find($plan_id);
+        $plan_price = $payment_type == 0 ? $plan->price_per_month : $plan->price_per_year;
+        $period = $payment_type == 0 ? 'per month' : 'per year';
+        $amount = $plan_price + $enrollment_fee;
+        $enrollment_fee_status = 2;
+        $invoice_description = 'Enrollment fee and '.$plan->name. ' package ('. $period .')';
+
+        $student_data = [
+            'student_id' => $student_id,
+            'status' => $enrollment_fee_status,
+            'plan_id' => $plan_id,
+            'payment_type' => $payment_type //montly => 0 , yearly => 1
+        ];
+        $invoice_data = [
+            'description' => $invoice_description,
+            'amount' => $amount
+        ];
+
+        session()->put('student_data',$student_data);
+        session()->put('invoice_data',$invoice_data);
+
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $session = \Stripe\Checkout\Session::create([
+            'line_items'  => [
+                [
+                    'price_data' => [
+                        'currency'     => 'usd',
+                        'product_data' => [
+                            'name' => $invoice_description,
+                        ],
+                        'unit_amount'  => $amount*100, 
+                    ],
+                    'quantity'   => 1,
+                ],
+            ],
+            'mode'        => 'payment',
+            'success_url' => route('enrollment-fee-success'),
+            'cancel_url'  => route('parent.student.profile',$student_id),
+        ]);
+        
+        return redirect()->away($session->url);
+    }
+    public function enrollmentFeeSuccess(){
+       $invoice_data = session()->get('invoice_data');
+       $student_data = session()->get('student_data');
+       $exprires_at = $student_data['payment_type'] == 0  
+                ? Carbon::now()->addMonths(1) 
+                : Carbon::now()->addYears(1); // monthly or yearly
+        StudentPlan::insert([
+            'plan_id' => $student_data['plan_id'],
+            'student_id' => $student_data['student_id'],
+            'expires_at' => $exprires_at,
+            'created_at' => Carbon::now()
+        ]);
+
+        $this->createInvoice($invoice_data['amount'],$invoice_data['description']);
+
+        ParentStudent::where('student_id',$student_data['student_id'])
+            ->update(['status' => $student_data['status']]);
+
+         try{
+            Mail::to(auth()->user()->email)->send(new PaymentSuccessFull);
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+
+        return redirect()->route('parent.create.student');
+    }
+
+    public function extendPlan(Request $request,$student_id){
+        $plan_id = $request->plan;
+        $payment_type = $request->payment_type;
+        $plan = Plan::find($plan_id);
+        $plan_price = $payment_type == 0 ? $plan->price_per_month : $plan->price_per_year;
+        $period = $payment_type == 0 ? 'per month' : 'per year';
+        $enrollment_fee_status = 2;
+        $invoice_description = $plan->name. ' package ('. $period .')';
+        $student_data = [
+            'student_id' => $student_id,
+            'status' => $enrollment_fee_status,
+            'plan_id' => $plan_id,
+            'payment_type' => $payment_type //montly => 0 , yearly => 1
+        ];
+        $invoice_data = [
+            'description' => $invoice_description,
+            'amount' => $plan_price
+        ];
+
+        session()->put('student_data',$student_data);
+        session()->put('invoice_data',$invoice_data);
+
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $session = \Stripe\Checkout\Session::create([
+            'line_items'  => [
+                [
+                    'price_data' => [
+                        'currency'     => 'usd',
+                        'product_data' => [
+                            'name' => $invoice_description,
+                        ],
+                        'unit_amount'  => $plan_price*100, 
+                    ],
+                    'quantity'   => 1,
+                ],
+            ],
+            'mode'        => 'payment',
+            'success_url' => route('extend-plan-success'),
+            'cancel_url'  => route('parent.student.profile',$student_id),
+        ]);
+        
+        return redirect()->away($session->url);
+    } 
+
+
+    public function extendPlanSuccess(){
+       $invoice_data = session()->get('invoice_data');
+       $student_data = session()->get('student_data');
+       $previous_plan = StudentPlan::where('student_id',$student_data['student_id'])->orderBy('expires_at','desc')->first();
+      
+       $exprires_at = $student_data['payment_type'] == 0  
+                ? Carbon::parse($previous_plan->expires_at)->addMonths(1) 
+                : Carbon::parse($previous_plan->expires_at)->addYears(1); // monthly or yearly
+        StudentPlan::insert([
+            'plan_id' => $student_data['plan_id'],
+            'student_id' => $student_data['student_id'],
+            'expires_at' => $exprires_at,
+            'created_at' => Carbon::now()
+        ]);
+
+        $this->createInvoice($invoice_data['amount'],$invoice_data['description']);
+
+        ParentStudent::where('student_id',$student_data['student_id'])->update(['status' => $student_data['status']]);
+
+         try{
+            Mail::to(auth()->user()->email)->send(new PaymentSuccessFull);
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+
+        return redirect()->route('parent.create.student');
+    }
+
     public function invoices(){
         $invoices = Invoice::where('user_email',auth()->user()->email)->get();
         return view('parent.invoices')
@@ -222,56 +372,13 @@ class ParentController extends Controller
         return view('parent.new-inquiry');
     }
 
-    public function updateStudentStatus(){
-        $student_data = session()->get('student_data');
-        $invoice_data = session()->get('invoice_data');
-        $parent_student = [];
-        if(array_key_exists('payment_type',$student_data)){
-            $exprires_at = $student_data['payment_type'] == 0  
-                ? Carbon::now()->addMonths(1) 
-                : Carbon::now()->addYears(1); // monthly or yearly
-               
-            StudentPlan::insert([
-                'plan_id' => $student_data['plan_id'],
-                'student_id' => $student_data['student_id'],
-                'expires_at' => $exprires_at,
-            ]);
-        }      
-        ParentStudent::where('student_id',$student_data['student_id'])->update(['status' => $student_data['status']]);
-
-        Invoice::insert([
-            'invoice_number' => $this->setInvoiceNumber(),
-            'user_email' => auth()->user()->email,
-            'price' => $invoice_data['amount'],
-            'name' => auth()->user()->name ,
-            'created_at' => Carbon::now() ,
-            'surname' => auth()->user()->surname,
-            'street' => auth()->user()->invoice_details->street,
-            'street_number' => auth()->user()->invoice_details->street_number,
-            'city' => auth()->user()->invoice_details->city ,
-            'ZIPcode' => auth()->user()->invoice_details->zip,
-            'country_id' => auth()->user()->invoice_details->country_id,
-            'description' => $invoice_data['description'],
-        ]);
-
-        try{
-            Mail::to(auth()->user()->email)->send(new PaymentSuccessFull);
-        }catch(\Exception $e){
-            info($e->getMessage());
-        }
-
-        session()->forget('student_data');
-        session()->forget('invoice_data');
-
-        return redirect()->route('parent.create.student')
-            ->with('success_message','Payment successfull');
-    }
-
     public function studentProfile($student_id){
         $status = ParentStudent::where('student_id',$student_id)->first()->status;
         $student = User::find($student_id);
         $plans = Plan::all();
+        $active_plan = StudentPlan::where('student_id',$student_id)->first();
         return view('parent.student-profile')
+            ->with('active_plan',$active_plan)
             ->with('student',$student)
             ->with('plans',$plans)
             ->with('status',$status);
@@ -281,7 +388,6 @@ class ParentController extends Controller
          $payment_type = $request->payment_type; # 0 => monthly 1 => yearly
          $plan_id = $request->plan;
          return redirect()->route('enrollment-fee',[$student_id,$plan_id,$payment_type]);
-
     }
 
     public function profile(){
@@ -327,5 +433,26 @@ class ParentController extends Controller
                 info($e->getMessage());
         }
          return redirect()->back();
+    }
+
+    public function requestFamilyConsultation(Request $request){
+
+        $parent  = User::find($request->parent_id);
+
+        FamilyConsultationRequestModel::create(['parent_id' => $parent->id,'status' => 0]);
+
+        try{
+            Mail::to($parent->email)->send(new FamilyConsultationRequest);
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+
+         try{
+            Mail::to('mathias.kunze@onsites.com')->send(new FamilyConsultationRequestAdmin($parent));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+
+        return redirect()->back()->with('success_message','Your request has been placed successfully');
     }
 }

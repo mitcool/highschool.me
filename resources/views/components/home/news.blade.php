@@ -2,8 +2,11 @@
     <div class="col-md-8 offset-md-2">
         <div>
             <div class="p-3">
-                <h2 class="text-center text-white" >News</h2>
+                <h2 class="text-center text-white section-headings">Latest Updates & News</h2>
                 <hr class="white-hr">
+                <div class="page-content text-white text-center">
+                    <p class="font-italic">Fresh moves. Fresh facts. Fresh edge.</p>
+                </div>
                 <div class="row section" id="news_box">
                     
                     @foreach($last_three_news as $news)

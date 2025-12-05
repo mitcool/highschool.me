@@ -49,10 +49,45 @@
             <button class="orange-button">Proceed to Payment</button>
         </div>
        </form>
-    {{-- Pending --}}
+
+    {{-- Active Student --}}
     @elseif($status == 2)
-        <h1 class="text-center">Student is active</h1>
+        <h4 style="color:#E9580C">You have active   {{ $active_plan->plan->name }} plan expires at {{ $active_plan->expires_at() }}</h4>
+       
+        <p>You can pay another one:</p>
+        <form action="{{ route('extend-plan',$student->id) }}" method="POST">
+            {{ csrf_field() }}
+            {{-- <input type="radio" checked readonly class="radio"> Enrolment Fee <span style="color:#E9580C">($300.00)</span>  --}}
+
+        <p class="mb-0 font-weight-bold mt-3">Please select your preferred Package:</p>
+
+        @foreach($plans as $key => $plan)
+            <div>
+                <input class="plans" value="{{ $plan->id }}" type="radio" {{ $key == 0 ? ' checked ' : '' }} name="plan" data-price-per-year="{{ $plan->price_per_year }}" data-price-per-month="{{ $plan->price_per_month }}"> {{ $plan->name }} Package (${{ $plan->price_per_year() }})
+            </div> 
+        @endforeach
+     
+
+        <p class="mb-0 font-weight-bold mt-3">Please select Monthly or Yearly Plan:</p>
+        <div>
+            <input type="radio" checked name="payment_type" class="payment-type" value="0"> Monthly Fee 
+        </div>
+        <div>
+            <input type="radio" name="payment_type" class="payment-type" value="1"> Yearly Fee 
+        </div>
+       
+        
+        <p class="mb-0 font-weight-bold mt-3">You can find more information about the Payment Plans <a href="{{ route('tuition') }}">HERE.</a></p>
+        <hr>
+         <div class="d-flex justify-content-between">
+            <div class="total">
+                Total: <span id="total-without-enrollment"></span>
+            </div>
+            <button class="orange-button">Proceed to Payment</button>
+        </div>
+       </form>
     
+    {{-- Reupload documents --}}
     @elseif($status == 4)
     <form action="{{ route('parent.reupload.document',$student->id) }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
@@ -84,9 +119,9 @@
         let payment_type = $('input[name=payment_type]:checked').val();
         let plan =  $('input[name=plan]:checked').attr('data-price-per-month');
         let total = Number(plan) + 300;
-        
-     $('#total').html('$' + total.toFixed(2));
-        // Note price is in cents
+        $('#total').html('$' + total.toFixed(2));
+        $('#total-without-enrollment').html('$' + Number(plan).toFixed(2));
+
         $('.plans').on('click',function(){
             let payment_type = $('input[name=payment_type]:checked').val();
             let plan_price = payment_type == 0 ? $(this).attr('data-price-per-month') : $(this).attr('data-price-per-year');
