@@ -14,7 +14,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/add-academic','AdminController@addAcademic')->name('add-academic');
 	Route::post('/edit-academic','AdminController@editAcademic')->name('edit-academic');
 	Route::post('/delete-academic/{id}','AdminController@deleteAcademic')->name('delete-academic');
-	Route::get('edit-single-academic/{academic_id}','AdminController@editSingleAcademic')->name('edit-single-academic');
+	Route::get('/edit-single-academic/{academic_id}','AdminController@editSingleAcademic')->name('edit-single-academic');
 
 	//Partners
 	Route::get('/partners','AdminController@adminPartners')->name('admin-partners');
@@ -122,8 +122,11 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/group-session','AdminMeetingController@groupSessions')->name('admin-group-sessions');
 	Route::get('/add-group-session','AdminMeetingController@addGroupSession')->name('add-group-session');
 	Route::post('/create-group-session','AdminMeetingController@createGroupSession')->name('create-group-session');
-	Route::get('/meetings','AdminController@meetings')->name('admin-meetings');
-	Route::post('/meeting/add','AdminController@createMeeting')->name('meeting.add');
+	
+	Route::get('/mentoring-session','AdminMeetingController@mentoringSessions')->name('admin-mentoring-sessions');
+	Route::get('/add-mentoring-session','AdminMeetingController@addMentoringSession')->name('add-mentoring-session');
+	Route::post('/create-mentoring-session','AdminMeetingController@createMentoringSession')->name('create-mentoring-session');
+
 
 	Route::get('/family-consultations','AdminMeetingController@familyConsultations')->name('admin-family-consultations');
 	Route::get('/add-family-consultation/{request_id}','AdminMeetingController@addFamilyConsultation')->name('add-family-consultation');

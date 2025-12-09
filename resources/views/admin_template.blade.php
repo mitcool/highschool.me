@@ -91,7 +91,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="">
+                        <a class="nav-link collapsed" href="{{ route('admin-mentoring-sessions') }}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Mentoring Session for Students</span>
                         </a>

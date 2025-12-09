@@ -87,7 +87,10 @@
 						Module & Honors Courses
 					</a></li>
 					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('psat')}}">
-						PSAT/SAT/PreACT/ACT Prep-Courses
+						PSAT/SAT Prep-Courses
+					</a></li>
+					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('act')}}">
+						PreACT/ACT Prep-Courses
 					</a></li>
 					<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('advanced-placement')}}">
 						Advances Placement Courses

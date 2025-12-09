@@ -40,7 +40,8 @@
             <li><a class="dropdown-item" href="{{ route('standard-high-school') }}">High School Diploma Tracks</a></li>
             <li><a class="dropdown-item" href="{{ route('transfer-program') }}">High School International Transfer Program</a></li>
 			      <li><a class="dropdown-item" href="{{ route('honors-high-school') }}">Module & Honors Courses</a></li>
-            <li><a class="dropdown-item" href="{{ route('psat') }}">PSAT/SAT/PreACT/ACT Prep-Courses</a></li>
+            <li><a class="dropdown-item" href="{{ route('psat') }}">PSAT/SAT Prep-Courses</a></li>
+            <li><a class="dropdown-item" href="{{ route('act') }}">PreACT/ACT Prep-Courses</a></li>
             <li><a class="dropdown-item" href="{{ route('advanced-placement') }}">Advances Placement Courses</a></li>
             <li><a class="dropdown-item" href="{{ route('cte') }}">CTE Prep-Courses</a></li> 
             <li><a class="dropdown-item" href="{{ route('clep') }}">CLEP Prep-Courses</a></li>

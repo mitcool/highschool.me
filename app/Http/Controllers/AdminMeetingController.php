@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\GroupSession;
+use App\MentoringSession;
 use App\FamilyConsultation;
 use App\FamilyConsultationRequest;
 use App\User;
@@ -35,6 +36,31 @@ class AdminMeetingController extends Controller
         //TODO::emails
         return redirect()->route('admin-group-sessions')->with('success_message','Group session created successfully');
     }
+
+    public function mentoringSessions(){
+        $mentoring_sessions = MentoringSession::all();
+        return view('admin.meetings.mentoring-session')
+            ->with('mentoring_sessions',$mentoring_sessions);
+    }
+
+    public function createMentoringSession(Request $request){
+        $request->validate([
+            'date' => 'required',
+            'start' => 'required',
+            'end' => 'required',
+            'link' => 'required',
+            'educator_id' => 'required'
+        ]);
+        $group_session = $request->except('_token');
+        MentoringSession::create($group_session);
+
+        //TODO::emails
+        return redirect()->route('admin-mentoring-sessions')->with('success_message','Mentoring session created successfully');
+    }
+
+    public function addMentoringSession (){
+        return view('admin.meetings.add-mentoring-sessions');
+    } 
 
     public function familyConsultations(){
         $family_consultations = FamilyConsultationRequest::all();
