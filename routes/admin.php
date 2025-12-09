@@ -154,6 +154,9 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/approve/document/{action}','AdminStudentController@approveSingleDocument')->name('approve-document');
 	Route::post('/approve/document','AdminStudentController@wrongDocument')->name('wrong-document');
 
+	//Student Overview
+	Route::get('/admin-student-overview','AdminStudentController@overview')->name('admin-student-overview');
+
 	//Payments
 	Route::get('/invoices', 'AdminController@showInvoices')->name('admin-invoices');
 	Route::get('/invoices/{invoice_id}', 'AdminController@singleInvoice')->name('admin-single-invoice');

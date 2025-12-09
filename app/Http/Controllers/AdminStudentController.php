@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Mail;
 
+use App\User;
 use App\ParentStudent;
 use App\StudentDocument;
 
@@ -63,5 +64,11 @@ class AdminStudentController extends Controller
             info($e->getMessage());
         }
         return redirect()->back()->with('success_message','The feedback to parent sent successfully');
+    }
+
+    public function overview(){
+        $students = User::where('role_id',4)->get();
+        return view('admin.student-overview')
+            ->with('students',$students);
     }
 }

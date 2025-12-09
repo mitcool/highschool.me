@@ -35,8 +35,14 @@ class CurriculumController extends Controller
             ->with('course',$course);
     }
     public function psat(){
-        $courses = CourseType::whereIn('id',[5,6,7,14])->get();
+        $courses = CourseType::whereIn('id',[5,6])->get();
         return view('pages.cirriculum.psat')
+            ->with('courses',$courses);
+    }
+
+    public function act(){
+        $courses = CourseType::whereIn('id',[7,14])->get();
+        return view('pages.cirriculum.act')
             ->with('courses',$courses);
     }
 

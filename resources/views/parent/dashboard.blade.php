@@ -26,7 +26,7 @@
         <div class="row">
            
                 <div id="wrapper" style="padding:0 0px;">
-                    <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion" id="accordionSidebar" style="min-height:1500vh;background:#045397"
+                    <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion" id="accordionSidebar" style="background:#045397"
 ">
                         <li class="nav-item black">
                             <a class="nav-link" href="{{route('welcome')}}">
@@ -72,17 +72,12 @@
                         @endif
                        <div class="sidebar-heading">Payments and invoices</div>
                         <li class="nav-item active">
-                            <a class="nav-link" href="{{route('parent.payments')}}">
-                                <i class="fas fa-fw fa-cog"></i>
-                                <span>Payments</span>
-                            </a>
-                        </li>
-                        <li class="nav-item active">
                             <a class="nav-link" href="{{route('parent.invoices')}}">
                                 <i class="fas fa-fw fa-cog"></i>
-                                <span>Invoices</span>
+                                <span>Payments and invoices</span>
                             </a>
                         </li>
+                        
                         <div class="sidebar-heading">Inquiries</div>
                         <li class="nav-item active">
                             <a class="nav-link" href="{{route('parent.inquiries')}}">

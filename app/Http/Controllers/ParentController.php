@@ -70,7 +70,9 @@ class ParentController extends Controller
         return view('parent.create-student');
     }
     public function meetings(){
-        $family_consultations_requests = FamilyConsultationRequestModel::where('parent_id',auth()->user()->id)->get();
+        $family_consultations_requests = FamilyConsultationRequestModel::where('parent_id',auth()->user()->id)
+                                                                        ->where('status','<',2)
+                                                                        ->get();
         return view('parent.meetings')
             ->with('family_consultations_requests',$family_consultations_requests);
     }
@@ -454,5 +456,12 @@ class ParentController extends Controller
         }
 
         return redirect()->back()->with('success_message','Your request has been placed successfully');
+    }
+    public function confirmMeeting(Request $request,$meeting_id){
+        $meeting = FamilyConsultation::find($meeting_id);
+        $request = FamilyConsultationRequestModel::find($meeting->request_id);
+        $request->update(['status' => 1]);
+        FamilyConsultation::where('id','!=',$meeting->id)->where('request_id',$request->id)->delete();
+        return redirect()->back()->with('success_message','Your confirmation');
     }
 }

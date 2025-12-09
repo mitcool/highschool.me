@@ -211,7 +211,7 @@
                         Student Management System
                     </div>
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="">
+                        <a class="nav-link collapsed" href="{{ route('admin-student-overview') }}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Overview</span>
                         </a>
@@ -230,6 +230,15 @@
                         <a class="nav-link collapsed" href="{{ route('admin-invoices') }}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Invoices</span>
+                        </a>
+                    </li>
+                    <div class="sidebar-heading">
+                        Academics
+                    </div>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{ route('admin-academics') }}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Academics</span>
                         </a>
                     </li>
                     <li class="nav-item">

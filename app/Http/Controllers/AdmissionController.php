@@ -15,10 +15,10 @@ class AdmissionController extends Controller
         return view('pages.admissions.admission-process');
     }
      public function enrolmentCriteria(){
-        return view('pages.admissions.enrolment-criteria');
+        return view('pages.admissions.enrollment-criteria');
     }
      public function enrolmentOptions(){
-        return view('pages.admissions.enrolment-options');
+        return view('pages.admissions.enrollment-options');
     }
     
     public function tuition(){

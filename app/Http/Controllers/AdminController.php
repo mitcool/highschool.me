@@ -147,28 +147,16 @@ class AdminController extends Controller
 
     public function addAcademic(Request $request){
         $request->validate([
-            'picture' => 'max:300'
+            'picture' => 'max:200'
         ]);
+        $academic_data = $request->only('name','slug','description');
+        $academic = Academic::create($academic_data);
         $image = $request->file('picture');
         $input = $request->all();
         $pictureName = $image->getClientOriginalName();
         $destinationPath = public_path('/images/');       
-        $academic_id = Academic::insertGetId([
-            'created_at' => Carbon::now()
-        ]);
-
-        foreach(Config('languages') as $lang => $language){
-
-            AcademicTranslation::insert([
-                'academic_id' => $academic_id,
-                'name' => $input['name-'.$lang],
-                'locale' => $lang,
-                'description' =>$input['description-'.$lang],
-            ]);
-        }
         $image->move($destinationPath, $pictureName);
-
-        $nickname = 'academic-'.$academic_id;
+        $nickname = 'academic-'.$academic->id;
         $path = '/images/'.$pictureName;
         $this->createImage($nickname,$path);
 
@@ -176,14 +164,8 @@ class AdminController extends Controller
     }
 
     public function editAcademic(Request $request){
-        $input = $request->all();
-        foreach(Config('languages') as $lang => $language) {
-            AcademicTranslation::where('locale',$lang)->where('academic_id',$request->id)->update([
-                'name' => $input['name-'.$lang],
-                'description' => $input['description-'.$lang],
-            ]);
-        }
-        
+        $input = $request->except('_token');
+        Academic::where('id',$input['id'])->update($input);
         return redirect()->back()->with('success_message','Academic edited successfully');
     }
 
@@ -191,7 +173,6 @@ class AdminController extends Controller
         $academic = Academic::find($id);
         $this->deleteImage('academic-'.$id);
         Academic::where('id',$id)->delete();
-        AcademicTranslation::where('academic_id',$id)->delete();
         return redirect()->route('admin-academics')->with('success_message','Academic deleted successfully');
     }
 

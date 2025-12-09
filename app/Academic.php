@@ -8,6 +8,9 @@ use Session;
 class Academic extends Model
 {
     protected $table = 'academics';
+
     public $timestamps = false;
+
+    public $fillable = ['name','slug','description'];
     
 }

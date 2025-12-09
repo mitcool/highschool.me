@@ -1,10 +1,5 @@
 <?php
 
-use App\Route as TranslatedRoute;
-//PUBLIC
-//When you add a new public translated route in db - it should be before programs and studies routes
-
-
 Route::get('/404','MainController@notFound')->name('404');
 
 Route::get('/sitemap-images.xml', 'SitemapController@imageSitemap');
@@ -50,6 +45,8 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	Route::get('/extend-plan-success','ParentController@extendPlanSuccess')->name('extend-plan-success');
 
 	Route::post('/request-family-consultation','ParentController@requestFamilyConsultation')->name('request-family-consultation');
+
+	Route::post('/confirm-meeting/{meeting_id}','ParentController@confirmMeeting')->name('confirm-meeting');
 
 });
 
@@ -137,6 +134,8 @@ Route::get('/honors-high-school','CurriculumController@honorsHighSchool')->name(
 Route::get('/advanced-placement','CurriculumController@advancedPlacement')->name('advanced-placement');
 
 Route::get('/psat','CurriculumController@psat')->name('psat');
+
+Route::get('/act','CurriculumController@act')->name('act');
 
 Route::get('/cte','CurriculumController@cte')->name('cte');
 

@@ -1,39 +1,24 @@
 @extends('admin_template')
 
 @section('content')
-	<div class="container-fluid" style="margin-top:50px;">
+<div class="container shadow mx-auto" style="padding:30px;margin-top:20px;">
 		<form action="{{route('add-academic')}}" method="POST" enctype="multipart/form-data">
 			{{csrf_field()}}
-			<div class="row">
-				<div class="col-md-2"></div>
 
-				<div class="col-md-8 shadow" style="padding:30px;">
 					<h3 class="text-center">Add Academic</h3>	
 					<div class="row">
 						
-						@foreach (Config('languages') as $lang  => $language)
 						<div class="col-md-12 my-2">
-							<input type="text" name="title-{{ $lang }}" required class="form-control" placeholder="Title({{ $lang }})">
+							<input type="text" name="name" required class="form-control" placeholder="Name">
 						</div>
-						@endforeach
 						
-						@foreach (Config('languages') as $lang  => $language)
 						<div class="col-md-12 my-2">
-							<input type="text" name="name-{{ $lang }}" required class="form-control" placeholder="Name({{ $lang }})">
+							<input type="text" name="slug" required class="form-control" placeholder="Slug">
 						</div>
-						@endforeach
-						
-						@foreach (Config('languages') as $lang  => $language)
-						<div class="col-md-12 my-2">
-							<input type="text" name="slug-{{ $lang }}" required class="form-control" placeholder="Slug({{ $lang }})">
-						</div>
-						@endforeach
 
-						@foreach (Config('languages') as $lang  => $language)
 						<div class="col-md-12 my-2">
-							<textarea  rows="5" name="description-{{ $lang }}" required class="form-control" placeholder="Description({{ $lang }})"></textarea>
+							<textarea  rows="5" name="description" required class="form-control" placeholder="Description"></textarea>
 						</div>
-						@endforeach
 
 						<div class="col-md-6 my-2">
 							 <div class="custom-file">
@@ -52,13 +37,11 @@
 					<ul class="list-group text-center">
 						@foreach($academics as $academic)
 							<a href="{{route('edit-single-academic',$academic->id)}}">
-								<li class="list-group-item">{{$academic->translated->name}}</li>
+								<li class="list-group-item">{{$academic->name}}</li>
 							</a>
 						@endforeach
 					</ul>
-				</div>
-				<div class="col-md-2"></div>
-			</div>
+				</div>	
 		</form>
 	</div>
 @endsection

@@ -7,9 +7,11 @@
     <table class="table">
         <tbody>
             @forelse ($family_consultations_requests as $request)
-                <tr>
+                <tr class="bg-light">
                     <th>Requested at</th>
                     <th>{{ $request->created_at->format('d.m.Y') }}</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 <tr>
                     <th>Date</th>
@@ -23,7 +25,16 @@
                         <th>{{ $meeting->date->format('d.m.Y') }}</th>
                         <th>{{ $meeting->start->format('H:i') }}</th>
                         <th>{{ $meeting->end->format('H:i') }}</th>
-                        <th>{{ $meeting->link }}</th>
+                        @if($request->status == 0)
+                            <th>
+                                <form method="POST" action="{{ route('confirm-meeting',$meeting->id) }}">
+                                {{ csrf_field() }}
+                                <button class="btn-info btn">Confirm</button>
+                                </form>     
+                            </th>
+                        @elseif($request->status == 1)
+                            <th>{{ $meeting->link }}</th>
+                        @endif
                     </tr>
                 @endforeach
             @empty
