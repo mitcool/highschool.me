@@ -18,7 +18,11 @@ class Controller extends BaseController
         $request_file->move($path, $filename);
 		return $filename;
 	}
-      #custody_document (document 2) required
+   
+	public function unique_code($limit)
+	{
+	return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
+	}
         
 }
 

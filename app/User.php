@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -16,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role_id', 'surname',
+        'name', 'email', 'password', 'role_id', 'surname','date_of_birth'
     ];
 
     /**
@@ -35,6 +36,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'date_of_birth' => 'datetime',
     ];
 
     public function students(){
@@ -53,5 +55,9 @@ class User extends Authenticatable
 
     public function student_details(){
         return $this->hasOne('App\ParentStudent','student_id','id');
+    }
+
+    public function active_plan(){
+        return $this->hasOne('App\StudentPlan','student_id','id')->where('created_at','>',Carbon::now() )->where('expires_at','<',Carbon::now());
     }
 }

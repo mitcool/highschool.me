@@ -407,8 +407,12 @@ input:checked + .slider:before {
     padding: 20px;
 }
 .orange-button {
-    background: #ee6123;
+    background-color: #ee6123 !important;
     color: white !important;
+    text-decoration: none;
+}
+.orange-button:hover{
+    text-decoration: none;
 }
 .page-content .font-italic {
     font-size: 1.4rem;
@@ -434,6 +438,26 @@ input:checked + .slider:before {
     background: #ee6123;
     color: white;
     opacity: 0.9;
+}
+.btn-enroll {
+    background-color: #cc4400;
+    color: white;
+    border: none;
+    font-weight: 600;
+    padding: 5px 20px;
+    border-radius: 6px;
+}
+.btn-enroll:hover {
+    background-color: #b33b00;
+    color: white;
+}
+.btn-enrolled {
+    background-color: #f3f3f3;
+    color: white;
+    border: none;
+    font-weight: 600;
+    padding: 5px 20px;
+    border-radius: 6px;
 }
 .go_to_button_link:hover {
     text-decoration: none;
@@ -1075,6 +1099,7 @@ a:hover {
     border-radius: 30px !important;
     border: 5px solid #025297 !important;
 }
+
 
 @media (max-width: 1660px) {
     .orangeBox {

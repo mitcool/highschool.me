@@ -170,33 +170,20 @@
 
 @section('content')
 <div class="container my-5">
-    <h2 class="text-center mb-4">My Courses</h2>
-    <div class="table-container mx-auto">
-        <div class="table-responsive">
-            <table class="table course-table">
-                <thead>
-                    <tr class="text-center">
-                        <th class="text-left">Subject</th>
-                        <th>Grade</th>
-                        <th>Mandatory</th>
-                        <th>Resources</th>
-                    </tr>
-                </thead>
-                <tbody class="text-center">
-                    @foreach ($enrolled_courses as $enrolled_course )
-                       
-                        <tr>
-                        <td class="text-left">{{ $enrolled_course->course->title }}</td>
-                        <td>{{ auth()->user()->student_details->grade }}</td>
-                        <td>{{ $enrolled_course->course->curriculumCourses[0]->required_flag == 1 ? 'Yes' : 'No' }} </td>
-                        <td><a href="{{ route('student.single-course',$enrolled_course->course->id) }}" class="view-link">View</a></td>
-                    </tr>
-                    @endforeach
-                   
-                </tbody>
-            </table>
-        </div>
+    <h2 class="text-center mb-4">{{ $course->title }}</h2>
+   
+    <div class="table-responsive shadow" style="padding:20px;margin-top:50px;">
+        <h3>Materials</h3>
+
+        @foreach ($course->files as $file )
+            
+        @endforeach
+
+        @foreach ($course->videos as $video )
+            
+        @endforeach
     </div>
+    
 </div>
 @endsection
 

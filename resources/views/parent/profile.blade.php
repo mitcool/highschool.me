@@ -6,7 +6,8 @@
     form label{
         margin-bottom: 0;
         font-weight: bold;
-    }
+        margin-top:10px;
+    }   
 </style>
 
 @endsection
@@ -45,7 +46,10 @@
                 <label for="">Zip code:</label>
                 <input name="zip" required type="text" class="form-control" value="{{ auth()->user()->invoice_details ? auth()->user()->invoice_details->zip : '' }}">
             </div>
-           
+             <div>
+                <label for="">Phone:</label>
+                <input name="phone" required type="text" class="form-control" value="{{ auth()->user()->invoice_details ? auth()->user()->invoice_details->phone : '' }}">
+            </div>
             <div class="text-center">
                 <hr>
                 <button class="btn btn-info">Update info</button>

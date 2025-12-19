@@ -56,8 +56,8 @@
 			
 			<h1 class="page-headings">{{trans('faq.heading')}}</h1><br>
 			@foreach($faqcategories as $category)
-			<a class="faq-heading" href="{{route('single-faq-category',[$category->translated->slug])}}">
-				<h2 data-toggle="collapse" data-target="#collapseExample_faq" aria-expanded="false" aria-controls="collapseExample" class="pl-2 m-0" style="font-size:1.5rem;">{{$category->translated->name}}</h2>
+			<a class="faq-heading" href="{{route('single-faq-category',[$category->slug])}}">
+				<h2 data-toggle="collapse" data-target="#collapseExample_faq" aria-expanded="false" aria-controls="collapseExample" class="pl-2 m-0" style="font-size:1.5rem;">{{$category->name}}</h2>
 			</a>
 			@endforeach
 		</div>

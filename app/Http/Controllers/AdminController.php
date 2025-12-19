@@ -84,10 +84,10 @@ use App\Http\Requests\AiServiceRequest;
 class AdminController extends Controller
 {
 
-   private function uploadFile($file,$path){
-    $filename = $file->getClientOriginalName();
-    $file->move(base_path().$path, $filename);
-    return $filename;
+    private function uploadFile($file,$path){
+        $filename = $file->getClientOriginalName();
+        $file->move(base_path().$path, $filename);
+        return $filename;
     }
    private function createImage($nickname,$path){
         Image::insert([
@@ -99,7 +99,7 @@ class AdminController extends Controller
         ]);
    }
 
-   private function deleteImage($nickname){
+    private function deleteImage($nickname){
         $image = Image::where('nickname', $nickname)->first();
 
         try{
@@ -109,7 +109,7 @@ class AdminController extends Controller
             info($e->getMessage());
         }
         
-   }
+    }
             
     public function cleanSlug($string) {
         $string = str_replace('&', '', $string);
@@ -123,6 +123,7 @@ class AdminController extends Controller
     }
 
     public function showAdminWelcome(Request $request) {
+        #dd($this->unique_code(20));
         return view('admin.welcome');
     }
 
@@ -138,7 +139,6 @@ class AdminController extends Controller
                 ->with('texts',$texts);
     }
 
-   
     public function getAdminAcademics(){
         $academics = Academic::all();
         return view('admin.academics')
@@ -311,6 +311,7 @@ class AdminController extends Controller
 
     public function getFaqCategories(){
         $faq_categories = FaqCategory::all();
+        
         return view('admin.faq-categories')
                 ->with('faq_categories',$faq_categories);
     } 
@@ -318,7 +319,7 @@ class AdminController extends Controller
     public function editFaqCategories(Request $request,$category_id){
         $input = $request->all();
         foreach(Config::get('languages') as $lang => $language){
-            FaqCategoryTranslation::where('category_id',$category_id)->where('locale',$lang)->update([
+            FaqCategory::where('category_id',$category_id)->where('locale',$lang)->update([
 
                   'name' => $input['name_'.$lang],
                   'slug' => $input['slug_'.$lang],
@@ -331,7 +332,7 @@ class AdminController extends Controller
     }
 
     public function getFaqByCategory(Request $request, $category_id) {
-        $faqs = Faq::where('category_id', $category_id)->with('all_translations')->get();
+        $faqs = Faq::where('category_id', $category_id)->get();
         $faq_categories = FaqCategory::all();
 
         return view('admin.edit_single_faq_by_category')->with('faqs', $faqs)->with('faq_categories',$faq_categories);

@@ -5,7 +5,7 @@
 
 <div class="jumbotron container shadow bg-white h-100">
     <h2 class="text-center" style="color:#045397;margin:30px 0">Mentoring Session for Students</h2>
-    <table class="table">
+    <table class="table table-striped">
         <tr>
             <th>Date</th>
             <th>Start Time</th>
@@ -22,7 +22,7 @@
         @endforeach
     </table>
     <div class="text-right mt-5">
-        <a href="{{ route('add-mentoring-session') }}" class="orange-button">Add Meeting</a>
+        <a href="{{ route('add-mentoring-session') }}" class="orange-button">Add Mentoring Session</a>
     </div>
 </div>
 @endsection

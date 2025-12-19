@@ -3,8 +3,8 @@
 @section('content')
 
 <div class="shadow container jumbotron bg-white">
-     <div class="text-center "> 
-        <a href="{{ route('parent.new-inquiry') }}" class="btn btn-info p-2">New Inquiry</a>
+     <div class="text-left mb-3"> 
+        <a href="{{ route('parent.new-inquiry') }}" class=" orange-button mb-3">New Inquiry</a>
     </div>
     <table class="table">
         <thead>

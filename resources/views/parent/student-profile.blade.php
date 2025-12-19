@@ -5,7 +5,7 @@
 <div class="container jumbotron bg-white">
     <div class="shadow page-content" style="padding:20px;">
             <h4 style="color:#045397">{{ $student->name }} {{ $student->surname }}</h4>
-            <p class="mb-0">Born: {{ $student->student_details->date_of_birth()}}</p>
+            @if($student->date_of_birth) <p class="mb-0">Born: {{ $student->date_of_birth->format('d.m.Y')}}</p> @endif
             <p class="mb-0">Grade: {{ $student->student_details->grade }}</p>
             <hr>
     {{-- Pending documention --}}
@@ -52,42 +52,9 @@
 
     {{-- Active Student --}}
     @elseif($status == 2)
-        <h4 style="color:#E9580C">You have active   {{ $active_plan->plan->name }} plan expires at {{ $active_plan->expires_at() }}</h4>
-       
-        <p>You can pay another one:</p>
-        <form action="{{ route('extend-plan',$student->id) }}" method="POST">
-            {{ csrf_field() }}
-            {{-- <input type="radio" checked readonly class="radio"> Enrolment Fee <span style="color:#E9580C">($300.00)</span>  --}}
-
-        <p class="mb-0 font-weight-bold mt-3">Please select your preferred Package:</p>
-
-        @foreach($plans as $key => $plan)
-            <div>
-                <input class="plans" value="{{ $plan->id }}" type="radio" {{ $key == 0 ? ' checked ' : '' }} name="plan" data-price-per-year="{{ $plan->price_per_year }}" data-price-per-month="{{ $plan->price_per_month }}"> {{ $plan->name }} Package (${{ $plan->price_per_year() }})
-            </div> 
-        @endforeach
-     
-
-        <p class="mb-0 font-weight-bold mt-3">Please select Monthly or Yearly Plan:</p>
-        <div>
-            <input type="radio" checked name="payment_type" class="payment-type" value="0"> Monthly Fee 
-        </div>
-        <div>
-            <input type="radio" name="payment_type" class="payment-type" value="1"> Yearly Fee 
-        </div>
-       
-        
-        <p class="mb-0 font-weight-bold mt-3">You can find more information about the Payment Plans <a href="{{ route('tuition') }}">HERE.</a></p>
-        <hr>
-         <div class="d-flex justify-content-between">
-            <div class="total">
-                Total: <span id="total-without-enrollment"></span>
-            </div>
-            <button class="orange-button">Proceed to Payment</button>
-        </div>
-       </form>
-    
+    <x-enrollment-table :student="$student"></x-enrollment-table>
     {{-- Reupload documents --}}
+
     @elseif($status == 4)
     <form action="{{ route('parent.reupload.document',$student->id) }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}

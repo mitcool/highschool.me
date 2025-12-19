@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 use Mail;
+use Cookie;
 use Carbon\Carbon;
 
-use App\FamilyConsultation;
 use App\User;
 use App\ParentStudent;
 use App\Plan;
@@ -19,6 +19,17 @@ use App\Country;
 use App\Invoice;
 use App\StudentPlan;
 use App\FamilyConsultationRequest as FamilyConsultationRequestModel;
+use App\CourseType;
+use App\FamilyConsultation;
+use App\GroupSession;
+use App\MentoringSession;
+use App\UserGroupSession;
+use App\UserMentoringSession;
+use App\PaidGroupSession;
+use App\PaidMentoringSession;
+use App\PaidCoachingSession;
+use App\CurriculumCourse;
+use App\StudentEnrolledCourse;
 
 use App\Mail\StudentCreated;
 use App\Mail\StudentCredentials;
@@ -27,7 +38,11 @@ use App\Mail\PaymentSuccessFull;
 use App\Mail\ParentReuploadDocument;
 use App\Mail\FamilyConsultationRequest;
 use App\Mail\FamilyConsultationRequestAdmin;
+use App\Mail\CourseEnrolledParent;
+use App\Mail\CourseEnrolledStudent;
 
+
+use App\Services\StudentSessionsService;
 
 class ParentController extends Controller
 {
@@ -63,6 +78,10 @@ class ParentController extends Controller
         return;
 
     }
+    public $student_sessions_service;
+    public function __construct(StudentSessionsService $student_sessions_service){
+        $this->student_sessions_service = $student_sessions_service;
+    }
     public function dashboard(){
         return view('parent.dashboard');
     }
@@ -70,43 +89,80 @@ class ParentController extends Controller
         return view('parent.create-student');
     }
     public function meetings(){
-        $family_consultations_requests = FamilyConsultationRequestModel::where('parent_id',auth()->user()->id)
-                                                                        ->where('status','<',2)
-                                                                        ->get();
+        $group_sessions = GroupSession::all();
+        $mentoring_sessions = MentoringSession::all();
+
+        $user_group_sessions = UserGroupSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
+        $user_mentoring_sessions = UserMentoringSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
+
+        $paid_group_sessions = PaidGroupSession::where('parent_id',auth()->user()->id)->where('status',0)->count();
+        $paid_mentoring_sessions = PaidMentoringSession::where('parent_id',auth()->user()->id)->where('status',0)->count();
+
         return view('parent.meetings')
-            ->with('family_consultations_requests',$family_consultations_requests);
+            ->with('group_sessions',$group_sessions)
+            ->with('user_group_sessions',$user_group_sessions)
+            ->with('mentoring_sessions',$mentoring_sessions)
+            ->with('user_mentoring_sessions',$user_mentoring_sessions);
     }
 
     public function addStudent(Request $request){
-         
         $request->validate([
-            'name'  => 'required',
+            'name' => 'required',
+            'surname' => 'required',
             'email' => 'required',
-            'parent_id' => 'required|max:5000',
-            'custody_document' => 'required|max:5000',
-            'proof_of_residence' => 'required|max:5000',
-            'student_id' => 'required|max:5000',
-            'birth_certificate' => 'required|max:5000',
-            'school_transcript' => 'max:5000',
-            'withdrawal_confirmation' => 'max:5000',
-
+            'date_of_birth' => 'required',
+            'education_option' => 'required'
         ]);
 
-         $data = $request->only('name','surname','email');
-         $student_data = $request->only('grade','date_of_birth','email');
-         $password  = Str::random(10);
-         $student_role_id = 4;
+        $education_option = $request->education_option;
+        $user = $request->only('name','surname','email','date_of_birth');
+        $password  = Str::random(10);
+        $student_role_id = 4;
 
-         $student = User::create([
-            'name' => $data['name'],
-            'surname' => $data['surname'],
-            'email' => $data['email'],
+        $student = User::create([
+            'name' => $user['name'],
+            'surname' => $user['surname'],
+            'email' => $user['email'],
             'role_id' => $student_role_id,
             'password' => Hash::make($password),
+            'date_of_birth' => $user['date_of_birth']
         ]);
 
+        ParentStudent::create([
+            'parent_id' => auth()->user()->id,
+            'student_id'=> $student->id,
+            'status' => 0,
+            'is_disabled' => 0
+        ]);
+        if($education_option == 1){
+            return redirect()->route('parent.student.documents',$student->id);
+        }
+        elseif($education_option==2){
+             return redirect()->route('parent.student.module.courses',$student->id);
+        }
+        elseif($education_option==3){
+             return redirect()->route('parent.student.sessions',$student->id);
+        }
+        else{
+            return;
+        }
+       
+    }
+
+    public function studentDocuments($student_id){
+        $student = User::find($student_id);
+        return view('parent.student-documents')
+                ->with('student',$student);
+    }
+
+    public function studentDocumentsSubmit(Request $request){
+
+        $student_id = $request->id;
+        $student = User::find($student_id);
+        $grade = $request->grade;
+        ParentStudent::where('student_id',$student_id)->first()->update([ 'grade'=>$grade ]);
+
         $path = base_path()."/public/documents/".$student->id;
-        
         #Parent Id (document 1) required
         $parent_id_name = $this->upload_file($request->file('parent_id'),$path);
         StudentDocument::insert(['file'=>$parent_id_name,'type'=>1,'student_id'=>$student->id,'is_approved' => 0]);
@@ -142,8 +198,40 @@ class ParentController extends Controller
             $iep_name =  $this->upload_file($request->file('iep'),$path); 
             StudentDocument::insert(['file'=>$iep_name,'type'=> 8,'student_id'=>$student->id,'is_approved' => 0]);
         }
-        session()->put('student_data',$student_data);
-        return redirect()->route('application-fee',$student->id);
+
+        return redirect()->route('parent.student.profile',$student->id)->with('success_message','Student created successfully');
+    }
+
+    public function studentModuleCourses(){
+        return view('parent.student-module-courses');
+    }
+
+    public function studentSessions($student_id){
+        $student = User::find($student_id);
+        $sessions = $this->student_sessions_service->get_sessions();
+        $total = $this->student_sessions_service->calculate_total();
+        return view('parent.student-sessions')
+            ->with('total',$total)
+            ->with('sessions',$sessions)
+            ->with('student',$student);
+    }
+    public function changeSessionCount($session_id,$action){
+        $current_count = Cookie::get('session-count-'.$session_id);
+        $new_count = $action == 'increase' ? $current_count++ : $current_count--;
+        if($current_count >= 1){
+             Cookie::queue('session-count-'.$session_id, $current_count, 60);
+        }
+        return redirect()->back()->with('success_message','Session count updated successfully');
+    }
+
+    public function studentSessionsCheckout($student_id){
+        $student = User::find($student_id);
+        $sessions = $this->student_sessions_service->get_sessions();
+        $total = $this->student_sessions_service->calculate_total();
+        return view('parent.session-checkout')
+            ->with('total',$total)
+            ->with('sessions',$sessions)
+            ->with('student',$student);
     }
      public function applicationFee($student_id){
 
@@ -178,7 +266,6 @@ class ParentController extends Controller
             'parent_id' => auth()->id(),
             'status' => 0,
             'grade' => $student_data['grade'],
-            'date_of_birth' => Carbon::parse($student_data['date_of_birth'])
         ]);
         $this->createInvoice($application_fee,'Application Fee');
 
@@ -228,7 +315,7 @@ class ParentController extends Controller
             'description' => $invoice_description,
             'amount' => $amount
         ];
-
+        
         session()->put('student_data',$student_data);
         session()->put('invoice_data',$invoice_data);
 
@@ -326,6 +413,35 @@ class ParentController extends Controller
         return redirect()->away($session->url);
     } 
 
+    public function studentSessionsPay($student_id){
+
+        $student = User::find($student_id);
+        $sessions = CourseType::where('type',3)->get();
+        $total = $this->student_sessions_service->calculate_total();
+        
+         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $session = \Stripe\Checkout\Session::create([
+            'line_items'  => [
+                [
+                    'price_data' => [
+                        'currency'     => 'usd',
+                        'product_data' => [
+                            'name' => 'Sessions payment',
+                        ],
+                        'unit_amount'  => $total*100, 
+                    ],
+                    'quantity'   => 1,
+                ],
+            ],
+            'mode'        => 'payment',
+            'success_url' => route('session-pay-success',$student_id),
+            'cancel_url'  => route('parent.student.sessions.checkout',$student_id),
+        ]);
+
+         return redirect()->away($session->url);
+    }
+
 
     public function extendPlanSuccess(){
        $invoice_data = session()->get('invoice_data');
@@ -400,7 +516,7 @@ class ParentController extends Controller
 
     public function updateInfo(Request $request){
         $user = $request->email;
-        $details = $request->only('city','street','street_number','zip','country_id');
+        $details = $request->only('city','street','street_number','zip','country_id','phone');
         $details['user_id'] = auth()->id();
         InvoiceDetail::updateOrCreate(['user_id'=>auth()->user()->id],$details);
         return redirect()->back()->with('success_message','User info updated successfully');
@@ -464,4 +580,75 @@ class ParentController extends Controller
         FamilyConsultation::where('id','!=',$meeting->id)->where('request_id',$request->id)->delete();
         return redirect()->back()->with('success_message','Your confirmation');
     }
+
+    public function sendInquiry(Request $request){
+        $inquiry = $request->only('title','message');
+        $inquiry['ticket'] = $this->unique_code(20);
+        $inquiry['user_id'] = auth()->user()->id;
+       
+    }
+
+    public function studentSessionsSuccess($student_id){
+        $this->student_sessions_service->recordSesssions($student_id);
+        $amount = $this->student_sessions_service->calculate_total();
+        $description = 'Services for group/mentoring/coaching sessions';
+        $this->createInvoice($amount,$description);
+        return view('parent.student-sessions-success');
+    }
+
+    public function  bookGroupSession($session_id){
+       $user_id = auth()->user()->id;
+       UserGroupSession::insert([
+            'user_id' => $user_id,
+            'session_id' => $session_id
+       ]);
+       //TODO:: mails
+
+       return redirect()->route('book-session-success')->with('success_message','The group session booked successfully');
+    }
+
+    public function  bookMentoringSession($session_id){
+       $user_id = auth()->user()->id;
+       UserMentoringSession::insert([
+            'user_id' => $user_id,
+            'session_id' => $session_id
+       ]);
+
+       //TODO:: mails
+
+       return redirect()->route('book-session-success')->with('success_message','The group session booked successfully');
+    }
+
+    public function bookSessionSuccess(){
+        return view('parent.book-session-success');
+    }
+
+    public function enroll(Request $request,$course_id){
+       
+        $curriculum_course = CurriculumCourse::with('course')->where('course_id',$course_id)->first();
+        $parent = auth()->user();
+        $student = User::find($request->student_id);
+
+        StudentEnrolledCourse::insert([
+            'user_id' => $request->student_id,
+            'catalog_course_id' => $curriculum_course->course_id,
+            'created_at' => Carbon::now()
+        ]);
+
+        try{
+            Mail::to($parent->email)->send(new CourseEnrolledParent($parent,$student,$curriculum_course));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+
+        try{
+             Mail::to($student->email)->send(new CourseEnrolledStudent);
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+
+
+        return redirect()->back()->with('success_message','The course has been enrolled successfully');
+    }
 }
+

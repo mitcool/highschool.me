@@ -9,6 +9,11 @@ use App\AmbassadorReward;
 use App\AmbassadorServiceAction;
 use App\AmbassadorActivity;
 use App\CurriculumType;
+use App\CurriculumCourse;
+use App\StudentEnrolledCourse;
+use App\CatalogCourse;
+
+use Carbon\Carbon;
 
 class StudentController extends Controller
 {
@@ -80,7 +85,18 @@ class StudentController extends Controller
             'categories.curriculumCourses.course',
             'curriculumCourses.course'
         ])->orderBy('id')->get();
-        
-        return view('student.my-courses')->with('curriculumTypes', $curriculumTypes);
+
+        $enrolled_courses = StudentEnrolledCourse::where('user_id',auth()->user()->id)->get();
+        $enrolled_courses_ids = $enrolled_courses->pluck('catalog_course_id')->toArray();
+        return view('student.my-courses')
+            ->with('enrolled_courses', $enrolled_courses)
+            ->with('enrolled_courses_ids', $enrolled_courses_ids)
+            ->with('curriculumTypes', $curriculumTypes);
+    }
+
+    public function singleCourse($course_id){
+        $course = CatalogCourse::find($course_id);
+        return view('student.single-course')
+            ->with('course',$course);
     }
 }

@@ -297,12 +297,36 @@ input:checked + .slider:before {
     padding:12px 15px;
     border:none;
     border-radius: 10px;
-    font-size: 1.2rem;
 }
 .orange-button:hover {
     background: #ee6123;
     color: white;
     opacity: 0.9;
+}
+.orange-button-outline {
+    background: white;
+    border: 1px solid #ee6123 !important;
+    color: #ee6123;
+}
+.btn-enroll {
+    background-color: #cc4400;
+    color: white;
+    border: none;
+    font-weight: 600;
+    padding: 5px 20px;
+    border-radius: 6px;
+}
+.btn-enroll:hover {
+    background-color: #b33b00;
+    color: white;
+}
+.btn-enrolled {
+    background-color: #f3f3f3;
+    color: black;
+    border: none;
+    font-weight: 600;
+    padding: 5px 20px;
+    border-radius: 6px;
 }
 .go_to_button_link:hover {
     text-decoration: none;

@@ -18,6 +18,14 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::post('/student/create','ParentController@addStudent')->name('student.add');
 
+	Route::get('/student/documents/{student_id}','ParentController@studentDocuments')->name('parent.student.documents');
+
+	Route::post('/student/documents/submit','ParentController@studentDocumentsSubmit')->name('parent.student.documents.submit');
+
+	Route::get('/student/module/courses/{student_id}','ParentController@studentModuleCourses')->name('parent.student.module.courses');
+
+	Route::get('/student/sessions/{student_id}','ParentController@studentSessions')->name('parent.student.sessions');
+
 	Route::get('/payments','ParentController@payments')->name('parent.payments');
 
 	Route::get('/invoices','ParentController@invoices')->name('parent.invoices');
@@ -27,6 +35,8 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	Route::get('/inquiries','ParentController@inquiries')->name('parent.inquiries');
 
 	Route::get('/new-inquiry','ParentController@newInquiry')->name('parent.new-inquiry');
+
+	Route::post('/send-inquiry','ParentController@sendInquiry')->name('parent.send-inquiry');
 
 	Route::get('/student/profile/{student_id}','ParentController@studentProfile')->name('parent.student.profile');
 
@@ -47,16 +57,35 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	Route::post('/request-family-consultation','ParentController@requestFamilyConsultation')->name('request-family-consultation');
 
 	Route::post('/confirm-meeting/{meeting_id}','ParentController@confirmMeeting')->name('confirm-meeting');
+	
+	#releted to Group Session,menotring sessions and coaching sessions
+	Route::post('/change-session-count/{session_id}/{action}','ParentController@changeSessionCount')->name('change-session-count');
+
+	Route::get('/sessions-checkout/{student_id}','ParentController@studentSessionsCheckout')->name('parent.student.sessions.checkout');
+
+	Route::post('/sessions-pay/{student_id}','ParentController@studentSessionsPay')->name('parent.student.sessions.pay');
+
+	Route::get('/session-pay-success/{student_id}','ParentController@studentSessionsSuccess')->name('session-pay-success');
+
+	Route::post('/book-group-session/{session_id}','ParentController@bookGroupSession')->name('book-group-session');
+
+	Route::post('/book-mentoring-session/{session_id}','ParentController@bookMentoringSession')->name('book-mentoring-session');
+
+	Route::get('/book-session-success','ParentController@bookSessionSuccess')->name('book-session-success');
+
+	Route::post('/enroll/{course_id}','ParentController@enroll')->name('enroll');
+
 
 });
 
-Route::group(['prefix' => 'student'],function(){
+Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::get('/dashboard', 'StudentController@dashboard')->name('student.dashboard');
 	Route::get('/reset-password', 'StudentController@resetPassPage')->name('student.reset.password.page');
 	Route::get('/ambassador-program', 'StudentController@ambassadorPage')->name('student.ambassador-program');
 	Route::get('/activities/{platform_id}', 'StudentController@getActivities')->name('student.get-activity');
 	Route::post('/store-activity', 'StudentController@storeActivity')->name('student.store-activity');
 	Route::get('/my-courses', 'StudentController@myCoursesPage')->name('student.my-courses');
+	Route::get('/course/{course_id}','StudentController@singleCourse')->name('student.single-course');
 });
 
 Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');

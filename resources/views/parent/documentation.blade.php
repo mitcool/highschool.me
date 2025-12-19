@@ -5,7 +5,7 @@
 
 <div class="shadow container jumbotron bg-white">
      
-    <h1 class="text-center">Submit Documents</h1>
+    <h1 class="text-center" style="color:#003A6B;">Submit Documents</h1>
 
     <form action="">
         <div class="mb-3">

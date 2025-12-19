@@ -30,6 +30,6 @@ class Invoice extends Model
 	}
 
 	public function formatted_price(){
-		return number_format(($this->price/100),2,'.',',');
+		return number_format(($this->price),2,'.',',');
 	}
 }

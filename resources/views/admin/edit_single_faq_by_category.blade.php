@@ -10,7 +10,7 @@
     <h1>Edit FAQ</h1>
     
     @foreach($faqs as $faq)
-        @foreach($faq->all_translations as $translation)
+        @foreach($faq as $translation)
         <hr>
         <form action="{{ route('edit-faq',$translation->id) }}" method="POST">
             {{ csrf_field() }}
