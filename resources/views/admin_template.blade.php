@@ -51,7 +51,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="{{route('enrollment-courses')}}">
+                        <a class="nav-link collapsed" href="{{route('all-enrollment-courses')}}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Enrollment Courses</span>
                         </a>
@@ -121,7 +121,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="">
+                        <a class="nav-link collapsed" href="{{ route('admin.ambassador-activities') }}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Ambassador Activities</span>
                         </a>
@@ -235,10 +235,17 @@
                     <div class="sidebar-heading">
                         Academics
                     </div>
-                    <li class="nav-item">
+            <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-academics') }}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Academics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <hr class="sidebar-divider">
+                        <a class="nav-link collapsed" href="{{ route('admin.change-password') }}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Change password</span>
                         </a>
                     </li>
                     <li class="nav-item">

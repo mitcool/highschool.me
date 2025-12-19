@@ -15,8 +15,8 @@ class AboutController extends Controller
     return view('pages.about.mission-statement');
   }
   public function showAccreditation(Request $request){
-	 $partners = Partner::all();
-    return view('pages.about.accreditation',compact('partners'));
+
+    return view('pages.about.accreditation');
   }
   public function showLeadership(Request $request){
     return view('pages.about.leadership');

@@ -24,10 +24,6 @@
                     <input type="text" name="points" class="form-control">
                 </div>
             </div>
-            <div class="mt-3">
-                <label>Additional Information</label>
-                <input type="text" name="additional_info" class="form-control">
-            </div>
             <div class="text-center mt-4">
                 <a href="{{ route('admin.ambassador-rewards') }}" class="btn btn-danger">Cancel</a>
                 <a href="" class="btn btn-primary">Add Reward</a>

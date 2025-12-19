@@ -17,6 +17,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
 
     @yield('css')
+    <style>
+        .modal-content {
+            border-radius: 30px !important;
+            border: 5px solid #025297 !important;
+        }
+        .error-msg {
+            border-radius: 30px !important;
+            border: 5px solid red !important;
+        }
+    </style>
 
 </head>
 
@@ -106,17 +116,39 @@
                 </div>
 
                     @if(Session::has('success_message'))
-                        <div class="alert alert-success text-center alert-fixed shadow" role="alert">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            {{ Session::get('success_message') }}
-                        </div>
+                        <div class="modal fade" id="message_modal">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body text-center">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <div></div>
+                                        {!! Session::get('success_message') !!}
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 50px; color:black; margin-bottom: 15px;">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div> 
                     @endif
 
                     @if(Session::has('error'))
-                        <div class="alert alert-danger text-center alert-fixed shadow" role="alert">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            {{ Session::get('error') }}
-                        </div>
+                        <div class="modal fade" id="message_modal">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content error-msg">
+                                <div class="modal-body text-center">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <div></div>
+                                        {{ Session::get('error') }}
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 50px; color:black; margin-bottom: 15px;">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div> 
                     @endif
 
                     @if(count($errors) > 0)
@@ -138,11 +170,9 @@
     @yield('scripts')
 
     <script type="text/javascript">
-        
-       
        let forms = document.querySelectorAll('.confirm-first');
-       for(let form of forms){
-        
+
+       for(let form of forms){  
         form.addEventListener('submit',function(e){
             if(form.getAttribute('id')=='logout_form' ){
                 form.submit();
@@ -158,6 +188,8 @@
             }    
         });
        }
+
+       $('#message_modal').modal('show');
     </script>
 </body>
 

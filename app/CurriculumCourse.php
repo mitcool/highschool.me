@@ -19,13 +19,11 @@ class CurriculumCourse extends Model
         'category_id',
         'required_flag',
         'requirement_text',
-        'credits_override',
         'notes',
     ];
 
     protected $casts = [
         'required_flag'    => 'boolean',
-        'credits_override' => 'float',
     ];
 
     /**

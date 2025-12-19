@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationProfile;
+use Session;
+
 class RegisterController extends Controller
 {
     /*
@@ -38,6 +43,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
+        $this->redirectTo = url()->previous();
         $this->middleware('guest');
     }
 
@@ -59,7 +65,7 @@ class RegisterController extends Controller
     }
     public function showRegistrationForm()
     {
-        $user_roles = UserRole::all();
+        $user_roles = UserRole::where('order', '!=', 0)->orderBy('order', 'asc')->get();
         return view('auth.register')
             ->with('user_roles',$user_roles);
     }
@@ -71,12 +77,25 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $confirmation_code = Str::random(30);
+        $data['confirmation_code'] = $confirmation_code;
+
+        $success_message  = 'Your account has been successfully registered. Check your e-mail!';
+        try{
+            Mail::to($data['email'])->send(new VerificationProfile($data));
+        }catch(\Exception $e) {
+            Log::info($e);
+        }
+
+        Session::flash('success_message', $success_message);
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'surname' => $data['surname'],
             'password' => Hash::make($data['password']),
             'role_id' => $data['role_id'],
+            'confirmation_code' => $confirmation_code,
+            'is_verified' => 0,
         ]);
     }
 }

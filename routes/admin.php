@@ -147,8 +147,10 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/courses-types/delete','AdminController@deleteCourseType')->name('course-type.delete');
 
 	//Courses for the enrollment process
-	Route::get('enrollment-courses', 'AdminController@showAddEnrollmentCourse')->name('enrollment-courses');
-	Route::post('add-enrollment-course', 'AdminController@AddEnrollmentCourse')->name('add-enrollment-course');
+	Route::get('/enrollment-courses', 'AdminController@showAddEnrollmentCourse')->name('enrollment-courses');
+	Route::post('/add-enrollment-course', 'AdminController@AddEnrollmentCourse')->name('add-enrollment-course');
+	Route::get('/all-enrollment-courses', 'AdminController@allEnrollmentCoursesPage')->name('all-enrollment-courses');
+	Route::get('/edit-enrollment-course/{course_id}', 'AdminController@editEnrollmentCoursePage')->name('edit-enrollment-course');
 	
 	//Student documents 
 	Route::get('/students/documents','AdminStudentController@studentDocuments')->name('admin-student-documents');
@@ -169,4 +171,10 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/update-ambassador-activity', 'AdminController@updateAmbassadorStatus')->name('admin.update-ambassador-activity');
 	Route::get('/ambassador-rewards', 'AdminController@showAmbassadorRewards')->name('admin.ambassador-rewards');
 	Route::get('/add-reward', 'AdminController@showAddRewardPage')->name('admin.add-reward');
+	Route::get('/ambassador-activities', 'AdminController@showActivitiesPage')->name('admin.ambassador-activities');
+	Route::get('/add-activity', 'AdminController@showAddActivityPage')->name('admin.add-activity');
+
+	//Password functionality
+	Route::get('/change-password', 'AdminController@changePassword')->name('admin.change-password');
+	Route::post('/update-password', 'AdminController@updatePassword')->name('admin.update-password');
 });

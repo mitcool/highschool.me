@@ -13,6 +13,7 @@ use Log;
 use Cookie;
 use Config;
 use DB;
+use Auth;
 use Carbon\Carbon;
 
 use App\Mail\ContactEmail;
@@ -76,6 +77,7 @@ use App\Job;
 use App\Plan;
 use App\FeatureCategory;
 use App\Feature;
+use App\ContactPage;
 
 use App\Http\Requests\ContactRequest;
 use App\Http\Requests\AdvisoryRequest;
@@ -274,14 +276,33 @@ class MainController extends Controller
   }
  
   public function contact(){
+    $categories = ContactPage::get();
     
-    return view('pages.footer.contact-us-page');
+    return view('pages.footer.contact-us-page')->with('categories', $categories);
   }
 
   public function feature($feature_slug){
      $feature = Feature::where('slug',$feature_slug)->first();
      return view('pages.feature')
       ->with('feature',$feature);
+  }
+
+  public function verifyAccount($confcode) {
+    $user = User::where('confirmation_code', '=', $confcode)->first();
+    $confirmed = User::where('is_verified', '=', 0)->where('confirmation_code', '=', $confcode)->count();
+
+    $success_auth_message_content = 'Your account has been successfully confirmed. Welcome!';
+    $denied_auth_message_content = 'Your account has already been confirmed.';
+    if ($confirmed > 0) {
+        User::where('is_verified', '=', 0)->where('confirmation_code', '=', $confcode)->update(['is_verified' => 1]);
+        Session::flash('success_message', $success_auth_message_content);
+    } else {
+        Session::flash('success_message', $denied_auth_message_content);
+    }
+
+    Auth::login($user);
+
+    return redirect('/');
   }
   
 }

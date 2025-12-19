@@ -7,12 +7,12 @@
         
        <li class="nav-item dropdown">
         <div class="nav-link dropdown-toggle font-weight-bold header-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; text-align: center;">
-        	ABOUT
+          ABOUT
         </div>
          <ul class="dropdown-menu p-0 mt-0">
             <li><a class="dropdown-item" href="{{ route('school-overview')}}">School Overview</a></li>
             <li><a class="dropdown-item" href="{{ route('mission-statement') }}">Mission Statement</a></li>
-            <li><a class="dropdown-item" href="{{ route('accreditation') }}">Accreditation</a></li>
+            <li><a class="dropdown-item" href="{{ route('accreditation') }}">Recognition & Quality Standards</a></li>
             <li><a class="dropdown-item" href="{{ route('leadership') }}">Leadership</a></li>
             <li><a class="dropdown-item" href="{{ route('academics') }}">Faculty & Mentors</a></li>
             <li><a class="dropdown-item" href="{{ route('students-in-spotlight') }}">Students in Spotlight</a></li>
@@ -39,7 +39,7 @@
          <ul class="dropdown-menu p-0 mt-0">
             <li><a class="dropdown-item" href="{{ route('standard-high-school') }}">High School Diploma Tracks</a></li>
             <li><a class="dropdown-item" href="{{ route('transfer-program') }}">High School International Transfer Program</a></li>
-			      <li><a class="dropdown-item" href="{{ route('honors-high-school') }}">Module & Honors Courses</a></li>
+            <li><a class="dropdown-item" href="{{ route('honors-high-school') }}">Module & Honors Courses</a></li>
             <li><a class="dropdown-item" href="{{ route('psat') }}">PSAT/SAT Prep-Courses</a></li>
             <li><a class="dropdown-item" href="{{ route('act') }}">PreACT/ACT Prep-Courses</a></li>
             <li><a class="dropdown-item" href="{{ route('advanced-placement') }}">Advances Placement Courses</a></li>
@@ -55,7 +55,7 @@
         </div>
          <ul class="dropdown-menu p-0 mt-0">
             <li><a class="dropdown-item" href="{{ route('admission-process') }}">Admission process</a></li>
-			      <li><a class="dropdown-item" href="{{ route('enrollment-criteria') }}">Enrollment criteria</a></li>
+            <li><a class="dropdown-item" href="{{ route('enrollment-criteria') }}">Enrollment criteria</a></li>
             <li><a class="dropdown-item" href="{{ route('enrollment-options') }}">Enrollment options</a></li>
             <li><a class="dropdown-item" href="{{ route('tuition') }}">Tuition</a></li>
             <li><a class="dropdown-item" href="{{ route('tuition-assistance') }}">Tuition Assistance (PEP)</a></li>

@@ -30,10 +30,10 @@
 			<x-nav/>
 		</div>
 		
-		{{-- <!-- On desktop screen -->
+		<!-- On desktop screen -->
 		<div class="menuButton col-lg-10 col-md-10 col-8">
 			<x-nav-mobile/>
-		</div> --}}
+		</div>
 
 		<div class="twoButtons col-lg-3 col-md-3 justify-content-end align-items-center" style="padding-right:40px">
 			@auth
@@ -46,7 +46,7 @@
 				@elseif(auth()->user()->role_id == 4)
 					<a class="btn mx-2 orange-button" href="{{ route('student.dashboard') }}">DASHBOARD</a>
 				@elseif(auth()->user()->role_id == 5)
-					<a class="btn mx-2 orange-button" href="{{ route('teacher.dashboard') }}">DASHBOARD</a>
+					<a class="btn mx-2 orange-button" href="{{ route('educator.dashboard') }}">DASHBOARD</a>
 				@endif
 				
 			@else

@@ -49,7 +49,6 @@ class CatalogCourse extends Model
                 'category_id',
                 'required_flag',
                 'requirement_text',
-                'credits_override',
                 'notes',
             ])
             ->withTimestamps(false);

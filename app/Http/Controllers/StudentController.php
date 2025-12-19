@@ -22,8 +22,8 @@ class StudentController extends Controller
     }
 
     public function resetPassPage() {
-    	
-    	return view('student.reset-password');
+        
+        return view('student.reset-password');
     }
 
     public function ambassadorPage() {
@@ -44,8 +44,8 @@ class StudentController extends Controller
             ->sum(function ($activity) {
                 return $activity->action->value ?? 0;
             });
-    	
-    	return view('student.ambassador')
+        
+        return view('student.ambassador')
             ->with('ambassador_rewards', $ambassador_rewards)
             ->with('ambassador_services', $ambassador_services)
             ->with('activities', $activities)

@@ -235,6 +235,8 @@ Route::post('/subscribe','MainController@subscribe')->name('subscribe');
 
 Route::post('/unsubscribe-user/{id}','MainController@unsubscribeUser')->name('unsubscribe-user');
 
+Route::get('/verify/mail/{confcode}', 'MainController@verifyAccount');
+
 /*
 Route::get('/down', function() {
   	$exitCode = Artisan::call('down');

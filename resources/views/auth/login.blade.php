@@ -4,91 +4,154 @@
 <style>
     body {
         min-height: 100%;
+        background: linear-gradient(135deg, #045397, #0b6cb8);
     }
+
     .login-container {
-        background-color: #045397;
+        padding: 4rem 1rem;
     }
-    .head-text {
-        color: white;
+
+    .login-title {
+        color: #fff;
+        font-weight: 600;
+        margin-bottom: 2rem;
     }
+
+    .login-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+
+    .login-card .card-body {
+        padding: 2.5rem;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        margin-bottom: .4rem;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: .6rem .75rem;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #045397;
+    }
+
     .btn-log-reg {
-        background-color: #E9580C!important;
-        border-color: #E9580C!important;
+        background-color: #E9580C !important;
+        border-color: #E9580C !important;
+        border-radius: 8px;
+        padding: .55rem 2rem;
+        font-weight: 500;
+    }
+
+    .btn-log-reg:hover {
+        background-color: #d14f0a !important;
+        border-color: #d14f0a !important;
+    }
+
+    .forgot-link {
+        font-size: .9rem;
+    }
+
+    .form-check-label {
+        font-size: .9rem;
     }
 </style>
 @endsection
 
 @section('content')
-<div class="login-container pt-5 pb-5">
-    <div class="text-center mb-5 head-text">
+<div class="login-container">
+    <div class="text-center login-title">
         <h1>Login</h1>
     </div>
+
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
+        <div class="col-md-6 col-lg-5">
+            <div class="card login-card">
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                        {{-- Email --}}
+                        <div class="form-group">
+                            <label for="email">{{ __('E-Mail Address') }}</label>
+                            <input
+                                id="email"
+                                type="email"
+                                class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}"
+                                name="email"
+                                value="{{ old('email') }}"
+                                required
+                                autofocus
+                            >
+                            @if ($errors->has('email'))
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </span>
+                            @endif
+                        </div>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                        {{-- Password --}}
+                        <div class="form-group">
+                            <label for="password">{{ __('Password') }}</label>
+                            <input
+                                id="password"
+                                type="password"
+                                class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
+                                name="password"
+                                required
+                            >
+                            @if ($errors->has('password'))
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('password') }}</strong>
+                                </span>
+                            @endif
+                        </div>
 
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
+                        {{-- Remember Me --}}
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="remember"
+                                    id="remember"
+                                    {{ old('remember') ? 'checked' : '' }}
+                                >
+                                <label class="form-check-label" for="remember">
+                                    {{ __('Remember Me') }}
+                                </label>
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
+                        {{-- reCAPTCHA --}}
+                        <div class="form-group text-center mt-4 mb-4">
+                            <div class="g-recaptcha d-inline-block"
+                                 data-sitekey="{{ config('services.recaptcha.key') }}">
                             </div>
                         </div>
 
-                        <div class="form-group row mb-1">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                        {{-- Actions --}}
+                        <div class="form-group text-center mb-0">
+                            <button type="submit" class="btn btn-primary btn-log-reg">
+                                {{ __('Login') }}
+                            </button>
 
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-4">
-                            <div class="text-center" style="margin: 0 auto;">
-                                <div class="g-recaptcha mt-4" data-sitekey={{config('services.recaptcha.key')}}></div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary btn-log-reg">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                            @if (Route::has('password.request'))
+                                <div class="mt-3">
+                                    <a class="forgot-link" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
                                     </a>
-                                @endif
-                            </div>
+                                </div>
+                            @endif
                         </div>
+
                     </form>
                 </div>
             </div>

@@ -97,7 +97,7 @@
     <h1>List of news news:</h1>
     @foreach($news as $n)
     <hr />
-    {!! $n->sections[0]->translated->content !!}
+    тука са статиите
     <div class="text-right d-flex justify-content-end">
         <a href="{{ route('edit-news',$n->id) }}" class="btn btn-warning mr-2">Edit News</a>
         <form action="{{ route('delete-news',$n->id) }}" method="POST" class="text-right">

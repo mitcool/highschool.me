@@ -13,6 +13,8 @@
       border-radius: 8px;
       box-shadow: 0 3px 12px rgba(0,0,0,0.08);
       padding: 50px 70px;
+      width: 800px;
+      max-height: 1000px;
     }
     .invoice-header {
       border-bottom: 3px solid #ff5a00;
@@ -123,8 +125,8 @@
       <div>
         <h4 class="invoice-title">Invoice</h4>
         <div class="invoice-info mt-3">
-          <span><strong>Invoice number:</strong> 003495510</span>
-          <span><strong>Date of issue:</strong> October 1, 2025</span>
+          <span><strong>Invoice number:</strong> {{$invoice->invoice_number}}</span>
+          <span><strong>Date of issue:</strong> {{$invoice->created_at}}</span>
           <span><strong>Due date:</strong> October 14, 2025</span>
         </div>
       </div>
@@ -140,7 +142,7 @@
           ONSITES GROUP LTD<br>
           87 Prilep Street<br>
           Business Centre “Bee Garden”<br>
-          Bulgaria<br>
+          Varna, Bulgaria<br>
           email@mail.com<br>
           VAT 0000000000
         </p>
@@ -148,11 +150,11 @@
       <div class="col-md-6">
         <h6 class="section-title">Bill To</h6>
         <p>
-          Address Line<br>
-          Address Line 2<br>
-          Country<br>
-          user@email.com<br>
-          VAT 0000000000
+          {{$invoice->name}} {{$invoice->surname}}<br>
+          {{$invoice->city}}, {{$invoice->ZIPcode}}<br>
+          {{$invoice->country->name}}<br>
+          {{$invoice->user_email}}<br>
+          VAT {{$invoice->VAT_number}}
         </p>
       </div>
     </div>

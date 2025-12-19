@@ -99,7 +99,7 @@ class AdminController extends Controller
         ]);
    }
 
-    private function deleteImage($nickname){
+   private function deleteImage($nickname){
         $image = Image::where('nickname', $nickname)->first();
 
         try{
@@ -109,7 +109,7 @@ class AdminController extends Controller
             info($e->getMessage());
         }
         
-    }
+   }
             
     public function cleanSlug($string) {
         $string = str_replace('&', '', $string);
@@ -123,7 +123,6 @@ class AdminController extends Controller
     }
 
     public function showAdminWelcome(Request $request) {
-        #dd($this->unique_code(20));
         return view('admin.welcome');
     }
 
@@ -139,6 +138,7 @@ class AdminController extends Controller
                 ->with('texts',$texts);
     }
 
+   
     public function getAdminAcademics(){
         $academics = Academic::all();
         return view('admin.academics')
@@ -311,7 +311,6 @@ class AdminController extends Controller
 
     public function getFaqCategories(){
         $faq_categories = FaqCategory::all();
-        
         return view('admin.faq-categories')
                 ->with('faq_categories',$faq_categories);
     } 
@@ -826,6 +825,12 @@ class AdminController extends Controller
         return view('admin.single-invoice')->with('invoice', $invoice);
     }
 
+    public function allEnrollmentCoursesPage() {
+        $courses = CatalogCourse::with('curriculumCourses')->paginate(10);
+
+        return view('admin.all-enrollment-courses')->with('courses', $courses);
+    }
+
     public function showAddEnrollmentCourse() {
         $curriculumTypes = CurriculumType::get();
         $categories = CourseCategory::get();
@@ -847,7 +852,6 @@ class AdminController extends Controller
             'default_credits'    => ['nullable', 'numeric', 'min:0'],
             'category_id'        => ['nullable', 'exists:course_categories,id'],
             'required_flag'      => ['nullable', 'boolean'],
-            'credits_override'   => ['nullable', 'numeric', 'min:0'],
             'requirement_text'   => ['nullable', 'string', 'max:255'],
             'notes'              => ['nullable', 'string'],
 
@@ -911,7 +915,6 @@ class AdminController extends Controller
                 'category_id'        => $data['category_id'] ?? null,
                 'required_flag'      => $requiredFlag,
                 'requirement_text'   => $data['requirement_text'] ?? null,
-                'credits_override'   => $creditsOverride,
                 'notes'              => $data['notes'] ?? null,
             ]);
 
@@ -998,6 +1001,14 @@ class AdminController extends Controller
             ->with('success_message', 'Course created successfully and linked to curriculum type: ' . $curriculumType->code);
     }
 
+    public function editEnrollmentCoursePage(Request $request, $course_id) {
+        $course = CatalogCourse::where('id', $course_id)->first();
+        $curriculumTypes = CurriculumType::get();
+        $categories = CourseCategory::get();
+
+        return view('admin.edit-enrollment-course')->with('course', $course)->with('curriculumTypes', $curriculumTypes)->with('categories', $categories);
+    }
+
     public function showAmbassadorLinks() {
         $activities = AmbassadorActivity::with(['user', 'action'])
         ->orderBy('created_at', 'desc')
@@ -1030,4 +1041,58 @@ class AdminController extends Controller
 
         return view('admin.ambassador-program.add-reward');
     }
+
+    public function addReward() {
+
+        return redirect()->back();
+    }
+
+    public function showActivitiesPage() {
+        $ambassador_services = AmbassadorService::all();
+
+        return view('admin.ambassador-program.activities')->with('ambassador_services', $ambassador_services);
+    }
+
+    public function showAddActivityPage() {
+
+        return view('admin.ambassador-program.add-activity');
+    }
+
+    public function changePassword() {
+        return view('admin.change-password');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => ['required'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $user = $request->user();
+
+        // 1) Verify current password
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()
+                ->withErrors(['current_password' => 'Current password is incorrect.'])
+                ->withInput();
+        }
+
+        // 2) Optional: prevent same password reuse
+        if (Hash::check($request->password, $user->password)) {
+            return back()
+                ->withErrors(['password' => 'New password must be different from the current password.']);
+        }
+
+        // 3) Save new password (hashed)
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+
+        // 4) Regenerate session
+        $request->session()->regenerate();
+
+        return back()->with('status', 'Password updated successfully.');
+    }
+
 }
