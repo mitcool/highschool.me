@@ -32,11 +32,11 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::get('/invoices/{invoice_id}', 'ParentController@singleInvoice')->name('parent.single-invoice');
 
-	Route::get('/inquiries','ParentController@inquiries')->name('parent.inquiries');
+	Route::get('/help-desk','ParentController@helpDesk')->name('parent.help-desk');
 
 	Route::get('/new-inquiry','ParentController@newInquiry')->name('parent.new-inquiry');
 
-	Route::post('/send-inquiry','ParentController@sendInquiry')->name('parent.send-inquiry');
+	Route::post('/send-message','ParentController@sendHelpDeskQustion')->name('parent.send-message');
 
 	Route::get('/student/profile/{student_id}','ParentController@studentProfile')->name('parent.student.profile');
 
@@ -162,6 +162,8 @@ Route::get('/honors-high-school','CurriculumController@honorsHighSchool')->name(
 
 Route::get('/advanced-placement','CurriculumController@advancedPlacement')->name('advanced-placement');
 
+Route::get('/advanced-placement/{slug}','CurriculumController@showSingleApCourse')->name('single-ap-course');
+
 Route::get('/psat','CurriculumController@psat')->name('psat');
 
 Route::get('/act','CurriculumController@act')->name('act');
@@ -169,6 +171,8 @@ Route::get('/act','CurriculumController@act')->name('act');
 Route::get('/cte','CurriculumController@cte')->name('cte');
 
 Route::get('/clep','CurriculumController@clep')->name('clep');
+
+Route::get('/clep/{slug}','CurriculumController@showSingleClepCourse')->name('single-clep-course');
 
 Route::get('/esol','CurriculumController@esol')->name('esol'); #a.k.a english courses
 

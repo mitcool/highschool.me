@@ -127,6 +127,12 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/add-mentoring-session','AdminMeetingController@addMentoringSession')->name('add-mentoring-session');
 	Route::post('/create-mentoring-session','AdminMeetingController@createMentoringSession')->name('create-mentoring-session');
 
+	Route::get('/educators','AdminController@educators')->name('admin-educators');
+	Route::post('/educator/add','AdminController@createEducator')->name('create-educator');
+
+	Route::get('/help-desk/parent','AdminController@parentHelpDesk')->name('admin-parent-help-desk');
+	Route::get('/help-desk/student','AdminController@studentHelpDesk')->name('admin-student-help-desk');
+
 
 	Route::get('/family-consultations','AdminMeetingController@familyConsultations')->name('admin-family-consultations');
 	Route::get('/add-family-consultation/{request_id}','AdminMeetingController@addFamilyConsultation')->name('add-family-consultation');

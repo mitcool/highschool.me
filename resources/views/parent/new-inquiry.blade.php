@@ -4,7 +4,7 @@
     <div class="container jumbotron bg-white">
         <h2 class="font-weight-bold text-center" style="color:#003A6B;">Submit Inquiry</h2>
         <div class="shadow" style="padding:20px;">
-            <form action="{{ route('parent.send-inquiry') }}" method="POST">
+            <form action="{{ route('parent.send-message') }}" method="POST">
                 {{ csrf_field() }}
                 <label class="font-weight-bold mb-0 mt-2" for="" class="d-block" >Title</label>
                 <input type="text" class="form-control" name="title" required />

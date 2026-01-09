@@ -57,6 +57,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
+            'middlename' => ['string', 'max:255'],
             'surname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
@@ -77,6 +78,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        /**
+        * NOTE ONLY PARENTS CAN REGISTER 
+        */
+        $parent_role = 2;
         $confirmation_code = Str::random(30);
         $data['confirmation_code'] = $confirmation_code;
 
@@ -91,9 +96,10 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'middlename' => $data['middlename'],
             'surname' => $data['surname'],
             'password' => Hash::make($data['password']),
-            'role_id' => $data['role_id'],
+            'role_id' => $parent_role,
             'confirmation_code' => $confirmation_code,
             'is_verified' => 0,
         ]);

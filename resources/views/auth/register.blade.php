@@ -74,6 +74,7 @@
 <div class="register-container">
     <div class="text-center register-title">
         <h1>Register</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic nisi quisquam cum maxime.</p>
     </div>
 
     <div class="row justify-content-center">
@@ -96,9 +97,22 @@
                             @endif
                         </div>
 
+                         {{-- Family Name --}}
+                        <div class="form-group">
+                            <label for="middlename">{{ __('Middle Name') }}</label>
+                            <input id="middlename" type="text"
+                                   class="form-control{{ $errors->has('middlename') ? ' is-invalid' : '' }}"
+                                   name="middlename" value="{{ old('middlename') }}">
+                            @if ($errors->has('middlename'))
+                                <span class="invalid-feedback">
+                                    <strong>{{ $errors->first('middlename') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+
                         {{-- Family Name --}}
                         <div class="form-group">
-                            <label for="surname">{{ __('Family Name') }}</label>
+                            <label for="surname">{{ __('Last Name') }}</label>
                             <input id="surname" type="text"
                                    class="form-control{{ $errors->has('surname') ? ' is-invalid' : '' }}"
                                    name="surname" value="{{ old('surname') }}" required>
@@ -122,7 +136,7 @@
                             @endif
                         </div>
 
-                        {{-- Role --}}
+                        {{-- Role
                         <div class="form-group">
                             <label for="role_id">I'm a</label>
                             <select name="role_id" class="form-control" id="role_id">
@@ -130,7 +144,7 @@
                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
 
                         {{-- Password --}}
                         <div class="form-group">

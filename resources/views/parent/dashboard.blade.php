@@ -88,11 +88,11 @@
                             </a>
                         </li>
                         
-                        <div class="sidebar-heading">Inquiries</div>
+                        <div class="sidebar-heading">Help Desk</div>
                         <li class="nav-item active">
-                            <a class="nav-link" href="{{route('parent.inquiries')}}">
+                            <a class="nav-link" href="{{route('parent.help-desk')}}">
                                 <i class="fas fa-fw fa-cog"></i>
-                                <span>Inquiries</span>
+                                <span>Help Desk</span>
                             </a>
                         </li>
                         <div class="sidebar-heading">Profile</div>

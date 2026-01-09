@@ -1,10 +1,10 @@
-@extends('parent.dashboard')
+@extends('admin_template')
 
 @section('content')
 
 <div class="shadow container jumbotron bg-white">
      <div class="text-left mb-3"> 
-        <a href="{{ route('parent.new-inquiry') }}" class=" orange-button mb-3">New Inquiry</a>
+        <a href="{{ route('parent.new-inquiry') }}" class=" orange-button mb-3">New Message</a>
     </div>
     <table class="table">
         <thead>
@@ -15,11 +15,17 @@
                 <th style="border-top-right-radius:10px;"></th>
             </tr>
             <tr>
-                <th>Headline</th>
-                <th>Sender</th>
+                <th>Title</th>
+                <th>Message</th>
                 <th>Date</th>
                 <th>Link</th>
             </tr>
+            @foreach ($help_desk as $hd)
+                <th>{{ $hd->title }}</th>
+                <th>{{ $hd->created_at->format('d.m.Y') }}</th>
+                <th>{{ $hd->slug }}</th>
+                <th><a href="{{ $hd->slug }}">Open</a> </th>
+            @endforeach
         </thead>
         <tbody>
         

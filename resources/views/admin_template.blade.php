@@ -162,7 +162,24 @@
                             <span>Author's Information</span>
                         </a>
                     </li>
+                   <hr class="sidebar-divider">
 
+                    <div class="sidebar-heading">
+                        Help Desk
+                    </div>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('admin-parent-help-desk')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Parent Help Desk</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('admin-student-help-desk')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Student Help Desk</span>
+                        </a>
+                    </li>
                     <hr class="sidebar-divider"> 
 
                     <div class="sidebar-heading">
@@ -222,7 +239,17 @@
                     </li>
 
                     <hr class="sidebar-divider">
-
+                    <div class="sidebar-heading">
+                        Educator Management System
+                    </div>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{ route('admin-educators') }}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Add Educator</span>
+                        </a>
+                        
+                    </li>
+                    <hr class="sidebar-divider">
                     <div class="sidebar-heading">
                         Payments & Invoices
                     </div>

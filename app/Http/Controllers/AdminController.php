@@ -77,6 +77,7 @@ use App\AmbassadorService;
 use App\AmbassadorReward;
 use App\AmbassadorServiceAction;
 use App\AmbassadorActivity;
+use App\HelpDesk;
 
 use App\Http\Requests\CreateConferenceRequest;
 use App\Http\Requests\AiServiceRequest;
@@ -1095,4 +1096,44 @@ class AdminController extends Controller
         return back()->with('status', 'Password updated successfully.');
     }
 
+    public function educators(){
+        return view('admin.educators');
+    }
+
+    public function createEducator(Request $request){
+        $educator_role_id = 5;
+        $request->validate([
+            'firstname' => 'required',
+            'middlename' => 'nullable',
+            'surname' => 'required',
+            'email' => 'required',
+        ]);
+
+        $password  = Str::random(10);
+        $confirmation_code = Str::random(30);
+        $student = User::create([
+            'name' => $request->firstname,
+            'surname' => $request->surname,
+            'middlename' => $request->middlename,
+            'email' => $request->email,
+            'role_id' => $educator_role_id,
+            'password' => Hash::make($password),
+            'confirmation_code' => $confirmation_code,
+            'is_verified' => 1,
+        ]);
+
+        return redirect()->back()->with('success_message','Educator created successfully');
+    }
+
+    #Using the same view for both help desks
+    public function parentHelpDesk(){
+        $help_desk = HelpDesk::whereNull('related_to')->where('is_parent',1)->get();
+        return view('admin.help-desk')
+            ->with('help_desk',$help_desk);
+    }
+    public function studentHelpDesk(){
+        $help_desk = HelpDesk::whereNull('related_to')->where('is_parent',0)->get();
+        return view('admin.help-desk')
+            ->with('help_desk',$help_desk);
+    }
 }
