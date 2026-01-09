@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 use Mail;
 use Validator;
@@ -303,6 +304,28 @@ class MainController extends Controller
     Auth::login($user);
 
     return redirect('/');
+  }
+
+  public function updatePassword(Request $request){
+    $request->validate([
+        'current_password' => ['required'],
+        'password' => ['required', 'confirmed', 'min:8'],
+    ]);
+
+    $user = Auth::user();
+
+    // Check current password
+    if (!Hash::check($request->current_password, $user->password)) {
+        return back()->withErrors([
+            'current_password' => 'Current password is incorrect.',
+        ]);
+    }
+
+    // Update password
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    return back()->with('success_message', 'Password changed successfully.');
   }
   
 }

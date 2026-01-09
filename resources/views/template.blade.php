@@ -31,6 +31,13 @@
 		$('#program-page-link-wrapper').on('mouseleave',function(){
 			$('.program-dropdown-menu').addClass('d-none')
 		})
+
+		$(document).ready(function () {
+		    $('#menu .collapse').on('show.bs.collapse', function () {
+		        $('#menu .collapse.show').not(this).collapse('hide');
+		    });
+		});
+	</script>
 	</script>
 	</body>
 </html>

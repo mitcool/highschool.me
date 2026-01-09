@@ -21,7 +21,7 @@
         <div class="col-lg-10">
             <div class="card shadow-sm">
                 <div class="card-header text-white d-flex justify-content-between align-items-center cst-head">
-                    <h5 class="mb-0">Add New Course</h5>
+                    <h5 class="mb-0">Edit {{$course->title}}</h5>
                     <small class="text-white-50">highschool.me</small>
                 </div>
 
@@ -82,7 +82,7 @@
                                     type="text"
                                     id="fldoe_course_code"
                                     name="fldoe_course_code"
-                                    value="{{ old('fldoe_course_code') }}"
+                                    value="{{ $course->fldoe_course_code }}"
                                     class="form-control"
                                     placeholder="e.g. 1001310"
                                 >

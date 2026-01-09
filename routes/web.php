@@ -199,7 +199,10 @@ Route::get('/check-subscriptions','CronjobController@checkSubscribtions')->name(
 Route::get('/sitemap','SitemapController@showSitemapHTML')->name('sitemap');
 Route::get('/sitemap.xml','SitemapController@sitemap')->name('sitemap-xml');
 
-
+#resetPassword
+Route::middleware('auth')->group(function () {
+    Route::post('/change-password', 'MainController@updatePassword')->name('password.update');
+});
 		
 // Route::post('/get-selected-program', 'MainController@getSelectedProgram')->name('get-selected-program');
 
