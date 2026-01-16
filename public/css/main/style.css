@@ -1221,10 +1221,11 @@ a:hover {
         margin: 15px 0 !important;
     }
     .footer-ul li {
-        margin: 15px 0 !important;
+        margin: 15px !important;
         cursor: pointer;
         transition: 0.3s;
         font-size: 1rem !important;
+        text-align: left;
     }
     #settings_modal .col-md-4 {
         max-width: 100% !important;
@@ -1376,6 +1377,16 @@ a:hover {
 
     .cont-btn-mobile {
         display: none;
+    }
+    .logo-address-container {
+        text-align: center;
+    }
+    .company-details li{
+        text-align: center!important;
+    }
+    .footer-ul {
+        text-align: center;
+        padding-left: 0px!important;
     }
 }
 @media (min-width: 450px) and (max-width: 550px) {

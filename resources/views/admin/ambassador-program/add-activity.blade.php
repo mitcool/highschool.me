@@ -18,16 +18,18 @@
                 <div class="col-md-12">
                     <label>Social Platform</label>
                     <select class="form-control">
-                        <option></option>
+                        @foreach($platforms as $platform)
+                            <option value="{{ $platform->id }}">{{ $platform->name }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-md-9 mt-3">
-                    <label>Name</label>
+                    <label>Activity</label>
                     <input type="text" name="name" class="form-control">
                 </div>
                 <div class="col-md-3 mt-3">
                     <label>Points</label>
-                    <input type="text" name="points" class="form-control">
+                    <input type="number" name="points" class="form-control">
                 </div>
             </div>
             <div class="mt-3">
@@ -36,7 +38,7 @@
             </div>
             <div class="text-center mt-4">
                 <a href="{{ route('admin.ambassador-activities') }}" class="btn btn-danger">Cancel</a>
-                <a href="" class="btn btn-primary">Add Activity</a>
+                <btn type='submit' class="btn btn-primary">Add Activity</a>
             </div>
         </form>
     </div>

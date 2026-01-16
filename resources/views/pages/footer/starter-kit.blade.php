@@ -14,20 +14,27 @@
 
 @section('headCSS')
 <style>
-    .promotion-images{
-        width:100%;
-        padding:20px;
+    .small-text {
+        font-size: 14px;
+        line-height: 1.7;
+        color: #8a8a8a;
     }
-    .promotion-text{
-        padding:20px;
-		display:flex;
-        align-items:start;
-		justify-content:center;
-		flex-direction:column;
+    .feature-icon {
+        font-size: 42px;
+        color: #f15a00;
+        margin-right: 20px;
+        min-width: 50px;
     }
-    @media(max-width:1200px){
-        .reverse{
-            flex-direction: column-reverse;
+
+    .feature-text {
+        color: #8a8a8a;
+        font-size: 15px;
+        line-height: 1.6;
+        margin: 0;
+    }
+    @media (max-width: 992px) {
+        .right-column {
+            margin-top: 20px;
         }
     }
 </style>
@@ -35,75 +42,130 @@
 
 @section('content')
 
-<x-image-component nickname="promotion-cover" class="digital_studies-images main-pictures-pages"/>
-<div class="container-fluid main_page_container">
-	<div class="row justify-content-center">
-		<div class="col-md-10 col-lg-8 container-style bg-white mb-4">
-			<h1 class="page-headings p-3">{{trans('promotion.heading')}}</h1>
-			<div class="page-content">{!! trans('promotion.starting-text') !!}</div>
-            <div class="row p-3">
-                {{-- <div class="col-xl-6">
-                    <x-image-component nickname="promotion-1"  class="promotion-images"/>
-                </div> --}}
-                <div class="col-xl-12 promotion-text">
-                    {!! trans('promotion.text-one') !!}
-                </div>
-            </div>
-            <div class="row reverse p-3">
-                <div class="col-xl-12 promotion-text">
-                    {!! trans('promotion.text-two') !!}
-                </div>
-                {{-- <div class="col-xl-6">
-                    <x-image-component nickname="promotion-2" class="promotion-images"/>
-                </div> --}}
-            </div>
-            <div class="row p-3">
-                {{-- <div class="col-xl-6">
-                    <x-image-component nickname="promotion-3" class="promotion-images"/>
-                </div> --}}
-                <div class="col-xl-12 promotion-text">
-                    {!! trans('promotion.text-three') !!}
-                </div>
-            </div>
-            <div class="row reverse p-3">
-                <div class="col-xl-12 promotion-text">
-                    {!! trans('promotion.text-four') !!}
-                </div>
-                {{-- <div class="col-xl-6">
-                    <x-image-component nickname="promotion-4" class="promotion-images"/>
-                </div> --}}
-            </div>
-            <div class="row p-3">
-                {{-- <div class="col-xl-6">
-                    <x-image-component nickname="promotion-5" class="promotion-images"/>
-                </div> --}}
-                <div class="col-xl-12 promotion-text">
-                    {!! trans('promotion.text-five') !!}
-                </div>
-            </div>
-            <div class="row reverse p-3">
-                <div class="col-xl-12 promotion-text">
-                    {!! trans('promotion.text-six') !!}
-                </div>
-                {{-- <div class="col-xl-6">
-                    <x-image-component nickname="promotion-6" class="promotion-images"/>
-                </div> --}}
-            </div>  
-            <div class="row p-3">
-                {{-- <div class="col-xl-6">
-                    <x-image-component nickname="promotion-7" class="promotion-images"/>
-                </div> --}}
-                <div class="col-xl-12 promotion-text">
-                    {!! trans('promotion.text-seven') !!}
-                </div>
-            </div>
-                
+<x-image-component nickname="freshman-kit-cover" class="digital_studies-images main-pictures-pages"/>
+<div class="mb-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9 text-center">
+                <h1 class="page-headings p-3">{{trans('promotion.heading')}}</h1>
+
+                <p class="lead text-dark mb-4">
+                    Earn real high school credits through a recognized curriculum that
+                    meets national academic standards.
+                </p>
+
+                <p class="text-muted small-text">
+                    Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque.
+                    Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium.
+                    Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros.
+                    Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin.
+                    Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique.
+                    Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim.
+                    Proin mattis porttitor lorem a tristique.
+                </p>
             </div>
         </div>
     </div>
-</div>
+    <div class="mt-4" style="background-color: #F8F9FA;">
+        <div class="container row g-4 pt-5 pb-5" style="margin: 0 auto;">
 
-<div style="background:#045397;padding:20px;text-center;display:flex;justify-content:center;">
-    <a href="" class="orange-button btn mx-auto">View Courses</a>
+            <!-- LEFT COLUMN -->
+            <div class="col-lg-6">
+                <div class="d-flex align-items-start mb-4 feature-item">
+                    <img src="{{ asset('/images/freshman-kit/bag.webp') }}" class="feature-icon">
+                    <div>
+                        <p class="feature-text">
+                            Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium.
+                            Vivamus vitae nisi a dolor aliquet varius in a eros.
+                            Suspendisse non orci eros.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start mb-4 feature-item">
+                    <img src="{{ asset('/images/freshman-kit/headphones.webp') }}" class="feature-icon">
+                    <div>
+                        <p class="feature-text">
+                            Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium.
+                            Vivamus vitae nisi a dolor aliquet varius in a eros.
+                            Suspendisse non orci eros.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start mb-4 feature-item">
+                    <img src="{{ asset('/images/freshman-kit/usb.webp') }}" class="feature-icon">
+                    <div>
+                        <p class="feature-text">
+                            Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium.
+                            Vivamus vitae nisi a dolor aliquet varius in a eros.
+                            Suspendisse non orci eros.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start feature-item">
+                    <img src="{{ asset('/images/freshman-kit/phone.webp') }}" class="feature-icon">
+                    <div>
+                        <p class="feature-text">
+                            Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium.
+                            Vivamus vitae nisi a dolor aliquet varius in a eros.
+                            Suspendisse non orci eros.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="col-lg-6 right-column">
+                <div class="d-flex align-items-start mb-4 feature-item">
+                    <img src="{{ asset('/images/freshman-kit/book.webp') }}" class="feature-icon">
+                    <div>
+                        <p class="feature-text">
+                            Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium.
+                            Vivamus vitae nisi a dolor aliquet varius in a eros.
+                            Suspendisse non orci eros.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start mb-4 feature-item">
+                    <img src="{{ asset('/images/freshman-kit/power.webp') }}" class="feature-icon">
+                    <div>
+                        <p class="feature-text">
+                            Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium.
+                            Vivamus vitae nisi a dolor aliquet varius in a eros.
+                            Suspendisse non orci eros.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start mb-4 feature-item">
+                    <img src="{{ asset('/images/freshman-kit/tablet.webp') }}" class="feature-icon">
+                    <div>
+                        <p class="feature-text">
+                            Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium.
+                            Vivamus vitae nisi a dolor aliquet varius in a eros.
+                            Suspendisse non orci eros.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start feature-item">
+                    <img src="{{ asset('/images/freshman-kit/pens.webp') }}" class="feature-icon">
+                    <div>
+                        <p class="feature-text">
+                            Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium.
+                            Vivamus vitae nisi a dolor aliquet varius in a eros.
+                            Suspendisse non orci eros.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <x-three-buttons />
 </div>
 @endsection

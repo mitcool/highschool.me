@@ -94,6 +94,7 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::get('/help-desk/new','StudentController@newHelpDesk')->name('student.new-help-desk');
 	Route::post('/send-message','StudentController@sendHelpDeskQustion')->name('student.send-help-desk');
 	Route::get('/exams','StudentController@exams')->name('student.exams');
+	Route::post('/ambassador/redeem', 'StudentController@redeemRewards')->name('ambassador.redeem');
 });
 
 Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');
@@ -132,7 +133,7 @@ Route::get('/feature/{slug}','MainController@feature')->name('single-feature');
 
 Route::get('/code-of-ethics','FooterController@showCodeOfEtics')->name('code-of-ethics');
 
-Route::get('/starter-kit','FooterController@starterKit')->name('starter-kit');
+Route::get('/freshman-kit','FooterController@starterKit')->name('starter-kit');
 
 Route::get('/newsletter','MainController@showNewsletter')->name('newsletter');
 

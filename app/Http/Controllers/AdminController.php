@@ -79,6 +79,8 @@ use App\AmbassadorServiceAction;
 use App\AmbassadorActivity;
 use App\HelpDesk;
 use App\Exam;
+use App\StudentSpotlight;
+use App\StudentSpotlightsCategory;
 
 use App\Http\Requests\CreateConferenceRequest;
 use App\Http\Requests\AiServiceRequest;
@@ -1056,8 +1058,9 @@ class AdminController extends Controller
     }
 
     public function showAddActivityPage() {
+        $platforms = AmbassadorService::get();
 
-        return view('admin.ambassador-program.add-activity');
+        return view('admin.ambassador-program.add-activity')->with('platforms', $platforms);
     }
 
     public function changePassword() {
@@ -1151,5 +1154,18 @@ class AdminController extends Controller
         $exam = $request->only('date','time','course_id','student_id','educator_id');
         Exam::create($exam);
         return redirect()->back()->with('success_message','Exam created successfully');
+    }
+    
+        public function studentSpotlight() {
+        $students = StudentSpotlight::get();
+        $categories = StudentSpotlightsCategory::get();
+
+        return view('admin.students-spotlights')->with('students', $students)->with('categories', $categories);
+    }
+
+    public function editSingleStudent($student_id) {
+        $student = StudentSpotlight::find($student_id);
+
+        return view('admin.edit-single-student')->with('student', $student);
     }
 }

@@ -18,7 +18,8 @@ class AmbassadorActivity extends Model
         'action_id',
         'link',
         'status',
-        'user_id'
+        'user_id',
+        'redeem_points',
     ];
 
     // Each activity belongs to a service/platform

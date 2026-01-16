@@ -31,10 +31,9 @@
 	</ol>
 </div>
 
-<x-image-component nickname="about-cover" id="cover" class="main-pictures-pages" loading="eager"/>
+<x-image-component nickname="student-spotlight" id="cover" class="main-pictures-pages" loading="eager"/>
 
-<div class="container-fluid main_page_container">
-
-	
+<div class="container-fluid">
+		
 </div>
 @endsection

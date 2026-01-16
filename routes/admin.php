@@ -186,4 +186,8 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	//Password functionality
 	Route::get('/change-password', 'AdminController@changePassword')->name('admin.change-password');
 	Route::post('/update-password', 'AdminController@updatePassword')->name('admin.update-password');
+
+	//Students in Spotlights
+	Route::get('/students-in-spotlight', 'AdminController@studentSpotlight')->name('admin.students-in-spotlights');
+	Route::get('/edit-single-student/{student_id}','AdminController@editSingleStudent')->name('admin.edit-single-student');
 });

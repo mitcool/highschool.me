@@ -30,10 +30,16 @@
                     <td>{{ $activity->created_at->format('F d, Y') }}</td>
 
                     <!-- Student -->
-                    <td>{{ $activity->user->name }}</td>
+                    <td>{{ $activity->user->name }} {{ $activity->user->surname }}</td>
 
                     <!-- Activity Type -->
-                    <td>{{ $activity->action->name }}</td>
+                    <td>
+                        @if(!$activity->action)
+                            {{ $activity->link }}
+                        @else
+                            {{ $activity->action->name ?? '—' }}
+                        @endif
+                    </td>
 
                     <!-- Link -->
                     <td>
@@ -44,11 +50,15 @@
 
                     <!-- Status Dropdown -->
                     <td>
-                        <select class="form-control status-dropdown" data-id="{{ $activity->id }}">
-                            <option value="Pending" {{ $activity->status === 'Pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="Denied" {{ $activity->status === 'Denied' ? 'selected' : '' }}>Denied</option>
-                            <option value="Approved" {{ $activity->status === 'Approved' ? 'selected' : '' }}>Approved</option>
-                        </select>
+                        @if(!$activity->action)
+
+                        @else
+                            <select class="form-control status-dropdown" data-id="{{ $activity->id }}">
+                                <option value="Pending" {{ $activity->status === 'Pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="Denied" {{ $activity->status === 'Denied' ? 'selected' : '' }}>Denied</option>
+                                <option value="Approved" {{ $activity->status === 'Approved' ? 'selected' : '' }}>Approved</option>
+                            </select>
+                        @endif
                     </td>
                 </tr>
             @endforeach

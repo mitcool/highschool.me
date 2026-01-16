@@ -12,6 +12,9 @@ use App\CurriculumType;
 use App\CurriculumCourse;
 use App\StudentEnrolledCourse;
 use App\CatalogCourse;
+use App\AmbassadorRedemption;
+use App\AmbassadorRedemptionOrder;
+use DB;
 use App\HelpDesk;
 
 use Carbon\Carbon;
@@ -30,7 +33,7 @@ class StudentController extends Controller
     public function ambassadorPage() {
         $ambassador_services = AmbassadorService::all();
         $ambassador_rewards = AmbassadorReward::all();
-        $activities = AmbassadorActivity::with(['service', 'action'])->orderBy('created_at', 'desc')->get();
+        $activities = AmbassadorActivity::with(['service', 'action'])->where('user_id', auth()->id())->orderBy('created_at', 'desc')->get();
 
         // Last activity
         $lastActivity = AmbassadorActivity::with(['service', 'action'])
@@ -40,11 +43,10 @@ class StudentController extends Controller
 
         // Total collected points
         $totalPoints = AmbassadorActivity::where('user_id', auth()->id())
-            ->with('action')
-            ->get()
-            ->sum(function ($activity) {
-                return $activity->action->value ?? 0;
-            });
+        ->where('status', 'Approved')
+        ->with('action')
+        ->get()
+        ->sum(fn ($a) => ($a->action->value ?? 0) + ($a->redeem_points ?? 0));
         
         return view('student.ambassador')
             ->with('ambassador_rewards', $ambassador_rewards)
@@ -73,10 +75,10 @@ class StudentController extends Controller
             'link'       => $request->link,
             'status'     => 'Pending',
             'user_id'    => auth()->id(),
-    ]);
+        ]);
 
-    return back()->with('success_message', 'Activity submitted successfully!');
-}
+        return back()->with('success_message', 'Activity submitted successfully!');
+    }
 
     public function myCoursesPage() {
         $curriculumTypes = CurriculumType::with([
@@ -95,7 +97,7 @@ class StudentController extends Controller
             ->with('curriculumTypes', $curriculumTypes);
     }
 
-    public function singleCourse($course_id){
+    public function singleCourse($course_id) {
         $course = CatalogCourse::find($course_id);
         return view('student.single-course')
             ->with('course',$course);
@@ -133,5 +135,77 @@ class StudentController extends Controller
         $message['is_parent'] = 0;
         HelpDesk::create($message);
         return redirect()->route('student.help-desk')->with('success_message','Message successfully created');
+    }
+    
+    public function redeemRewards(Request $request) {
+        $request->validate([
+            'rewards' => 'required|array|min:1',
+            'rewards.*.id' => 'required|exists:ambassador_rewards,id',
+
+            'country' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'phone' => 'required|string|max:50',
+        ]);
+
+        $user = auth()->user();
+
+        // Recalculate total points (SECURITY)
+        $totalPoints = AmbassadorActivity::where('user_id', $user->id)
+            ->with('action')
+            ->get()
+            ->sum(fn ($activity) => $activity->action->value ?? 0);
+
+        if ($totalPoints <= 500) {
+            return back()->withErrors('You need more than 500 points to redeem rewards.');
+        }
+
+        $basketTotal = collect($request->rewards)->sum(function ($reward) {
+            return AmbassadorReward::find($reward['id'])->points;
+        });
+
+        if ($basketTotal < 500) {
+            return back()->withErrors('Minimum redemption is 500 points.');
+        }
+
+        if ($basketTotal > $totalPoints) {
+            return back()->withErrors('Not enough points.');
+        }
+
+        DB::transaction(function () use ($request, $user, $basketTotal) {
+
+            $order = AmbassadorRedemptionOrder::create([
+                'user_id' => $user->id,
+                'country' => $request->country,
+                'city' => $request->city,
+                'address' => $request->address,
+                'zip_code' => $request->zip_code,
+                'phone' => $request->phone,
+                'total_points' => $basketTotal,
+            ]);
+
+            // Save redemptions
+            foreach ($request->rewards as $reward) {
+                $rewardModel = AmbassadorReward::findOrFail($reward['id']);
+
+                AmbassadorRedemption::create([
+                    'order_id' => $order->id,
+                    'user_id' => $user->id,
+                    'reward_id' => $rewardModel->id,
+                    'points' => $rewardModel->points,
+                ]);
+            }
+
+            // Deduct points via activity log
+            AmbassadorActivity::create([
+                'user_id' => $user->id,
+                'service_id' => null,
+                'action_id' => null,
+                'link' => 'Redeem Rewards',
+                'redeem_points' => -$basketTotal,
+            ]);
+        });
+
+        return back()->with('success_message', 'Rewards redeemed successfully');
     }
 }

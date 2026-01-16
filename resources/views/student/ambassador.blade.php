@@ -131,7 +131,7 @@
                         </div>
                     </div>
                     <div class="col">
-                        <h3 class="ambassador-name">Ivan Ivanov</h3>
+                        <h3 class="ambassador-name">{{ auth()->user()->name }} {{ auth()->user()->surname }}</h3>
                                         <hr class="my-3">
                         <div class="status-info">
                             <strong>Ambassador Status:</strong> <span class="text-success">Active</span>
@@ -158,6 +158,7 @@
                                 <th scope="col">Platform</th>
                                 <th scope="col">Activity</th>
                                 <th scope="col">Points</th>
+                                <th scope="col">Status</th>
                             </tr>
                         </thead>
 
@@ -168,10 +169,24 @@
 
                                     <td>{{ $activity->service->name ?? '—' }}</td>
 
-                                    <td>{{ $activity->action->name ?? '—' }}</td>
+                                    <td>
+                                        @if(!$activity->action)
+                                            {{ $activity->link }}
+                                        @else
+                                            {{ $activity->action->name ?? '—' }}
+                                        @endif
+                                    </td>
 
                                     <td class="points-cell">
-                                        {{ $activity->action->value ?? 0 }}
+                                        @if($activity->service_id == NULL)
+                                            {{ $activity->redeem_points }}
+                                        @else
+                                            {{ $activity->action->value ?? 0 }}
+                                        @endif
+                                    </td>
+
+                                    <td @if($activity->status == 'Denied') style="color: red;" @elseif($activity->status == 'Pending') style="color: #F07039;" @else style="color: green;" @endif>
+                                        {{ $activity->status }}
                                     </td>
                                 </tr>
                             @empty
@@ -270,26 +285,121 @@
             </p>
         </div>
 
-        <div class="d-flex justify-content-between" style="color:#14213D;font-weight:bold;color:#E9580C;padding:10px 0;">
-            <div>Reward List</div> 
-            <div><i class="fas fa-chevron-up" id="open-rewards"></i></div>
-        </div> 
-        <div id="rewards" class="d-none">
-            <div class="d-flex justify-content-between" style="color:#14213D;font-weight:bold">
-                <div>Reward</div> 
-                <div>Points</div>
-            </div> 
-
-            <hr class="my-1">
-
-            @foreach($ambassador_rewards as $reward)
-                <div class="d-flex justify-content-between">
-                    <div>{{ $reward->name }}</div> 
-                    <div style="color:#E9580C;font-weight:bold">{{ $reward->points }}</div>
-                </div> 
-            <hr class="my-1">
-            @endforeach
+        <div class="d-flex justify-content-between fw-bold">
+            <div>Reward</div>
+            <div class="d-flex gap-4">
+                <div class="mr-5">Points</div>
+                <div class="mr-2">Action</div>
+            </div>
         </div>
+
+        <hr class="my-1">
+
+        @foreach($ambassador_rewards as $reward)
+            <div class="d-flex justify-content-between align-items-center py-1">
+                <div>{{ $reward->name }}</div> 
+
+                <div class="d-flex align-items-center" style="gap:30px;">
+                    <!-- Points -->
+                    <div style="color:#E9580C;font-weight:600;min-width:60px;text-align:right;">
+                        {{ $reward->points }}
+                    </div>
+
+                    <!-- Add button -->
+                    <button 
+                        class="btn btn-sm btn-outline-primary add-to-basket px-3"
+                        data-id="{{ $reward->id }}"
+                        data-name="{{ $reward->name }}"
+                        data-points="{{ $reward->points }}"
+                    >
+                        <i class="fas fa-plus me-1"></i> Take
+                    </button>
+                </div>
+            </div>
+            <hr class="my-1">
+        @endforeach
+
+
+        <form method="POST" action="{{ route('ambassador.redeem') }}" id="redeem-form">
+            @csrf
+
+            <div class="mt-4">
+                <h6 class="fw-bold">🎁 Selected Rewards</h6>
+
+                <div id="basket" class="border rounded p-3">
+                    <p class="text-muted mb-0" id="basket-empty">
+                        No rewards selected yet.
+                    </p>
+                </div>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <div>
+                        <strong>Total:</strong>
+                        <span id="basket-total" class="text-warning fw-bold">0</span>
+                        pts
+                    </div>
+
+                    <div class="text-muted small mt-1">
+                        Minimum redemption: <strong>500 points</strong>
+                    </div>
+
+                    <div>
+                        <strong>Remaining:</strong>
+                        <span id="remaining-points" class="fw-bold">
+                            {{ $totalPoints }}
+                        </span>
+                        pts
+                    </div>
+                </div>
+
+                <div class="mt-4 border rounded p-4">
+                    <h6 class="fw-bold">📦 Receiver Details</h6>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Name</label>
+                            <input type="text" name="name" class="form-control" value="{{ auth()->user()->name }}" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Surname</label>
+                            <input type="text" name="surname" class="form-control" value="{{ auth()->user()->surname }}" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Country</label>
+                            <input type="text" name="country" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">City</label>
+                            <input type="text" name="city" class="form-control" required>
+                        </div>
+
+
+                        <div class="col-12">
+                            <label class="form-label">Address</label>
+                            <input type="text" name="address" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">ZIP code</label>
+                            <input type="text" name="zip_code" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Phone</label>
+                            <input type="text" name="phone" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-success mt-3" id="redeem-btn" disabled>
+                    Redeem Rewards
+                </button>
+            </div>
+        </form>
+
 
 	</div>
 @endsection
@@ -349,6 +459,80 @@
                 }
             });
         }
+    });
+
+    const USER_TOTAL_POINTS = {{ $totalPoints }};
+    $(document).ready(function () {
+        let basketTotal = 0;
+
+        function updateTotals() {
+            $('#basket-total').text(basketTotal);
+            $('#remaining-points').text(USER_TOTAL_POINTS - basketTotal);
+
+            const canRedeem =
+                basketTotal >= 500 &&
+                basketTotal <= USER_TOTAL_POINTS;
+
+            $('#redeem-btn').prop('disabled', !canRedeem);
+        }
+
+
+        let rewardIndex = 0;
+        $('.add-to-basket').on('click', function () {
+
+            if (USER_TOTAL_POINTS <= 500) return;
+
+            const id = $(this).data('id');
+            const name = $(this).data('name');
+            const points = parseInt($(this).data('points'));
+
+            if ($('#basket-item-' + id).length) return;
+
+            if (basketTotal + points > USER_TOTAL_POINTS) return;
+
+            basketTotal += points;
+            $('#basket-empty').hide();
+
+            const item = `
+                <div class="d-flex justify-content-between align-items-center mb-2 border rounded px-3 py-2"
+                     id="basket-item-${id}">
+                    <div>${name}</div>
+
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="fw-bold text-warning">${points}</span>
+
+                        <input type="hidden" name="rewards[${rewardIndex}][id]" value="${id}">
+                        <input type="hidden" name="rewards[${rewardIndex}][points]" value="${points}">
+
+                        <button type="button"
+                            class="btn btn-sm btn-outline-danger remove-item ml-3">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            rewardIndex++;
+
+            $('#basket').append(item);
+            updateTotals();
+        });
+
+
+        $('#basket').on('click', '.remove-item', function () {
+            const item = $(this).closest('[id^="basket-item-"]');
+            const points = parseInt(item.find('input[name$="[points]"]').val());
+
+            basketTotal -= points;
+            item.remove();
+
+            if ($('#basket').children().length === 1) {
+                $('#basket-empty').show();
+            }
+
+            updateTotals();
+        });
+
     });
 </script>
 @endsection

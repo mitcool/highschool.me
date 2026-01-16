@@ -20,7 +20,7 @@
         }
 
         /* =========================================
-           4. MY COURSES TABLE
+           MY COURSES TABLE
            ========================================= */
         .table-container {
             max-width: 650px;
@@ -60,117 +60,140 @@
         .view-link:hover { text-decoration: underline; }
 
         /* =========================================
-           5. ENROLL PAGE (Tabs & Accordion)
+           PROGRESS BAR
            ========================================= */
-        /* Tabs */
-        .custom-tabs {
-            justify-content: center;
-            margin-bottom: 20px;
-        }
 
-        /* BS4 Nav Pills spacing */
-        .custom-tabs .nav-item {
-            margin: 0 4px;
-        }
-
-        .custom-tabs .nav-link {
-            background-color: white;
-            color: #004c99;
-            font-weight: 600;
-            border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            padding: 8px 16px;
-        }
-
-        .custom-tabs .nav-link.active {
-            background-color: #e65100;
-            color: #fff;
-        }
-
-        /* Accordion - Adapted for BS4 Card Structure */
-        .custom-accordion .card {
+        .graduation-card {
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
             border: none;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            overflow: hidden;
         }
 
-        .custom-accordion .card-header {
-            background-color: white;
-            border-bottom: none;
+        .graduation-progress {
+            height: 18px;
+            border-radius: 10px;
+            background: #f1f1f1;
+        }
+        .graduation-progress .progress-bar { border-radius: 10px; }
+
+        .credits-label{
+            position:absolute;
+            top:-2px;
+            right:0;
+            font-size:13px;
+            font-weight:600;
+            padding-right: 7px;
+        }
+
+        .accordion-card { border: 0; border-radius: 10px; overflow: hidden; }
+        .accordion-header {
+            background: transparent;
+            border: 0;
             padding: 0;
         }
 
-        .custom-accordion .btn-header {
-            color: #004c99;
-            font-size: 1.1rem;
-            font-weight: 500;
-            text-decoration: none;
-            width: 100%;
-            text-align: left;
-            padding: 1rem 1.25rem;
+        .accordion-toggle{
+            padding: 12px 0;
+            font-weight: 600;
+            color: #0d6efd;
+            text-decoration: none !important;
+            outline: none !important;
+            box-shadow: none !important;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
         }
+        .accordion-toggle:hover{ text-decoration:none; }
 
-        .custom-accordion .btn-header:hover, 
-        .custom-accordion .btn-header:focus {
-            text-decoration: none;
-            box-shadow: none;
-        }
+        .accordion-toggle .chev { transition: transform .2s ease; color:#0d6efd; }
+        .chev { font-size: 30px; }
+        .accordion-toggle.collapsed .chev { transform: rotate(180deg); }
 
-        .custom-accordion .btn-header::after {
-            content: '';
-            width: 16px;
-            height: 16px;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23004c99'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-size: contain;
-            transition: transform 0.2s;
-        }
+        .badge-wrap { gap: 14px; }
 
-        .custom-accordion .btn-header.collapsed::after {
-            transform: rotate(-90deg);
-        }
-
-        .course-row {
-            padding: 15px 0;
-            border-bottom: 1px solid #dee2e6;
-        }
-        .course-row:last-child { border-bottom: none; }
-
-        .credit-text { color: #4dabf7; font-weight: 400; }
-
-        .btn-enroll {
-            background-color: #cc4400;
-            color: white;
-            border: none;
-            font-weight: 600;
-            padding: 5px 20px;
+        .completed-pill, .progress-pill{
+            font-size: 13px;
+            padding: 10px 14px;
             border-radius: 6px;
+            font-weight: 500;
+            white-space: normal;
         }
-        .btn-enroll:hover {
-            background-color: #b33b00;
-            color: white;
+
+        .completed-pill{ background:#19a319; color:#fff; }
+        .progress-pill{ background:#f3f3f3; color:#000; }
+
+        .accordion-card {
+            border: 1px solid #00000029;
+            border-radius: 10px;
         }
-        .btn-enrolled {
-            background-color: #f3f3f3;
-            color: white;
-            border: none;
-            font-weight: 600;
-            padding: 5px 20px;
-            border-radius: 6px;
-        }
-       
 </style>
 @endsection
 
 @section('content')
 <div class="container my-5">
-    <h2 class="text-center mb-4">My Courses</h2>
-    <div class="table-container mx-auto">
+    <div class="card graduation-card p-4">
+        <h2 class="text-center mb-4">Graduation Process</h2>
+        <div class="position-relative mb-4">
+            <div class="progress graduation-progress">
+                <div class="progress-bar bg-success" style="width:66.6%"></div>
+            </div>
+            <span class="credits-label">16/24 Credits</span>
+        </div>
+
+        <div id="graduationAccordion">
+            <div class="card accordion-card">
+                <div class="card-header accordion-header" id="headingOne">
+                    <button class="btn btn-link accordion-toggle w-100 text-left" data-toggle="collapse" data-target="#completedCourses" aria-expanded="true" aria-controls="completedCourses">
+                        Completed
+                        <span class="chev">▴</span>
+                    </button>
+                </div>
+
+                <div id="completedCourses" class="collapse show" aria-labelledby="headingOne" data-parent="#graduationAccordion">
+                    <div class="card-body pt-3">
+                        <div class="d-flex flex-wrap badge-wrap">
+                            <span class="badge completed-pill">✓ English 1 - Literature &amp; Composition</span>
+                            <span class="badge completed-pill">✓ English 2 - Reading &amp; Rhetorik</span>
+                            <span class="badge completed-pill">✓ English 3 - American &amp; World History</span>
+                            <span class="badge completed-pill">✓ Algebra 1</span>
+                            <span class="badge completed-pill">✓ Algebra 2</span>
+                            <span class="badge completed-pill">✓ Mathematics for Data &amp; Financial Literacy</span>
+                            <span class="badge completed-pill">✓ Geometry</span>
+                            <span class="badge completed-pill">✓ Biology 1</span>
+                            <span class="badge completed-pill">✓ Chemistry 1</span>
+                            <span class="badge completed-pill">✓ U. S. History</span>
+                            <span class="badge completed-pill">✓ Economics</span>
+                            <span class="badge completed-pill">✓ Speech 1</span>
+                            <span class="badge completed-pill">✓ Health Opportunities through Physical Education (HOPE)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card accordion-card mt-3">
+                <div class="card-header accordion-header" id="headingTwo">
+                    <button class="btn btn-link accordion-toggle w-100 text-left collapsed" data-toggle="collapse" data-target="#inProgressCourses" aria-expanded="false" aria-controls="inProgressCourses">
+                        In Progress
+                        <span class="chev">▴</span>
+                    </button>
+                </div>
+
+                <div id="inProgressCourses" class="collapse" aria-labelledby="headingTwo" data-parent="#graduationAccordion">
+                    <div class="card-body pt-3">
+                        <div class="d-flex flex-wrap badge-wrap">
+                            <span class="badge progress-pill">□ English 4 - Advanced Writing &amp; Communication</span>
+                            <span class="badge progress-pill">□ Anatomy &amp; Physiology</span>
+                            <span class="badge progress-pill">□ World History</span>
+                            <span class="badge progress-pill">□ U.S. Government</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-container mx-auto mt-5">
+        <h2 class="text-center mb-4">My Courses</h2>
         <div class="table-responsive">
             <table class="table course-table">
                 <thead>
