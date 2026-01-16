@@ -119,10 +119,7 @@
        
         <div class="col-md-12" style="margin:30px 0;">
             <p class="page-content">Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique.</p>
-            <div class="text-center" style="margin:40px 0;">
-                <a href="{{ route('standard-high-school') }}" class="btn orange-button btn-lg">Read more</a>
-                <a href="{{ route('student-advisory-service') }}" class="btn blue-button btn-lg">Contact</a>
-            </div>
+            <x-three-buttons/>
         </div>
         
     </div>

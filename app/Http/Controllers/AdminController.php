@@ -78,6 +78,7 @@ use App\AmbassadorReward;
 use App\AmbassadorServiceAction;
 use App\AmbassadorActivity;
 use App\HelpDesk;
+use App\Exam;
 
 use App\Http\Requests\CreateConferenceRequest;
 use App\Http\Requests\AiServiceRequest;
@@ -1135,5 +1136,20 @@ class AdminController extends Controller
         $help_desk = HelpDesk::whereNull('related_to')->where('is_parent',0)->get();
         return view('admin.help-desk')
             ->with('help_desk',$help_desk);
+    }
+
+    public function exams(){
+        $students = User::where('role_id',4)->get();
+        $educators = User::where('role_id',5)->get();
+        $courses = CatalogCourse::all(); 
+        return view('admin.exams')
+            ->with('students',$students)
+            ->with('educators',$educators)
+            ->with('courses',$courses);
+    }
+    public function createExam(Request $request){
+        $exam = $request->only('date','time','course_id','student_id','educator_id');
+        Exam::create($exam);
+        return redirect()->back()->with('success_message','Exam created successfully');
     }
 }

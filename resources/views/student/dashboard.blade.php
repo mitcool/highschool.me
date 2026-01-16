@@ -25,7 +25,7 @@
     <div class="container-fluid px-0">
         <div class="row">
             <div id="wrapper" style="padding:0 0px;">
-                <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion" id="accordionSidebar" style="min-height:1500vh;background:#045397">
+                <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion" id="accordionSidebar" style="background:#045397">
                     <li class="nav-item black">
                         <a class="nav-link" href="{{route('welcome')}}">
                             <i class="fas fa-fw fa-home"></i>
@@ -69,7 +69,12 @@
                             <span>My Exams</span>
                         </a>
                     </li>
-
+                     <li class="nav-item active">
+                        <a class="nav-link" href="{{ route('student.study-mentor') }}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Study Mentor</span>
+                        </a>
+                    </li>
                     <div class="sidebar-heading">Rewards</div>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ route('student.ambassador-program') }}">
@@ -78,11 +83,11 @@
                         </a>
                     </li>
 
-                    <div class="sidebar-heading">Inquiries</div>
+                    <div class="sidebar-heading">Help Desk</div>
                     <li class="nav-item active">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="{{ route('student.help-desk') }}">
                             <i class="fas fa-fw fa-cog"></i>
-                            <span>Inquiries</span>
+                            <span>Help Desk</span>
                         </a>
                     </li>
 

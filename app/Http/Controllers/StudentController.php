@@ -12,6 +12,7 @@ use App\CurriculumType;
 use App\CurriculumCourse;
 use App\StudentEnrolledCourse;
 use App\CatalogCourse;
+use App\HelpDesk;
 
 use Carbon\Carbon;
 
@@ -98,5 +99,39 @@ class StudentController extends Controller
         $course = CatalogCourse::find($course_id);
         return view('student.single-course')
             ->with('course',$course);
+    }
+
+    public function studyMentor(){
+        return view('student.study-mentor');
+    }
+
+    public function singleStudyMentor(){
+        return view('student.single-study-mentor');
+    }
+
+    public function singleStudyMentorChat(){
+        return view('student.single-study-mentor-chat');
+    }
+
+    public function helpDesk(){
+       
+        $help_desk = HelpDesk::where('user_id',auth()->id())->whereNull('related_to')->get();
+        return view('help-desk.inbox')
+                ->with('help_desk',$help_desk);
+    }
+
+    public function newHelpDesk(){
+        return view('help-desk.new');
+    }
+
+    public function sendHelpDeskQustion(Request $request){
+        $message = $request->only('title','message');
+        $message['user_id'] = auth()->user()->id;
+        $message['slug'] = $this->setHelpDeskNumber();
+        $message['is_new'] = 1;
+        $message['is_admin'] = 0;
+        $message['is_parent'] = 0;
+        HelpDesk::create($message);
+        return redirect()->route('student.help-desk')->with('success_message','Message successfully created');
     }
 }

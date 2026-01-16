@@ -112,14 +112,12 @@
 </style>
 @endsection
 @section('content')
-
+<img src="{{ asset('images/act-background.png') }}" alt="">
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
-    <h1 class="text-center page-headings">PSAT/SAT/PreACT/ACT Prep-Courses</h1> <br>
+    <h1 class="text-center page-headings">PreACT/ACT Prep-Courses</h1> <br>
     <h2 class="text-center font-weight-bold" style="margin-bottom:20px;">Lorem ipsum</h2>
     <p class="page-content">Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique.</p>
     <hr>
-   
-   
     
 </div>
 <div class="container-fluid">
@@ -140,7 +138,7 @@
     <div class="container-fluid px-0" style="margin-top:20px;padding:20px 0;background-color:#F1F1F1;">
         <p class="page-content container">Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique.</p>
         <div class="text-center">
-            <button class="btn blue-button btn-lg">Apply now</button>
+          <x-three-buttons/>
         </div>
     </div>
     

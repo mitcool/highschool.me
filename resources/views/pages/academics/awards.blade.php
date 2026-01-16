@@ -47,7 +47,7 @@
 		<li class="breadcrumb-item active" aria-current="page">Awards</li>
 	</ol>
 </div>
-<img src="{{ asset('images/awards.png') }}" alt="">	
+<img src="{{ asset('images/go.png') }}" alt="">	
 <div class="container-fluid bg-white main_page_container">	
 		<div class="row justify-content-center" >		
 			<div class="col-lg-8 shadow text-center p-4 bg-white" style="margin: 20px auto;">

@@ -485,12 +485,12 @@ class ParentController extends Controller
 
     public function helpDesk(){
         $help_desk = HelpDesk::where('user_id',auth()->id())->whereNull('related_to')->get();
-        return view('parent.help-desk')
+        return view('help-desk.inbox')
                 ->with('help_desk',$help_desk);
     }
 
-    public function newInquiry(){
-        return view('parent.new-inquiry');
+    public function newHelpDesk(){
+        return view('help-desk.new');
     }
 
     public function sendHelpDeskQustion(Request $request){
@@ -501,7 +501,7 @@ class ParentController extends Controller
         $message['is_admin'] = 0;
         $message['is_parent'] = 1;
         HelpDesk::create($message);
-        return redirect()->back()->with('success_message','Message successfully created');
+        return redirect()->route()->with('success_message','Message successfully created');
     }
 
     public function studentProfile($student_id){
@@ -639,8 +639,7 @@ class ParentController extends Controller
 
     public function enroll(Request $request,$course_id){
        
-        $curriculum_course = CurriculumCourse::with('course')->where('course_id',$course_id)->first();
-       
+        $curriculum_course = CurriculumCourse::with('course')->find($course_id);
         $parent = auth()->user();
         $student = User::with('active_plan')->find($request->student_id);
         if($this->isAPermissionForEnrollment($student,$curriculum_course)){
@@ -648,7 +647,7 @@ class ParentController extends Controller
         }
         StudentEnrolledCourse::insert([
             'user_id' => $request->student_id,
-            'catalog_course_id' => $curriculum_course->course_id,
+            'catalog_course_id' => $curriculum_course->id,
             'created_at' => Carbon::now()
         ]);
 
@@ -670,6 +669,20 @@ class ParentController extends Controller
 
     public function isAPermissionForEnrollment($student,$curriculum_course){
         $plan = $student->active_plan;
+        $type = $curriculum_course->curriculum_type_id;
+        $allowed_courses = 0;
+        $plan_type = $plan->plan_id; #core pro or elite
+        dd($curriculum_course);
+        #AP Courses
+        if($type == 3){
+           if($plan_type == 2){
+                $allowed_courses = 1;
+           }
+           elseif($plan_type == 3){
+                $allowed_courses = 2;
+           };
+        }
+
         if($plan->plan_id == 1){
             
         }

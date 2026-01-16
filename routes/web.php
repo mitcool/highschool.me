@@ -34,9 +34,9 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::get('/help-desk','ParentController@helpDesk')->name('parent.help-desk');
 
-	Route::get('/new-inquiry','ParentController@newInquiry')->name('parent.new-inquiry');
+	Route::get('/new-help-desk','ParentController@newHelpDesk')->name('parent.new-help-desk');
 
-	Route::post('/send-message','ParentController@sendHelpDeskQustion')->name('parent.send-message');
+	Route::post('/send-message','ParentController@sendHelpDeskQustion')->name('parent.send-help-desk');
 
 	Route::get('/student/profile/{student_id}','ParentController@studentProfile')->name('parent.student.profile');
 
@@ -86,6 +86,14 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::post('/store-activity', 'StudentController@storeActivity')->name('student.store-activity');
 	Route::get('/my-courses', 'StudentController@myCoursesPage')->name('student.my-courses');
 	Route::get('/course/{course_id}','StudentController@singleCourse')->name('student.single-course');
+	Route::get('/study-mentor','StudentController@studyMentor')->name('student.study-mentor');
+	Route::get('/study-mentor/{mentor_id}','StudentController@singleStudyMentor')->name('student.single-study-mentor');
+	Route::get('/single-study-mentor-chat','StudentController@singleStudyMentorChat')->name('student.single-study-mentor-chat');
+	Route::post('/study-mentor-chat','StudentController@singleStudyMentorChat')->name('student.study-mentor-chat');
+	Route::get('/help-desk','StudentController@helpDesk')->name('student.help-desk');
+	Route::get('/help-desk/new','StudentController@newHelpDesk')->name('student.new-help-desk');
+	Route::post('/send-message','StudentController@sendHelpDeskQustion')->name('student.send-help-desk');
+	Route::get('/exams','StudentController@exams')->name('student.exams');
 });
 
 Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');
@@ -158,6 +166,8 @@ Route::get('/standard-high-school','CurriculumController@standardHighSchool')->n
 
 Route::get('/transfer-program','CurriculumController@transferProgram')->name('transfer-program');
 
+Route::get('/transfer-program/{slug}','CurriculumController@showSingleTransferProgramCourse')->name('single-tranfer-program-course');
+
 Route::get('/honors-high-school','CurriculumController@honorsHighSchool')->name('honors-high-school');
 
 Route::get('/advanced-placement','CurriculumController@advancedPlacement')->name('advanced-placement');
@@ -178,7 +188,7 @@ Route::get('/esol','CurriculumController@esol')->name('esol'); #a.k.a english co
 
 Route::get('/learning-mentoring','CurriculumController@learningMentoring')->name('learning-mentoring');
 
-Route::get('/admission-process','CurriculumController@admissionProcess')->name('admission-process');
+Route::get('/admission-process','AdmissionController@admissionProcess')->name('admission-process');
 
 Route::get('/enrollment-criteria','AdmissionController@enrolmentCriteria')->name('enrollment-criteria');
 
@@ -193,6 +203,7 @@ Route::get('/apply','AdmissionController@apply')->name('apply');
 Route::get('/ambassador-program','AdmissionController@ambassadorProgram')->name('ambassador-program');
 
 Route::post('parent/reupload/document/{student_id}','ParentController@reuploadDocuments')->name('parent.reupload.document');
+
 
 // Route::get('/iso','AdmissionController@iso')->name('iso');
 

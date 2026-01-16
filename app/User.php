@@ -60,4 +60,8 @@ class User extends Authenticatable
     public function active_plan(){
         return $this->hasOne('App\StudentPlan','student_id','id')->where('created_at','<',Carbon::now() )->where('expires_at','>',Carbon::now());
     }
+
+    public function fullname(){
+        return $this->name.' '.$this->middlename.' '.$this->surname;
+    }
 }
