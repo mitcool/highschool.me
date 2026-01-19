@@ -2,48 +2,97 @@
 
 @section('css')
 <style>
-
+    a.list-group-item {
+        text-decoration: none;
+    }
 </style>
 @endsection
 
 @section('content')
-<div class="container shadow mx-auto" style="padding:30px; margin-top:20px;">
-    <form action="{{ route('admin.exam-question-add') }}" method="POST" enctype="multipart/form-data">
-        {{csrf_field()}}
-        <h3 class="text-center">Add Exam Question</h3>   
+<div class="container shadow mx-auto mt-4 p-4">
+
+    {{-- ADD QUESTION FORM --}}
+    <form action="{{ route('admin.exam-question-add') }}" method="POST">
+        @csrf
+
+        <h3 class="text-center mb-4">Add Exam Question</h3>
+
         <div class="row">
-            <div class="col-md-12 my-2">
+
+            <div class="col-md-12 mb-3">
                 <label>Select course</label>
-                <select class="form-control" name="course_id">
+                <select class="form-control" name="course_id" required>
+                    <option value="">-- Select Course --</option>
                     @foreach($courses as $course)
-                        <option value="{{ $course->id }}">{{ $course->title }}</option>
+                        <option value="{{ $course->id }}">
+                            {{ $course->title }}
+                        </option>
                     @endforeach
                 </select>
             </div>
 
-            <div class="col-md-12 my-2">
+            <div class="col-md-12 mb-3">
                 <label>Your question</label>
-                <textarea  rows="5" name="question" required class="form-control" placeholder="Question"></textarea>
+                <textarea rows="5"
+                          name="question"
+                          required
+                          class="form-control"
+                          placeholder="Question"></textarea>
             </div>
 
             <div class="col-md-12 text-center">
                 <hr>
-                <button class="btn btn-info">Add Question</button>
+                <button class="btn btn-info px-4">Add Question</button>
+            </div>
+
+        </div>
+    </form>
+
+    {{-- FILTER --}}
+    <hr>
+    <h3 class="text-center mb-3">Filter Questions by Course</h3>
+
+    <form method="GET" action="{{ route('admin.add-exam-question') }}">
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-6">
+                <select name="course_id"
+                        class="form-control"
+                        onchange="this.form.submit()">
+                    <option value="">-- All Courses --</option>
+                    @foreach($courses as $course)
+                        <option value="{{ $course->id }}"
+                            {{ request('course_id') == $course->id ? 'selected' : '' }}>
+                            {{ $course->title }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
         </div>
-        <hr>
-        <h3 class="text-center">List with existing questions</h3>
-        <ul class="list-group text-center">
-            @foreach($questions as $question)
-            <a href="{{ route('admin.update-exam-question', $question->id) }}">
-                <li class="list-group-item">{{$question->question}}</li>
-            </a>
-            @endforeach
-        </ul>  
     </form>
+
+    {{-- QUESTIONS LIST --}}
+    <h3 class="text-center mb-3">Existing Questions</h3>
+
+    <ul class="list-group text-center mb-3">
+        @forelse($questions as $question)
+            <a href="{{ route('admin.update-exam-question', $question->id) }}"
+               class="list-group-item list-group-item-action">
+                {{ $question->question }}
+            </a>
+        @empty
+            <li class="list-group-item text-muted">
+                No questions found for this course
+            </li>
+        @endforelse
+    </ul>
+
+    {{-- PAGINATION --}}
+    <div class="d-flex justify-content-center">
+        {{ $questions->appends(request()->query())->links() }}
+    </div>
+
 </div>
 @endsection
 
 @section('scripts')
-
 @endsection

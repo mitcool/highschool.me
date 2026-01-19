@@ -82,6 +82,7 @@ use App\Exam;
 use App\StudentSpotlight;
 use App\StudentSpotlightsCategory;
 use App\ExamQuestion;
+use App\StudentAnswer;
 
 use App\Http\Requests\CreateConferenceRequest;
 use App\Http\Requests\AiServiceRequest;
@@ -1205,9 +1206,13 @@ class AdminController extends Controller
         return view('admin.edit-single-student')->with('student', $student);
     }
 
-    public function addExamQuestionsPage() {
+    public function addExamQuestionsPage(Request $request) {
         $courses = CatalogCourse::get();
-        $questions = ExamQuestion::paginate();
+        $questions = ExamQuestion::when($request->course_id, function ($query) use ($request) {
+            $query->where('subject_id', $request->course_id);
+        })
+        ->orderBy('id', 'desc')
+        ->paginate(10);
 
         return view('admin.add-exam-questions')->with('courses', $courses)->with('questions', $questions);
     }
