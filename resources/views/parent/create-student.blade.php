@@ -7,11 +7,15 @@
     <form action="{{ route('student.add') }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div  class="mb-3">
-            <label for="" class="font-weight-bold mb-0">Firstname<span class="text-danger">*</span></label>
+            <label for="" class="font-weight-bold mb-0">First name<span class="text-danger">*</span></label>
             <input type="text" value="{{ old('name') }}" required name="name" class="form-control">
         </div>
+        <div  class="mb-3">
+            <label for="" class="font-weight-bold mb-0">Middle name(optional)</label>
+            <input type="text" value="{{ old('middlename') }}" required name="middlename" class="form-control">
+        </div>
          <div  class="mb-3">
-            <label for="" class="font-weight-bold mb-0">Lastname<span class="text-danger">*</span></label>
+            <label for="" class="font-weight-bold mb-0">Surname<span class="text-danger">*</span></label>
             <input type="text" value="{{ old('surname') }}" required name="surname" class="form-control">
         </div>
         <div  class="mb-3">

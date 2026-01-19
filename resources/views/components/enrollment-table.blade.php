@@ -270,11 +270,11 @@
                                                             </span>
                                                         @endif
                                                     </div>
-                                                    @if(in_array($cc->id,$enrolled_courses_ids))
+                                                    @if(in_array($cc->course_id,$enrolled_courses_ids))
                                                          <button class="btn btn-disabled">Enrolled</button>
                                                     @else
                                                     
-                                                    <form action="{{ route('enroll',$cc->id) }}" method="POST">
+                                                    <form action="{{ route('enroll',$cc->course_id) }}" method="POST">
                                                         {{ csrf_field() }}
                                                         <input type="hidden" name="student_id" value="{{ $student->id }}">
                                                         <button class="btn btn-enroll">Enroll</button>
@@ -333,10 +333,10 @@
                                                         </span>
                                                     @endif
                                                 </div>
-                                                @if(in_array($cc->id,$enrolled_courses_ids))
+                                                @if(in_array($cc->course_id,$enrolled_courses_ids))
                                                          <button class="btn btn-disabled">Enrolled</button>
                                                     @else
-                                                    <form action="{{ route('enroll',$cc->id) }}" method="POST">
+                                                    <form action="{{ route('enroll',$cc->course_id) }}" method="POST">
                                                         {{ csrf_field() }}
                                                         <input type="hidden" name="student_id" value="{{ $student->id }}">
                                                         <button class="btn btn-enroll">Enroll</button>

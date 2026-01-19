@@ -116,17 +116,20 @@ class ParentController extends Controller
         ]);
 
         $education_option = $request->education_option;
-        $user = $request->only('name','surname','email','date_of_birth');
+        $user = $request->only('name','surname','middlename','email','date_of_birth');
         $password  = Str::random(10);
         $student_role_id = 4;
 
         $student = User::create([
             'name' => $user['name'],
+            'middlename' => $user['middlename'],
             'surname' => $user['surname'],
             'email' => $user['email'],
             'role_id' => $student_role_id,
             'password' => Hash::make($password),
-            'date_of_birth' => $user['date_of_birth']
+            'date_of_birth' => $user['date_of_birth'],
+            'confirmation_code' => Str::random(30),
+            'is_verified' => 0,
         ]);
 
         ParentStudent::create([
@@ -642,13 +645,12 @@ class ParentController extends Controller
         $curriculum_course = CurriculumCourse::with('course')->find($course_id);
         $parent = auth()->user();
         $student = User::with('active_plan')->find($request->student_id);
-        if($this->isAPermissionForEnrollment($student,$curriculum_course)){
-
-        }
+        
         StudentEnrolledCourse::insert([
             'user_id' => $request->student_id,
             'catalog_course_id' => $curriculum_course->id,
-            'created_at' => Carbon::now()
+            'created_at' => Carbon::now(),
+            'status' => 0
         ]);
 
         try{

@@ -94,7 +94,10 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::get('/help-desk/new','StudentController@newHelpDesk')->name('student.new-help-desk');
 	Route::post('/send-message','StudentController@sendHelpDeskQustion')->name('student.send-help-desk');
 	Route::get('/exams','StudentController@exams')->name('student.exams');
+	Route::get('/exams/{id}','StudentController@singleExam')->name('student.single-exam');
 	Route::post('/ambassador/redeem', 'StudentController@redeemRewards')->name('ambassador.redeem');
+	Route::post('/submit-exam/{exam_id}','StudentController@submitExam')->name('submit-exam');
+	Route::post('/fail-exam/{exam_id}','StudentController@failExam')->name('fail-exam');
 });
 
 Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');

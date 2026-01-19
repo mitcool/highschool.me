@@ -1152,16 +1152,51 @@ class AdminController extends Controller
             ->with('courses',$courses);
     }
     public function createExam(Request $request){
-        $exam = $request->only('date','time','course_id','student_id','educator_id');
+        $exam = $request->only('date','time','course_id','student_id','educator_id','type');
+        $exam['status']=0;
         Exam::create($exam);
         return redirect()->back()->with('success_message','Exam created successfully');
     }
     
-        public function studentSpotlight() {
+    public function studentSpotlight() {
         $students = StudentSpotlight::get();
         $categories = StudentSpotlightsCategory::get();
 
         return view('admin.students-spotlights')->with('students', $students)->with('categories', $categories);
+    }
+    
+    public function showSubmissions(){
+        $exams = Exam::where('status',1)->get();
+        return view('admin.submissions')
+            ->with('exams',$exams);
+    }
+
+    public function showSingleSubmission($exam_id){
+        $answers = StudentAnswer::where('exam_id',$exam_id)->get();
+        $exam = Exam::find($exam_id);
+        return view('admin.single-submission')
+            ->with('exam',$exam)
+            ->with('answers',$answers); 
+    }
+
+    public function evaluateExam(Request $request,$exam_id){
+        $exam = Exam::find($exam_id);
+        $grade = $request->grade;
+        $exam_comment = $request->exam_comment;
+        if($exam->type == 1){
+            $answers_comments = $request->answer_comment;
+            foreach($answers_comments as $answer_id => $comment){
+                StudentAnswer::find($answer_id)->update(['comment' => $comment]);
+            }
+        }
+        $exam->update([
+            'grade' => $grade,
+            'comment'=> $exam_comment,
+            'status' => 2
+        ]);
+
+        return redirect()->back()->with('success_message','Exam evaluated successfully');
+        
     }
 
     public function editSingleStudent($student_id) {

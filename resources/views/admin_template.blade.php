@@ -257,11 +257,17 @@
                             <span>Exams</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+		    <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin.add-exam-question') }}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Exam Questions</span>
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{ route('admin-submissions') }}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Submimissions</span>
+                        </a>                     
                     </li>
                     <hr class="sidebar-divider">
                     <div class="sidebar-heading">

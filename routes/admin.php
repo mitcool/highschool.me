@@ -133,12 +133,15 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	//Exams
 	Route::get('/exams','AdminController@exams')->name('admin-exams');
 	Route::post('/exams/add','AdminController@createExam')->name('create-exam');
+	Route::get('/submissions','AdminController@showSubmissions')->name('admin-submissions');
 	Route::get('/add-exam-questions', 'AdminController@addExamQuestionsPage')->name('admin.add-exam-question');
 	Route::post('/add-exam-question', 'AdminController@addExamQuestion')->name('admin.exam-question-add');
 	Route::get('/edit-exam-question/{question_id}', 'AdminController@editQuestionPage')->name('admin.update-exam-question');
 	Route::post('/edit-exam-single-question/{question_id}', 'AdminController@editExamQuestion')->name('admin.update-question-exam');
 	Route::post('/delete-exam-question', 'AdminController@deleteExamQuestion')->name('admin.delete-exam-question');
-
+	Route::get('/submissions/{submition_id}','AdminController@showSingleSubmission')->name('single-submission');
+	Route::post('/evaluate-exam/{exam_id}','AdminController@evaluateExam')->name('evaluate-exam');
+	
 	Route::get('/help-desk/parent','AdminController@parentHelpDesk')->name('admin-parent-help-desk');
 	Route::get('/help-desk/student','AdminController@studentHelpDesk')->name('admin-student-help-desk');
 

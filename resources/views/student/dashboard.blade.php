@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
     <link href="{{asset('css/admin/sb-admin-2.min.css')}}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{asset('/assets/fontawesome-free-5.5.0-web/css/all.min.css')}}">
@@ -64,7 +65,7 @@
                         </a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="{{ route('student.exams') }}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>My Exams</span>
                         </a>

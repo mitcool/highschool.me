@@ -30,6 +30,11 @@
                 <option value="{{ $educator->id }}">{{ $educator->fullname() }}</option>
             @endforeach
         </select><br>
+        <label class="font-weight-bold mb-0" for="">Exam Type</label>
+        <select required class="form-control" name="type" required>
+            <option value="1">Open Exam</option>
+            <option value="2">Essay</option>
+        </select><br>
         <div class="d-flex justify-content-center">
             <button type="submit" class="btn orange-button mx-2">Add Exam</button>
         </div>
