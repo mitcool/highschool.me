@@ -81,6 +81,7 @@ use App\HelpDesk;
 use App\Exam;
 use App\StudentSpotlight;
 use App\StudentSpotlightsCategory;
+use App\ExamQuestion;
 
 use App\Http\Requests\CreateConferenceRequest;
 use App\Http\Requests\AiServiceRequest;
@@ -1167,5 +1168,39 @@ class AdminController extends Controller
         $student = StudentSpotlight::find($student_id);
 
         return view('admin.edit-single-student')->with('student', $student);
+    }
+
+    public function addExamQuestionsPage() {
+        $courses = CatalogCourse::get();
+        $questions = ExamQuestion::paginate();
+
+        return view('admin.add-exam-questions')->with('courses', $courses)->with('questions', $questions);
+    }
+
+    public function addExamQuestion(Request $request) {
+        ExamQuestion::insert([
+            'subject_id' => $request->course_id,
+            'question' => $request->question,
+        ]);
+
+        return redirect()->back()->with('success_message','Exam question added successfully');
+    }
+
+    public function editQuestionPage($question_id) {
+        $question = ExamQuestion::where('id', $question_id)->first();
+
+        return view('admin.edit-exam-question')->with('question', $question);
+    }
+
+    public function editExamQuestion(Request $request, $question_id) {
+        ExamQuestion::where('id', $question_id)->update(['question' => $request->question]);
+
+        return redirect()->back()->with('success_message','Exam question updated successfully');
+    }
+
+    public function deleteExamQuestion(Request $request) {
+        ExamQuestion::where('id', $request->id)->delete();
+
+        return redirect()->route('admin.add-exam-question')->with('success_message','Exam question deleted successfully');
     }
 }
