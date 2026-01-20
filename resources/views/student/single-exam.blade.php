@@ -1,5 +1,14 @@
 @extends('student.dashboard')
 
+@section('css')
+<style>
+    @media print {
+    body {
+        display: none !important;
+    }
+}
+</style>
+@endsection
 @section('content')
 <div class="container my-5">
     @if($exam->status == 0)
@@ -47,7 +56,7 @@
     <div class="page-content table-container mx-auto mt-5">
         <h2 class="text-center mb-4">{{ $exam->course->course->title }}</h2>
         <p class="text-center">
-            {{ $exam->grade > 1 ? 'YOU PASS' : 'YOU FAIL' }}
+            {{ $exam->grade() }}
         </p>
     </div>
     @endif
@@ -56,7 +65,14 @@
 
 @section('scripts')
 <script>
- let timeRemaining = 5; // 60 minutes in seconds
+function blockEvent(e, reason) {
+    e.preventDefault();
+    console.warn(reason);
+}
+document.addEventListener("copy", e => blockEvent(e, "Copy blocked"));
+document.addEventListener("cut", e => blockEvent(e, "Cut blocked"));
+document.addEventListener("paste", e => blockEvent(e, "Paste blocked"));
+ let timeRemaining = 60; // 60 minutes in seconds
 
   function updateTimer() {
     const hours = Math.floor(timeRemaining / 3600);
@@ -89,19 +105,18 @@
             violations++;
 
 
-            if (violations >= MAX_VIOLATIONS) {
-                //Auto-submit or lock exam
-                $.ajax({
-                        method: "POST",
-                        url: "{{route('fail-exam', $exam->id)}}",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    }).done(function(response) {
-                        alert('here')
-                        window.location.reload();
-                    });
-            }
+            // if (violations >= MAX_VIOLATIONS) {
+            //     //Auto-submit or lock exam
+            //     $.ajax({
+            //             method: "POST",
+            //             url: "{{route('fail-exam', $exam->id)}}",
+            //             headers: {
+            //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //             }
+            //         }).done(function(response) {
+            //             window.location.reload();
+            //         });
+            // }
         }
 
         // Detect tab switch or minimize

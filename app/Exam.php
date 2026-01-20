@@ -31,4 +31,22 @@ class Exam extends Model
     public function answers(){
         return $this->hasMany('App\User','id','educator_id');
     }
+
+    public function grade(){
+        if($this->grade < 1){
+            return 'Fail (' .number_format($this->grade,2,'.',',').')';
+        }
+        elseif($this->grade < 1.5){
+            return 'Insufficient (' .number_format($this->grade,2,'.',',').')';
+        }
+        elseif($this->grade < 2.5){
+            return 'Satisfactory (' .number_format($this->grade,2,'.',',').')';
+        }
+        elseif($this->grade < 3.5){
+            return 'Good (' .number_format($this->grade,2,'.',',').')';
+        }
+        elseif($this->grade <= 4){
+            return 'Excellent (' .number_format($this->grade,2,'.',',').')';
+        }
+    }
 }
