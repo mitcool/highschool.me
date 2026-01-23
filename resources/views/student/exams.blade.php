@@ -18,7 +18,15 @@
                         <tr>
                             <td class="text-left">{{ $exam->course->course->title }}</td>
                             <td>{{ $exam->date->format('d.m.Y')}} {{ $exam->time->format('H:i')}}</td>
-                            <td><a href="{{ route('student.single-exam',$exam->id) }}" class="view-link">View</a></td>
+                            
+                            @if($exam->is_active())
+                               
+                                <td>
+                                    <a href="{{ route('student.single-exam',$exam->id) }}" class="view-link">Start Now</a>
+                                </td>
+                            @else
+                                <td>The exam will be active from {{ $exam->date->format('d.m.Y')}} {{ $exam->time->format('H:i')}}</td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

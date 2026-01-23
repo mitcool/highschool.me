@@ -72,7 +72,7 @@ function blockEvent(e, reason) {
 document.addEventListener("copy", e => blockEvent(e, "Copy blocked"));
 document.addEventListener("cut", e => blockEvent(e, "Cut blocked"));
 document.addEventListener("paste", e => blockEvent(e, "Paste blocked"));
- let timeRemaining = 60; // 60 minutes in seconds
+ let timeRemaining = 90 * 60; // 60 minutes in seconds
 
   function updateTimer() {
     const hours = Math.floor(timeRemaining / 3600);
@@ -99,24 +99,31 @@ document.addEventListener("paste", e => blockEvent(e, "Paste blocked"));
     <script>
         
         let violations = 0;
-        const MAX_VIOLATIONS = 1;
+        const MAX_VIOLATIONS = 5;
 
         function handleViolation(reason) {
             violations++;
 
-
-            // if (violations >= MAX_VIOLATIONS) {
-            //     //Auto-submit or lock exam
-            //     $.ajax({
-            //             method: "POST",
-            //             url: "{{route('fail-exam', $exam->id)}}",
-            //             headers: {
-            //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //             }
-            //         }).done(function(response) {
-            //             window.location.reload();
-            //         });
-            // }
+            if(violations == 1 || violations == 2){
+               
+                alert('First Warning')
+            }
+            if(violations == 3 || violations == 4){
+               
+                alert('Second Warning')
+            }
+            if (violations >= MAX_VIOLATIONS) {
+                //Auto-submit or lock exam
+                $.ajax({
+                        method: "POST",
+                        url: "{{route('fail-exam', $exam->id)}}",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    }).done(function(response) {
+                        window.location.reload();
+                    });
+            }
         }
 
         // Detect tab switch or minimize

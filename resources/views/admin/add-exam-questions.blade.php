@@ -39,7 +39,13 @@
                           class="form-control"
                           placeholder="Question"></textarea>
             </div>
-
+             <div class="col-md-12 mb-3">
+                <label>Select type of exam</label>
+                <select class="form-control" name="course_id" required>
+                    <option value="">-- Select type --</option>
+                    
+                </select>
+            </div>
             <div class="col-md-12 text-center">
                 <hr>
                 <button class="btn btn-info px-4">Add Question</button>

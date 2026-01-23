@@ -66,8 +66,17 @@ class AdminStudentController extends Controller
         return redirect()->back()->with('success_message','The feedback to parent sent successfully');
     }
 
-    public function overview(){
+    public function overview(Request $request){
+        $search = $request->search;
         $students = User::where('role_id',4)->get();
+        if($search){
+            $students = User::where('role_id',4)
+                ->where('name','like','%'.$search.'%')
+                ->orWhere('middlename','like','%'.$search.'%')
+                ->orWhere('surname','like','%'.$search.'%')
+                ->orWhere('email','like','%'.$search.'%')
+                ->get();
+        }
         return view('admin.student-overview')
             ->with('students',$students);
     }

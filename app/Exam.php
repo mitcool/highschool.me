@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Exam extends Model
 {
@@ -48,5 +49,14 @@ class Exam extends Model
         elseif($this->grade <= 4){
             return 'Excellent (' .number_format($this->grade,2,'.',',').')';
         }
+    }
+
+    public function is_active(){
+        $date = Carbon::parse($this->date)->format('Y-m-d').' '.Carbon::parse($this->time)->format('H:i');
+        $now = Carbon::now();
+        $date = Carbon::parse($date);
+        $diff = $date->diffInMinutes($now);
+        #dd('start  => '. $now . ' date  => '. $date. 'diff => '.$diff);
+        return  $diff < 90;
     }
 }

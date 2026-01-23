@@ -26,6 +26,7 @@ use App\SelfAssessmentQuestion;
 use App\SelfAssessmentAnswer;
 use App\SelfAssessmentAttempt;
 use App\SelfAssessmentAttemptQuestion;
+use App\Fraud;
 
 use Carbon\Carbon;
 
@@ -135,6 +136,7 @@ class StudentController extends Controller
         $credits['needed_credits'] = $core_credits + $elective_credits;
         return $credits;
     }
+    ### !-- PLEASE CHECK FOR DATABASE CHANGES !!!
     public function checkMandatoryCourses($student_enrolled_courses){
 
         $user_messages = [];
@@ -288,6 +290,8 @@ class StudentController extends Controller
             'grade' => 0
         ]);
         }
+        $fraud = ['exam_id' => $exam_id, 'student_id' => auth()->id()];
+        Fraud::create($fraud);
         return;
     }
 
