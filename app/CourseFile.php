@@ -12,11 +12,7 @@ class CourseFile extends Model
     protected $fillable = [
         'course_id',
         'label',
-        'original_name',
         'stored_path',
-        'mime_type',
-        'size',
-        'position',
     ];
 
     /**
@@ -26,4 +22,9 @@ class CourseFile extends Model
     {
         return $this->belongsTo(CatalogCourse::class, 'course_id');
     }
+
+    public function selfAssessmentQuestions()
+{
+    return $this->hasMany(SelfAssessmentQuestion::class, 'material_id');
+}
 }

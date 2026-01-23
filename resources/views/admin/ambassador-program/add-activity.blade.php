@@ -12,12 +12,12 @@
         <h2>Add Activity</h2>
     </div>
     <div>
-        <form method="POST" action="">
+        <form method="POST" action="{{ route('admin.add-new-activity') }}">
             @csrf
             <div class="row">
                 <div class="col-md-12">
                     <label>Social Platform</label>
-                    <select class="form-control">
+                    <select class="form-control" name="platform" required>
                         @foreach($platforms as $platform)
                             <option value="{{ $platform->id }}">{{ $platform->name }}</option>
                         @endforeach
@@ -25,11 +25,11 @@
                 </div>
                 <div class="col-md-9 mt-3">
                     <label>Activity</label>
-                    <input type="text" name="name" class="form-control">
+                    <input type="text" name="name" class="form-control" required>
                 </div>
                 <div class="col-md-3 mt-3">
                     <label>Points</label>
-                    <input type="number" name="points" class="form-control">
+                    <input type="number" name="points" class="form-control" required>
                 </div>
             </div>
             <div class="mt-3">
@@ -38,7 +38,7 @@
             </div>
             <div class="text-center mt-4">
                 <a href="{{ route('admin.ambassador-activities') }}" class="btn btn-danger">Cancel</a>
-                <btn type='submit' class="btn btn-primary">Add Activity</a>
+                <button type="submit" class="btn btn-primary">Add Activity</button>
             </div>
         </form>
     </div>

@@ -20,6 +20,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
     
     @yield('css')
+    <style>
+        .sidebar {
+            background-color: #AB4400!important;
+        }
+        .sidebar-heading {
+            background-color: #7B1D00!important;
+        }
+        .nav-item {
+            background-color: #AB4400!important;
+        }
+        .sidebar-divider {
+            background-color: #AB4400!important;
+        }
+    </style>
 
 </head>
 
@@ -257,10 +271,16 @@
                             <span>Exams</span>
                         </a>
                     </li>
-		    <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin.add-exam-question') }}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Exam Questions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{ route('admin.add-self-assess-question') }}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Self Assesment Questions</span>
                         </a>
                     </li>
                     <li class="nav-item">

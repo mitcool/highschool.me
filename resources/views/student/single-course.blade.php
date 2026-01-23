@@ -175,9 +175,31 @@
     <div class="table-responsive shadow" style="padding:20px;margin-top:50px;">
         <h3>Materials</h3>
 
-        @foreach ($course->files as $file )
-            
-        @endforeach
+        @forelse($materials as $material)
+            <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                <span class="fw-medium">
+                    {{ $material->label }}
+                </span>
+
+                <a href=""
+                   class="btn btn-warning text-white px-4">
+                    Open
+                </a>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-12 text-end">
+                    <a href="{{ route('student.self-assessment-test', $material->id) }}"
+                       class="btn btn-warning text-white px-4">
+                        Self-assessment Test
+                    </a>
+                </div>
+            </div>
+        @empty
+            <p class="text-muted text-center">
+                No materials available for this course.
+            </p>
+        @endforelse
 
         @foreach ($course->videos as $video )
             

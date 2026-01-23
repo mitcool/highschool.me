@@ -307,11 +307,11 @@
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <h6 class="fw-semibold mb-0">Course Files</h6>
                                     <button type="button" class="btn btn-sm btn-outline-primary" id="add-file-row">
-                                        + Add file
+                                        + Add link to file
                                     </button>
                                 </div>
                                 <p class="text-muted small mb-3">
-                                    Upload PDFs, slides, docs, etc. You can attach multiple files.
+                                    Upload links to PDFs, slides, docs, etc. You can attach multiple links.
                                 </p>
 
                                 <div id="file-rows">
@@ -319,9 +319,10 @@
                                     <div class="row g-2 align-items-center mb-2 file-row">
                                         <div class="col-md-8">
                                             <input
-                                                type="file"
+                                                type="text"
                                                 name="resource_files[]"
                                                 class="form-control"
+                                                placeholder="https://..."
                                             >
                                         </div>
                                         <div class="col-md-3">
@@ -329,7 +330,7 @@
                                                 type="text"
                                                 name="resource_files_labels[]"
                                                 class="form-control"
-                                                placeholder="Optional description"
+                                                placeholder="Name"
                                                 value="{{ old('resource_files_labels.0') }}"
                                             >
                                         </div>
@@ -346,9 +347,10 @@
                             <div class="row g-2 align-items-center mb-2 file-row">
                                 <div class="col-md-8">
                                     <input
-                                        type="file"
+                                        type="text"
                                         name="resource_files[]"
                                         class="form-control"
+                                        placeholder="https://..."
                                     >
                                 </div>
                                 <div class="col-md-3">
@@ -356,7 +358,7 @@
                                         type="text"
                                         name="resource_files_labels[]"
                                         class="form-control"
-                                        placeholder="Optional description"
+                                        placeholder="Name"
                                     >
                                 </div>
                                 <div class="col-md-1 text-end">
@@ -433,7 +435,7 @@
                         </template>
 
                         <div class="d-flex justify-content-end mt-4">
-                            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary me-2">
+                            <a href="{{route('all-enrollment-courses')}}" class="btn btn-outline-secondary me-2">
                                 Cancel
                             </a>
                             <button type="submit" class="btn btn-primary" style="margin-left: 30px;">

@@ -189,8 +189,10 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/update-ambassador-activity', 'AdminController@updateAmbassadorStatus')->name('admin.update-ambassador-activity');
 	Route::get('/ambassador-rewards', 'AdminController@showAmbassadorRewards')->name('admin.ambassador-rewards');
 	Route::get('/add-reward', 'AdminController@showAddRewardPage')->name('admin.add-reward');
+	Route::post('add-new-reward', 'AdminController@addReward')->name('admin.add-new-reward');
 	Route::get('/ambassador-activities', 'AdminController@showActivitiesPage')->name('admin.ambassador-activities');
 	Route::get('/add-activity', 'AdminController@showAddActivityPage')->name('admin.add-activity');
+	Route::post('/add-new-activity', 'AdminController@addActivity')->name('admin.add-new-activity');
 
 	//Password functionality
 	Route::get('/change-password', 'AdminController@changePassword')->name('admin.change-password');
@@ -199,4 +201,12 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	//Students in Spotlights
 	Route::get('/students-in-spotlight', 'AdminController@studentSpotlight')->name('admin.students-in-spotlights');
 	Route::get('/edit-single-student/{student_id}','AdminController@editSingleStudent')->name('admin.edit-single-student');
+
+	//Self-assessment functionality
+	Route::get('/add-self-assessment-question', 'AdminController@addSelfAssessmentQuestionPage')->name('admin.add-self-assess-question');
+	Route::get('/materials-by-course/{course}', 'AdminController@materialsByCourse')->name('admin.materials-by-course');
+	Route::post('/add-asses-question', 'AdminController@storeSelfAssessQuestion')->name('admin.add-asses-question');
+	Route::get('/edit-self-assessment-question/{question_id}', 'AdminController@editSelfAssessmentQuestionPage')->name('admin.edit-single-self-assessment-question');
+	Route::post('/edit-single-self-assessment-question/{question_id}', 'AdminController@editSelfAssessmentQuestion')->name('admin.self-assessment-update');
+	Route::post('/delete-single-self-assessment-question/{question_id}', 'AdminController@deleteSelfAssessmentQuestion')->name('admin.delete-self-asses-question');
 });

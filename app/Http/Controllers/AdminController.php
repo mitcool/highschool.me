@@ -83,6 +83,8 @@ use App\StudentSpotlight;
 use App\StudentSpotlightsCategory;
 use App\ExamQuestion;
 use App\StudentAnswer;
+use App\SelfAssessmentQuestion;
+use App\SelfAssessmentAnswer;
 
 use App\Http\Requests\CreateConferenceRequest;
 use App\Http\Requests\AiServiceRequest;
@@ -862,10 +864,8 @@ class AdminController extends Controller
             'notes'              => ['nullable', 'string'],
 
             //files
-            'resource_files'           => ['nullable', 'array'],
-            'resource_files.*'         => ['nullable', 'max:51200'], // ~50MB
             'resource_files_labels'    => ['nullable', 'array'],
-            'resource_files_labels.*'  => ['nullable', 'string', 'max:255'],
+            'resource_files_labels.*'  => ['nullable', 'string'],
 
             //video
             'video_titles'             => ['nullable', 'array'],
@@ -952,7 +952,7 @@ class AdminController extends Controller
             }
 
             // 4) Save FILES (if any)
-            $files  = request()->file('resource_files', []);
+            $files  = request()->input('resource_files', []);
             $labels = request()->input('resource_files_labels', []);
 
             if (is_array($files)) {
@@ -961,15 +961,11 @@ class AdminController extends Controller
                         continue;
                     }
                     Log::info($uploadedFile);
-                    $path = $this->uploadFile($uploadedFile, '/public/courses_files');
 
                     CourseFile::create([
                         'course_id'     => $course->id,
                         'label'         => isset($labels[$index]) ? $labels[$index] : null,
-                        'original_name' => $uploadedFile->getClientOriginalName(),
-                        'stored_path'   => '/public/courses_files/'.$path,
-                        'mime_type'     => $uploadedFile->getClientMimeType(),
-                        'position'      => $index,
+                        'stored_path'   => $uploadedFile,
                     ]);
                 }
             }
@@ -1048,9 +1044,13 @@ class AdminController extends Controller
         return view('admin.ambassador-program.add-reward');
     }
 
-    public function addReward() {
+    public function addReward(Request $request) {
+        AmbassadorReward::insert([
+            'name' => $request->name,
+            'points' => $request->points,
+        ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('success_message','Reward added successfully');
     }
 
     public function showActivitiesPage() {
@@ -1063,6 +1063,17 @@ class AdminController extends Controller
         $platforms = AmbassadorService::get();
 
         return view('admin.ambassador-program.add-activity')->with('platforms', $platforms);
+    }
+
+    public function addActivity(Request $request) {
+        AmbassadorServiceAction::insert([
+            'service_id' => $request->platform,
+            'name' => $request->name,
+            'value' => $request->points,
+            'additional_information' => $request->additional_info,
+        ]);
+
+        return redirect()->back()->with('success_message','Activity added successfully');
     }
 
     public function changePassword() {
@@ -1243,4 +1254,97 @@ class AdminController extends Controller
 
         return redirect()->route('admin.add-exam-question')->with('success_message','Exam question deleted successfully');
     }
+
+    public function addSelfAssessmentQuestionPage() {
+        $courses = CatalogCourse::get();
+
+        $questions = SelfAssessmentQuestion::with('course')->orderBy('id', 'desc')->paginate(10);
+
+        return view('admin.add-self-assess-question')->with('courses', $courses)->with('questions', $questions);
+    }
+
+    public function materialsByCourse($courseId) {
+        $materials = CourseFile::where('course_id', $courseId)
+        ->select('id', 'label')
+        ->orderBy('label')
+        ->get();
+
+        return response()->json($materials);
+    }
+
+    public function storeSelfAssessQuestion(Request $request) {
+        $request->validate([
+            'course_id' => 'required',
+            'material_id' => 'required',
+            'question' => 'required|string',
+            'answers' => 'required|array|size:4',
+            'answers.*' => 'required|string',
+            'correct_answer' => 'required|integer|between:0,3',
+        ]);
+
+        // Create question
+        $question = SelfAssessmentQuestion::create([
+            'course_id' => $request->course_id,
+            'material_id' => $request->material_id,
+            'question' => $request->question,
+        ]);
+
+        // Create answers
+        foreach ($request->answers as $index => $answer) {
+            SelfAssessmentAnswer::create([
+                'question_id' => $question->id,
+                'answer' => $answer,
+                'is_correct' => ($index == $request->correct_answer),
+            ]);
+        }
+
+        return redirect()->back()->with('success_message', 'Self-assessment question added successfully.');
+    }
+
+    public function editSelfAssessmentQuestionPage($question_id) {
+        $question = SelfAssessmentQuestion::with('answers')->findOrFail($question_id);
+        $courses = CatalogCourse::all();
+
+        return view('admin.edit-self-assess-question')->with('question', $question)->with('courses', $courses);
+    }
+
+    public function editSelfAssessmentQuestion(Request $request, $id) {
+        $request->validate([
+            'course_id' => 'required',
+            'material_id' => 'required',
+            'question' => 'required|string',
+            'answers' => 'required|array|size:4',
+            'correct_answer' => 'required|integer|between:0,3',
+        ]);
+
+        $question = SelfAssessmentQuestion::with('answers')->findOrFail($id);
+
+        $question->update([
+            'course_id' => $request->course_id,
+            'material_id' => $request->material_id,
+            'question' => $request->question,
+        ]);
+
+        foreach ($question->answers as $index => $answer) {
+            $answer->update([
+                'answer' => $request->answers[$index],
+                'is_correct' => $index == $request->correct_answer
+            ]);
+        }
+
+        return redirect()->back()->with('success_message', 'Question updated successfully.');
+    }
+
+    public function deleteSelfAssessmentQuestion($id) {
+        $question = SelfAssessmentQuestion::with('answers')->findOrFail($id);
+
+        // Delete all answers first
+        $question->answers()->delete();
+
+        // Then delete the question
+        $question->delete();
+
+        return redirect()->back()->with('success_message', 'Question and its answers deleted successfully.');
+    }
+
 }

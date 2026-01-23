@@ -98,6 +98,9 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::post('/ambassador/redeem', 'StudentController@redeemRewards')->name('ambassador.redeem');
 	Route::post('/submit-exam/{exam_id}','StudentController@submitExam')->name('submit-exam');
 	Route::post('/fail-exam/{exam_id}','StudentController@failExam')->name('fail-exam');
+	Route::get('/self-assessment-test/{material_id}', 'StudentController@selfAssessmentTest')->name('student.self-assessment-test');
+	Route::post('/self-assessment-test-submit/{attempt}', 'StudentController@submitSelfAssessmentTest')->name('student.self-assessment-test-submit');
+	Route::get('/self-assessment-test-review', 'StudentController@selfAssessmentTestReview')->name('student.self-assessment-review');
 });
 
 Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');

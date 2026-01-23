@@ -26,6 +26,18 @@
             border-radius: 30px !important;
             border: 5px solid red !important;
         }
+        .sidebar {
+            background-color: #4E28B9!important;
+        }
+        .sidebar-heading {
+            background-color: #26088D!important;
+        }
+        .navbar-nav nav-item {
+            background-color: #4E28B9!important;
+        }
+        .sidebar-divider {
+            background-color: #4E28B9!important;
+        }
     </style>
 
 </head>

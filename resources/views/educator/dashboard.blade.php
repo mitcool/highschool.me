@@ -17,6 +17,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
 
     @yield('css')
+    <style>
+        .sidebar {
+            background-color: #AB0050!important;
+        }
+        .sidebar-heading {
+            background-color: #7B0039!important;
+        }
+        .nav-item {
+            background-color: #AB0050!important;
+        }
+        .sidebar-divider {
+            background-color: #AB0050!important;
+        }
+    </style>
 
 </head>
 

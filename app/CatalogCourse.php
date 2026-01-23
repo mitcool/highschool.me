@@ -89,8 +89,7 @@ class CatalogCourse extends Model
      */
     public function files()
     {
-        return $this->hasMany(CourseFile::class, 'course_id')
-            ->orderBy('position')->orderBy('id');
+        return $this->hasMany(CourseFile::class, 'course_id')->orderBy('id');
     }
 
     /**

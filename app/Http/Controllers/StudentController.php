@@ -20,6 +20,12 @@ use App\Exam;
 use App\StudentAnswer;
 use App\ExamQuestion;
 use App\RelatedCourse;
+use App\CourseFile;
+use App\CourseVideo;
+use App\SelfAssessmentQuestion;
+use App\SelfAssessmentAnswer;
+use App\SelfAssessmentAttempt;
+use App\SelfAssessmentAttemptQuestion;
 
 use Carbon\Carbon;
 
@@ -287,8 +293,10 @@ class StudentController extends Controller
 
     public function singleCourse($course_id) {
         $course = CatalogCourse::find($course_id);
-        return view('student.single-course')
-            ->with('course',$course);
+
+        $materials = CourseFile::where('course_id', $course_id)->get();
+
+        return view('student.single-course')->with('course',$course)->with('materials', $materials);
     }
 
     public function studyMentor(){
@@ -395,5 +403,134 @@ class StudentController extends Controller
         });
 
         return back()->with('success_message', 'Rewards redeemed successfully');
+    }
+
+    public function selfAssessmentTest($material_id) {
+        $user = auth()->user();
+        $now = Carbon::now();
+
+        // Find existing active attempt
+        $attempt = SelfAssessmentAttempt::where('user_id', $user->id)
+            ->where('material_id', $material_id)
+            ->first();
+
+        // Already coompleted - review mode
+        if ($attempt && $attempt->completed) {
+
+            $attemptQuestions = SelfAssessmentAttemptQuestion::where('attempt_id', $attempt->id)
+                ->with(['question.answers', 'selectedAnswer'])
+                ->get();
+
+            $totalQuestions = $attemptQuestions->count();
+            $correctAnswers = $attemptQuestions->where(function ($aq) {
+                return $aq->selectedAnswer && $aq->selectedAnswer->is_correct;
+            })->count();
+            $totalPoints = $attemptQuestions->where(function ($aq) {
+                return $aq->selectedAnswer && $aq->selectedAnswer->is_correct;
+            })->count(); // 1 point per correct answer
+
+            return view('student.self-assessment-review', [
+                'attempt' => $attempt,
+                'attemptQuestions' => $attemptQuestions,
+                'totalQuestions' => $totalQuestions,
+                'correctAnswers' => $correctAnswers,
+                 'totalPoints' => $totalPoints,
+            ]);
+        }
+
+        // FIRST TIME opening the test
+        if (!$attempt) {
+
+            $attempt = SelfAssessmentAttempt::create([
+                'user_id' => $user->id,
+                'material_id' => $material_id,
+                'started_at' => $now,
+                'ends_at' => $now->copy()->addHour(), // 1 hour
+            ]);
+
+            // Pick 10 random questions for this material
+            $questions = SelfAssessmentQuestion::where('material_id', $material_id)
+                ->inRandomOrder()
+                ->limit(10)
+                ->get();
+
+            foreach ($questions as $question) {
+                SelfAssessmentAttemptQuestion::create([
+                    'attempt_id' => $attempt->id,
+                    'question_id' => $question->id,
+                ]);
+            }
+        }
+
+        // If time expired → auto-finish
+        if ($now->greaterThanOrEqualTo($attempt->ends_at)) {
+            return redirect()->route('student.self-assessment-test-submit', $attempt->id);
+        }
+
+        // Load SAME questions every time
+        $questions = SelfAssessmentAttemptQuestion::where('attempt_id', $attempt->id)
+            ->with(['question.answers'])
+            ->get()
+            ->pluck('question');
+
+        // Remaining time in seconds
+        $remainingSeconds = $now->diffInSeconds($attempt->ends_at);
+
+        return view('student.self-assessment-test', [
+            'questions' => $questions,
+            'duration' => $remainingSeconds, // seconds, not minutes
+            'attempt' => $attempt,
+        ]);
+    }
+
+    public function submitSelfAssessmentTest(Request $request, $attemptId) {
+        $attempt = SelfAssessmentAttempt::where('id', $attemptId)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        // Prevent resubmission and if ready it will redirect to the review of the test
+        if ($attempt->completed) {
+            return redirect()
+                ->route('student.self-assessment-test', $attempt->material_id);
+        }
+
+        $answers = $request->input('answers', []);
+
+        // Save answers (only for questions in this attempt)
+        foreach ($answers as $questionId => $answerId) {
+            SelfAssessmentAttemptQuestion::where('attempt_id', $attempt->id)
+                ->where('question_id', $questionId)
+                ->update([
+                    'selected_answer_id' => $answerId,
+                ]);
+        }
+
+        // Calculate score
+        $score = SelfAssessmentAttemptQuestion::where('attempt_id', $attempt->id)
+            ->whereHas('selectedAnswer', function ($q) {
+                $q->where('is_correct', 1);
+            })
+            ->count();
+
+        // Calculate total points (1 point per correct answer)
+        $totalPoints = SelfAssessmentAttemptQuestion::where('attempt_id', $attempt->id)
+            ->whereHas('selectedAnswer', function ($q) {
+                $q->where('is_correct', 1);
+            })
+            ->count();
+
+        // Mark attempt as completed
+        $attempt->update([
+            'score' => $score,
+            'completed' => 1,
+        ]);
+
+        return redirect()
+            ->route('student.self-assessment-test', $attempt->material_id);
+    }
+
+    public function selfAssessmentTestReview() {
+
+        return view('student.self-assessment-review');
     }
 }
