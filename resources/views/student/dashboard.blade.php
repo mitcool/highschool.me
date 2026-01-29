@@ -84,6 +84,12 @@
                             <span>My Exams</span>
                         </a>
                     </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ route('student.diplomas') }}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>My Diplomas</span>
+                        </a>
+                    </li>
                      <li class="nav-item active">
                         <a class="nav-link" href="{{ route('student.study-mentor') }}">
                             <i class="fas fa-fw fa-cog"></i>

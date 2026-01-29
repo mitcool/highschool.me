@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use DB;
+
 use App\AmbassadorService;
 use App\AmbassadorReward;
 use App\AmbassadorServiceAction;
@@ -14,7 +16,6 @@ use App\StudentEnrolledCourse;
 use App\CatalogCourse;
 use App\AmbassadorRedemption;
 use App\AmbassadorRedemptionOrder;
-use DB;
 use App\HelpDesk;
 use App\Exam;
 use App\StudentAnswer;
@@ -27,6 +28,7 @@ use App\SelfAssessmentAnswer;
 use App\SelfAssessmentAttempt;
 use App\SelfAssessmentAttemptQuestion;
 use App\Fraud;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use Carbon\Carbon;
 
@@ -99,11 +101,11 @@ class StudentController extends Controller
             'categories.curriculumCourses.course',
             'curriculumCourses.course'
         ])->orderBy('id')->get();
-        $student_enrolled_courses = StudentEnrolledCourse::where('user_id',auth()->user()->id)->get();
+        $student = auth()->user();
         
-        $credits = $this->calculateCredits($student_enrolled_courses);
-        $in_progress_courses =  $student_enrolled_courses->where('status',0);
-        $completed_courses =  $student_enrolled_courses->where('status',1);
+        $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
+        $in_progress_courses =  $student->enrolled_courses->where('status',0);
+        $completed_courses =  $student->enrolled_courses->where('status',1);
         $needed_mandatory_courses = $this->checkMandatoryCourses($student_enrolled_courses);
         
         return view('student.my-courses')
@@ -433,5 +435,17 @@ class StudentController extends Controller
         return view('student.pre-exam')
             ->with('questions',$questions);
        
+    }
+
+    public function diplomas(){
+        
+        $student = auth()->user();
+        $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);        
+        return view('student.diplomas');
+    }
+
+    public function generatePdfDiploma($student_id){
+        $pdf = Pdf::loadView('student.diploma-pdf')->setPaper('a4','landscape');
+        return $pdf->stream();
     }
 }

@@ -134,12 +134,15 @@ class Controller extends BaseController
         
         return $user_messages;
     }
-	 public function calculateCredits($student_enrolled_courses){
+	 public function calculateCredits($student_enrolled_courses,$track){
         $credits = [];
-        $core_credits = 16;
+        $core_credits = $track == 1 ? 16 : 15;
         $elective_credits = 0;
+        $needed_elective_credits = $track == 1 ? 8 : 3;
         $credits['needed_credits'] = 0;
         $credits['completed_credits'] = 0;
+        $credits['diploma'] = 0;
+        
         foreach($student_enrolled_courses as $enrolled_course){
             $credits['needed_credits'] += $enrolled_course->course->default_credits;
             $type = CurriculumCourse::where('course_id',$enrolled_course->id)->first()->curriculum_type_id;
@@ -151,10 +154,13 @@ class Controller extends BaseController
             }
         }
         //TODO::More checks for related courses
-        if($elective_credits < 8){
-            $elective_credits = 8;
+        if($elective_credits < $needed_elective_credits){
+            $elective_credits = $needed_elective_credits;
         }
         $credits['needed_credits'] = $core_credits + $elective_credits;
+        if($credits['completed_credits'] >= $credits['needed_credits']){
+            $credits['diploma'] = 1;
+        }
         return $credits;
     }
     

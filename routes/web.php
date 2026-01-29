@@ -111,6 +111,8 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::post('/self-assessment-test-submit/{attempt}', 'StudentController@submitSelfAssessmentTest')->name('student.self-assessment-test-submit');
 	Route::get('/self-assessment-test-review', 'StudentController@selfAssessmentTestReview')->name('student.self-assessment-review');
 	Route::get('/pre-exam/{subject_id}','StudentController@preExam')->name('student.pre-exam');
+	Route::get('/diplomas','StudentController@diplomas')->name('student.diplomas');
+	Route::get('/generate-pdf-diploma/{student_id}','StudentController@generatePdfDiploma')->name('student.generate-pdf-diploma');
 });
 
 Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');
