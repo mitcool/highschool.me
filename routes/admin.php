@@ -209,4 +209,6 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/edit-self-assessment-question/{question_id}', 'AdminController@editSelfAssessmentQuestionPage')->name('admin.edit-single-self-assessment-question');
 	Route::post('/edit-single-self-assessment-question/{question_id}', 'AdminController@editSelfAssessmentQuestion')->name('admin.self-assessment-update');
 	Route::post('/delete-single-self-assessment-question/{question_id}', 'AdminController@deleteSelfAssessmentQuestion')->name('admin.delete-self-asses-question');
+
+	Route::get('/single/student/{student_id}','AdminStudentController@singleStudentProfile')->name('admin.single-student');
 });

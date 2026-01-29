@@ -64,4 +64,8 @@ class User extends Authenticatable
     public function fullname(){
         return $this->name.' '.$this->middlename.' '.$this->surname;
     }
+
+    public function enrolled_courses(){
+        return $this->hasMany('App\StudentEnrolledCourse','user_id','id');
+    }
 }

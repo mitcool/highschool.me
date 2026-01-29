@@ -272,6 +272,8 @@
                                                     </div>
                                                     @if(in_array($cc->course_id,$enrolled_courses_ids))
                                                          <button class="btn btn-disabled">Enrolled</button>
+                                                    @elseif($track == 4)
+                                                        <a href="{{ route('parent.student.module.courses',$student->id) }}"><button class="btn btn-enroll">Buy now</button></a>
                                                     @else
                                                     
                                                     <form action="{{ route('enroll',$cc->course_id) }}" method="POST">
@@ -309,7 +311,7 @@
                                         aria-expanded="{{ $type->categories->count() ? 'false' : 'true' }}"
                                         aria-controls="collapse-{{ $otherCollapseId }}"
                                     >
-                                        {{ $headerTitle }}
+                                        {{ $headerTitle }} 
                                     </button>
                                 </div>
                                 <div
@@ -333,7 +335,9 @@
                                                         </span>
                                                     @endif
                                                 </div>
-                                                @if(in_array($cc->course_id,$enrolled_courses_ids))
+                                                    @if(in_array($cc->course_id,$enrolled_courses_ids))
+                                                         <button class="btn btn-disabled">Enrolled</button>
+                                                    @elseif($student->status == 1)
                                                          <button class="btn btn-disabled">Enrolled</button>
                                                     @else
                                                     <form action="{{ route('enroll',$cc->course_id) }}" method="POST">

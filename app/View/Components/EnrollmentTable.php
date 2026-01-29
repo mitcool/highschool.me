@@ -14,6 +14,7 @@ class EnrollmentTable extends Component
     public $curriculumTypes;
     public $enrolled_courses;
     public $enrolled_courses_ids;
+    public $track;
     
 
     public function __construct(User $student)
@@ -29,6 +30,7 @@ class EnrollmentTable extends Component
         $this->enrolled_courses = StudentEnrolledCourse::where('user_id',$student->id)->get();
         $this->enrolled_courses_ids = $this->enrolled_courses->pluck('catalog_course_id')->toArray();
         $this->student = $student;
+        $this->track = $this->student->student_details->track;
     }
 
 

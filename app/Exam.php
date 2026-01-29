@@ -10,7 +10,7 @@ class Exam extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['date','time','course_id','student_id','educator_id','type','status','grade','comment'];
+    protected $fillable = ['date','time','course_id','student_id','educator_id','type','status','grade','comment','pre_exam'];
 
      protected $casts = [
         'date' => 'datetime',

@@ -58,12 +58,20 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::post('/confirm-meeting/{meeting_id}','ParentController@confirmMeeting')->name('confirm-meeting');
 	
+	Route::post('/change-courses-count/{course_id}/{action}','ParentController@changeCourseTypeCount')->name('change-course-type-count');
+
+	Route::get('/course-type-checkout/{student_id}','ParentController@studentCourseTypeCheckout')->name('parent.student.course-type.checkout');
+
 	#releted to Group Session,menotring sessions and coaching sessions
 	Route::post('/change-session-count/{session_id}/{action}','ParentController@changeSessionCount')->name('change-session-count');
 
 	Route::get('/sessions-checkout/{student_id}','ParentController@studentSessionsCheckout')->name('parent.student.sessions.checkout');
 
 	Route::post('/sessions-pay/{student_id}','ParentController@studentSessionsPay')->name('parent.student.sessions.pay');
+
+	Route::post('/course-type-pay/{student_id}','ParentController@studentCourseTypePay')->name('parent.student.courses-type.pay');
+
+	Route::get('/course-type-pay-success/{student_id}','ParentController@studentCourseTypeSuccess')->name('parent.courses-type-pay-success');
 
 	Route::get('/session-pay-success/{student_id}','ParentController@studentSessionsSuccess')->name('session-pay-success');
 
@@ -75,6 +83,7 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::post('/enroll/{course_id}','ParentController@enroll')->name('enroll');
 
+	Route::post('update-enrolled-course-status/{enrolled_course_id}','ParentController@updateEnrolledCourseStatus')->name('update-enrolled-course-status');
 
 });
 
@@ -101,6 +110,7 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::get('/self-assessment-test/{material_id}', 'StudentController@selfAssessmentTest')->name('student.self-assessment-test');
 	Route::post('/self-assessment-test-submit/{attempt}', 'StudentController@submitSelfAssessmentTest')->name('student.self-assessment-test-submit');
 	Route::get('/self-assessment-test-review', 'StudentController@selfAssessmentTestReview')->name('student.self-assessment-review');
+	Route::get('/pre-exam/{subject_id}','StudentController@preExam')->name('student.pre-exam');
 });
 
 Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');

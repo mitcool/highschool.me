@@ -8,25 +8,31 @@
             <table class="table course-table">
                 <thead>
                     <tr class="text-center">
-                        <th class="text-left">Subject</th>
-                        <th>Date/Time</th>
-                        <th>Details</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Subject</th>
+                        <th>Pre-Exam Link</th>
+                        <th>Exam Link</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
                    @foreach($exams as $exam)
                         <tr>
-                            <td class="text-left">{{ $exam->course->course->title }}</td>
-                            <td>{{ $exam->date->format('d.m.Y')}} {{ $exam->time->format('H:i')}}</td>
-                            
-                            @if($exam->is_active())
-                               
-                                <td>
-                                    <a href="{{ route('student.single-exam',$exam->id) }}" class="view-link">Start Now</a>
-                                </td>
-                            @else
-                                <td>The exam will be active from {{ $exam->date->format('d.m.Y')}} {{ $exam->time->format('H:i')}}</td>
-                            @endif
+                            <td>{{ $exam->date->format('d.m.Y')}}</td>
+                            <td>{{ $exam->time->format('H:i')}}</td>
+                            <td>{{ $exam->course->course->title }}</td>
+                            <td>
+                                @if($exam->pre_exam == 0)
+                                <a href="{{ route('student.pre-exam',$exam->id) }}">Link &#187;</a>
+                                @endif
+                            </td>
+                            <td>
+                                @if($exam->is_active())
+                                
+                                        <a href="{{ route('student.single-exam',$exam->id) }}" class="view-link">Link&#187;</a>
+                                    
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

@@ -20,7 +20,7 @@
         <div class="row">
 
             <div class="col-md-12 mb-3">
-                <label>Select course</label>
+                <label class="mb-0 font-weight-bold">Select course</label>
                 <select class="form-control" name="course_id" required>
                     <option value="">-- Select Course --</option>
                     @foreach($courses as $course)
@@ -32,7 +32,7 @@
             </div>
 
             <div class="col-md-12 mb-3">
-                <label>Your question</label>
+                <label class="mb-0 font-weight-bold">Your question</label>
                 <textarea rows="5"
                           name="question"
                           required
@@ -40,10 +40,11 @@
                           placeholder="Question"></textarea>
             </div>
              <div class="col-md-12 mb-3">
-                <label>Select type of exam</label>
-                <select class="form-control" name="course_id" required>
-                    <option value="">-- Select type --</option>
-                    
+                <label class="mb-0 font-weight-bold">Select type</label>
+                <select class="form-control" name="type" required>
+                    <option value="">-- Select Exam Type --</option>
+                    <option value="0">Pre-Exam</option>
+                    <option value="1">Final Exam</option>
                 </select>
             </div>
             <div class="col-md-12 text-center">
@@ -71,6 +72,15 @@
                             {{ $course->title }}
                         </option>
                     @endforeach
+                </select>
+                <label class="mb-0 font-weight-bold">Select type</label>
+                <select  name="type" 
+                        class="form-control" 
+                        onchange="this.form.submit()">
+                        {{-- Null check because of 0 bool check issue --}}
+                    <option value="" selected disabled>-- Select Exam Type --</option>
+                    <option {{ null != request('type') && request('type') == 0 ? 'selected ' : '' }} value="0">Pre-Exam</option>
+                    <option {{ null != request('type') && request('type') == 1 ? 'selected ' : '' }} value="1">Final Exam</option>
                 </select>
             </div>
         </div>

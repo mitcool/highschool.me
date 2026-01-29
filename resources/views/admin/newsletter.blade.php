@@ -5,8 +5,9 @@
 @endsection
 
 @section('content')
-<div class="container mb-3 bg-light p-3 shadow">
-	<h2 class="text-center page-headings">Send newsletter</h2>
+<div class="container mb-3 bg-white p-3">
+	<div class="shadow">
+		<h2 class="text-center page-headings">Send newsletter</h2>
 	<hr>
 	<p class="text-right"><span class="text-danger ">* </span>Required fields</p>
 	<p class="text-right"><span class="text-danger ">All images must be with 468 pixels Width and 60 pixels Height</p>
@@ -101,6 +102,7 @@
 			</div>
 		</div>
 	</form>
+	</div>
 </div>
 
 @endsection

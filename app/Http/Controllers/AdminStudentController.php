@@ -9,13 +9,15 @@ use Mail;
 use App\User;
 use App\ParentStudent;
 use App\StudentDocument;
+use App\CurriculumCourse;
+use App\StudentEnrolledCourse;
 
 use App\Mail\WrongDocument;
 
 class AdminStudentController extends Controller
 {
     public function studentDocuments(){
-        $students = ParentStudent::whereIn('status',[0,4])->get();   //pending approval or check reupload documents
+        $students = ParentStudent::whereIn('status',[1,4])->get();   //pending approval or check reupload documents
         return view('admin.student-documents')->with('students',$students);
     }
     public function singleStudentDocument($student_id){
@@ -24,13 +26,13 @@ class AdminStudentController extends Controller
             ->with('student',$student);
     }
     public function approveDocuments(Request $request,$student_id){
-        $approved_status = 1;
+        $approved_status = 2;
         $is_disabled = $request->is_disabled ? 1 : 0;
         ParentStudent::where('student_id',$student_id)->update([
             'status'=> $approved_status,
             'is_disabled' =>  $is_disabled 
         ]);
-        return redirect()->back()->with('success_message','Documentation has been approved');
+        return redirect()->route('admin-student-documents')->with('success_message','Documentation has been approved');
 
     }
      public function approveSingleDocument(Request $request,$action){
@@ -71,6 +73,7 @@ class AdminStudentController extends Controller
         $students = User::where('role_id',4)->get();
         if($search){
             $students = User::where('role_id',4)
+                ->with('student_details')
                 ->where('name','like','%'.$search.'%')
                 ->orWhere('middlename','like','%'.$search.'%')
                 ->orWhere('surname','like','%'.$search.'%')
@@ -80,4 +83,19 @@ class AdminStudentController extends Controller
         return view('admin.student-overview')
             ->with('students',$students);
     }
+
+    public function singleStudentProfile($student_id){
+        $student = User::find($student_id);
+        $student_enrolled_courses = StudentEnrolledCourse::where('user_id',$student_id)->get(); 
+        $credits = $this->calculateCredits($student_enrolled_courses);
+        $in_progress_courses =  $student_enrolled_courses->where('status',0);
+        $completed_courses =  $student_enrolled_courses->where('status',1);
+        $needed_mandatory_courses = $this->checkMandatoryCourses($student_enrolled_courses);
+        return view('admin.student-profile')
+            ->with('credits',$credits)
+            ->with('completed_courses',$completed_courses)
+            ->with('in_progress_courses',$in_progress_courses)
+            ->with('student',$student);
+    }
+   
 }

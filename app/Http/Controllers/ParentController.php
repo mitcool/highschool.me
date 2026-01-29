@@ -41,9 +41,10 @@ use App\Mail\FamilyConsultationRequest;
 use App\Mail\FamilyConsultationRequestAdmin;
 use App\Mail\CourseEnrolledParent;
 use App\Mail\CourseEnrolledStudent;
-
+use App\Mail\StudentReadyForExam;
 
 use App\Services\StudentSessionsService;
+use App\Services\StudentModuleCourseService;
 
 class ParentController extends Controller
 {
@@ -80,8 +81,12 @@ class ParentController extends Controller
 
     }
     public $student_sessions_service;
-    public function __construct(StudentSessionsService $student_sessions_service){
+    public $student_module_course_service;
+
+    public function __construct(StudentSessionsService $student_sessions_service,
+                                StudentModuleCourseService $student_module_course_service ){
         $this->student_sessions_service = $student_sessions_service;
+        $this->student_module_course_service = $student_module_course_service;
     }
     public function dashboard(){
         return view('parent.dashboard');
@@ -110,7 +115,7 @@ class ParentController extends Controller
         $request->validate([
             'name' => 'required',
             'surname' => 'required',
-            'email' => 'required',
+            'email' => 'required|unique:users,email',
             'date_of_birth' => 'required',
             'education_option' => 'required'
         ]);
@@ -132,19 +137,26 @@ class ParentController extends Controller
             'is_verified' => 0,
         ]);
 
+        $status = 0;
+
+        // They don't need document approval for sessions and single course
+        if($education_option == 4 || $education_option == 5){
+            $status = 3;
+        }
         ParentStudent::create([
             'parent_id' => auth()->user()->id,
             'student_id'=> $student->id,
-            'status' => 0,
-            'is_disabled' => 0
+            'status' => $status,
+            'is_disabled' => 0,
+            'track' => $education_option
         ]);
-        if($education_option == 1){
+        if($education_option == 1 || $education_option == 2 || $education_option == 3){
             return redirect()->route('parent.student.documents',$student->id);
         }
-        elseif($education_option==2){
+        elseif($education_option==4){
              return redirect()->route('parent.student.module.courses',$student->id);
         }
-        elseif($education_option==3){
+        elseif($education_option==5){
              return redirect()->route('parent.student.sessions',$student->id);
         }
         else{
@@ -203,11 +215,45 @@ class ParentController extends Controller
             StudentDocument::insert(['file'=>$iep_name,'type'=> 8,'student_id'=>$student->id,'is_approved' => 0]);
         }
 
-        return redirect()->route('parent.student.profile',$student->id)->with('success_message','Student created successfully');
+        return redirect()->route('application-fee',$student->id);
     }
 
-    public function studentModuleCourses(){
-        return view('parent.student-module-courses');
+    public function studentModuleCourses($student_id){
+        $student = User::find($student_id);
+        $course_types = $this->student_module_course_service->get_courses();
+        $total = $this->student_module_course_service->calculate_total();
+       # dd(Cookie::get());
+        return view('parent.student-module-courses')
+            ->with('student',$student)
+            ->with('total',$total)
+            ->with('course_types',$course_types);
+    }
+    public function changeCourseTypeCount($course_id,$action){
+        $current_count = Cookie::get('course-type-count-'.$course_id);
+        $new_count = $action == 'increase' ? $current_count++ : $current_count--;
+        if($current_count >= 1){
+             Cookie::queue('course-type-count-'.$course_id, $current_count, 60);
+        }
+        return redirect()->back()->with('success_message','Courses count updated successfully');
+    }
+
+    public function changeCourseCount($session_id,$action){
+        $current_count = Cookie::get('course-type-count-'.$session_id);
+        $new_count = $action == 'increase' ? $current_count++ : $current_count--;
+        if($current_count >= 1){
+             Cookie::queue('course-type-count-'.$session_id, $current_count, 60);
+        }
+        return redirect()->back()->with('success_message','Courses count updated successfully');
+    }
+
+    public function studentCourseTypeCheckout($student_id){
+        $student = User::find($student_id);
+        $course_types = $this->student_module_course_service->get_courses();
+        $total = $this->student_module_course_service->calculate_total();
+         return view('parent.student-module-courses-checkout')
+            ->with('student',$student)
+            ->with('total',$total)
+            ->with('course_types',$course_types);
     }
 
     public function studentSessions($student_id){
@@ -258,19 +304,14 @@ class ParentController extends Controller
             ],
             'mode'        => 'payment',
             'success_url' => route('application-fee-success',$student_id),
-            'cancel_url'  => route('parent.create.student'),
+            'cancel_url'  => route('parent.student.documents',$student_id),
         ]);
         return redirect()->away($session->url);
     }
     public function applicationFeeSuccess($student_id){
         $application_fee = 150;
         $student_data = session()->get('student_data');
-        ParentStudent::insert([
-            'student_id' => $student_id,
-            'parent_id' => auth()->id(),
-            'status' => 0,
-            'grade' => $student_data['grade'],
-        ]);
+        ParentStudent::where('student_id',$student_id)->update(['status' => 1]);
         $this->createInvoice($application_fee,'Application Fee');
 
         try{
@@ -361,7 +402,7 @@ class ParentController extends Controller
         $this->createInvoice($invoice_data['amount'],$invoice_data['description']);
 
         ParentStudent::where('student_id',$student_data['student_id'])
-            ->update(['status' => $student_data['status']]);
+            ->update(['status' => 3]);
 
          try{
             Mail::to(auth()->user()->email)->send(new PaymentSuccessFull);
@@ -446,6 +487,34 @@ class ParentController extends Controller
          return redirect()->away($session->url);
     }
 
+     public function studentCourseTypePay($student_id){
+
+        $student = User::find($student_id);
+        $courses = CourseType::where('type',2)->get();
+        $total = $this->student_module_course_service->calculate_total();
+        
+         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $session = \Stripe\Checkout\Session::create([
+            'line_items'  => [
+                [
+                    'price_data' => [
+                        'currency'     => 'usd',
+                        'product_data' => [
+                            'name' => 'Sessions payment',
+                        ],
+                        'unit_amount'  => $total*100, 
+                    ],
+                    'quantity'   => 1,
+                ],
+            ],
+            'mode'        => 'payment',
+            'success_url' => route('parent.courses-type-pay-success',$student_id),
+            'cancel_url'  => route('parent.student.course-type.checkout',$student_id),
+        ]);
+
+         return redirect()->away($session->url);
+    }
 
     public function extendPlanSuccess(){
        $invoice_data = session()->get('invoice_data');
@@ -509,6 +578,9 @@ class ParentController extends Controller
 
     public function studentProfile($student_id){
         $status = ParentStudent::where('student_id',$student_id)->first()->status;
+        if($status == 0){
+            return redirect()->route('parent.student.documents',$student_id);
+        }
         $student = User::find($student_id);
         $plans = Plan::all();
         $active_plan = StudentPlan::where('student_id',$student_id)->first();
@@ -605,6 +677,13 @@ class ParentController extends Controller
        
     }
 
+    public function studentCourseTypeSuccess($student_id){
+        $this->student_module_course_service->recordCourses($student_id);
+        $amount = $this->student_module_course_service->calculate_total();
+        $description = 'Services for group/mentoring/coaching sessions';
+        $this->createInvoice($amount,$description);
+        return view('parent.student-course-type-success'); #Note the same view
+    }
     public function studentSessionsSuccess($student_id){
         $this->student_sessions_service->recordSesssions($student_id);
         $amount = $this->student_sessions_service->calculate_total();
@@ -689,6 +768,26 @@ class ParentController extends Controller
             
         }
         
+    }
+    public function updateEnrolledCourseStatus($enrolled_course_id){
+        $enrolled_course = StudentEnrolledCourse::find($enrolled_course_id);
+        #Start Study
+        if($enrolled_course->status == 0){
+            $enrolled_course->update(['status' => 1]);
+            $message = 'Student is ready for studing';
+        }
+        #Ready For Exam
+        elseif($enrolled_course->status == 1){
+            $enrolled_course->update(['status' => 2]);
+            $message = 'Student is ready for exam';
+            try{
+                Mail::to('mathias.kunze@onsites.com')->send(new StudentReadyForExam($enrolled_course));
+            }catch(\Exception $e){
+                info($e->getMessage());
+            }
+            
+        }
+        return redirect()->back()->with('success_message',$message);
     }
 }
 

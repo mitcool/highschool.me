@@ -1206,6 +1206,9 @@ class AdminController extends Controller
             'comment'=> $exam_comment,
             'status' => 2
         ]);
+        if($grade > 1){
+            StudentEnrolledCourse::where('user_id',$exam->student_id)->where('subject_id',$exam->course_id)-first();    
+        }
 
         return redirect()->back()->with('success_message','Exam evaluated successfully');
         
@@ -1219,8 +1222,10 @@ class AdminController extends Controller
 
     public function addExamQuestionsPage(Request $request) {
         $courses = CatalogCourse::get();
+        
         $questions = ExamQuestion::when($request->course_id, function ($query) use ($request) {
-            $query->where('subject_id', $request->course_id);
+           
+            $query->where('subject_id', $request->course_id)->where('type',$request->type);
         })
         ->orderBy('id', 'desc')
         ->paginate(10);
@@ -1232,6 +1237,7 @@ class AdminController extends Controller
         ExamQuestion::insert([
             'subject_id' => $request->course_id,
             'question' => $request->question,
+            'type' => $request->type
         ]);
 
         return redirect()->back()->with('success_message','Exam question added successfully');

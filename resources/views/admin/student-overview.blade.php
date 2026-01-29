@@ -18,20 +18,18 @@
             </th>
         </tr>
         <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th class="text-center">Grade</th>
-            <th class="text-center">Date of birth</th>
-            <th class="text-center">Progress</th>
+            <th>Date</th>
+            <th class="text-center">Student</th>
+            <th class="text-center">Parent</th>
+            <th class="text-center">Link</th>
         </tr>
         @foreach ($students as $student )
             <tr>
-                <td>{{ $student->name }} {{ $student->surname }}</td>
-                <td>{{ $student->email }}</td>
-                <td class="text-center">{{ $student->student_details ? $student->student_details->grade : 'N/a'}}</td>
-                <td class="text-center">{{ $student->date_of_birth ? $student->date_of_birth->format('d.m.Y') : 'N/a' }}</td>
+                <td>{{ $student->created_at->format('d.m.Y') }}</td>
+                <td class="text-center">{{ $student->fullname() }}</td>
+                <td class="text-center">{{ $student->student_details->parent->fullname() }}</td>
                 <td class="text-center">
-                    <a href="">See...</a>
+                    <a href="{{ route('admin.single-student',$student->id) }}">View...</a>
                 </td>
             </tr>
         @endforeach
