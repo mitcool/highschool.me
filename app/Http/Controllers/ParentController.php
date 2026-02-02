@@ -789,5 +789,42 @@ class ParentController extends Controller
         }
         return redirect()->back()->with('success_message',$message);
     }
+
+    public function transferProgramPay($student_id){
+        $student = User::find($student_id);
+        $enrollement_fee = 300;
+        $program_fee = 1900;
+        $total = $enrollement_fee + $program_fee;
+        
+         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $session = \Stripe\Checkout\Session::create([
+            'line_items'  => [
+                [
+                    'price_data' => [
+                        'currency'     => 'usd',
+                        'product_data' => [
+                            'name' => 'Sessions payment',
+                        ],
+                        'unit_amount'  => $total*100, 
+                    ],
+                    'quantity'   => 1,
+                ],
+            ],
+            'mode'        => 'payment',
+            'success_url' => route('parent.transfer-pay-success',$student_id),
+            'cancel_url'  => route('parent.student.profile',$student_id),
+        ]);
+
+         return redirect()->away($session->url);
+    }
+
+    public function transferProgramPaySuccess($student_id){
+
+        //$this->createInvoice($invoice_data['amount'],$invoice_data['description']);
+
+        ParentStudent::where('student_id',$student_id)
+            ->update(['status' => 3]);
+    }
 }
 

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="shadow container jumbotron bg-white">
-    <h1 class="text-center">My Meetings</h1>
+    <h1 class="text-center page-headings">My Meetings</h1>
     <table class="table">
         <thead>
             <tr>

@@ -83,8 +83,11 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::post('/enroll/{course_id}','ParentController@enroll')->name('enroll');
 
-	Route::post('update-enrolled-course-status/{enrolled_course_id}','ParentController@updateEnrolledCourseStatus')->name('update-enrolled-course-status');
+	Route::post('/update-enrolled-course-status/{enrolled_course_id}','ParentController@updateEnrolledCourseStatus')->name('update-enrolled-course-status');
 
+	Route::post('/transfer-program-pay/{student_id}','ParentController@transferProgramPay')->name('parent.transfer-program-pay');
+
+	Route::get('/transfer-program-pay-success/{student_id}','ParentController@transferProgramPaySuccess')->name('parent.transfer-pay-success');
 });
 
 Route::group(['prefix' => 'student','middleware' => 'student'],function(){
@@ -119,7 +122,13 @@ Route::post('/parent/update','ParentController@updateInfo')->name('parent.update
 
 Route::group(['prefix' => 'educator'],function(){
 	Route::get('/dashboard', 'EducatorController@dashboard')->name('educator.dashboard');
+	Route::get('/courses','EducatorController@courses')->name('educator.courses');
 	Route::get('/meetings','EducatorController@meetings')->name('educator.meetings');
+	Route::get('/exams','EducatorController@exams')->name('educator.exams');
+	Route::get('/exam-questions','EducatorController@examQuestions')->name('educator.exam-questions');
+	Route::get('/self-assesment','EducatorController@selfAssessment')->name('educator.self-assessment');
+	Route::get('/submitions','EducatorController@submitions')->name('educator.submitions');
+	Route::get('/invoices','EducatorController@invoices')->name('educator.invoices');
 });
 
 Route::post('/parent/pay/plan/{student_id}','ParentController@parentPayPlan')->name('parent.pay.plan');

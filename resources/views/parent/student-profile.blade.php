@@ -10,7 +10,6 @@
             <hr>
     
 
-        
     @if($status == 1)
             <h4 style="color:#E9580C">Pending Documentation Approval</h4>
             <p class="mb-0">This account is currently under review. You will be notified once the documents have been reviewed.</p>
@@ -18,7 +17,25 @@
     {{-- Pending enrollemnt and plan fee to be paind --}}
     @elseif($status == 2)
         <h4 style="color:#E9580C">Documentation is Approved</h4>
-        <p>The documentation for this student is approved. Please select your plan:</p>
+
+        @if($student->student_details->track == 3)
+        <form action="{{ route('parent.transfer-program-pay',$student->id) }}" method="POST">
+            {{ csrf_field() }}
+            <p>The documentation for this student is approved. You must pay the following fees:</p>
+            <input type="radio" checked readonly class="radio"> Enrolment Fee <span style="color:#E9580C">($300.00)</span> 
+            <p>Mandatory International Transfer Program Fee:</p>
+            <input type="radio" checked readonly class="radio"> Program Fee  <span style="color:#E9580C">($1900.00)</span>
+            <p class="mb-0 font-weight-bold mt-3">You can find more information about the Payment Plans <a href="{{ route('tuition') }}">HERE.</a></p>
+            <hr>
+            <div class="d-flex justify-content-between">
+                <div class="total">
+                    Total Fee:  <span>$2249.90</span>
+                </div>
+                <button class="orange-button">Proceed to Payment</button>
+            </div>
+        </form>
+        @else
+         <p>The documentation for this student is approved. Please select your plan:</p>
         <p class="mb-0 font-weight-bold mt-3">You must pay mandatory Enrolment Fee:</p>
         <form action="{{ route('parent.pay.plan',$student->id) }}" method="POST">
             {{ csrf_field() }}
@@ -51,7 +68,8 @@
             <button class="orange-button">Proceed to Payment</button>
         </div>
        </form>
-
+       @endif
+       
     {{-- Active Student --}}
     @elseif($status == 3)
         <x-enrollment-table :student="$student"></x-enrollment-table>

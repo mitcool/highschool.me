@@ -7,6 +7,12 @@
         {{ csrf_field() }}
         <div  class="mb-3">
             <label for="" class="font-weight-bold mb-0">Applies for:<span class="text-danger">*</span></label>
+            @if($student->student_details->track == 3)
+            <select type="email" required name="grade" class="form-control" readonly>
+                <option value="0" selected disabled>International Transfer Program</option>
+            </select>
+            @else
+          
             <select type="email" required name="grade" class="form-control">
                 <option value="" selected disabled>Please select</option>
                 <option {{ old('grade') == 9 ? ' selected ' : '' }} value="9">9th Grade</option>
@@ -14,6 +20,7 @@
                 <option {{ old('grade') == 11 ? ' selected ' : '' }} value="11">11th Grade</option>
                 <option {{ old('grade') == 12 ? ' selected ' : '' }} value="12">12th Grade</option>
             </select>
+            @endif
         </div>
         <div style="padding:10px 0 ;">
             <h4 style="color:#045397;font-weight-bold">Upload Documentation</h4>

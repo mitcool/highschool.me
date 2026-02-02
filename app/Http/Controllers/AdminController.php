@@ -85,6 +85,7 @@ use App\ExamQuestion;
 use App\StudentAnswer;
 use App\SelfAssessmentQuestion;
 use App\SelfAssessmentAnswer;
+use App\EducatorCategory;
 
 use App\Http\Requests\CreateConferenceRequest;
 use App\Http\Requests\AiServiceRequest;
@@ -1114,21 +1115,25 @@ class AdminController extends Controller
     }
 
     public function educators(){
-        return view('admin.educators');
+        $categories = SubjectArea::all();
+        return view('admin.educators')
+            ->with('categories',$categories);
     }
 
     public function createEducator(Request $request){
-        $educator_role_id = 5;
-        $request->validate([
+         $request->validate([
             'firstname' => 'required',
             'middlename' => 'nullable',
             'surname' => 'required',
-            'email' => 'required',
+            'email' => 'required|unique:users,email',
+            'categories' => 'required'
         ]);
-
+        $educator_role_id = 5;
+        $categories = $request->categories;
+    
         $password  = Str::random(10);
         $confirmation_code = Str::random(30);
-        $student = User::create([
+        $educator = User::create([
             'name' => $request->firstname,
             'surname' => $request->surname,
             'middlename' => $request->middlename,
@@ -1138,6 +1143,13 @@ class AdminController extends Controller
             'confirmation_code' => $confirmation_code,
             'is_verified' => 1,
         ]);
+
+        foreach($categories as $category_id){
+            EducatorCategory::insert([
+                'educator_id' => $educator->id,
+                'category_id' => $category_id
+            ]);
+        }
 
         return redirect()->back()->with('success_message','Educator created successfully');
     }

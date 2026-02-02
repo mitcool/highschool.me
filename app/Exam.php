@@ -37,13 +37,13 @@ class Exam extends Model
         if($this->grade < 1){
             return 'Fail (' .number_format($this->grade,2,'.',',').')';
         }
-        elseif($this->grade < 1.5){
-            return 'Insufficient (' .number_format($this->grade,2,'.',',').')';
+        elseif($this->grade < 2){
+            return 'Pass (' .number_format($this->grade,2,'.',',').')';
         }
-        elseif($this->grade < 2.5){
+        elseif($this->grade < 2.6){
             return 'Satisfactory (' .number_format($this->grade,2,'.',',').')';
         }
-        elseif($this->grade < 3.5){
+        elseif($this->grade < 3.6){
             return 'Good (' .number_format($this->grade,2,'.',',').')';
         }
         elseif($this->grade <= 4){

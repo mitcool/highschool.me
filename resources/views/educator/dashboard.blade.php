@@ -30,6 +30,11 @@
         .sidebar-divider {
             background-color: #AB0050!important;
         }
+        .page-headings{
+            font-size:3rem;
+            color:#045397;
+            font-weight: bold;
+        }
     </style>
 
 </head>
@@ -38,7 +43,7 @@
     <div class="container-fluid px-0">
         <div class="row">
             <div id="wrapper" style="padding:0 0px;">
-                <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion" id="accordionSidebar" style="min-height:1500vh;background:#045397">
+                <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion" id="accordionSidebar" style="background:#045397">
                     <li class="nav-item black">
                         <a class="nav-link" href="{{route('welcome')}}">
                             <i class="fas fa-fw fa-home"></i>
@@ -53,20 +58,51 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
-                   
+                    <div class="sidebar-heading">Courses</div>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{route('educator.courses')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Your Courses</span>
+                        </a>
+                    </li>
                     <div class="sidebar-heading">Meetings</div>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{route('educator.meetings')}}">
                             <i class="fas fa-fw fa-cog"></i>
-                            <span>Meetings</span>
+                            <span>Your Meetings</span>
                         </a>
                     </li>
 
-                    <div class="sidebar-heading">Inquiries</div>
+                    <div class="sidebar-heading">Exams</div>
                     <li class="nav-item active">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="{{route('educator.exams')}}">
                             <i class="fas fa-fw fa-cog"></i>
-                            <span>Inquiries</span>
+                            <span>Exams</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{route('educator.exam-questions')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Exam Questions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{route('educator.self-assessment')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Self Assesment Questions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{route('educator.submitions')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Submitted Exams</span>
+                        </a>
+                    </li>
+                    <div class="sidebar-heading">Payments & Invoices</div>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{route('educator.invoices')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Invoices</span>
                         </a>
                     </li>
 

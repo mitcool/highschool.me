@@ -68,4 +68,8 @@ class User extends Authenticatable
     public function enrolled_courses(){
         return $this->hasMany('App\StudentEnrolledCourse','user_id','id');
     }
+
+    public function educator_categories(){
+        return $this->hasMany('App\EducatorCategory','educator_id','id');
+    }
 }
