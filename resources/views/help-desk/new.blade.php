@@ -1,8 +1,5 @@
-@if(auth()->user()->role_id == 2 )
-    @extends('parent.dashboard')
-@else
-    @extends('student.dashboard')
-@endif
+@extends($template)
+
 
 @section('content')
     <div class="container jumbotron bg-white">

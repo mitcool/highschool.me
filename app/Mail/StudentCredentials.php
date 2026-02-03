@@ -11,23 +11,18 @@ class StudentCredentials extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $user;
+    public $password;
+    public function __construct($user,$password)
     {
-        //
+        $this->user = $user;
+        $this->password = $password;
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+        public function build()
     {
-         return $this->view('email.student-credentials');
+         return $this->view('email.student-credentials')
+            ->with('password',$this->password)
+            ->with('user',$this->user);
     }
 }

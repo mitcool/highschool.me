@@ -200,14 +200,16 @@ class StudentController extends Controller
     }
 
     public function helpDesk(){
-       
+        $template = 'student.dashboard';
         $help_desk = HelpDesk::where('user_id',auth()->id())->whereNull('related_to')->get();
         return view('help-desk.inbox')
                 ->with('help_desk',$help_desk);
     }
 
     public function newHelpDesk(){
-        return view('help-desk.new');
+        $template = 'student.dashboard';
+        return view('help-desk.new')
+            ->with('template',$template);
     }
 
     public function sendHelpDeskQustion(Request $request){

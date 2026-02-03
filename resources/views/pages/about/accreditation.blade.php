@@ -31,10 +31,10 @@
 	</ol>
 </div>
 
-<x-image-component nickname="accreditation-cover" id="cover" class="main-pictures-pages" loading="eager" />
-<div class="container-fluid main_page_container">
+<x-image-component nickname="accreditation-cover" id="cover" class="main-pictures-pages " loading="eager" />
+<div class="container-fluid main_page_container ">
 	<div class="row justify-content-center">
-		<div class="col-md-10 col-lg-8 container-style">
+		<div class="col-md-10 col-lg-8 container-style bg-white">
 			<h1 class="page-headings" id="start">{{trans('accreditation.heading')}}</h1>
 			<div class="text-justify page-content">{!! trans('accreditation.text') !!}</div>
 			{{--<br>

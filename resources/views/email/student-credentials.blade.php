@@ -92,7 +92,7 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear,
+                                                        Dear {{ $user->fullname() }},
                                                     </h1>
                                                     <p style="{{ $style['paragraph-black'] }}">
                                                         Your credentials for Highschool.me are:
@@ -100,11 +100,11 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                                     </p>
                                                      
                                                      <p style="{{ $style['paragraph-black'] }}">
-                                                        <span style="{{$style['bold']}}">Email:
+                                                        <span style="{{$style['bold']}}">Email: {{ $user->email }}
                                                         <br/>
                                                     </p>
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        <span style="{{$style['bold']}}">Password: 
+                                                        <span style="{{$style['bold']}}">Password: {{ $password }}
                                                         <br/>
                                                     </p>
                                                     

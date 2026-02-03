@@ -1,5 +1,4 @@
-@extends(auth()->user()->role_id == 2  ? 'parent.dashboard' : 'student.dashboard')
-
+@extends($template)
 
 @section('content')
 

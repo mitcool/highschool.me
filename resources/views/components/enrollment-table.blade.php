@@ -167,29 +167,27 @@
     <div class="container my-5">
     
     <h2 class="text-center mb-4">Enroll</h2>   
+    @foreach($transfer_program_courses as $tpc)
       <div class="course-row d-flex justify-content-between align-items-center">
             <div>
-                Name of the course
-                {{-- {{ $course->title }} --}}
+                {{ $tpc->course->title }}
                 {{-- @if(!is_null($credits))
                     <span class="credit-text">
                         ({{ number_format($credits, 1) }} Credit{{ $credits == 1 ? '' : 's' }})
                     </span>
                 @endif --}}
             </div>
-            {{-- @if(in_array($cc->course_id,$enrolled_courses_ids))
-                    <button class="btn btn-disabled">Enrolled</button>
-            @elseif($track == 4)
-                <a href="{{ route('parent.student.module.courses',$student->id) }}"><button class="btn btn-enroll">Buy now</button></a>
-            @else --}}
-            
-            <form action="{{ route('enroll',1) }}" method="POST">
+            @if(in_array($tpc->course_id,$enrolled_courses_ids))
+                <button class="btn btn-disabled">Enrolled</button>
+            @else
+            <form action="{{ route('enroll',$tpc->course_id) }}" method="POST">
                 {{ csrf_field() }}
                 <input type="hidden" name="student_id" value="{{ $student->id }}">
                 <button class="btn btn-enroll">Enroll</button>
             </form>
-            {{-- @endif --}}
+            @endif
         </div>   
+        @endforeach
  @else
 <div class="container my-5">
     
@@ -219,7 +217,7 @@
     <ul class="nav nav-pills custom-tabs mb-3" id="enrollTabs" role="tablist">
         @foreach($displayTypes as $type)
             @php $tabId = strtolower($type->code); @endphp
-            <li class="nav-item">
+            <li class="nav-item p-0">
                 <a
                     class="nav-link {{ $loop->first ? 'active' : '' }}"
                     id="{{ $tabId }}-tab"

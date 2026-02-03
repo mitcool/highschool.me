@@ -110,7 +110,7 @@
 @section('content')
 
 <img src="{{ asset('images/cheerful-teenagers-classroom.png') }}" alt="">
-<div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
+<div class="container-fluid" style="padding:20px;width:70%;margin:0 auto">
         <div class="row text-center mx-auto">
             <div class="col-md-12">
                 <h1 class="text-center page-headings">High School Diploma Tracks</h1> <br>
@@ -130,37 +130,37 @@
 
 <div class="container-fluid page-content">
     <div class="row text-white" style="background: #045397;opacity:0.8;">
-        <div class="col-md-1"></div>
+        <div class="col-md-2"></div>
         <div class="col-md-3" style="padding:30px;">
             <img src="{{ asset('images/glasses.png') }}" alt="">
         </div>
-        <div class="col-md-7" style="padding:30px;">
+        <div class="col-md-5" style="padding:30px;">
             <h2>24-Credit-Graduation Standard Track</h2>
             <p>Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem </p>
         </div>
-        <div class="col-md-1"></div>
+        <div class="col-md-2"></div>
     </div>
    <div class="row text-white" style="background:#045397;opacity:0.9">
-    <div class="col-md-1"></div>
-        <div class="col-md-7" style="padding:30px;">
+    <div class="col-md-2"></div>
+        <div class="col-md-5" style="padding:30px;">
             <h2>24-Credit-Graduation Honors Track</h2>
             <p>Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus </p>
         </div>
         <div class="col-md-3" style="padding:30px;">
             <img src="{{ asset('images/glasses.png') }}" alt="">
         </div>
-        <div class="col-md-1"></div>
+        <div class="col-md-2"></div>
     </div>
     <div class="row text-white" style="background:#045397 ">
-        <div class="col-md-1"></div>
+        <div class="col-md-2"></div>
         <div class="col-md-3" style="padding:30px;">
             <img src="{{ asset('images/glasses.png') }}" alt="">
         </div>
-        <div class="col-md-7" style="padding:30px;">
+        <div class="col-md-5" style="padding:30px;">
             <h2>18-Credit-ACCEL Graduation Track</h2>
             <p>Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem </p>
         </div>
-        <div class="col-md-1"></div>
+        <div class="col-md-2"></div>
     </div>
 </div>
 

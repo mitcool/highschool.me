@@ -4,7 +4,7 @@
 
 <div class="shadow container jumbotron bg-white">
      <div class="text-left mb-3"> 
-        <a href="{{ route('parent.new-inquiry') }}" class=" orange-button mb-3">New Message</a>
+        <a href="{{ route('admin.single-help-desk') }}" class=" orange-button mb-3">New Message</a>
     </div>
     <table class="table">
         <thead>

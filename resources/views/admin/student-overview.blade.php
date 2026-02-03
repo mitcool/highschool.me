@@ -19,6 +19,7 @@
         </tr>
         <tr>
             <th>Date</th>
+            <th class="text-center">Id</th>
             <th class="text-center">Student</th>
             <th class="text-center">Parent</th>
             <th class="text-center">Link</th>
@@ -26,6 +27,7 @@
         @foreach ($students as $student )
             <tr>
                 <td>{{ $student->created_at->format('d.m.Y') }}</td>
+                <td class="text-center">{{ $student->student_id() }}</td> 
                 <td class="text-center">{{ $student->fullname() }}</td>
                 <td class="text-center">{{ $student->student_details->parent->fullname() }}</td>
                 <td class="text-center">

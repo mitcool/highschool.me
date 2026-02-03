@@ -150,6 +150,11 @@ class ParentController extends Controller
             'is_disabled' => 0,
             'track' => $education_option
         ]);
+        try{
+
+        }catch(\Exception $e){
+            Mail::to($student->email)->send(new StudentCredentials($student,$password));
+        }
         if($education_option == 1 || $education_option == 2 || $education_option == 3){
             return redirect()->route('parent.student.documents',$student->id);
         }
@@ -316,11 +321,6 @@ class ParentController extends Controller
 
         try{
             Mail::to(auth()->user()->email)->send(new StudentCreated);
-        }catch(\Exception $e){
-            info($e->getMessage());
-        }
-        try{
-            Mail::to($student_data['email'])->send(new StudentCredentials);
         }catch(\Exception $e){
             info($e->getMessage());
         }

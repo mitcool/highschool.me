@@ -72,4 +72,17 @@ class User extends Authenticatable
     public function educator_categories(){
         return $this->hasMany('App\EducatorCategory','educator_id','id');
     }
+    
+    public function student_id(){
+        $lenght = strlen($this->student_details->id);
+        $prefix = '';
+        $number = 4;
+        $date = $this->created_at->format('Ymd').$this->student_details->id;
+        for ($i=$lenght; $i < $number; $i++) { 
+           $prefix.= '0';
+        }
+        $student_number = $date . $prefix . $this->student_details->id;
+        return $student_number;
+    
+    }
 }

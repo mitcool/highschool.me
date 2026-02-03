@@ -87,8 +87,7 @@ use App\SelfAssessmentQuestion;
 use App\SelfAssessmentAnswer;
 use App\EducatorCategory;
 
-use App\Http\Requests\CreateConferenceRequest;
-use App\Http\Requests\AiServiceRequest;
+use App\Mail\StudentCredentials;
 
 class AdminController extends Controller
 {
@@ -1116,7 +1115,12 @@ class AdminController extends Controller
 
     public function educators(){
         $categories = SubjectArea::all();
+        $educators = User::where('role_id',5)->get();
+        foreach($educators as $educator){
+            $educator->array_educator_categories  = $educator->educator_categories->pluck('category_id')->toArray();
+        }
         return view('admin.educators')
+            ->with('educators',$educators)
             ->with('categories',$categories);
     }
 
@@ -1150,15 +1154,43 @@ class AdminController extends Controller
                 'category_id' => $category_id
             ]);
         }
-
+        try{
+            Mail::to($educator->email)->send(new StudentCredentials($educator,$password));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
         return redirect()->back()->with('success_message','Educator created successfully');
+    }
+
+    public function editEducator(Request $request){
+        $educator = $request->except('_token','id');
+        $id = $request->id;
+        $categories = $request->categories;
+        User::find($id)->update($educator);
+        EducatorCategory::where('educator_id',$id)->delete();
+        foreach($categories as $category_id){
+            EducatorCategory::insert([
+                'educator_id' => $id,
+                'category_id' => $category_id
+            ]);
+        }
+        return redirect()->back()->with('success_message','Educator updated successfully');
     }
 
     #Using the same view for both help desks
     public function parentHelpDesk(){
+        $template = 'admin_template';
         $help_desk = HelpDesk::whereNull('related_to')->where('is_parent',1)->get();
-        return view('admin.help-desk')
+        return view('help-desk.inbox')
+            ->with('template',$template)
             ->with('help_desk',$help_desk);
+    }
+
+    public function newHelpDesk(){
+        $template = 'admin_template';
+        return view('help-desk.new')
+            ->with('template',$template)
+            ->with('template',$template);
     }
     public function studentHelpDesk(){
         $help_desk = HelpDesk::whereNull('related_to')->where('is_parent',0)->get();

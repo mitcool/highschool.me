@@ -18,7 +18,8 @@ class AdminStudentController extends Controller
 {
     public function studentDocuments(){
         $students = ParentStudent::whereIn('status',[1,4])->get();   //pending approval or check reupload documents
-        return view('admin.student-documents')->with('students',$students);
+        return view('admin.student-documents')
+            ->with('students',$students);
     }
     public function singleStudentDocument($student_id){
         $student = ParentStudent::where('student_id',$student_id)->first();
