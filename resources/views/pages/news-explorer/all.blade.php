@@ -120,14 +120,12 @@
 			        <div class="card h-100 shadow-sm border-0 news-card">
 			            <img 
 			                class="card-img-top news-image"
-			                src="{{ asset('news_images') }}/{{ $n->main_image->all_translations[0]->content }}" 
-			                alt="{{ $n->main_image->attributes ? $n->main_image->attributes->alt() : '' }}"
-			                title="{{ $n->main_image->attributes ? $n->main_image->attributes->title() : '' }}"
+			                src="{{ asset('news_images') }}/{{ $n->image }}" 
 			            />
 
 			            <div class="card-body d-flex flex-column">
 			                <h5 itemprop="name" class="card-title fw-bold mb-2 text-truncate">
-			                    {!! $n->sections[0]->translated->content !!}
+			                    {!! $n->sections[0]->content !!}
 			                </h5>
 			                <div style="width: 150px; height: 3px; background-color: #045397; margin: 10px 5px 10px 0px;"></div>
 			                <p class="card-text text-muted small mb-3">
@@ -135,7 +133,7 @@
 			                </p>
 			                
 			                <div class="mt-auto text-right">
-			                    <a itemprop="url" href="{{ route('single-article',$n->translated->slug) }}" class="btn btn-sm btn-orange px-4">
+			                    <a itemprop="url" href="{{ route('single-article',$n->slug) }}" class="btn btn-sm btn-orange px-4">
 			                        {{ trans('welcome.read-more') }}
 			                    </a>
 			                </div>

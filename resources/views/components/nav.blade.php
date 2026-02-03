@@ -14,9 +14,9 @@
             <li><a class="dropdown-item" href="{{ route('mission-statement') }}">Mission Statement</a></li>
             <li><a class="dropdown-item" href="{{ route('accreditation') }}">Recognition & Quality Standards</a></li>
             <li><a class="dropdown-item" href="{{ route('leadership') }}">Leadership</a></li>
-            <li><a class="dropdown-item" href="{{ route('academics') }}">Faculty & Mentors</a></li>
+            <li><a class="dropdown-item" href="{{ route('academics') }}">Faculty & Educators</a></li>
             <li><a class="dropdown-item" href="{{ route('students-in-spotlight') }}">Students in Spotlight</a></li>
-            <li><a class="dropdown-item" href="{{ route('partnership') }}">Partnership</a></li>
+            <li><a class="dropdown-item" href="{{ route('partnership') }}">Partners & Providers</a></li>
          </ul>
       </li>
       <li class="nav-item dropdown">

@@ -69,8 +69,8 @@
 <x-image-component nickname="blog-cover" id="cover" class="main-pictures-pages" loading="eager"/>
 <div itemscope itemtype="http://schema.org/Blog" class="container-fluid main_page_container">
 	<div id="blog_row" class="row justify-content-center">
-		<div class="col-md-10 col-lg-8 container-style" >
-			<h1 class="page-headings">{{trans('blog.heading')}}
+		<div class="col-md-10 col-lg-8 container-style bg-white" >
+			<h1 class="page-headings">Press Release
 				@if(request()->page != '')
 				<br>
 				<span style="opacity: 0;">{{(session()->get('locale')=='en' ? 'Page ' : 'Seite ')}} {{request()->page}}</span>
@@ -78,9 +78,9 @@
 			</h1>
 			
 			
-			<div class="row" id="blog">
-				{{--
-				@foreach($news as $n)
+			<div class="row bg-white" id="blog">
+				
+				{{-- @foreach($news as $n)
 					<div class="news-body my-2">
 						<a href="{{ route('single-press-release',$n->translated->slug) }}">
 							<div>
@@ -90,10 +90,10 @@
 						</a>
 						<p class="mb-0">{{ $n->created_at->format('d.m.Y') }}</p>
 					</div>
-				@endforeach
+				@endforeach --}}
 			</div>
 			<div class="d-flex justify-content-center mt-3">{{$news->links()}}</div>
-			--}}
+			
 		</div>
 	</div>	
 </div>

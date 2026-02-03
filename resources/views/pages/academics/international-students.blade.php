@@ -58,5 +58,7 @@
 			</div>
 		</div>
 	</div>
+
+	<x-three-buttons/>
 @endsection
 

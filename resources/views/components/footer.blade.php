@@ -128,6 +128,10 @@
 							<a href="{{ route('facts-hub')}}">
 							Fact Hub
 						</a></li>
+						<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
+							<a href="{{ route('press-release')}}">
+							Press Release
+						</a></li>
 					</ul>
 				</div>
 			</div>		

@@ -9,7 +9,7 @@
         padding:20px;
     }
     #open-rewards,
-    .open-service{
+    .service-wrapper{
         cursor: pointer;
     }
     .service-wrapper{
@@ -41,7 +41,7 @@
                 <div class="service-wrapper bg-white">
                     <div class="d-flex justify-content-between" style="padding:10px 0;font-size:1.1rem;color:#045397;font-weight:bold">
                             <div>{{ $service->name }}</div>
-                            <div><i class="fas fa-chevron-up open-service"></i></div>
+                            <div><i class="fas fa-chevron-up service-icon"></i></div>
                     </div>
                     <div class="service-action d-none">
                         @foreach ($service->actions as $action )
@@ -72,9 +72,9 @@
                 Points earned through participation can be exchanged for a variety of items. Students may also choose to redeem their points through bundle packages, which combine multiple items at different reward levels. These bundles are designed to offer flexibility and motivation for continued engagement, with options suited to various interests and achievement milestones.
             </p>
             <div class="shadow bg-white p-2" style="border-radius:5px;">
-           <div class="d-flex justify-content-between" style="color:#14213D;font-weight:bold;color:#E9580C;padding:10px 0;">
+           <div class="d-flex justify-content-between" id="open-rewards" style="color:#14213D;font-weight:bold;color:#E9580C;padding:10px 0;">
                 <div>Reward List</div> 
-                <div><i class="fas fa-chevron-up" id="open-rewards"></i></div>
+                <div><i class="fas fa-chevron-up" id="icon" ></i></div>
             </div> 
             <div id="rewards" class="d-none">
             <div class="d-flex justify-content-between" style="color:#14213D;font-weight:bold">
@@ -115,26 +115,26 @@
     $('#open-rewards').on('click',function(){
         if($('#rewards').hasClass('d-none')){
              $('#rewards').removeClass('d-none');
-             $(this).removeClass('fa-chevron-up')
-             $(this).addClass('fa-chevron-down')
+             $('#icon').removeClass('fa-chevron-up')
+             $('#icon').addClass('fa-chevron-down')
         }
         else{
              $('#rewards').addClass('d-none');
-             $(this).removeClass('fa-chevron-down')
-             $(this).addClass('fa-chevron-up')
+             $('#icon').removeClass('fa-chevron-down')
+             $('#icon').addClass('fa-chevron-up')
         }
     });
 
-    $('.open-service').on('click',function(){
-        if($(this).closest('.service-wrapper').find('.service-action').hasClass('d-none')){
-            $(this).closest('.service-wrapper').find('.service-action').removeClass('d-none')
-             $(this).removeClass('fa-chevron-up')
-             $(this).addClass('fa-chevron-down')
+    $('.service-wrapper').on('click',function(){
+        if($(this).find('.service-action').hasClass('d-none')){
+             $(this).find('.service-action').removeClass('d-none')
+             $(this).find('.service-icon').removeClass('fa-chevron-up')
+             $(this).find('.service-icon').addClass('fa-chevron-down')
         }
         else{
-             $(this).closest('.service-wrapper').find('.service-action').addClass('d-none')
-             $(this).removeClass('fa-chevron-down')
-             $(this).addClass('fa-chevron-up')
+             $(this).find('.service-action').addClass('d-none')
+             $(this).find('.service-icon').removeClass('fa-chevron-down')
+             $(this).find('.service-icon').addClass('fa-chevron-up')
         }
     })
 </script>

@@ -31,5 +31,41 @@
   </div>
 </div>
 
-<x-home.benefits />
+<section class="row" style="background-color: #045397;padding:50px;">
+    <div class="col-md-10 offset-md-1" >
+        <!-- <div class="d-flex" id="benefit_wrapper"> -->
+
+        <div class="row col-md-12 ml-0 mr-0" >
+            <div class="col-lg-3  text-center ">
+                <div class="benefit-box">
+                    <img src="{{ asset('images/icons/badge.png') }}" alt="" class="welcome-icon-big">
+                    <h3 style="font-size:1.25rem;color:#045397;min-height:40px;">Accredited Online Courses</h3>
+                    <p>Earn real high school credits through a recognized curriculum that meets national academic standards.</p>
+                    <!-- Removing <p></p> becuase ck3 editor put <p> and become 3x time more -->
+                </div>
+            </div>
+            <div class="col-lg-3 text-center ">
+                <div class="benefit-box">
+                    <img src="{{ asset('images/icons/idea.png') }}" alt="" class="welcome-icon-big">
+                    <h3 style="font-size:1.25rem;color:#045397;min-height:40px;">Flexible Learning Schedule</h3>
+                    <p>Study when and where it works for you—whether that’s early mornings, late nights, or weekends.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 text-center ">
+                <div class="benefit-box">
+                     <img src="{{ asset('images/icons/commitment.png') }}" alt="" class="welcome-icon-big">
+                    <h3 style="font-size:1.25rem;color:#045397;min-height:40px;">Personalized Support</h3>
+                    <p>Our certified teachers, tutors, and mentors are always just a message away, ready to guide you every step of the way.</p>
+                </div>
+            </div>
+             <div class="col-lg-3 text-center  ">
+                <div class="benefit-box">
+                    <img src="{{ asset('images/icons/open-book.png') }}" alt="" class="welcome-icon-big">
+                    <h3 style="font-size:1.25rem;color:#045397;min-height:40px;">College & Career Ready</h3>
+                    <p>We don’t just help you graduate—we prepare you for what comes next. From college prep to job-ready skills, your journey starts here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 @endsection
