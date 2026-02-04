@@ -104,7 +104,14 @@
     }
 </style>
 @endsection
+
 @section('content')
+<div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
+    <ol class="bg-white breadcrumb mb-0 p-0">
+        <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Tuitition</li>
+    </ol>
+</div>
 
 <img src="{{ asset('images/crop-schoolgirl-sitting-with-studies-chair.png') }}" alt="">
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">

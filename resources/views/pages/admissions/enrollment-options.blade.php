@@ -1,6 +1,12 @@
 @extends('template')
 
 @section('content')
+<div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
+    <ol class="bg-white breadcrumb mb-0 p-0">
+        <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Enrollment Options</li>
+    </ol>
+</div>
 
 <img src="{{ asset('images/enrollment-options.png') }}" alt="" />
 

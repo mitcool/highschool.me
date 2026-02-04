@@ -21,13 +21,10 @@
 @endsection
 
 @section('content')
-@php
-    $breadcrumb_title = strtok(trans('about.meta-title'), '|');
-@endphp
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb_title }}</li>
+		<li class="breadcrumb-item active" aria-current="page">Students in Spotlight</li>
 	</ol>
 </div>
 
