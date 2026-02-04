@@ -4,37 +4,11 @@
 @section('seo')
 	<title>{{trans('code-of-ethics.meta-title')}}</title>
 	<meta itemprop="description" name="description" content="{{ trans('code-of-ethics.meta-description') }}" />
-
 	<meta itemprop="title" property="og:title" content="{{trans('code-of-ethics.meta-title')}}"/>
 	<meta property="og:type" content="website"/>
-	@if(Session::get('applocale') == 'de')
-		<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/de/ethik-kodex"/>
-	@else
-		<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/en/code-of-ethics"/>
-	@endif
+	<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/en/code-of-ethics"/>
 	<meta property="og:description" content="{{ trans('code-of-ethics.meta-description') }}"/>
 	<x-meta-image itemprop="image" nickname="code-of-ethics"/>
-
-	<link rel="alternate" href="{{ config('app.url') }}/en/code-of-ethics" hreflang="en" />
-	<link rel="alternate" href="{{ config('app.url') }}/de/ethik-kodex" hreflang="de" />
-	<link rel="alternate" href="{{ config('app.url') }}/en/code-of-ethics" hreflang="x-default" />
-@endsection
-
-
-@section('language-switcher')
-<div class="dropdown">
-	<button class="btn dropdown-toggle text-uppercase" style="background: #025297;color:white;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	  {{ app()->currentLocale() }}
-	  </button>
-	  <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
-		<div>
-			<a href="{{ config('app.url') }}/en/code-of-ethics" class="text-uppercase btn d-inline-block bg-transparent">EN</a>
-		</div>
-		<div>
-			<a href="{{ config('app.url') }}/de/ethik-kodex" class="text-uppercase btn d-inline-block bg-transparent">DE</a>
-		</div>
-	  </div> 
-  </div>
 @endsection
 
 @section('content')
@@ -43,7 +17,7 @@
 @endphp
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
-		<li class="breadcrumb-item"><a href="{{ route('welcome-'.app()->currentLocale()) }}">Home</a></li>
+		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
 		<li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb_title }}</li>
 	</ol>
 </div>
@@ -53,7 +27,7 @@
 <div class="container-fluid main_page_container">
 	
 	<div class="row justify-content-center" >
-		<div class="col-md-10 col-lg-8 container-style">
+		<div class="col-md-10 col-lg-8 container-style bg-white">
 			<h1 class="page-headings">{{trans('code-of-ethics.heading')}}</h1>
 			<div class="page-content">{!! trans('code-of-ethics.text') !!}</div>
 			

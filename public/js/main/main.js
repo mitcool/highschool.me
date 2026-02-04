@@ -1,25 +1,25 @@
-//equal headings (blog, single articles, publications)
-function resizeToMaxHeight(class_name) {
-    let ph_heights = [];
-    let ph_heights_pixels = [];
-    let ph_max;
-    let pc_heights = [];
-    let pc_heights_pixels = [];
-    let pc_max;
+// //equal headings (blog, single articles, publications)
+// function resizeToMaxHeight(class_name) {
+//     let ph_heights = [];
+//     let ph_heights_pixels = [];
+//     let ph_max;
+//     let pc_heights = [];
+//     let pc_heights_pixels = [];
+//     let pc_max;
 
-    $("." + class_name).each(function () {
-        ph_heights.push($(this).css("height"));
-    });
-    for (let i = 0; i < ph_heights.length; i++) {
-        ph_heights_pixels.push(parseInt(ph_heights[i]));
-    }
-    ph_max = ph_heights_pixels.reduce(function (a, b) {
-        return Math.max(a, b);
-    });
-    $("." + class_name).each(function () {
-        $(this).css("height", ph_max);
-    });
-}
+//     $("." + class_name).each(function () {
+//         ph_heights.push($(this).css("height"));
+//     });
+//     for (let i = 0; i < ph_heights.length; i++) {
+//         ph_heights_pixels.push(parseInt(ph_heights[i]));
+//     }
+//     ph_max = ph_heights_pixels.reduce(function (a, b) {
+//         return Math.max(a, b);
+//     });
+//     $("." + class_name).each(function () {
+//         $(this).css("height", ph_max);
+//     });
+// }
 
 $(document).ready(function () {
     // Reasons accordion

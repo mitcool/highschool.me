@@ -121,7 +121,7 @@
     <hr> 
 </div>
 <div class="container-fluid">
-    <div class="row text-center w-75  mx-auto">
+    <div class="row text-center w-75 container mx-auto">
         <div class="col-md-12">
             <div class="shadow wrapper h-100">
                 <div class="course-name text-center"> {{ $course->name }}</div>

@@ -21,14 +21,14 @@
                     <p>Fee per Session: ${{ $course_type->price() }}</p>
                     <p>Number of Sessions:</p>
                     <div class="d-flex justify-content-start align-items-center">
-                        <form action="{{ route('change-course-type-count',[$course_type->id,'increase']) }}" method="POST">
-                            {{ csrf_field() }}
-                                <button class="btn">+</button>
-                        </form>
-                        <span class="total">{{$course_type->course_type_count ?? 0 }}</span>
                         <form action="{{ route('change-course-type-count',[$course_type->id,'decrease']) }}" method="POST">
                             {{ csrf_field() }}
                                 <button class="btn">-</button>
+                        </form>
+                        <span class="total">{{$course_type->course_type_count ?? 0 }}</span>
+                        <form action="{{ route('change-course-type-count',[$course_type->id,'increase']) }}" method="POST">
+                            {{ csrf_field() }}
+                                <button class="btn">+</button>
                         </form>
                     </div>
                     <p>Total: <span style="color:#E9580C">${{$course_type->formatted_total ?? number_format($course_type->price,2,'.',',') }}</span></p>

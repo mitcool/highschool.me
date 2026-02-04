@@ -121,7 +121,7 @@
     
 </div>
 <div class="container-fluid">
-    <div class="row text-center w-75  mx-auto">
+    <div class="row text-center w-75 container  mx-auto">
         @foreach ($courses as $key => $course)
             <div class="col-md-6 my-2">
                 <div class="shadow wrapper h-100">

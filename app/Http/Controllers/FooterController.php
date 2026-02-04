@@ -38,4 +38,7 @@ class FooterController extends Controller
      public function accessibility(){
       return view('pages.footer.accessibility');
   }
+  public function showCodeOfEtics(){
+    return view('pages.footer.code-of-ethics');      
+  }
 }

@@ -1,6 +1,6 @@
 <section class="row space" style="background-color: #E9580C;color:white;">   
      <div class="col-md-12">
-        <h2 class="text-center mb-2 section-headings text-white" >Four tracks. One diploma. Zero excuses.</h2>
+        <h2 class="text-center section-headings text-white" >Four tracks. One diploma. Zero excuses.</h2>
         <hr class="white-hr" class="my-4">
         <div class="page-content text-center page-content">
             <p class="font-italic">Four distinct tracks. One globally recognized U.S. High School Diploma.</p>

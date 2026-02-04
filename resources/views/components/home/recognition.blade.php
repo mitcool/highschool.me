@@ -1,6 +1,6 @@
 <section style="background-image:url('images/BG_WORMHOLE.png')" class="space">
     <div class="col-md-12">
-        <h2 class="text-center mb-2 section-headings blue-color" >Officially Recognized & Globally Trusted</h2>
+        <h2 class="text-center section-headings blue-color" >Officially Recognized & Globally Trusted</h2>
         <hr class="blue-hr" class="my-4">
         <div class="page-content text-center page-content">
             <p class="font-italic">Recognized where it matters – trusted where it counts.</p>

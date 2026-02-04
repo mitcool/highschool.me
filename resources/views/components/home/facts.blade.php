@@ -1,7 +1,7 @@
 <section class="row space" style="background-color: #045397;color:white;">
     <div class="col-md-12">
-        <h2 class="text-center mb-2 section-headings text-white" > Facts at a glance</h2>
-        <hr class="white-hr" class="my-4">
+        <h2 class="text-center section-headings text-white" > Facts at a glance</h2>
+        <hr class="white-hr">
         <div class="page-content text-center">
             <p class="font-italic">This is what a real next-generation high school looks like</p>
          </div>
