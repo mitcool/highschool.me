@@ -16,5 +16,7 @@
             </div>
         </div>
     </div>
+
+    <x-three-buttons/>
 </div>
 @endsection
