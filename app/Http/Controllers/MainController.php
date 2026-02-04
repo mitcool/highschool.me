@@ -307,10 +307,20 @@ class MainController extends Controller
   }
 
   public function updatePassword(Request $request){
-    $request->validate([
-        'current_password' => ['required'],
-        'password' => ['required', 'confirmed', 'min:8'],
-    ]);
+    dd('here');
+    // $request->validate([
+    //     'current_password' => ['required'],
+    //     'password' => [
+    //         'required',
+    //         'string',
+    //         'min:10',
+    //         'confirmed',
+    //         'regex:/[a-z]/',      
+    //         'regex:/[A-Z]/',      
+    //         'regex:/[0-9]/',      
+    //         'regex:/[@$!%*#?&]/'
+    //     ],
+    // ]);
 
     $user = Auth::user();
 

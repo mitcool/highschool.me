@@ -8,9 +8,11 @@
 		<meta content="text/html; charset=utf-8; X-Content-Type-Options=nosniff" http-equiv="Content-Type">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="csrf-token" content="{{ csrf_token() }}">
+		
 
 		{{-- Custom Style --}}
 		@yield('headCSS')
+			<link rel="icon" type="image/png" sizes="16x16" href="{{asset('images/favicon.png')}}">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,700;1,200&display=swap" rel="stylesheet">
