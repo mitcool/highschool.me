@@ -57,7 +57,7 @@
                                     <option
                                         value="{{ $type->id }}"
                                         data-code="{{ $type->code }}"
-                                        @selected(old('curriculum_type_id') == $type->id)
+                                        {{ (string) old('curriculum_type_id') === (string) $type->id ? 'selected' : '' }}
                                     >
                                         {{ $type->name }} ({{ $type->code }})
                                     </option>
@@ -154,7 +154,7 @@
                                         <option
                                             value="{{ $category->id }}"
                                             data-type-id="{{ $category->curriculum_type_id }}"
-                                            @selected(old('category_id') == $category->id)
+                                            {{ old('category_id') == $category->id ? 'selected' : '' }}
                                         >
                                             {{ $category->name }} ({{ $category->curriculumType->code ?? '' }})
                                         </option>
