@@ -12,6 +12,8 @@ class DynamicNews extends Model
 
     protected $table = 'dynamic_news';
 
+    protected $fillable = ['author_id','slug','key_facts','minutes','meta_title','meta_description','image'];
+
     public function sections(){
         return $this->hasMany('App\DynamicNewsSection','news_id','id');
     }

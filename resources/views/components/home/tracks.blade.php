@@ -3,8 +3,8 @@
         <h2 class="text-center section-headings text-white" >Four tracks. One diploma. Zero excuses.</h2>
         <hr class="white-hr" class="my-4">
         <div class="page-content text-center page-content">
-            <p class="font-italic">Four distinct tracks. One globally recognized U.S. High School Diploma.</p>
-            <p class="font-italic">No matter where you start – Standard, Honors, ACCEL, or Global Transfer – you decide the pace, the challenge, and the destination.</p>
+            <p>Four distinct tracks. One globally recognized U.S. High School Diploma.</p>
+            <p>No matter where you start – Standard, Honors, ACCEL, or Global Transfer – you decide the pace, the challenge, and the destination.</p>
          </div>
         
         <div class="container" style="margin-top:40px;">

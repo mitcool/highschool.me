@@ -3,7 +3,7 @@
         <h2 class="text-center section-headings text-white" > Facts at a glance</h2>
         <hr class="white-hr">
         <div class="page-content text-center">
-            <p class="font-italic">This is what a real next-generation high school looks like</p>
+            <p>This is what a real next-generation high school looks like</p>
          </div>
         
         <div class="container" style="margin-top:40px;">

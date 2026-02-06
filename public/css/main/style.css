@@ -18,6 +18,9 @@ input::-webkit-inner-spin-button {
 ul {
     padding-left: 20px !important;
 }
+ #main-image-mobile{
+    display: none;
+ }
 .page-content h2,
 .page-content h2 span,
 .page-content h2 span span,
@@ -391,7 +394,7 @@ input:checked + .slider:before {
     font-size: 2.2rem !important;
     font-weight: bold !important;
     /* margin: 50px 0; */
-    margin: 50px 0;
+    margin-top: 50px;
 }
 .page-headings {
     text-align: center;
@@ -422,7 +425,7 @@ input:checked + .slider:before {
     margin-bottom: 15px;
 }
 .welcome-icon-big {
-    height: 150px;
+    height: 100px;
     margin: 35px 0;
 }
 .orange-button-outline {
@@ -467,8 +470,11 @@ input:checked + .slider:before {
     width: 100%;
 }
 .news-container {
-    padding: 30px;
     box-shadow: 0px 3px 6px #0000001a;
+    border-radius: 8px;
+}
+.news-info{
+    padding:15px;
 }
 s .padding-30 {
     padding: 30px;
@@ -660,7 +666,7 @@ a:hover {
 }
 
 .space {
-    padding: 0;
+    padding: 30px;
 }
 
 .white-section {
@@ -1216,6 +1222,25 @@ a:hover {
     }
 }
 @media only screen and (max-width: 768px) {
+    .logoFooter{
+        display: none;
+    }
+    .footer-ul{
+        border-top:1px solid lightgray;
+        padding:10px;
+    }
+    .footer-ul h6{
+        font-weight: bold;
+        font-size:1.3rem;
+        text-align: left;
+        padding-left:10px;
+    }
+    #main-image{
+        display: none;
+    }
+    #main-image-mobile{
+        display: block;
+    }
     #slogan{
         top:10px;
     }
@@ -1521,7 +1546,7 @@ ul.nav li.dropdown:hover > ul.dropdown-menu {
 .blue-color {
     color: #045397;
 }
-blockquote {
+/* blockquote {
     color: #045397;
     font-family: Tahoma, sans-serif;
     font-size: 1.7rem;
@@ -1540,7 +1565,7 @@ blockquote p {
 blockquote p::before,
 blockquote p::after {
     content: "“";
-}
+} */
 @keyframes colorChange {
     0% {
         color: #025297;

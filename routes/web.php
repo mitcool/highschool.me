@@ -88,6 +88,9 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	Route::post('/transfer-program-pay/{student_id}','ParentController@transferProgramPay')->name('parent.transfer-program-pay');
 
 	Route::get('/transfer-program-pay-success/{student_id}','ParentController@transferProgramPaySuccess')->name('parent.transfer-pay-success');
+
+	Route::get('/reset-password', 'ParentController@resetPassPage')->name('parent.reset.password.page');
+
 });
 
 Route::group(['prefix' => 'student','middleware' => 'student'],function(){
@@ -129,6 +132,8 @@ Route::group(['prefix' => 'educator'],function(){
 	Route::get('/self-assesment','EducatorController@selfAssessment')->name('educator.self-assessment');
 	Route::get('/submitions','EducatorController@submitions')->name('educator.submitions');
 	Route::get('/invoices','EducatorController@invoices')->name('educator.invoices');
+	Route::get('/reset-password', 'EducatorController@resetPassPage')->name('educator.reset.password.page');
+
 });
 
 Route::post('/parent/pay/plan/{student_id}','ParentController@parentPayPlan')->name('parent.pay.plan');
@@ -230,8 +235,7 @@ Route::get('/apply','AdmissionController@apply')->name('apply');
 
 Route::get('/ambassador-program','AdmissionController@ambassadorProgram')->name('ambassador-program');
 
-Route::post('parent/reupload/document/{student_id}','ParentController@reuploadDocuments')->name('parent.reupload.document');
-
+Route::post('/parent/reupload/document/{student_id}','ParentController@reuploadDocuments')->name('parent.reupload.document');
 
 // Route::get('/iso','AdmissionController@iso')->name('iso');
 
@@ -244,7 +248,7 @@ Route::get('/sitemap.xml','SitemapController@sitemap')->name('sitemap-xml');
 
 #resetPassword
 Route::middleware('auth')->group(function () {
-    Route::post('/change-password', 'MainController@updatePassword')->name('password.update');
+    Route::post('/change-password', 'MainController@updatePassword')->name('user.password.update');
 });
 		
 // Route::post('/get-selected-program', 'MainController@getSelectedProgram')->name('get-selected-program');

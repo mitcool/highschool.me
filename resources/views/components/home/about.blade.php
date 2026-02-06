@@ -1,11 +1,11 @@
 <section  class="row space white-section">
   <div class="col-md-12">
     <h2 class="text-center blue-color section-headings">ONSITES High School Florida: Absolutely Exclusive & Radically Open</h2>
-    <hr class="blue-hr "><br>
+    <hr class="blue-hr">
   </div>
 
 <div class="page-content w-75 centered text-center mx-auto">
-    <div class="font-italic">
+    <div>
         <p>20th Floor, Miami Tower.</p>
         <p>From up here, the view stretches beyond the Miami skyline – into the world.</p>
 

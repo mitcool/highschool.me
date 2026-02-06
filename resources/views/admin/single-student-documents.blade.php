@@ -32,7 +32,7 @@
         <form action="{{ route('approve.student',$student->student_id) }}" method="POST" class="text-center my-3 {{ $student->approved_documents_count() > 5 ? ' d-block ' : 'd-none' }} " id="approve-student-form">
             {{ csrf_field() }}
             <div class="">
-                <input type="checkbox" name="is_disabled"> Is disabled
+                <input type="checkbox" name="is_disabled"> IEP / 504
             </div>
             <button class="btn btn-info mt-4">Approve Student</button>
         </form>

@@ -114,8 +114,14 @@
                                 <span>Profile</span>
                             </a>
                         </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{route('parent.reset.password.page')}}">
+                                <i class="fas fa-fw fa-cog"></i>
+                                <span>Change Password</span>
+                            </a>
+                        </li>
                         <li class="nav-item">
-                            <hr>
+                           
                             <form action="{{ route('logout') }}" method="post">
                                 {{ csrf_field() }}
                                 <button class="nav-link collapsed bg-transparent border-0">

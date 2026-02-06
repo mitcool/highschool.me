@@ -3,7 +3,7 @@
 		<h2 class="section-headings text-white">Hear From Students Around the World</h2>
 		<hr class="white-hr">
 		<div class="page-content ">
-			<p class="text-center font-italic">Stories from borders you cross. Voices that move you. Watch. No script, just results. Play now.</p>
+			<p class="text-center">Stories from borders you cross. Voices that move you. Watch. No script, just results. Play now.</p>
 		</div>
 		<div class="d-flex w-100 justify-content-between" id="testimonial_box">
 			<div class="video">

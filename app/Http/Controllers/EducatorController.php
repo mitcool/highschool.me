@@ -73,4 +73,9 @@ class EducatorController extends Controller
             ->with('invoices',$invoices);
     }
 
+    public function resetPassPage() {
+        
+        return view('educator.reset-password');
+    }
+
 }

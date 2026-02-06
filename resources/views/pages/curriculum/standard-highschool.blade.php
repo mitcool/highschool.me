@@ -24,6 +24,7 @@
         padding:10px;
         border:1px solid #f08a54;
         font-size: 0.9rem;
+        word-wrap: break-word;
     }
     .td-row.feature{
         border:none;
@@ -109,6 +110,15 @@
         background-color: #045397;
         color: white;
     }
+    @media(max-width:800px){
+        body,html{
+            overflow-x:auto;
+        }
+        #features-table {
+            overflow-x: auto !important; 
+            min-width: 1200px;
+        }
+    }
 </style>
 @endsection
 @section('content')
@@ -121,7 +131,7 @@
     <hr>
     <div class="row text-center container mx-auto">
         @foreach($plans as $plan)
-            <div class="col-md-4 p-4">
+            <div class="col-lg-4 p-4">
                 <div class="shadow wrapper">
                     <div class="plan-name"><span class="font-weight-bold">{{ $plan->name }}</span> Package</div>
                     <div class="tuition">Tuition fee</div>
@@ -136,22 +146,22 @@
             </div>
         @endforeach
     </div>
-    <div class="row">
+    <div class="row" id="features-table">
         @foreach($feature_categories as $category)
             <div class="col-md-12 text-center">
                 <h2 class="h3 text-left" style="margin-top:50px;margin-bottom:20px;">{{ $category->name }}</h2>
-                <div class="row">
-                    <div class="td-row col-md-3 feature font-weight-bold">Features</div>
-                    <div class="td-row col-md-3 core font-weight-bold">Core</div>
-                    <div class="td-row col-md-3 pro font-weight-bold">Pro</div>
-                    <div class="td-row col-md-3 elite font-weight-bold">Elite</div>
+                <div class="row feature-row">
+                    <div class="td-row col-3 feature font-weight-bold">Features</div>
+                    <div class="td-row col-3 core font-weight-bold">Core</div>
+                    <div class="td-row col-3 pro font-weight-bold">Pro</div>
+                    <div class="td-row col-3 elite font-weight-bold">Elite</div>
                 </div>
                 @foreach ($category->features as $feature )
-                    <div class="row">
-                        <div class="td-row td-border col-md-3 text-left font-weight-bold"  @if($loop->last) style="border-bottom-left-radius:15px;" @endif> <a  style="color: #045397;" href="{{ route('single-feature',$feature->slug) }}">{{ $feature->feature }}</a>  </div>
-                        <div class="td-row td-border col-md-3" @if($feature->core_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->core_tooltip !!}" style="cursor:pointer;color:#045397" @endif>{!! $feature->core() !!}</div>
-                        <div class="td-row td-border col-md-3" @if($feature->pro_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->pro_tooltip !!}"  style="cursor:pointer;color:#045397" @endif>{!! $feature->pro() !!}</div>
-                        <div class="td-row td-border col-md-3" @if($feature->elite_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->elite_tooltip !!}"  style="cursor:pointer;color:#045397" @endif @if($loop->last) style="border-bottom-right-radius:15px;" @endif>{!! $feature->elite() !!}</div>
+                    <div class="row feature-row">
+                        <div class="td-row td-border col-3 text-left font-weight-bold"  @if($loop->last) style="border-bottom-left-radius:15px;" @endif> <a  style="color: #045397;" href="{{ route('single-feature',$feature->slug) }}">{{ $feature->feature }}</a>  </div>
+                        <div class="td-row td-border col-3" @if($feature->core_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->core_tooltip !!}" style="cursor:pointer;color:#045397" @endif>{!! $feature->core() !!}</div>
+                        <div class="td-row td-border col-3" @if($feature->pro_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->pro_tooltip !!}"  style="cursor:pointer;color:#045397" @endif>{!! $feature->pro() !!}</div>
+                        <div class="td-row td-border col-3" @if($feature->elite_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->elite_tooltip !!}"  style="cursor:pointer;color:#045397" @endif @if($loop->last) style="border-bottom-right-radius:15px;" @endif>{!! $feature->elite() !!}</div>
                     </div>
                 @endforeach
             </div>

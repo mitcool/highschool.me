@@ -826,5 +826,10 @@ class ParentController extends Controller
         ParentStudent::where('student_id',$student_id)
             ->update(['status' => 3]);
     }
+
+    public function resetPassPage() {
+        
+        return view('parent.reset-password');
+    }
 }
 

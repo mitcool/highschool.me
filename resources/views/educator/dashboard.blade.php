@@ -110,7 +110,7 @@
                         Profile Settings
                     </div>
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{ route('student.reset.password.page') }}">
+                        <a class="nav-link" href="{{ route('educator.reset.password.page') }}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Password change</span>
                         </a>

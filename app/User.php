@@ -6,6 +6,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Carbon\Carbon;
+use Mail;
+use Log;
+use App\Mail\ResetPassMail;
 
 class User extends Authenticatable
 {
@@ -85,4 +88,16 @@ class User extends Authenticatable
         return $student_number;
     
     }
+
+    public function sendPasswordResetNotification($token)
+    {
+         try {
+            Mail::to($this->email)->send(new ResetPassMail($token));
+            
+        } catch (\Exception $e) {
+            Log::info($e);
+        }
+    }
+
+
 }

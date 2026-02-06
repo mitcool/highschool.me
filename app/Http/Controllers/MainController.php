@@ -201,13 +201,8 @@ class MainController extends Controller
   }
 
   public function showSingleBlog(Request $request,$slug){
-    $news = DynamicNewsTranslation::where('slug',$slug)->first() ?? abort(404);
+    $article = DynamicNews::with('sections')->where('slug',$slug)->first() ?? abort(404);
      
-    $article = DynamicNews::with('sections')->find($news->news_id);
-
-    $hreflang_en = DynamicNewsTranslation::where('locale','en')->where('news_id',$article->id)->first()->slug;
-    $hreflang_de = DynamicNewsTranslation::where('locale','de')->where('news_id',$article->id)->first()->slug;
-	  
     $last_three_articles = DynamicNews::where('id','!=',$article->id)
                         ->orderBy('id','desc')
                         ->get()
@@ -215,8 +210,9 @@ class MainController extends Controller
  
    	$next =  DynamicNews::where('id','>',$article->id)->with('sections')->first() ?? DynamicNews::first();
     $prev =  DynamicNews::where('id','<',$article->id)->with('sections')->first() ?? DynamicNews::orderBy('id','desc')->first();
- 
-    return view('pages.news-explorer.single',compact('article','hreflang_en','hreflang_de','last_three_articles','next','prev'));
+
+
+    return view('pages.news-explorer.single',compact('article','last_three_articles','next','prev'));
 	
   }
   public function showFactsHub(Request $request){
@@ -307,20 +303,19 @@ class MainController extends Controller
   }
 
   public function updatePassword(Request $request){
-    dd('here');
-    // $request->validate([
-    //     'current_password' => ['required'],
-    //     'password' => [
-    //         'required',
-    //         'string',
-    //         'min:10',
-    //         'confirmed',
-    //         'regex:/[a-z]/',      
-    //         'regex:/[A-Z]/',      
-    //         'regex:/[0-9]/',      
-    //         'regex:/[@$!%*#?&]/'
-    //     ],
-    // ]);
+    $request->validate([
+        'current_password' => ['required'],
+        'password' => [
+            'required',
+            'string',
+            'min:10',
+            'confirmed',
+            'regex:/[a-z]/',      
+            'regex:/[A-Z]/',      
+            'regex:/[0-9]/',      
+            'regex:/[@$!%*#?&]/'
+        ],
+    ]);
 
     $user = Auth::user();
 

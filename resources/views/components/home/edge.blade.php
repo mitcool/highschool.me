@@ -3,7 +3,7 @@
         <h2 class="text-center section-headings blue-color" >Give Yourself the Edge</h2>
         <hr class="blue-hr" class="my-4">
         <div class="page-content text-center page-content">
-            <p class="font-italic">Choose the add-ons that turn a strong diploma into an unbeatable advantage.</p>
+            <p>Choose the add-ons that turn a strong diploma into an unbeatable advantage.</p>
          </div>
         
         <div class="container" style="margin-top:40px;">
@@ -67,8 +67,7 @@
     </div>
 </div>
             
-        </div>
-    </div>
+       
     
 </section>
 

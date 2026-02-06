@@ -1,11 +1,36 @@
-@extends('layouts.app')
+@extends('template')
+@section('headCSS')
+<style>
+    body {
+        min-height: 100%;
+        background: linear-gradient(135deg, #045397, #0b6cb8);
+    }
+    .btn-log-reg {
+        background-color: #E9580C !important;
+        border-color: #E9580C !important;
+        border-radius: 8px;
+        padding: .55rem 2rem;
+        font-weight: 500;
+    }
 
+    .btn-log-reg:hover {
+        background-color: #d14f0a !important;
+        border-color: #d14f0a !important;
+    }
+    .container{
+        min-height: 50vh;
+
+    }
+</style>
+@endsection
 @section('content')
-<div class="container">
+<div class="container" style="margin-top: 75px; margin-bottom: 150px;">
+    <div class="text-center mb-5 text-white">
+        <h1>{{ __('Reset Password') }}</h1>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('password.update') }}">
                         @csrf
@@ -50,7 +75,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary btn-log-reg">
                                     {{ __('Reset Password') }}
                                 </button>
                             </div>

@@ -1,83 +1,41 @@
 @extends('template')
 
 @section('seo')
-	<title>{!!  strip_tags($article->translated->meta_title) !!}</title>
-	<meta itemprop="title" property="og:title" content="{{ strip_tags($article->translated->meta_title)  }}"/>
-	<meta itemprop="description" name="description" content="{{ strip_tags($article->translated->meta_description) }}" />
-	<meta property="og:description" content="{{ strip_tags($article->translated->meta_description) }}"/>
-	@if(Session::get('applocale') == 'de')
-		<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/de/blog/{{ $hreflang_de }}"/>
-	@else
-		<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/en/blog/{{ $hreflang_en }}"/>
-	@endif
-	<link rel="alternate" href="{{ config('app.url') }}/en/blog/{{ $hreflang_en }}" hreflang="en" />
-	<link rel="alternate" href="{{ config('app.url') }}/de/blog/{{ $hreflang_de }}" hreflang="de" />
-	<link rel="alternate" href="{{ config('app.url') }}/en/blog/{{ $hreflang_en }}" hreflang="x-default" />
-	<meta itemprop="image" property="og:image" content="{{ asset('news_images') }}/{{ $article->main_image->all_translations[0]->content }}"/>
+	<title>{!!  strip_tags($article->meta_title) !!}</title>
+	<meta itemprop="title" property="og:title" content="{{ strip_tags($article->meta_title)  }}"/>
+	<meta itemprop="description" name="description" content="{{ strip_tags($article->meta_description) }}" />
+	<meta property="og:description" content="{{ strip_tags($article->meta_description) }}"/>
+	<meta itemprop="url" property="og:url" content="{{ request()->url() }}"/>
+	<meta itemprop="image" property="og:image" content="{{ asset('news_images') }}/{{ $article->image }}"/>
 	<meta property="og:type" content="website">
-
-	@if(app()->currentLocale() == 'en')
-		<script type="application/ld+json">
-            {
-              "@context": "https://schema.org",
-              "@type": "Article",
-              "mainEntityOfPage": {
-                "@type": "WebPage",
-                "@id": "https://graduate.me/en/blog/{{$article->translated->slug}}"
-              },
-              "headline": "{{$article->translated->title}}",
-              "description": "{{$article->translated->description}}",
-              "image": "https://graduate.me/public/images/{{$article->translated->slug}}.webp",  
-              "author": {
-                "@type": "Organization",
-                "name": "ONSITES Graduate School"
-              },  
-              "publisher": {
-                "@type": "Organization",
-                "name": "ONSITES Graduate School",
-                "logo": {
-                  "@type": "ImageObject",
-                  "url": ""
-                }
-              },
-              "datePublished": "{{ $article->created_at }}",
-              "dateModified": "{{ $article->created_at }}}"
-            }
-        </script>
-	@else
-		<script type="application/ld+json">
-            {
-              "@context": "https://schema.org",
-              "@type": "Article",
-              "mainEntityOfPage": {
-                "@type": "WebPage",
-                "@id": "https://graduate.me/de/blog/{{$article->translated->slug}}"
-              },
-              "headline": "{{$article->translated->title}}",
-              "description": "{{$article->translated->description}}",
-              "image": "https://graduate.me/public/images/{{$article->translated->slug}}.webp",  
-              "author": {
-                "@type": "Organization",
-                "name": "ONSITES Graduate School"
-              },  
-              "publisher": {
-                "@type": "Organization",
-                "name": "ONSITES Graduate School",
-                "logo": {
-                  "@type": "ImageObject",
-                  "url": ""
-                }
-              },
-              "datePublished": "{{ $article->created_at }}",
-              "dateModified": "{{ $article->created_at }}}"
-            }
-        </script>
-	@endif
-
+	<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "Article",
+			"mainEntityOfPage": {
+			"@type": "WebPage",
+			"@id": "https://graduate.me/de/blog/{{$article->slug}}"
+			},
+			"headline": "{{$article->title}}",
+			"description": "{{$article->description}}",
+			"image": "https://graduate.me/public/images/{{$article->slug}}.webp",  
+			"author": {
+			"@type": "Organization",
+			"name": "ONSITES Graduate School"
+			},  
+			"publisher": {
+			"@type": "Organization",
+			"name": "ONSITES Graduate School",
+			"logo": {
+				"@type": "ImageObject",
+				"url": ""
+			}
+			},
+			"datePublished": "{{ $article->created_at }}",
+			"dateModified": "{{ $article->created_at }}}"
+		}
+	</script>
 @endsection
-
-
-
 
 @section('headCSS')
 	<link rel="stylesheet" href="{{ asset('css/main/news.css') }}">
@@ -85,7 +43,7 @@
 
 @section('content')
 @php
-    $breadcrumb_title = strtok(strip_tags($article->translated->meta_title), '|');
+    $breadcrumb_title = strtok(strip_tags($article->meta_title), '|');
 @endphp
 <div aria-label="breadcrumb" class="col-md-6 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-1">
@@ -108,18 +66,16 @@
 		</div>
 		<div class="col-lg-6">
 			<img itemprop="image" rel="preload" fetchpriority="high" decoding="async" 
-				src="{{ asset('news_images') }}/{{ $article->main_image->all_translations[0]->content }}" 
+				src="{{ asset('news_images') }}/{{ $article->image }}" 
 				class="w-100" 
-				alt="{{ $article->main_image->attributes ? $article->main_image->attributes->alt() : '' }}"
-				title="{{ $article->main_image->attributes ? $article->main_image->attributes->title() : '' }}"
 			/>
 
 			@foreach($article->sections as $key =>  $section)
 				<div itemprop="articleBody" itemscope itemtype="https://schema.org/Text" style="margin-top:20px;" class="page-content">
 					@if($key == 0)
-					<h1 itemprop="headline" class="h1">{!! $section->translated->content !!}</h1>
-					<span class="font-weight-bold">{{ $article->author->translated->name }}</span> <br/>
-					<span>{{ $article->author->translated->occupation }}</span> <br/>
+					<h1 itemprop="headline" class="h1">{!! $section->content !!}</h1>
+					<span class="font-weight-bold">{{ $article->author->name }}</span> <br/>
+					<span>{{ $article->author->occupation }}</span> <br/>
 					<p class="font-weight-bold"><i class="fas fa-clock"></i> {{ $article->minutes }} min.</p>
 					<p class="font-weight-bold"><i class="fas fa-calendar-alt"></i>
 		            	{{ request()->segment(1) == 'de' ? 'Veröffentlicht am' : 'Published on' }} <?php echo date("d.m.Y", strtotime($article->created_at))?>            	
@@ -128,18 +84,18 @@
 							<?php echo date("d.m.Y", strtotime($article->updated_at))?>
 						@endif
 		            </p>
-					@if($article->translated->key_facts)
+					@if($article->key_facts)
 						<div class="key-facts">
 							<div class="top left"></div>
 							<div class="bottom right"></div>
 							<h5 style="color:#E16221;">{{ request()->segment(1) == 'de' ? 'Key-Facts' : 'Key Facts' }}</h5>
-							{!!  $article->translated->key_facts !!}
+							{!!  $article->key_facts !!}
 						</div>
 					@endif
 					@elseif($key==1)
-					<p>{!! $section->translated->content !!}</p>
+					<p>{!! $section->content !!}</p>
 					@elseif($section->type == 1)
-						<div id="section_{{$section->id}}">{!! $section->translated->content !!}</div>
+						<div id="section_{{$section->id}}">{!! $section->content !!}</div>
 					@elseif($section->type == 2 && $section->id != $article->main_image->id)
 						<img 
 							src="{{ asset('news_images') }}/{{ $section->image_src->content }}" 
@@ -150,16 +106,16 @@
 					@elseif($section->type == 3)
 						<div class="blockquote-wrapper">
 							<blockquote>
-								<p>{{ $section->translated->content }}</p>
+								<p>{{ $section->content }}</p>
 							</blockquote>
-							<h5 class="text-right">{{ $section->details[0]->translated->content }}</h5>
+							<h5 class="text-right">{{ $section->details[0]->content }}</h5>
 						</div>
 					@elseif($section->type == 4)
 						<div class="news-box-wrapper">
-							<h4 class="news-box-header">{{ $section->translated->content }}</h4>
+							<h4 class="news-box-header">{{ $section->content }}</h4>
 							<div class="d-flex justify-content-between">
 								@foreach( $section->details as $box )
-									<div class="col news-box">{{ $box->translated->content }}</div>
+									<div class="col news-box">{{ $box->content }}</div>
 								@endforeach
 							</div>
 							
@@ -177,11 +133,11 @@
 				</div>
 				<div class="col-sm-10 author-description-container">
 					<form action="{{ route('blog') }}">
-							<input type="hidden" name="author" value="{{ $article->author->translated->slug}}">
+							<input type="hidden" name="author" value="{{ $article->author->slug}}">
 							<button class="btn btn-link text-left">
 							<span itemprop="name" itemscope itemtype="https://schema.org/Person">
-								<span class="font-weight-bold">{{ $article->author->translated->name }}</span> <br/>
-								<span>{{ $article->author->translated->occupation }}</span> <br/>
+								<span class="font-weight-bold">{{ $article->author->name }}</span> <br/>
+								<span>{{ $article->author->occupation }}</span> <br/>
 								{{ $article->author->total_articles() }} {{ trans('single-blog.articles') }}
 							</button>
 					</form>
@@ -192,12 +148,12 @@
 				</div>
 				<div class="col-lg-12" style="background:#EEEEEE;padding:20px;margin:20px 0;">
 
-					<div itemprop="description" class="page-content">{{ $article->author->translated->description }}</div>
+					<div itemprop="description" class="page-content">{{ $article->author->description }}</div>
 					
 				</div>
 				<div class="col-lg-12 d-flex justify-content-between" style="margin-top:40px">
-					@if($prev) <a style="text-decoration:none" href="{{route('single-article', $prev->translated->slug)}}"><h3 style="color: #EA580D;"> &#8592; {{ trans('single-blog.previous') }} </h3> </a> @endif
-					@if($next) <a style="text-decoration:none" href="{{route('single-article', $next->translated->slug)}}"><h3 style="color: #EA580D;"> {{ trans('single-blog.next') }}  &#8594;    </h3> </a> @endif
+					@if($prev) <a style="text-decoration:none" href="{{route('single-article', $prev->slug)}}"><h3 style="color: #EA580D;"> &#8592; {{ trans('single-blog.previous') }} </h3> </a> @endif
+					@if($next) <a style="text-decoration:none" href="{{route('single-article', $next->slug)}}"><h3 style="color: #EA580D;"> {{ trans('single-blog.next') }}  &#8594;    </h3> </a> @endif
 				</div>
 			</div>
 		</div>
@@ -213,25 +169,25 @@
 			@foreach($last_three_articles as $news)
 			<div class="col-lg-4 news_wrapper">
 					<div class="news_container h-100 shadow">
-					  	<img class="news-image w-100" src="{{ asset('news_images') }}/{{ $news->main_image->all_translations[0]->content }}" />
+					  	<img class="news-image w-100" src="{{ asset('news_images') }}/{{ $news->image }}" />
 					  	<div class="news-body">
-						    <h2 class="news-heading mt-2 text-center font-weight-bold h6">{{ $news->sections[0]->translated->content }}</h2>
+						    <h2 class="news-heading mt-2 text-center font-weight-bold h6">{{ $news->sections[0]->content }}</h2>
 							<div class="minutes">
 									<p class="font-weight-bold mb-0"><i class="fas fa-clock"></i> {{ $news->minutes }} min.</p>
 								</div>
 							<div>
 								<div>
 									<form action="{{ route('blog') }}">
-									<input type="hidden" name="author" value="{{ $news->author->translated->slug}}">
+									<input type="hidden" name="author" value="{{ $news->author->slug}}">
 										<button class="btn p-0 btn-link text-left text-dark font-weight-bold">
-											{{ $news->author->translated->name }} <br/>
-											{{ $news->author->translated->occupation }} <br/>
+											{{ $news->author->name }} <br/>
+											{{ $news->author->occupation }} <br/>
 										</button>
 									</form>
 								</div>
 								<div class="text-center mt-auto">
 									<hr/>
-									<a href="{{ route('single-article',$news->translated->slug) }}" class="btn read-more">{{ trans('welcome.read-more') }}</a>
+									<a href="{{ route('single-article',$news->slug) }}" class="btn read-more">{{ trans('welcome.read-more') }}</a>
 								</div>  
 							</div> 
 						</div> 

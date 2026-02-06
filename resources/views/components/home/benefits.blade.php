@@ -1,4 +1,4 @@
-<section class="row" style="background-color: #045397;">
+<section class="row space" style="background-color: #045397;">
     <div class="col-md-10 offset-md-1" >
         <!-- <div class="d-flex" id="benefit_wrapper"> -->
         <div class="text-center page-content text-white">
@@ -6,7 +6,7 @@
                 What Sets Us Apart
             </h2>
             <hr class="white-hr">
-            <p class="font-italic">We don’t make you fit the system. We built the system around talent that refuses to wait.</p><br>
+            <p>We don’t make you fit the system. We built the system around talent that refuses to wait.</p><br>
         </div>
         <div class="row col-md-12 ml-0 mr-0 mb-2" >
             <div class="col-xl-3  text-center my-2 ">
