@@ -1,7 +1,7 @@
 @extends('admin_template')
 
 @section('content')
-    <div class="jumbotron bg-white container page-content">
+    <div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
         <h1 class="text-center page-headings">{{ $exam->course->course->title }}</h1>
         <h2 class="text-center">{{ $exam->student->fullname() }}</h2>
         <h5 class="text-center">Type of exam: <span class="font-weight-bold">{{ $exam->type == 1 ? 'Open Questions Exam' : 'Essay' }}</span></h5>

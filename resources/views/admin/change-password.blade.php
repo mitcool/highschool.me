@@ -54,9 +54,10 @@
 @endsection
 
 @section('content')
-<div class="container">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+
     <div class="text-center mt-5 mb-5">
-        <h1>Change Password</h1>
+        <h2>Change Password</h2>
     </div>
 
     <div class="row justify-content-center">

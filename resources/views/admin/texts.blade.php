@@ -2,10 +2,11 @@
 
 @section('content')
 
-<div class="container" style="padding: 40px;">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+
 	<div class="row">
 		<div class="col-md-12 text-center">
-			<h3>Please select a page for edit</h3>
+			<h2>Please select a page for edit</h2>
 			<hr>
 		</div>
 		@foreach($pages as $page)

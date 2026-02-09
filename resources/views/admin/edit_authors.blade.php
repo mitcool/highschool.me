@@ -9,7 +9,7 @@
 @endsection
 @section('content')
 
-<div class="container shadow p-3 mt-3 text-center bg-light">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     <h1>Add Author</h1>
     <div>
         <form action="{{ route('add-author')}}" enctype="multipart/form-data" method="POST">

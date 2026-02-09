@@ -3,9 +3,9 @@
 @section('content')
 
 
-<div class="jumbotron container shadow bg-white h-100">
-    <h2 class="text-center" style="color:#045397;margin:30px 0">Group Session for Students</h2>
-    <table class="table table-striped">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+    <h2 class="text-center">Group Session for Students</h2>
+    <table class="table">
         <tr>
             <th>Date</th>
             <th>Start Time</th>

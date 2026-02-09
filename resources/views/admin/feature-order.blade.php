@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="jumbotron container">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     <h2 class="text-center">Define order of features in "Plans table" </h2>
     @foreach ($categories as $category )
         <h4 class="text-center">{{ $category->name }}</h4>

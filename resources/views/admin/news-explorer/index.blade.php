@@ -10,13 +10,16 @@
     .selected-image{
         border:3px solid rgb(85, 146, 215) !important;
     }
+    label{
+        margin-top:15px;
+    }
 </style>
 @endsection
 
 @section('content')
-<div class="jumbotron container bg-white shadow">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">
 
-    <h2>Create a news</h2>
+    <h2 class="text-center">Create a news</h2>
     <hr>
     <form action="{{ route('dynamic-news-create') }}" method="POST" enctype="multipart/form-data" id="create_news_form">
         {{ csrf_field() }}
@@ -31,7 +34,7 @@
                     @endforeach
                 </select>
             </div>
-           
+            
             <div class="col-md-12">
                 <label for="" class="font-weight-bold mb-0">Slug</label>
                 <input type="text" value="{{ old('slug') }}" name="slug" class="form-control" required />
@@ -85,9 +88,7 @@
             <input type="hidden" name="type[]" value="1" />
         </div>
         
-        <div id="news_content">
-
-        </div>
+        <div id="news_content"></div>
         <hr>
         <div class="text-center">
             <button class="btn btn-info" data-toggle="modal" data-target="#type_modal"type="button">+ Add new section</button>

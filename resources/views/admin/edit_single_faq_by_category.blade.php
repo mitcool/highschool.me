@@ -6,7 +6,8 @@
 
 @section('content')
 
-<div class="container text-center my-3 shadow bg-light p-3">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+
     <h1>Edit FAQ</h1>
     
     @foreach($faqs as $faq)

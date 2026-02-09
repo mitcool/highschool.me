@@ -1,8 +1,8 @@
 @extends('admin_template')
 
 @section('content')
-<div class="jumbotron container shadow bg-white h-100">
-    <h2 class="text-center" style="color:#045397;margin:30px 0">Family Consultations</h2>
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+    <h2 class="text-center">Family Consultations</h2>
     <table class="table table-striped">
         <tr>
             <th>Date</th>

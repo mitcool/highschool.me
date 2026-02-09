@@ -54,7 +54,17 @@ class StudentModuleCourseService{
                         'course_type' => $courses_type->id,
                         'status' => 0
                      ]);
+                    # 2 Personal mentoring sessions for every course
+                    for ($i=0; $i <  2; $i++) { 
+                        AdditionalCourse::insert([
+                            'student_id' => $student_id,
+                            'course_type' => 12, // mentoring session id
+                            'status' => 0
+                        ]);
+                    }
                  }
+                 
+                 
              }
              Cookie::queue(Cookie::forget('course-type-count-'.$courses_type->id));
         }

@@ -28,7 +28,7 @@
 @endsection
 
 @section('content')
-<div class="container py-4">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <div class="card shadow-sm">

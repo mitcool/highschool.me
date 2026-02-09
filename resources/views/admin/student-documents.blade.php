@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="jumbotron container">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     <h2 class="text-center">List of pending approvement students applications</h2>
     <hr>
     <ul class="list-group">

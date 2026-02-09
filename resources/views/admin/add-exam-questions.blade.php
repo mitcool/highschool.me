@@ -9,8 +9,7 @@
 @endsection
 
 @section('content')
-<div class="container shadow mx-auto mt-4 p-4">
-
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     {{-- ADD QUESTION FORM --}}
     <form action="{{ route('admin.exam-question-add') }}" method="POST">
         @csrf

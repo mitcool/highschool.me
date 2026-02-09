@@ -6,8 +6,9 @@
 
 @section('content')
 
-<div class="container text-center my-3 shadow bg-light p-3">
-    <h1>Add New FAQ</h1>
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+
+    <h2 class="text-center">Add New FAQ</h2>
     <hr/>
      <form action="{{ route('add-faq') }}" method="post" >
         {{ csrf_field() }}

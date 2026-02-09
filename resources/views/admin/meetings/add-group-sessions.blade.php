@@ -3,8 +3,8 @@
 @section('content')
 
 
-<div class="jumbotron container shadow bg-white">
-    <h2 class="text-center" style="color:#045397;">Group Session for Students</h2>
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+    <h2 class="text-center">Group Session for Students</h2>
     <form action="{{ route('create-group-session') }}" method="POST">
         {{ csrf_field() }}
         <div class="row">

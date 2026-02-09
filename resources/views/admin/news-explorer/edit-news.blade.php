@@ -14,9 +14,8 @@
 @endsection
 
 @section('content')
-<div class="jumbotron container">
-    
-    <h2>Edit News</h2>
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+    <h2 class="text-center">Edit News</h2>
     <form action="{{ route('dynamic-news-update',$news->id) }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div class="row mt-2">

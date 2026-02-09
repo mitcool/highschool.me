@@ -128,7 +128,7 @@
 </style>
 @endsection
 @section('content')
-<div class="container mb-3 bg-light p-3 shadow">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
 	<h2 class="text-center page-headings">Student Information</h2>
     <div class="row">
         <div class="col-md-6">

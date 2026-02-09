@@ -14,6 +14,11 @@ use App\DynamicNewsImageAttribute;
 
 class NewsController extends Controller
 {
+    public $path;
+
+    public function __construct(){
+        $this->path  = base_path()."/public/images/news";
+    }
     public function index(){
         $authors = DynamicNewsAuthor::all();
         $news = DynamicNews::paginate(5);
@@ -32,9 +37,8 @@ class NewsController extends Controller
             'meta_description' => 'required',
             'image' => 'required'
        ]);
-       $path = base_path()."/public/images/news";
        $news =  $request->only('author_id','slug','key_facts','minutes','meta_title','meta_description');
-       $news['image'] = $this->upload_file($request->file('image'),$path);
+       $news['image'] = $this->upload_file($request->file('image'),$this->path);
        $contents = $request->content;
        $types = $request->type;
        $created_news = DynamicNews::create($news);
@@ -48,7 +52,7 @@ class NewsController extends Controller
                 ]);
            }
            else if($types[$key] == 2){
-                $file_name = $this->upload_file($request->file('file_'.($key+1)),$path);
+                $file_name = $this->upload_file($request->file('file_'.($key+1)),$this->path);
                 DynamicNewsSection::insert([
                     'content' => $file_name,
                     'type' => $types[$key],
@@ -70,7 +74,6 @@ class NewsController extends Controller
     }
 
      public function update(Request $request,$news_id){
-        $path = 'images/news';
         $news_input = $request->only('author_id','minutes','slug','key_facts','meta_title','meta_description');
         $news = DynamicNews::find($news_id);
         $news->update($news_input);
@@ -82,13 +85,13 @@ class NewsController extends Controller
                 $section->update(['content'=>$content]);
             }
             elseif($section->type == 2){ 
-                $filename = $this->upload_file($content,$path);
+                $filename = $this->upload_file($content,$this->path);
                 $section->update(['content'=>$filename]);
             }
         }
       
         if($request->hasFile('image')){
-            $news_input['image'] = $this->upload_file($request->file('image'),$path);    
+            $news_input['image'] = $this->upload_file($request->file('image'),$this->path);    
         }
         
         

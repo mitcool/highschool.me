@@ -3,10 +3,7 @@
 namespace App\Services;
 
 use Cookie;
-
-use App\PaidGroupSession;
-use App\PaidMentoringSession;
-use App\PaidCoachingSession;
+use App\AdditionalCourse;
 use App\CourseType;
 
 class StudentSessionsService{
@@ -16,7 +13,7 @@ class StudentSessionsService{
         $sessions = CourseType::where('type',3)->get();
         foreach($sessions as $session){
              if(!Cookie::has('session-count-'.$session->id)){
-                 Cookie::queue('session-count-'.$session->id, 1, 60);
+                 Cookie::queue('session-count-'.$session->id, 0, 60);
              }
              $session->session_count = Cookie::get('session-count-'.$session->id);
              $session->total = $session->session_count * $session->price;
@@ -30,7 +27,7 @@ class StudentSessionsService{
         $total = 0;
         foreach($sessions as $session){
              if(!Cookie::has('session-count-'.$session->id)){
-                 Cookie::queue('session-count-'.$session->id, 1, 60);
+                 Cookie::queue('session-count-'.$session->id, 0, 60);
              }
              $session->session_count = Cookie::get('session-count-'.$session->id);
              $session->total = $session->session_count * $session->price;
@@ -47,27 +44,27 @@ class StudentSessionsService{
        $coaching_sessions_count =  Cookie::get('session-count-13');
 
        for ($i=0; $i < $group_session_count; $i++) { 
-            PaidGroupSession::insert([
+            AdditionalCourse::insert([
                 'student_id' => $student_id,
-                'parent_id' => auth()->user()->id,
-                'status' => 0,
+                'course_type' => 11,
+                'status' => 0
             ]);
        }
 
        for ($i=0; $i < $mentoring_sessions_count ; $i++) { 
-            PaidMentoringSession::insert([
+            AdditionalCourse::insert([
                 'student_id' => $student_id,
-                'parent_id' => auth()->user()->id,
-                'status' => 0,
+                'course_type' => 12,
+                'status' => 0
             ]);
        }
 
        for ($i=0; $i < $coaching_sessions_count; $i++) { 
-            PaidCoachingSession::insert([
+            AdditionalCourse::insert([
                 'student_id' => $student_id,
-                'parent_id' => auth()->user()->id,
-                'status' => 0,
-            ]);
+                'course_type' => 13,
+                'status' => 0
+            ]);;
        }
 
        Cookie::queue(Cookie::forget('session-count-11'));

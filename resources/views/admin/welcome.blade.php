@@ -10,9 +10,10 @@
 @section('content')
 
 
-<div class="container"><div class="row my-3"  style="padding:30px;">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+  <div class="row my-3"  style="padding:30px;">
     <div class="col-md-12">
-        <h1 class="text-center pt-5">Welcome {{ auth()->user()->name }}</h1>
+        <h2 class="text-center pt-5">Welcome {{ auth()->user()->fullname() }}</h2>
     </div>	
 </div>
           

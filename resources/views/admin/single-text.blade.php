@@ -7,7 +7,7 @@
 
 @section('content')
 
-<div class="container my-3 p-3">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
 	<form action=" {{route('change-text')}}" method="POST">
 	@csrf
 		<div class="row">

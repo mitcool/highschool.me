@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="container py-4">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     <div class="text-center mb-5 mt-4">
         <h2>Ambassador Rewards</h2>
     </div>

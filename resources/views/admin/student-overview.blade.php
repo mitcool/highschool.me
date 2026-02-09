@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="jumbotron container bg-white shadow">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     <h2 class="text-center">List of students</h2>
     <hr>
     <table class="table table-striped">

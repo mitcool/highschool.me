@@ -6,7 +6,7 @@
 
 @section('content')
 
-<div class="jumbotron container">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     <h2 class="text-center">Add Feature</h2>
     <p class="text-danger">* For showing icon in public page please write "Yes" or "No" for plans value</p>
     <form action="{{ route('feature.add') }}" method="POST">

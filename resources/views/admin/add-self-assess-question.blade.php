@@ -1,7 +1,7 @@
 @extends('admin_template')
 
 @section('content')
-<div class="container">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     <div class="card shadow-sm p-4 mx-auto" style="max-width: 900px;">
         <h3 class="text-center mb-4">
             Add Self-assessment Question

@@ -2,8 +2,8 @@
 
 @section('content')
 
-<div class="jumbotron container">
-    <h1 class="text-center">Plans</h1>
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+    <h2 class="text-center">Plans</h2>
     <hr>
     <p class="text-danger">* Only developers can add a new plan</p>
     <div class="row">

@@ -14,88 +14,73 @@
 @endsection
 
 @section('content')
-<div class="jumbotron container">
+<div class="jumbotron container bg-white shadow">
 
-    <h2 class="text-center">Create a "Facts Hub" article</h2>
+    <h2>Create a news</h2>
     <hr>
     <form action="{{ route('facts-hub-create') }}" method="POST" enctype="multipart/form-data" id="create_news_form">
         {{ csrf_field() }}
         <div class="row mt-1">
-            
-            <div class="col-md-6">
+             <div class="col-md-6"></div>
+            <div class="col-md-12">
                 <label for="" class="font-weight-bold">Author:</label>
                 <select name="author_id" id=""  required class="form-control">
                     <option value="" disabled selected>Please select an author</option>
                     @foreach ($authors as $author) 
-                        <option value="{{ $author->id }}">{{ $author->name }}</option>
+                        <option {{ old('author_id') == $author->id ? ' selected ' : '' }} value="{{ $author->id }}">{{ $author->name }}</option>
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-6"></div>
-            <div class="col-md-6">
-                <label for="" class="font-weight-bold mb-0">Slug(EN)</label>
-                <input type="text" name="slug" class="form-control" required />
+           
+            <div class="col-md-12">
+                <label for="" class="font-weight-bold mb-0">Slug</label>
+                <input type="text" value="{{ old('slug') }}" name="slug" class="form-control" required />
             </div>
-            <div class="col-md-6">
-                <label for="" class="font-weight-bold mb-0">Slug(DE)</label>
-                <input type="text" name="slug_de" class="form-control" required />
+        
+            <div class="col-md-12">
+                <label for="" class="font-weight-bold mb-0">Key Facts</label>
+                <textarea  name="key_facts" class="form-control ckeditor">{{ old('key_facts') }}</textarea>
             </div>
-            <div class="col-md-6">
-                <label for="" class="font-weight-bold mb-0">Key Facts(EN)</label>
-                <textarea  name="key_facts_en" class="form-control ckeditor"></textarea>
+            
+			<div class="col-md-12">
+                <label for="" class="font-weight-bold mb-0">Meta title</label>
+				<textarea  name="meta_title"  class="form-control" required >{{ old('meta_title') }}</textarea>
             </div>
-            <div class="col-md-6">
-                <label for="" class="font-weight-bold mb-0">Key Facts(DE)</label>
-                <textarea  name="key_facts_de" class="form-control ckeditor"></textarea>
+           
+			<div class="col-md-12">
+                <label for="" class="font-weight-bold mb-0">Meta description </label>
+                <textarea  name="meta_description" class="form-control" required >{{ old('meta_description') }}</textarea>
             </div>
-			<div class="col-md-6">
-                <label for="" class="font-weight-bold mb-0">Meta title(EN)</label>
-				<textarea  name="meta_title_en" class="form-control" required ></textarea>
-            </div>
-            <div class="col-md-6">
-                <label for="" class="font-weight-bold mb-0">Meta title (DE)</label>
-                <textarea name="meta_title_de" class="form-control" required ></textarea>
-            </div>
-			<div class="col-md-6">
-                <label for="" class="font-weight-bold mb-0">Meta description (EN)</label>
-                <textarea  name="meta_description_en" class="form-control" required ></textarea>
-            </div>
-            <div class="col-md-6">
-                <label for="" class="font-weight-bold mb-0">Meta description (DE)</label>
-                <textarea  name="meta_description_de" class="form-control" required ></textarea>
-            </div>
-            <div class="col-md-6">
+           
+            <div class="col-md-12">
                 <label for="" class="font-weight-bold mb-0">Min to read</label>
-                <input type="number" name="minutes" class="form-control" required />
+                <input type="number" name="minutes" class="form-control" required value="{{ old('minutes') }}" />
             </div>
         </div>
         <hr>
-        <label for="" class="font-weight-bold mb-0 d-block">Content:</label>
+         <div class="col-md-12">
+                <h4>Main Image*</h4>
+            </div>
+            <div class="col-md-12">
+                <label class="m-0 font-weight-bold">File</label>
+                <input type="file" name="image" required>
+            </div>
         <div class="section row">
             <div class="col-md-12">
-                <h4>Main Heading section*</h4>
+                <h4>Headline(h1)*</h4>
             </div>
-            <div class="col-md-6">
-                <label class="m-0 font-weight-bold">Content(EN)</label>
+            <div class="col-md-12">
+                <label class="m-0 font-weight-bold">Content</label>
                 <textarea class="form-control" name="content[]"></textarea>
-            </div>
-            <div class="col-md-6">
-                <label class="m-0 font-weight-bold">Content(DE)</label>
-                <textarea class="form-control" name="content_de[]"></textarea>
             </div>
             <input type="hidden" name="type[]" value="1" />
         </div>
         <div class="section row">
             <div class="col-md-12">
-                <h4>Main Description section*</h4>
+                <h4>Teaser*</h4>
             </div>
-            <div class="col-md-6">
-                <label class="m-0 font-weight-bold">Content(EN)</label>
+            <div class="col-md-12">
                 <textarea class="form-control ckeditor" name="content[]"></textarea>
-            </div>
-            <div class="col-md-6">
-                <label class="m-0 font-weight-bold">Content(DE)</label>
-                <textarea class="form-control ckeditor" name="content_de[]"></textarea>
             </div>
             <input type="hidden" name="type[]" value="1" />
         </div>
@@ -112,20 +97,28 @@
             <button class="btn btn-warning">Publish News</button>
         </div>
     </form>
-    <h1>List of news news:</h1>
+    <hr>
+    <h2 class="text-center">List of news news:</h2>
     @foreach($news as $n)
-    <hr />
-    {!! $n->sections[0]->translated->content !!}
-    <div class="text-right d-flex justify-content-end">
-        <a href="{{ route('edit-facts-hub',$n->id) }}" class="btn btn-warning mr-2">Edit News</a>
-        <form action="{{ route('delete-facts-hub',$n->id) }}" method="POST" class="text-right">
-            {{ csrf_field() }}
-            <button class="btn btn-danger">Delete News</button>
-        </form>
-    </div>
+        <div class="text-right d-flex justify-content-between">
+            <h3>
+                {{ $n->sections[0]->content }}
+            </h3>
+            <div class="d-flex">
+                <a href="{{ route('edit-news',$n->id) }}" >
+                    <button class="btn btn-warning mr-2">Edit News</button> 
+                </a>
+                <form action="{{ route('delete-news',$n->id) }}" method="POST" class="text-right">
+                    {{ csrf_field() }}
+                    <button class="btn btn-danger">Delete News</button>
+                </form>
+            </div>
+        </div>
+        <hr />
     @endforeach
+    <div class="col-md-6" style="margin:0 auto; justify-items: center;">{{$news->links()}}</div>
+
 </div>
-<div class="col-md-6" style="margin:0 auto; justify-items: center;">{{$news->links()}}</div>
 
 <div class="modal fade bd-example-modal-lg" id="type_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -156,30 +149,22 @@
       </div>
     </div>
   </div>
-  
+
 @endsection
 
 @section('scripts')
 <script src="https://cdn.ckeditor.com/4.12.1/full/ckeditor.js"></script>
 
-<script>
-   
+<script>   
      $(document).on('click','.close-section', function(){
         $(this).closest('.section').remove();
     });
-
-    
 
     $(document).ready(function(){
 
         $('#create_news_form').on('submit', function(e){
 
-            if($('.image-section').length < 1){
-                alert('Please add at least one image section');
-                e.preventDefault();
-                return;
-            }
-            else if($('.text-section').length < 1){
+           if($('.text-section').length < 1){
                 alert('Please add at least one text section');
                 e.preventDefault();
                 return;
@@ -209,14 +194,11 @@
                                 </div>
                                 <h4>Text section:</h4>
                             </div>
-                            <div class="col-md-6">
-                                <label class="m-0 font-weight-bold">Content(EN)</label>
+                            <div class="col-md-12">
+                                <label class="m-0 font-weight-bold">Content</label>
                                 <textarea class="ckeditor" id="text-en-${section}" name="content[]"></textarea>
                             </div>
-                            <div class="col-md-6">
-                                <label class="m-0 font-weight-bold">Content(DE)</label>
-                                <textarea class="ckeditor" id="text-de-${section}" name="content_de[]"></textarea>
-                            </div>
+                            
                             <input type="hidden" name="type[]" value="1" />
                         </div>`;
                 $('#type_modal').modal('hide');
@@ -231,7 +213,6 @@
                             <h4>File section:</h4>
                             <input type="file" name="file_${section}" required>
                             <input type="hidden" name="content[]" value="2">
-                            <input type="hidden" name="content_de[]" value="2">
                             <input type="hidden" name="type[]" value="2">
                         </div>`;
                 $('#type_modal').modal('hide');
@@ -252,12 +233,7 @@
                                 <label class="m-0 font-weight-bold">Quote Author(En)</label>
                                 <input type="text" class="form-control my-1"  name="details[${section}][]" required/>
                             </div>
-                            <div class="col-md-6">
-                                <label class="m-0 font-weight-bold">Quote(De)</label>
-                                <textarea class="form-control" name="content_de[]"></textarea>
-                                <label class="m-0 font-weight-bold">Quote Author(De)</label>
-                                <input type="text" class="form-control my-1" required name="details_de[${section}][]"/>
-                            </div>
+                         
 
                             <input type="hidden" name="type[]" value="3" />
                            
@@ -285,16 +261,7 @@
                                 <label class="font-weight-bold mb-0">Box 3(EN)</label>
                                 <textarea class="form-control" name="details[${section}][]"></textarea>
                             </div>
-                            <div class="col-md-6">
-                                <label class="font-weight-bold mb-0">Heading(DE)</label>
-                                <textarea class="form-control" name="content_de[]"></textarea>
-                                <label class="font-weight-bold mb-0">Box 1(DE)</label>
-                                <textarea class="form-control" name="details_de[${section}][]"></textarea>
-                                <label class="font-weight-bold mb-0">Box 2(DE)</label>
-                                <textarea class="form-control" name="details_de[${section}][]"></textarea>
-                                <label class="font-weight-bold mb-0">Box 3(DE)</label>
-                                <textarea class="form-control" name="details_de[${section}][]"></textarea>
-                            </div>
+                          
                             <input type="hidden" name="type[]" value="4">
                         </div>`;
                 $('#type_modal').modal('hide');

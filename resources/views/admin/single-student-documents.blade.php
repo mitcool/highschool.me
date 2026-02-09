@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="jumbotron container">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     <h2 class="text-center">Documents </h2>
     <h5 class="text-center text-primary"> <span class="font-weight-bold">Student:</span> <span class="font-italic">"{{ $student->student->name }} {{ $student->student->surname }}"</span> </h5>
     <h5 class="text-center text-primary"> <span class="font-weight-bold">Parent:</span> <span class="font-italic">"{{ $student->parent->name }} {{ $student->parent->surname }}"</span> </h5>

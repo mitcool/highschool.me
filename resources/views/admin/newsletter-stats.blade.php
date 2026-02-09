@@ -6,7 +6,8 @@
 
 @section('content')
 
- <div class="container">
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+
    <form action="{{ route('find-subscriber') }}" class="my-3">
       <div class="input-group mb-3">
         <input name="search" type="text" class="form-control" placeholder="Search subscriber" aria-label="Seacr" aria-describedby="basic-addon2" required>
