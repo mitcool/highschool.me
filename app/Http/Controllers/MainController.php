@@ -187,11 +187,6 @@ class MainController extends Controller
    public function showBlog(Request $request){
     $news = DynamicNews::orderBy('id','desc')->paginate(6);
 
-    if($request->has('author')){
-      $author_id = DynamicNewsAuthorTranslation::where('locale',request()->segment(1))->where('slug',$request->get('author'))->first()->author_id ?? abort(404);
-      $news = DynamicNews::orderBy('id','desc')->where('author_id',$author_id)->paginate(6);
-    }
-     
     if($news->isEmpty() && $request->has('page')){ 
       abort(404);
     }
@@ -231,13 +226,8 @@ class MainController extends Controller
           ->with('news',$news);
   }
   public function showSingleFactsHub($slug){
-     $news = FactHubTranslation::where('slug',$slug)->first() ?? abort(404);
+    $article = FactHub::with('sections')->where('slug',$slug)->first() ?? abort(404);
      
-    $article = FactHub::with('sections')->find($news->news_id);
-
-    $hreflang_en = FactHubTranslation::where('locale','en')->where('news_id',$article->id)->first()->slug;
-    $hreflang_de = FactHubTranslation::where('locale','de')->where('news_id',$article->id)->first()->slug;
-	  
     $last_three_articles = FactHub::where('id','!=',$article->id)
                         ->orderBy('id','desc')
                         ->get()
@@ -245,7 +235,12 @@ class MainController extends Controller
  
    	$next =  FactHub::where('id','>',$article->id)->with('sections')->first() ?? FactHub::first();
     $prev =  FactHub::where('id','<',$article->id)->with('sections')->first() ?? FactHub::orderBy('id','desc')->first();
-    return view('pages.facts-hub.single',compact('news','article','prev','next','hreflang_en','hreflang_de','last_three_articles'));
+    return view('pages.facts-hub.single')
+          ->with('last_three_articles',$last_three_articles)
+          ->with('next',$next)
+          ->with('prev',$prev)
+          ->with('article',$article);
+  
   }
 
   public function showPressRelease (){

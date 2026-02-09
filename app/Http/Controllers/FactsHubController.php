@@ -75,10 +75,10 @@ class FactsHubController extends Controller
 
     public function update(Request $request,$news_id){
         $news_input = $request->only('author_id','minutes','slug','key_facts','meta_title','meta_description');
-        $news = DynamicNews::find($news_id);
+        $news = FactHub::find($news_id);
         $contents = $request->content;
         foreach($contents as $id => $content){
-            $section = DynamicNewsSection::find($id);
+            $section = FactHubSection::find($id);
             if($section->type == 1){
                 $section->update(['content'=>$content]);
             }
@@ -99,8 +99,8 @@ class FactsHubController extends Controller
 
     public function destroy($news_id){
         //News
-        DynamicNews::find($news_id)->delete();
-        DynamicNewsSection::where('news_id', $news_id)->delete();
+        FactHub::find($news_id)->delete();
+        FactHubSection::where('news_id', $news_id)->delete();
         return redirect()->route('dynamic-news')->with('success_message','Article deleted successfully');;
     }
 }

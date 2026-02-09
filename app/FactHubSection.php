@@ -4,11 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FactHubSection extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['content','news_id','type'];
+    
     public function all_translations(){
         return $this->hasMany('App\FactHubSectionTranslation','section_id','id');
     }

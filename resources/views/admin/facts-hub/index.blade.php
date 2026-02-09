@@ -105,10 +105,10 @@
                 {{ $n->sections[0]->content }}
             </h3>
             <div class="d-flex">
-                <a href="{{ route('edit-news',$n->id) }}" >
+                <a href="{{ route('edit-facts-hub',$n->id) }}" >
                     <button class="btn btn-warning mr-2">Edit News</button> 
                 </a>
-                <form action="{{ route('delete-news',$n->id) }}" method="POST" class="text-right">
+                <form action="{{ route('delete-facts-hub',$n->id) }}" method="POST" class="text-right">
                     {{ csrf_field() }}
                     <button class="btn btn-danger">Delete News</button>
                 </form>

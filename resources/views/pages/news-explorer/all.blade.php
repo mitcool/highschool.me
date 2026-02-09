@@ -69,7 +69,6 @@
 </style>
 @endsection
 @section('content')
-@if(request()->routeIs('blog'))
 	@php
 	    $breadcrumb_title = strtok(trans('blog.meta-title'), '|');
 	@endphp
@@ -79,17 +78,7 @@
 			<li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb_title }}</li>
 		</ol>
 	</div>
-@else
-	@php
-	    $breadcrumb_title = strtok($news[0]->category->translated->meta_title, '|');
-	@endphp
-	<div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
-		<ol class="bg-white breadcrumb mb-0 p-0">
-			<li class="breadcrumb-item"><a href="{{ route('welcome-') }}">Home</a></li>
-			<li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb_title }}</li>
-		</ol>
-	</div>
-@endif
+
 
 <x-image-component nickname="blog-cover" id="cover" class="main-pictures-pages" loading="eager"/>
 <div itemscope itemtype="http://schema.org/Blog" class="container-fluid main-container-back">
@@ -120,7 +109,7 @@
 			        <div class="card h-100 shadow-sm border-0 news-card">
 			            <img 
 			                class="card-img-top news-image"
-			                src="{{ asset('news_images') }}/{{ $n->image }}" 
+			                src="{{ asset('images/news') }}/{{ $n->image }}" 
 			            />
 
 			            <div class="card-body d-flex flex-column">
@@ -129,7 +118,7 @@
 			                </h5>
 			                <div style="width: 150px; height: 3px; background-color: #045397; margin: 10px 5px 10px 0px;"></div>
 			                <p class="card-text text-muted small mb-3">
-			                    {!! \Illuminate\Support\Str::limit(strip_tags($n->sections[1]->translated->content ?? ''), 120, '...') !!}
+			                    {!! \Illuminate\Support\Str::limit(strip_tags($n->sections[1]->content ?? ''), 120, '...') !!}
 			                </p>
 			                
 			                <div class="mt-auto text-right">
