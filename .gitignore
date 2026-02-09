@@ -12,3 +12,4 @@ npm-debug.log
 yarn-error.log
 /database/mysql
 /database/mysql-8
+/images/news

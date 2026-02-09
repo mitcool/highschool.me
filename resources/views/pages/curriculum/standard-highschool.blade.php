@@ -110,6 +110,11 @@
         background-color: #045397;
         color: white;
     }
+    #main-container{
+            padding:20px;
+            width:80%;
+            margin:0 auto;
+    }
     @media (max-width: 800px) {
         .feature-scroll {
             overflow-x: auto;
@@ -119,6 +124,9 @@
 
         .feature-scroll-inner {
             min-width: 900px; /* tweak if needed */
+        }
+        #main-container{
+            width:100%;
         }
     }
 </style>
@@ -131,7 +139,7 @@
     </ol>
 </div>
 
-<div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
+<div class="container-fluid" style="" id="main-container">
     <h1 class="text-center page-headings">Online High School Diploma Tracks: Graduate with Power and no Barriers</h1> <br>
     <h2 class="text-center font-weight-bold" style="margin-bottom:20px;">Three Paths – One High School Diploma: The World Is Your Classroom</h2>
     <p class="page-content">All paths include full access to every graduation track, rolling enrollment, 12-month schooling, cross-grade learning, and credit-transfer options. Students benefit from subject-specific AI mentors, human educator support, real-time performance tracking, and access to awards programs and parent services. Higher tiers add personal mentoring, college & career coaching, and extended family support – creating a complete learning experience that adapts to every life situation.</p>
