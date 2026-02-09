@@ -110,18 +110,26 @@
         background-color: #045397;
         color: white;
     }
-    @media(max-width:800px){
-        body,html{
-            overflow-x:auto;
+    @media (max-width: 800px) {
+        .feature-scroll {
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
         }
-        #features-table {
-            overflow-x: auto !important; 
-            min-width: 1200px;
+
+        .feature-scroll-inner {
+            min-width: 900px; /* tweak if needed */
         }
     }
 </style>
 @endsection
 @section('content')
+<div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
+    <ol class="bg-white breadcrumb mb-0 p-0">
+        <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">High School Diploma Tracks</li>
+    </ol>
+</div>
 
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
     <h1 class="text-center page-headings">Online High School Diploma Tracks: Graduate with Power and no Barriers</h1> <br>
@@ -150,20 +158,24 @@
         @foreach($feature_categories as $category)
             <div class="col-md-12 text-center">
                 <h2 class="h3 text-left" style="margin-top:50px;margin-bottom:20px;">{{ $category->name }}</h2>
-                <div class="row feature-row">
-                    <div class="td-row col-3 feature font-weight-bold">Features</div>
-                    <div class="td-row col-3 core font-weight-bold">Core</div>
-                    <div class="td-row col-3 pro font-weight-bold">Pro</div>
-                    <div class="td-row col-3 elite font-weight-bold">Elite</div>
-                </div>
-                @foreach ($category->features as $feature )
-                    <div class="row feature-row">
-                        <div class="td-row td-border col-3 text-left font-weight-bold"  @if($loop->last) style="border-bottom-left-radius:15px;" @endif> <a  style="color: #045397;" href="{{ route('single-feature',$feature->slug) }}">{{ $feature->feature }}</a>  </div>
-                        <div class="td-row td-border col-3" @if($feature->core_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->core_tooltip !!}" style="cursor:pointer;color:#045397" @endif>{!! $feature->core() !!}</div>
-                        <div class="td-row td-border col-3" @if($feature->pro_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->pro_tooltip !!}"  style="cursor:pointer;color:#045397" @endif>{!! $feature->pro() !!}</div>
-                        <div class="td-row td-border col-3" @if($feature->elite_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->elite_tooltip !!}"  style="cursor:pointer;color:#045397" @endif @if($loop->last) style="border-bottom-right-radius:15px;" @endif>{!! $feature->elite() !!}</div>
+                <div class="feature-scroll">
+                    <div class="feature-scroll-inner">
+                        <div class="row feature-row">
+                            <div class="td-row col-3 feature font-weight-bold">Features</div>
+                            <div class="td-row col-3 core font-weight-bold">Core</div>
+                            <div class="td-row col-3 pro font-weight-bold">Pro</div>
+                            <div class="td-row col-3 elite font-weight-bold">Elite</div>
+                        </div>
+                        @foreach ($category->features as $feature )
+                            <div class="row feature-row">
+                                <div class="td-row td-border col-3 text-left font-weight-bold"  @if($loop->last) style="border-bottom-left-radius:15px;" @endif> <a  style="color: #045397;" href="{{ route('single-feature',$feature->slug) }}">{{ $feature->feature }}</a>  </div>
+                                <div class="td-row td-border col-3" @if($feature->core_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->core_tooltip !!}" style="cursor:pointer;color:#045397" @endif>{!! $feature->core() !!}</div>
+                                <div class="td-row td-border col-3" @if($feature->pro_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->pro_tooltip !!}"  style="cursor:pointer;color:#045397" @endif>{!! $feature->pro() !!}</div>
+                                <div class="td-row td-border col-3" @if($feature->elite_tooltip) data-toggle="tooltip" data-placement="top" title="{!! $feature->elite_tooltip !!}"  style="cursor:pointer;color:#045397" @endif @if($loop->last) style="border-bottom-right-radius:15px;" @endif>{!! $feature->elite() !!}</div>
+                            </div>
+                        @endforeach
                     </div>
-                @endforeach
+                </div>
             </div>
         @endforeach
     </div>

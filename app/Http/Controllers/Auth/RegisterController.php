@@ -70,7 +70,8 @@ class RegisterController extends Controller
                     'regex:/[0-9]/',      
                     'regex:/[@$!%*#?&]/'
             ],
-            'g-recaptcha-response' => 'required|recaptcha'
+            'g-recaptcha-response' => 'required|recaptcha',
+            'terms' => 'required|accepted'
         ]);
     }
     public function showRegistrationForm()

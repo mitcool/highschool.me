@@ -19,6 +19,6 @@ class StudentSpotlight extends Model
     ];
     
     public function category() {
-        return $this->hasOne('App\StudentInSpotlightCategory', 'id', 'category_id');
+        return $this->hasOne('App\StudentSpotlightsCategory', 'id', 'category_id');
     }
 }

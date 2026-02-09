@@ -21,10 +21,12 @@
                 <th>Link</th>
             </tr>
             @foreach ($help_desk as $hd)
+            <tr>
                 <th>{{ $hd->title }}</th>
                 <th>{{ $hd->created_at->format('d.m.Y') }}</th>
                 <th>{{ $hd->slug }}</th>
                 <th><a href="{{ $hd->slug }}">Open</a> </th>
+            </tr>
             @endforeach
         </thead>
         <tbody>

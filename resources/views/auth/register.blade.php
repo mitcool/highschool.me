@@ -166,6 +166,22 @@
                                    class="form-control" name="password_confirmation" required>
                         </div>
 
+                        {{-- Terms / Checkbox --}}
+                        <div class="form-group mt-3">
+                            <div class="form-check">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="terms"
+                                    id="terms"
+                                    required
+                                >
+                                <label class="form-check-label" for="terms">
+                                    I agree to the <a href="/" target="_blank">Terms & Conditions</a>
+                                </label>
+                            </div>
+                        </div>
+
                         {{-- reCAPTCHA --}}
                         <div class="form-group text-center mt-4 mb-4">
                             <div class="g-recaptcha d-inline-block"

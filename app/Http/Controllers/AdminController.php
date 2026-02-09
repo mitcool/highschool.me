@@ -1008,7 +1008,19 @@ class AdminController extends Controller
         $curriculumTypes = CurriculumType::get();
         $categories = CourseCategory::get();
 
-        return view('admin.edit-enrollment-course')->with('course', $course)->with('curriculumTypes', $curriculumTypes)->with('categories', $categories);
+        $currentCurriculumTypeId = $course->curriculumTypes->first()->pivot->curriculum_type_id;
+        $currentCategoryId = $course->curriculumTypes->first()->pivot->category_id;
+        $currentRequiredFlag = $course->curriculumTypes->first()->pivot->required_flag;
+        $currentRequirementText = $course->curriculumTypes->first()->pivot->requirement_text;
+
+        return view('admin.edit-enrollment-course')
+            ->with('course', $course)
+            ->with('curriculumTypes', $curriculumTypes)
+            ->with('categories', $categories)
+            ->with('currentCurriculumTypeId', $currentCurriculumTypeId)
+            ->with('currentCategoryId', $currentCategoryId)
+            ->with('currentRequiredFlag', $currentRequiredFlag)
+            ->with('currentRequirementText', $currentRequirementText);
     }
 
     public function showAmbassadorLinks() {
@@ -1220,6 +1232,37 @@ class AdminController extends Controller
 
         return view('admin.students-spotlights')->with('students', $students)->with('categories', $categories);
     }
+
+    public function addStudentSpotlight(Request $request) {
+        $image = $this->uploadFile($request->file('picture'),'/public/images/student-spotlight');
+        StudentSpotlight::insert([
+            'category_id' => $request->category_id,
+            'name' => $request->name,
+            'description' => $request->description,
+            'image' => $image,
+        ]);
+        return redirect()->back()->with('success_message','Student added successfully');
+    }
+
+    public function editStudentSpotlight(Request $request, $student_id) {
+        if($request->hasFile('picture')){
+            $image = $this->uploadFile($request->file('picture'),'/public/images/student-spotlight');
+            StudentSpotlight::where('id', $student_id)->update([
+                'category_id' => $request->category_id,
+                'name' => $request->name,
+                'description' => $request->description,
+                'image' => $image
+            ]);
+        }
+        else {
+            StudentSpotlight::where('id', $student_id)->update([
+                'category_id' => $request->category_id,
+                'name' => $request->name,
+                'description' => $request->description
+            ]);
+        }
+        return redirect()->back()->with('success_message','Student edited successfully');
+    }
     
     public function showSubmissions(){
         $exams = Exam::where('status',1)->get();
@@ -1260,8 +1303,9 @@ class AdminController extends Controller
 
     public function editSingleStudent($student_id) {
         $student = StudentSpotlight::find($student_id);
+        $categories = StudentSpotlightsCategory::get();
 
-        return view('admin.edit-single-student')->with('student', $student);
+        return view('admin.edit-single-student')->with('student', $student)->with('categories', $categories);
     }
 
     public function addExamQuestionsPage(Request $request) {

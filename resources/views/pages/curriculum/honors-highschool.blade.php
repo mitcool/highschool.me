@@ -112,6 +112,13 @@
 </style>
 @endsection
 @section('content')
+<div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
+    <ol class="bg-white breadcrumb mb-0 p-0">
+        <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Module & Honors Courses</li>
+    </ol>
+</div>
+
 <img src="{{ asset('images/module-courses.png') }}" alt="">
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
     <h1 class="text-center page-headings">Module & Honors Courses</h1> <br>
@@ -122,10 +129,10 @@
    
     
 </div>
-<div class="container-fluid">
-    <div class="row text-center w-75  mx-auto container">
+<div class="container-fluid pl-0 pr-0">
+    <div class="row text-center w-85  mx-auto container">
         @foreach ($courses as  $course)
-            <div class="col-md-6">
+            <div class="col-md-6 pb-5">
                 <div class="shadow wrapper h-100">
                     <div class="course-name text-center"> {{ $course->name }}</div>
                     <div class="description">{!! $course->description!!}</div>

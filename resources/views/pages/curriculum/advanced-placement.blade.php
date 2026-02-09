@@ -112,6 +112,13 @@
 </style>
 @endsection
 @section('content')
+<div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
+    <ol class="bg-white breadcrumb mb-0 p-0">
+        <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Advances Placement Courses</li>
+    </ol>
+</div>
+
 <img src="{{ asset('images/ap-background.png') }}" alt="">
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
     <h1 class="text-center page-headings">Advances Placement Courses</h1> <br>
@@ -119,9 +126,9 @@
     <p class="page-content">All paths include full access to every graduation track, rolling enrollment, 12-month schooling, cross-grade learning, and credit-transfer options. Students benefit from subject-specific AI mentors, human educator support, real-time performance tracking, and access to awards programs and parent services. Higher tiers add personal mentoring, college & career coaching, and extended family support – creating a complete learning experience that adapts to every life situation.</p>
     <hr>
 </div>
-<div class="container-fluid">
-    <div class="row text-center w-75 container mx-auto">
-        <div class="col-md-12">
+<div class="container-fluid pl-0 pr-0">
+    <div class="row text-center w-85 container mx-auto">
+        <div class="col-md-12 pb-5">
             <div class="shadow wrapper h-100">
                 <div class="course-name text-center"> {{ $course->name }}</div>
                 <div class="description">{!! $course->description!!}</div>

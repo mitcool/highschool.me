@@ -207,6 +207,8 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	//Students in Spotlights
 	Route::get('/students-in-spotlight', 'AdminController@studentSpotlight')->name('admin.students-in-spotlights');
 	Route::get('/edit-single-student/{student_id}','AdminController@editSingleStudent')->name('admin.edit-single-student');
+	Route::post('/add-student-in-spotlight', 'AdminController@addStudentSpotlight')->name('admin.add-student-in-spotlight');
+	Route::post('/edit-single-student-in-spotlight/{student_id}', 'AdminController@editStudentSpotlight')->name('admin.edit-single-student-in-spotlight');
 
 	//Self-assessment functionality
 	Route::get('/add-self-assessment-question', 'AdminController@addSelfAssessmentQuestionPage')->name('admin.add-self-assess-question');

@@ -6,7 +6,7 @@
       <span></span>
 
       <ul id="menu" style="padding-left:15px !important; padding-top: 80px!important;">
-        <li id="mySidebar" class="sidenav text-left" style="width: 260px;">
+        <li id="mySidebar" class="sidenav text-left" style="width: 300px;">
         
             <hr>
             @if(!Auth::user())
@@ -62,7 +62,7 @@
               <a style="text-transform: uppercase;" data-toggle="collapse" href="#bind_services" role="button" aria-expanded="false">CURRICULUM<i class="fas fa-chevron-right" style="margin-left:5px;"></i></a>
               <div class="collapse" id="bind_services">
                   <div class="card card-body hamburger_under">
-                      <a href="{{ route('standard-high-school') }}" style="text-transform: uppercase;">High School Diploma Tracks</a>
+                      <a href="{{ route('standard-high-school') }}" style="text-transform: uppercase;">High School Programs</a>
                       <hr class="m-0">
                       <a href="{{ route('transfer-program') }}" style="text-transform: uppercase;">High School International Transfer Program</a>
                       <hr class="m-0">

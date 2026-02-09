@@ -12,6 +12,18 @@
     .cst-head {
         background-color: #045397;
     }
+
+    /* Chrome, Safari, Edge, Opera */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
 </style>
 @endsection
 
@@ -52,12 +64,12 @@
                                 class="form-control"
                                 required
                             >
-                                <option value="" disabled selected>-- Select curriculum type --</option>
+                                <option value="" disabled>-- Select curriculum type --</option>
                                 @foreach($curriculumTypes as $type)
                                     <option
                                         value="{{ $type->id }}"
                                         data-code="{{ $type->code }}"
-                                        {{ (string) old('curriculum_type_id') === (string) $type->id ? 'selected' : '' }}
+                                        {{ (string) old('curriculum_type_id', $currentCurriculumTypeId) === (string) $type->id ? 'selected' : '' }}
                                     >
                                         {{ $type->name }} ({{ $type->code }})
                                     </option>
@@ -127,7 +139,7 @@
                                 type="text"
                                 id="title"
                                 name="title"
-                                value="{{ old('title') }}"
+                                value="{{$course->title}}"
                                 class="form-control"
                                 placeholder="e.g. English 1 - Literature & Composition"
                                 required
@@ -154,7 +166,7 @@
                                         <option
                                             value="{{ $category->id }}"
                                             data-type-id="{{ $category->curriculum_type_id }}"
-                                            {{ old('category_id') == $category->id ? 'selected' : '' }}
+                                            {{ (string) old('category_id', $currentCategoryId) === (string) $category->id ? 'selected' : '' }}
                                         >
                                             {{ $category->name }} ({{ $category->curriculumType->code ?? '' }})
                                         </option>
@@ -169,13 +181,25 @@
                                 <label for="required_flag" class="form-label">
                                     Required Course?
                                 </label>
+
                                 <select
                                     id="required_flag"
                                     name="required_flag"
                                     class="form-control"
                                 >
-                                    <option value="0" @selected(old('required_flag', '0') == '0')>No (Elective)</option>
-                                    <option value="1" @selected(old('required_flag') == '1')>Yes (Required)</option>
+                                    <option
+                                        value="0"
+                                        @selected((string) old('required_flag', $currentRequiredFlag) === '0')
+                                    >
+                                        No (Elective)
+                                    </option>
+
+                                    <option
+                                        value="1"
+                                        @selected((string) old('required_flag', $currentRequiredFlag) === '1')
+                                    >
+                                        Yes (Required)
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -188,7 +212,7 @@
                                 type="text"
                                 id="requirement_text"
                                 name="requirement_text"
-                                value="{{ old('requirement_text') }}"
+                                value="{{ $currentRequirementText }}"
                                 class="form-control"
                                 placeholder="e.g. Required subject – alternative (choice of one)"
                             >

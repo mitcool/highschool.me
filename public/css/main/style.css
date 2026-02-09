@@ -642,7 +642,7 @@ a:hover {
   */
 #menu {
     position: absolute;
-    width: 325px;
+    width: 350px;
     margin: -100px 0 0 0;
     padding: 50px;
     padding-top: 125px;
@@ -695,13 +695,15 @@ a:hover {
 }
 
 .sidenav a {
-    padding: 8px 8px 8px 20px;
+    padding: 8px 8px 8px 8px;
     text-decoration: none;
     color: #111;
     display: block;
     transition: 0.3s;
     /* border-bottom: 1px solid #000; */
     font-weight: 600;
+    font-size:15px;
+    text-align: left;
 }
 .hamburger_under {
     background-color: #e5f3ff !important;
@@ -1584,4 +1586,14 @@ blockquote p::after {
     border: 2px solid #045397;
     width: 325px;
     margin: 10px auto;
+}
+
+.three-btn-container {
+    margin-top: 50px;
+    margin-bottom: 25px;
+}
+@media screen and (max-width: 491px) {
+    .brochure-download {
+        margin-top: 15px;
+    }
 }
