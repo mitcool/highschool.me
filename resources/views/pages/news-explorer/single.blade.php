@@ -96,9 +96,9 @@
 					<p>{!! $section->content !!}</p>
 					@elseif($section->type == 1)
 						<div id="section_{{$section->id}}">{!! $section->content !!}</div>
-					@elseif($section->type == 2 && $section->id != $article->main_image->id)
+					@elseif($section->type == 2)
 						<img 
-							src="{{ asset('news_images') }}/{{ $section->image_src->content }}" 
+							src="{{ asset('images/news') }}/{{ $section->content }}" 
 							class="w-100" 
 							alt="{{ $section->attributes ? $section->attributes->alt() : '' }}"
 							title="{{ $section->attributes ? $section->attributes->title() : '' }}"

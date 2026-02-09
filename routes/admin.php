@@ -47,9 +47,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/news/edit/{news_id}','NewsController@show')->name('edit-news');
 	Route::post('/news/delete/{news_id}','NewsController@destroy')->name('delete-news');
 	Route::post('/news/update/{news_id}','NewsController@update')->name('dynamic-news-update');
-	Route::get('/news/images/attributes','NewsController@getImagesAttributes')->name('news-images-attributes');
-	Route::post('/news/images/attributes/{image_id}','NewsController@changeImageAttributes')->name('change-image-attributes');
-
+	
 	//Facts hub
 	Route::get('/facts-hub','FactsHubController@index')->name('admin-facts-hub');
 	Route::post('/facts-hub/create','FactsHubController@store')->name('facts-hub-create');

@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="jumbotron container shadow bg-white">
+<div class="container bg-white">
     <h1 class="text-center">Course Types</h1>
 
     <form action="{{ route('course.add') }}" method="POST" enctype="multipart/form-data">
