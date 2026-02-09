@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+    <link rel="stylesheet" href="{{ asset('css/main/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
     <link href="{{asset('css/admin/sb-admin-2.min.css')}}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{asset('/assets/fontawesome-free-5.5.0-web/css/all.min.css')}}">
@@ -26,17 +26,21 @@
         .sidebar-heading {
             background-color: #00606B!important;
         }
-        .nav-item {
+        .sidebar .nav-item {
             background-color: #00A0B2!important;
         }
         .sidebar-divider {
             background-color: #00A0B2!important;
+        }
+        #footer{
+            margin-top:0;
         }
     </style>
 
 </head>
 
 <body id="page-top">
+    <x-header />
     <div class="container-fluid px-0">
         <div class="row">
             <div id="wrapper" style="padding:0 0px;">
@@ -172,7 +176,7 @@
             </a>
         </div>
     </div>
-
+    <x-footer />
     @yield('scripts')
 
     <script type="text/javascript">   

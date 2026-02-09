@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\GroupSession;
 use App\MentoringSession;
+use App\CoachingSession;
 use App\FamilyConsultation;
 use App\FamilyConsultationRequest;
 use App\User;
@@ -14,11 +15,15 @@ class AdminMeetingController extends Controller
 {
     public function groupSessions(){
         $group_sessions = GroupSession::all();
+        
         return view('admin.meetings.group-sessions')
+                
                 ->with('group_sessions',$group_sessions);
     }
     public function addgroupSession(){
-        return view('admin.meetings.add-group-sessions');
+        $educators = User::where('role_id',5)->get();
+        return view('admin.meetings.add-group-sessions')
+            ->with('educators',$educators);
     }
 
     public function createGroupSession(Request $request){
@@ -59,7 +64,9 @@ class AdminMeetingController extends Controller
     }
 
     public function addMentoringSession (){
-        return view('admin.meetings.add-mentoring-sessions');
+        $educators = User::where('role_id',5)->get();
+        return view('admin.meetings.add-mentoring-sessions')
+            ->with('educators',$educators);
     } 
 
     public function familyConsultations(){
@@ -106,4 +113,31 @@ class AdminMeetingController extends Controller
         return redirect()->route('admin-family-consultations')->with('success_message','Family consultation updated successfully');
 
     }
+
+    public function coachingSessions (){
+        $coaching_sessions = CoachingSession::all();
+        return view('admin.meetings.coaching-session')
+            ->with('coaching_sessions',$coaching_sessions);
+    }
+
+    public function createCoachingSession(Request $request){
+        $request->validate([
+            'date' => 'required',
+            'start' => 'required',
+            'end' => 'required',
+            'link' => 'required',
+            'educator_id' => 'required'
+        ]);
+        $group_session = $request->except('_token');
+        CoachingSession::create($group_session);
+
+        //TODO::emails
+        return redirect()->route('admin-coaching-sessions')->with('success_message','Coaching session created successfully');
+    }
+    public function addCoachingSession(){
+        $educators = User::where('role_id',5)->get();
+        return view('admin.meetings.add-coaching-sessions')
+                ->with('educators',$educators);
+    }
+
 }

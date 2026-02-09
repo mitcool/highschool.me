@@ -9,6 +9,7 @@
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/main/style.css') }}">
     <link href="{{asset('css/admin/sb-admin-2.min.css')}}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{asset('/assets/fontawesome-free-5.5.0-web/css/all.min.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
@@ -27,17 +28,21 @@
         .sidebar-heading {
             background-color: #7B1D00!important;
         }
-        .nav-item {
+        .sidebar .nav-item {
             background-color: #AB4400!important;
         }
         .sidebar-divider {
             background-color: #AB4400!important;
+        }
+        #footer{
+            margin-top:0 !important;
         }
     </style>
 
 </head>
 
 <body id="page-top">
+    <x-header />
     <div class="container-fluid px-0">
         <div class="row">
             <div id="wrapper" style="padding:0 0px;">
@@ -114,7 +119,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="">
+                        <a class="nav-link collapsed" href="{{ route('admin-coaching-sessions') }}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>College and Career Coaching</span>
                         </a>
@@ -349,7 +354,7 @@
             </a>
         </div>
     </div>
-
+    <x-footer />
     @yield('scripts')
     <script type="text/javascript">
        $('#requests').on('click', function(){

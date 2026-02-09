@@ -557,7 +557,9 @@ class ParentController extends Controller
 
     public function helpDesk(){
         $help_desk = HelpDesk::where('user_id',auth()->id())->whereNull('related_to')->get();
+        $template  = 'parent.dashboard';
         return view('help-desk.inbox')
+                ->with('template',$template)
                 ->with('help_desk',$help_desk);
     }
 

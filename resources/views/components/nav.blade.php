@@ -37,7 +37,7 @@
           CURRICULUM
         </div>
          <ul class="dropdown-menu p-0 mt-0">
-            <li><a class="dropdown-item" href="{{ route('standard-high-school') }}">High School Diploma Tracks</a></li>
+            <li><a class="dropdown-item" href="{{ route('standard-high-school') }}">High School Programs</a></li>
             <li><a class="dropdown-item" href="{{ route('transfer-program') }}">High School International Transfer Program</a></li>
             <li><a class="dropdown-item" href="{{ route('honors-high-school') }}">Module & Honors Courses</a></li>
             <li><a class="dropdown-item" href="{{ route('psat') }}">PSAT/SAT Prep-Courses</a></li>

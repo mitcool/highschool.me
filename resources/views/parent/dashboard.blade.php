@@ -9,6 +9,7 @@
     <meta name="author" content="">
 
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/main/style.css') }}">
     <link href="{{asset('css/admin/sb-admin-2.min.css')}}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{asset('/assets/fontawesome-free-5.5.0-web/css/all.min.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
@@ -38,12 +39,15 @@
         .sidebar-divider {
             background-color: #4E28B9!important;
         }
+        #footer{
+            margin-top:0;
+        }
     </style>
 
 </head>
 
 <body id="page-top">
-    
+    <x-header/>
     <div class="container-fluid px-0">
         <div class="row">
            
@@ -184,7 +188,7 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
+    <x-footer/>
     @yield('scripts')
 
     <script type="text/javascript">

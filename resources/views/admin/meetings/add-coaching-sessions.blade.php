@@ -4,8 +4,8 @@
 
 
 <div class="jumbotron container shadow bg-white">
-    <h2 class="text-center" style="color:#045397;">Group Session for Students</h2>
-    <form action="{{ route('create-group-session') }}" method="POST">
+    <h2 class="text-center" style="color:#045397;">Coaching Session for Students</h2>
+    <form action="{{ route('create-coaching-session') }}" method="POST">
         {{ csrf_field() }}
         <div class="row">
             <div class="col-md-4">
@@ -34,7 +34,7 @@
                 <select name="educator_id" class="form-control" required>
                     <option value="" selected disabled>Please select educator</option>
                     @foreach ($educators as $educator)
-                        <option value="{{ $educator->id }}">{{ $educator->fullname() }}</option>
+                        <option value="{{ $educator->id }}">{{ $educator->fullname() }} </option>
                     @endforeach
                 </select>
             </div>

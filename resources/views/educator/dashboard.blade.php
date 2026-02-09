@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <link rel="stylesheet" href="{{ asset('css/main/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
     <link href="{{asset('css/admin/sb-admin-2.min.css')}}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{asset('/assets/fontawesome-free-5.5.0-web/css/all.min.css')}}">
@@ -24,7 +24,7 @@
         .sidebar-heading {
             background-color: #7B0039!important;
         }
-        .nav-item {
+        .sidebar .nav-item {
             background-color: #AB0050!important;
         }
         .sidebar-divider {
@@ -35,11 +35,15 @@
             color:#045397;
             font-weight: bold;
         }
+        #footer{
+            margin-top:0;
+        }
     </style>
 
 </head>
 
 <body id="page-top">
+    <x-header />
     <div class="container-fluid px-0">
         <div class="row">
             <div id="wrapper" style="padding:0 0px;">
@@ -157,7 +161,7 @@
             </a>
         </div>
     </div>
-
+     <x-footer />
     @yield('scripts')
 
     <script type="text/javascript">   

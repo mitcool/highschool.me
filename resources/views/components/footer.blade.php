@@ -139,6 +139,6 @@
 	</div>
 </footer>
 
-<div style="background:#045397;color:white;text-align:center;padding:10px;">
+<div style="background:#045397;color:white;text-align:center;padding:10px;width:100%">
 	ONSITES High School 2025 All Right Reserved
 </div>

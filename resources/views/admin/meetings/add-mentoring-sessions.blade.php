@@ -33,10 +33,9 @@
                 <label for="" class="d-block mb-0 font-weight-bold" >Add Educator</label>
                 <select name="educator_id" class="form-control" required>
                     <option value="" selected disabled>Please select educator</option>
-                    <option value="231">Dummy Educator</option>
-                    {{-- @foreach ($educators as $educator)
-                        <option value="{{ $eductor->id }}">{{ $eductor->name }} {{ $educator->surname }}</option>
-                    @endforeach --}}
+                    @foreach ($educators as $educator)
+                        <option value="{{ $educator->id }}">{{ $educator->fullname() }} </option>
+                    @endforeach
                 </select>
             </div>
         </div>
