@@ -66,7 +66,7 @@
 		</div>
 		<div class="col-lg-6">
 			<img itemprop="image" rel="preload" fetchpriority="high" decoding="async" 
-				src="{{ asset('news_images') }}/{{ $article->image }}" 
+				src="{{ asset('images/news') }}/{{ $article->image }}" 
 				class="w-100" 
 			/>
 
@@ -100,8 +100,8 @@
 						<img 
 							src="{{ asset('images/news') }}/{{ $section->content }}" 
 							class="w-100" 
-							alt="{{ $section->attributes ? $section->attributes->alt() : '' }}"
-							title="{{ $section->attributes ? $section->attributes->title() : '' }}"
+							alt=""
+							title=""
 						/>
 					@elseif($section->type == 3)
 						<div class="blockquote-wrapper">

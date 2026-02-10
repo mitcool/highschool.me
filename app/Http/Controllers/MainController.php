@@ -26,6 +26,7 @@ use App\Mail\ConfirmationForApplication;
 use App\Mail\PhoneContact;
 use App\Mail\Contact;
 use App\Mail\ContactModal;
+use App\Mail\NewHelpDesk;
 
 use App\Text;
 use App\User;
@@ -79,6 +80,7 @@ use App\Plan;
 use App\FeatureCategory;
 use App\Feature;
 use App\ContactPage;
+use App\HelpDesk;
 
 use App\Http\Requests\ContactRequest;
 use App\Http\Requests\AdvisoryRequest;
@@ -299,33 +301,103 @@ class MainController extends Controller
 
   public function updatePassword(Request $request){
     $request->validate([
-        'current_password' => ['required'],
-        'password' => [
-            'required',
-            'string',
-            'min:10',
-            'confirmed',
-            'regex:/[a-z]/',      
-            'regex:/[A-Z]/',      
-            'regex:/[0-9]/',      
-            'regex:/[@$!%*#?&]/'
-        ],
+      'current_password' => ['required'],
+      'password' => [
+        'required',
+        'string',
+        'min:10',
+        'confirmed',
+        'regex:/[a-z]/',      
+        'regex:/[A-Z]/',      
+        'regex:/[0-9]/',      
+        'regex:/[@$!%*#?&]/'
+      ],
     ]);
 
     $user = Auth::user();
 
     // Check current password
     if (!Hash::check($request->current_password, $user->password)) {
-        return back()->withErrors([
-            'current_password' => 'Current password is incorrect.',
-        ]);
-    }
-
-    // Update password
-    $user->password = Hash::make($request->password);
-    $user->save();
-
-    return back()->with('success_message', 'Password changed successfully.');
+      return back()->withErrors([
+        'current_password' => 'Current password is incorrect.',
+    ]);
   }
-  
+
+  // Update password
+  $user->password = Hash::make($request->password);
+  $user->save();
+
+  return back()->with('success_message', 'Password changed successfully.');
+}
+
+public function sendHelpDeskQustion(Request $request){
+  $user = auth()->user();
+  $is_admin = $user->role_id == 1 ? 1 : 0; 
+  $is_parent = $user->role_id == 2 ? 1 : 0;
+  $slug = $request->slug ? $request->slug : $this->setHelpDeskNumber();  
+  $help_desk = HelpDesk::create([
+    'user_id' => $user->id,
+    'is_new' => 1,
+    'title' => $request->title,
+    'message' => $request->message,
+    'is_admin' => $is_admin,
+    'is_parent' => $is_parent,
+    'slug' => $slug
+  ]);
+
+  $receiver = HelpDesk::where('user_id','!=',$user->id)->where('slug',$slug)->first(); //other side of comunication
+  if(!$receiver){
+    $user = User::where('role_id',1)->first();
+  }
+  else{
+    $user = $receiver->user;
+  }
+  try{
+      Mail::to($user->email)->send(new NewHelpDesk($user,$slug));
+  }catch(\Exception $e){
+    info($e->getMessage());
+  }
+  return redirect()->route('help-desk')->with('success_message','Your question submitted successfully');
+}
+
+public function singleHelpDesk($slug){
+  $help_desk_messages = HelpDesk::where('slug',$slug)->get();
+  $template = 'admin_template';
+  if(auth()->user()->role_id == 2){
+    $template = 'parent.dashboard';
+  }
+  elseif(auth()->user()->role_id == 4){
+    $template = 'student.dashboard';
+  }
+  return view('help-desk.single')
+    ->with('help_desk_messages',$help_desk_messages)
+    ->with('template',$template);
+}
+
+public function helpDesk(){
+  $help_desk = HelpDesk::where('user_id',auth()->id())->get()->groupBy('slug');
+  $template = 'admin_template';
+  if(auth()->user()->role_id == 2){
+    $template = 'parent.dashboard';
+  }
+  elseif(auth()->user()->role_id == 4){
+    $template = 'student.dashboard';
+  }
+  return view('help-desk.inbox')
+        ->with('template',$template)
+        ->with('help_desk',$help_desk);
+}
+
+public function newHelpDesk($slug = null){
+  $template = 'admin_template';
+  if(auth()->user()->role_id == 2){
+    $template = 'parent.dashboard';
+  }
+  elseif(auth()->user()->role_id == 4){
+    $template = 'student.dashboard';
+  }
+  return view('help-desk.new')
+    ->with('slug',$slug)
+    ->with('template',$template);
+  }
 }

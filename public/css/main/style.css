@@ -417,6 +417,10 @@ input:checked + .slider:before {
 .orange-button:hover{
     text-decoration: none;
 }
+.blue-button-outline{
+    color:#045397 !important;
+    border:1px solid #045397 !important;
+}
 .page-content .font-italic {
     font-size: 1.4rem;
 }

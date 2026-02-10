@@ -32,12 +32,6 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::get('/invoices/{invoice_id}', 'ParentController@singleInvoice')->name('parent.single-invoice');
 
-	Route::get('/help-desk','ParentController@helpDesk')->name('parent.help-desk');
-
-	Route::get('/new-help-desk','ParentController@newHelpDesk')->name('parent.new-help-desk');
-
-	Route::post('/send-message','ParentController@sendHelpDeskQustion')->name('parent.send-help-desk');
-
 	Route::get('/student/profile/{student_id}','ParentController@studentProfile')->name('parent.student.profile');
 
 	Route::get('/parent/profile','ParentController@profile')->name('parent.profile');
@@ -105,9 +99,6 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::get('/study-mentor/{mentor_id}','StudentController@singleStudyMentor')->name('student.single-study-mentor');
 	Route::get('/single-study-mentor-chat','StudentController@singleStudyMentorChat')->name('student.single-study-mentor-chat');
 	Route::post('/study-mentor-chat','StudentController@singleStudyMentorChat')->name('student.study-mentor-chat');
-	Route::get('/help-desk','StudentController@helpDesk')->name('student.help-desk');
-	Route::get('/help-desk/new','StudentController@newHelpDesk')->name('student.new-help-desk');
-	Route::post('/send-message','StudentController@sendHelpDeskQustion')->name('student.send-help-desk');
 	Route::get('/exams','StudentController@exams')->name('student.exams');
 	Route::get('/exams/{id}','StudentController@singleExam')->name('student.single-exam');
 	Route::post('/ambassador/redeem', 'StudentController@redeemRewards')->name('ambassador.redeem');
@@ -249,6 +240,10 @@ Route::get('/sitemap.xml','SitemapController@sitemap')->name('sitemap-xml');
 #resetPassword
 Route::middleware('auth')->group(function () {
     Route::post('/change-password', 'MainController@updatePassword')->name('user.password.update');
+	Route::get('/help-desk','MainController@helpDesk')->name('help-desk');
+	Route::get('/help-desk/new/{slug?}','MainController@newHelpDesk')->name('new-help-desk');
+	Route::get('/single-help-desk/{slug}','MainController@singleHelpDesk')->name('single-help-desk');
+	Route::post('/send-message/{slug?}','MainController@sendHelpDeskQustion')->name('send-help-desk');
 });
 		
 // Route::post('/get-selected-program', 'MainController@getSelectedProgram')->name('get-selected-program');

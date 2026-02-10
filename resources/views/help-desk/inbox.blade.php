@@ -2,11 +2,9 @@
 
 @section('content')
 
-<div class="shadow container jumbotron bg-white">
+<div class=" container bg-white" style="margin-top:50px;padding:20px;"> 
      <div class="text-left mb-3"> 
-        <a href="{{ auth()->user()->role_id == 2 
-            ? route('parent.new-help-desk') 
-            : route('student.new-help-desk') }}" class=" orange-button mb-3">New Message</a>
+        <a href="{{ route('new-help-desk') }}" class=" orange-button mb-3">New Message</a>
     </div>
     <table class="table">
         <thead>
@@ -18,29 +16,26 @@
             </tr>
             <tr>
                 <th>Title</th>
-                <th>Message</th>
                 <th>Date</th>
+                <th>Ticket</th>
                 <th>Link</th>
             </tr>
             @foreach ($help_desk as $hd)
             <tr>
                 <th>
-                    @if($hd->is_new == 1 )
+                    @if($hd[0]->is_new == 1 )
                         <i class="fa fa-envelope" style="color:#045397" aria-hidden="true"></i> 
                     @else 
                         <i class="fa fa-envelope-open" style="color:#E9580E" aria-hidden="true"></i> 
-                    @endif {{ $hd->title }}</th>
-                <th>{{ $hd->created_at->format('d.m.Y') }}</th>
-                <th>{{ $hd->slug }}</th>
-                {{-- <th><a href="{{ route('single-help-desk',$hd->slug)  }}">Open</a> </th> --}}
+                    @endif {{ $hd[0]->title }}
+                </th>
+                <th>{{ $hd[0]->created_at->format('d.m.Y') }}</th>
+                <th>{{ $hd[0]->slug }}</th>
+                <th><a href="{{ route('single-help-desk',$hd[0]->slug)  }}">Open</a> </th>
             </tr>
                 
             @endforeach
         </thead>
-        <tbody>
-        
-            
-        </tbody>
     </table>
 </div>
 @endsection

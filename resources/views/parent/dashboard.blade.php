@@ -106,7 +106,7 @@
                         
                         <div class="sidebar-heading">Help Desk</div>
                         <li class="nav-item active">
-                            <a class="nav-link" href="{{route('parent.help-desk')}}">
+                            <a class="nav-link" href="{{route('help-desk')}}">
                                 <i class="fas fa-fw fa-cog"></i>
                                 <span>Help Desk</span>
                             </a>

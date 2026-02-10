@@ -468,87 +468,36 @@ class AdminController extends Controller
     }
 
     public function showAuthors(Request $request){
-        $authors = DynamicNewsAuthor::with('all_translations')->get();
-        
+        $authors = DynamicNewsAuthor::all();
         return view('admin.edit_authors')
             ->with('authors',$authors);
     }
     
     public function editAuthorNews(Request $request,$author_id){
-        $input = $request->all();
-        
-        foreach(Config('languages') as $lang => $language){
-            DynamicNewsAuthorTranslation::where('author_id',$author_id)->where('locale',$lang)->update([
-                'name' => $input['name_'.$lang],
-                'occupation' => $input['occupation_'.$lang],            
-                'description' => $input['description_'.$lang]
-            ]);
-        }
+        $author = $request->only('name','description','slug');
+        DynamicNewsAuthor::find($author_id)->update($author);
         return redirect()->back()->with('success_message','Author edited successfully!');
     }
 
     public function addAuthorNews(Request $request){
-        
         $request->validate([
             'picture' => 'max:300'
         ]);
-        $image = $request->file('picture');
-        $input = $request->all();
-
-        $pictureName = $image->getClientOriginalName();
-        $destinationPath = public_path('/images/');     
-        $firstValue = is_array($input) && count($input) > 0 ? reset($input) : null;  
-        $firstValueDescription = is_array($input) && count($input) > 0 ? reset($input) : null;  
-
-        if(DynamicNewsAuthor::where('name', '=', $firstValue)->exists()){
-            return redirect()->back()->with('error','Author exist!');
-        }
-        $author_id = DynamicNewsAuthor::insertGetId([
-            'name' => $firstValue,
-            'description' => $firstValue,
-        ]);
-    
-        DynamicNewsAuthorTranslation::insert([
-            'locale' => 'en',
-            'description' => $request->description_en,
-            'occupation' => $request->occupation_en,
-            'author_id' => $author_id,
-            'name' => $request->name_en,
-            'slug' => $request->slug_en,
-            'avatar' => $pictureName 
-        ]);
-        
-        DynamicNewsAuthorTranslation::insert([
-            'locale' => 'de',
-            'description' => $request->description_de,
-            'occupation' => $request->occupation_de,
-            'author_id' => $author_id,
-            'name' => $request->name_de,
-            'slug' => $request->slug_de,
-            'avatar' => $pictureName 
-        ]);
-        $image->move($destinationPath, $pictureName);
-
-        $nickname = 'author-'.$author_id;
-        
-        $path = '/images/'.$pictureName;
-        $this->createImage($nickname,$path);
-
+        $path  = base_path()."/public/images";
+        $author = $request->only('name','description','slug');
+        $author['avatar'] = $this->upload_file($request->file('picture'),$path);
+        DynamicNewsAuthor::create($author);
         return redirect()->back()->with('success_message','Author added successfully!');
     }
 
     public function deleteAuthor($id){
-        $author = DynamicNewsAuthor::find($id);
-        $this->deleteImage('author-'.$id);
+        $author = DynamicNewsAuthor::find($id);      
         DynamicNewsAuthor::where('id',$id)->delete();
-        DynamicNewsAuthorTranslation::where('author_id',$id)->delete();
         return redirect()->route('edit-authors')->with('success_message','Author deleted successfully');
     }
 
     public function showSingleAuthor($author_id){
-        
         $author = DynamicNewsAuthor::find($author_id);
-
         return view('admin.edit_single_author')
             ->with('author',$author);
     }
@@ -1192,7 +1141,14 @@ class AdminController extends Controller
     #Using the same view for both help desks
     public function parentHelpDesk(){
         $template = 'admin_template';
-        $help_desk = HelpDesk::whereNull('related_to')->where('is_parent',1)->get();
+        $help_desk = HelpDesk::where('is_parent',1)->get()->groupBy('slug');
+        return view('help-desk.inbox')
+            ->with('template',$template)
+            ->with('help_desk',$help_desk);
+    }
+    public function studentHelpDesk(){
+        $template = 'admin_template';
+        $help_desk = HelpDesk::where('is_parent',0)->get()->groupBy('slug');
         return view('help-desk.inbox')
             ->with('template',$template)
             ->with('help_desk',$help_desk);
@@ -1201,15 +1157,9 @@ class AdminController extends Controller
     public function newHelpDesk(){
         $template = 'admin_template';
         return view('help-desk.new')
-            ->with('template',$template)
             ->with('template',$template);
     }
-    public function studentHelpDesk(){
-        $help_desk = HelpDesk::whereNull('related_to')->where('is_parent',0)->get();
-        return view('admin.help-desk')
-            ->with('help_desk',$help_desk);
-    }
-
+    
     public function exams(){
         $students = User::where('role_id',4)->get();
         $educators = User::where('role_id',5)->get();

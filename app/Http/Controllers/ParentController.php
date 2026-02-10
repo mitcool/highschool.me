@@ -554,30 +554,7 @@ class ParentController extends Controller
         $invoice = Invoice::where('id', $id)->first();
         return view('parent.single-invoice')->with('invoice', $invoice);
     }
-
-    public function helpDesk(){
-        $help_desk = HelpDesk::where('user_id',auth()->id())->whereNull('related_to')->get();
-        $template  = 'parent.dashboard';
-        return view('help-desk.inbox')
-                ->with('template',$template)
-                ->with('help_desk',$help_desk);
-    }
-
-    public function newHelpDesk(){
-        return view('help-desk.new');
-    }
-
-    public function sendHelpDeskQustion(Request $request){
-        $message = $request->only('title','message');
-        $message['user_id'] = auth()->user()->id;
-        $message['slug'] = $this->unique_code(15) .'-' . time();
-        $message['is_new'] = 1;
-        $message['is_admin'] = 0;
-        $message['is_parent'] = 1;
-        HelpDesk::create($message);
-        return redirect()->route()->with('success_message','Message successfully created');
-    }
-
+    
     public function studentProfile($student_id){
         $status = ParentStudent::where('student_id',$student_id)->first()->status;
         if($status == 0){

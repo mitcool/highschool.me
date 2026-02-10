@@ -13,6 +13,10 @@ class DynamicNewsAuthor extends Model
 
     protected $table = 'dynamic_news_authors';
 
+    public $timestamps = false;
+
+    protected $fillable = ['name','description','slug','avatar'];
+
     public function translated(){
         return $this->hasOne('App\DynamicNewsAuthorTranslation','author_id','id')->where('locale',app()->currentLocale());
     }

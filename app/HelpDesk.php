@@ -11,5 +11,7 @@ class HelpDesk extends Model
 
     protected $fillable = ["title","message" ,"user_id" ,"slug",'is_admin','is_new','related_to','is_parent'];
 
-   
+    public function user(){
+        return $this->hasOne('App\User','id','user_id');
+    }
 }

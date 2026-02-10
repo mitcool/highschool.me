@@ -1,9 +1,4 @@
 @extends('admin_template')
-
-
-@section('content')
-
-@extends('admin_template')
 @section('css')
 <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
 @endsection
@@ -13,36 +8,32 @@
     <h1>Add Author</h1>
     <div>
         <form action="{{ route('add-author')}}" enctype="multipart/form-data" method="POST">
-            @foreach(Config::get('languages') as $lang => $language)
-                <span><strong>Language ({{ $lang }})</span>
-                <input required type="text" name="name_{{ $lang }}" class="form-control my-2" placeholder="Name({{ $lang }})">
-                <input required type="text" name="occupation_{{ $lang }}" class="form-control my-2" placeholder="Occupation({{ $lang }})">
-                <textarea style="width:100%" required name="description_{{ $lang }}" placeholder="  Long description({{ $lang }})"></textarea> 
-                <input required type="text" name="slug_{{ $lang }}" class="form-control my-2" placeholder="Slug({{ $lang }})">
-                <br>
-            @endforeach
-            <div class="col-md-12">
-                <div class="custom-file">
-                    <input type="file" name="picture" class="custom-file-input" id="avatar" required>
-                    <label class="custom-file-label" for="avatar">Picture </label>
-                </div>
-                <span class="text-primary" style="font-size:14px">Upload a file up to 200 KB</span> 
-                <br><br>
+            <input required type="text" name="name" class="form-control my-2" placeholder="Name">
+            <textarea style="width:100%" required class="form-control" rows="5" name="description" placeholder="Description"></textarea> 
+            <input required type="text" name="slug" class="form-control my-2" placeholder="Slug">
+            <br>
+            <div class="custom-file">
+                <input type="file" name="picture" class="custom-file-input" id="avatar" required>
+                <label class="custom-file-label mx-0" for="avatar">Picture </label>
             </div>
-            <div>
-                <button class="btn btn-secondary">Add Author</button>
+            <span class="text-primary" style="font-size:14px">Upload a file up to 200 KB</span> 
+            <br>
+            <br>
+           
+            <div class="d-flex justify-content-center">
+                <button class="btn orange-button">Add Author</button>
             </div>
         </form>
-    </div>
-</div> 
-
-<div class="container shadow p-3 mt-3 text-center bg-light">
-    <ul class="list-group text-center">
+        <hr>
+        <h2 class="text-center">Current authors</h2>
+         <ul class="list-group text-center">
         @foreach($authors as $a)
             <a href="{{route('show-author',$a->id)}}">
-                <li class="list-group-item">{{$a->translated->name}}</li>
+                <li class="list-group-item">{{$a->name}}</li>
             </a>
         @endforeach
     </ul>
+    </div>
 </div> 
+
 @endsection
