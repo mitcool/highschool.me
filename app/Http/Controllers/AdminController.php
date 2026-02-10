@@ -87,6 +87,7 @@ use App\SelfAssessmentQuestion;
 use App\SelfAssessmentAnswer;
 use App\EducatorCategory;
 use App\DiplomaPrintingRequest;
+use App\StudentEnrolledCourse;
 
 use App\Mail\StudentCredentials;
 
@@ -1396,5 +1397,23 @@ class AdminController extends Controller
         $diploma_requests = DiplomaPrintingRequest::orderBy('id','desc')->get();
         return view('admin.diploma-requests')
             ->with('diploma_requests',$diploma_requests);
+    }
+
+    public function transfer(Request $request,$course_id){
+        $catalog_course = CatalogCourse::find($course_id);
+
+        $student = User::with('active_plan')->find($request->student_id);
+        StudentEnrolledCourse::insert([
+            'user_id' => $request->student_id,
+            'catalog_course_id' => $catalog_course->id,
+            'created_at' => Carbon::now(),
+            'status' => 1
+        ]);
+
+        return redirect()->back()->with('success_message','Course transferred successfully');
+    }
+    public function transferBack(Request $request,$course_id){
+        StudentEnrolledCourse::where('catalog_course_id',$course_id)->delete();
+        return redirect()->back()->with('success_message','The course was transferred back successfully');
     }
 }

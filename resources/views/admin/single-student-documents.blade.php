@@ -47,7 +47,8 @@
             </div>
             <button class="btn btn-dark mt-2">Send Feedback</button>
         </form>
-   
+        
+        <x-external-courses-table :student="$student->student"/>
 
 </div>
 @endsection

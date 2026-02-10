@@ -59,7 +59,7 @@
         </div>
        
         
-        <p class="mb-0 font-weight-bold mt-3">You can find more information about the Payment Plans <a href="{{ route('tuition') }}">HERE.</a></p>
+        <p class="mb-0 font-weight-bold mt-3">You can find more information about the Payment Plans <a href="{{ route('standart-high-school') }}">HERE.</a></p>
         <hr>
          <div class="d-flex justify-content-between">
             <div class="total">
