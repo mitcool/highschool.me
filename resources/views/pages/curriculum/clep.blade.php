@@ -119,7 +119,7 @@
     </ol>
 </div>
 
-<img src="{{ asset('images/clep-background.png') }}" alt="">
+<img src="{{ asset('images/clep-background.png') }}" alt="" class="w-100">
 
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
     <h1 class="text-center page-headings">CLEP Prep-Courses</h1> <br>

@@ -119,7 +119,7 @@
     </ol>
 </div>
 
-<img src="{{ asset('images/Image 47.png') }}" alt="">
+<img src="{{ asset('images/Image 47.png') }}" alt="" class="w-100">
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
     <h1 class="text-center page-headings">High School International Transfer Program</h1> <br>
     <h2 class="text-center font-weight-bold" style="margin-bottom:20px;">Global Diploma Transfer, College Prep & More: Upgrade to an Excellent Academic Future</h2>

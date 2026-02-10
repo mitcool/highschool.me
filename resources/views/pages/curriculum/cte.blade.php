@@ -118,7 +118,7 @@
         <li class="breadcrumb-item active" aria-current="page">CTE Prep-Courses</li>
     </ol>
 </div>
-<img src="{{ asset('images/cte-background.png') }}" alt="">
+<img src="{{ asset('images/cte-background.png') }}" alt="" class="w-100">
 
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
     <h1 class="text-center page-headings">CTE Prep-Courses</h1> <br>

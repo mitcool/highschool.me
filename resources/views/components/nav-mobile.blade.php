@@ -10,9 +10,18 @@
         
             <hr>
             @if(!Auth::user())
-                <a class="btn contact_btn_header" style="background: #025297;color:white;" href="">REGISTER</a>
+                <a class="btn contact_btn_header" style="background: #025297;color:white;" href="{{ route('register') }}">REGISTER</a>
+                <a class="btn contact_btn_header mt-2" style="background: #025297;color:white;" href="{{ route('login') }}">LOGIN</a>
             @else
-                <a class="btn contact_btn_header" style="background: #025297;color:white;" href="{{route('admin-dashboard')}}">DASHBOARD</a>
+                @if(auth()->user()->role_id == 1)
+                    <a class="btn contact_btn_header" style="background: #025297;color:white;" href="{{route('admin-dashboard')}}">DASHBOARD</a>
+                @elseif(auth()->user()->role_id == 2)
+                    <a class="btn contact_btn_header" style="background: #025297;color:white;" href="{{route('parent.dashboard')}}">DASHBOARD</a>
+                @elseif(auth()->user()->role_id == 4)
+                    <a class="btn contact_btn_header" style="background: #025297;color:white;" href="{{route('student.dashboard')}}">DASHBOARD</a>
+                @elseif(auth()->user()->role_id == 5)
+                    <a class="btn contact_btn_header" style="background: #025297;color:white;" href="{{route('educator.dashboard')}}">DASHBOARD</a>
+                @endif
             @endif
             <hr>
             <a class="btn contact_btn_header" style="background: #EE6123;color:white;" href="">CONTACT</a>

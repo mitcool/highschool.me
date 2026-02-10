@@ -14,10 +14,22 @@
 	<meta property="og:description" content="{{ trans('accreditation.meta-description') }}"/>
 	<x-meta-image itemprop="image" nickname="accreditation-cover"/>
 
-	<link rel="alternate" href="{{ config('app.url') }}/en/accreditation-partners" hreflang="en" />
-	<link rel="alternate" href="{{ config('app.url') }}/de/akkreditierung-und-partner" hreflang="de" />
-	<link rel="alternate" href="{{ config('app.url') }}/en/accreditation-partners" hreflang="x-default" />
+@endsection
 
+@section('headCSS')
+	<style>
+		@media(max-width:800px){
+			.image-accreditation div{
+				display: flex;
+				justify-content: center;
+				margin:0 auto;
+				padding:20px;
+			}
+			.reverse{
+				flex-direction: column-reverse;
+			}
+		}
+	</style>
 @endsection
 
 @section('content')
@@ -45,7 +57,7 @@
 			<br>
 			
 			<div class="row" style="padding:20px;">
-				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation" id="collegium-humanum">
+				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation">
 					<div>
 						<img src="{{ asset('images/icons/recognition-4.png') }}" class="w-100">
 					</div>
@@ -57,7 +69,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row" style="padding:20px;">
+			<div class="row reverse" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
 					<div class="text p-2 page-content">
 						<h4 class="font-weight-bold">ISO 21001:2018</h4>
@@ -79,12 +91,12 @@
 				</div>
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
 					<div class="text p-2 page-content">
-						<h4 class="font-weight-bold">ISO 27001:2018</h4>
+						<h4 class="font-weight-bold">ISO 27001:2022</h4>
 						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis explicabo quam id delectus alias unde, commodi quis assumenda odit inventore.</p>
 					</div>
 				</div>
 			</div>
-			<div class="row" style="padding:20px;">
+			<div class="row reverse" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
 					<div class="text p-2 page-content">
 						<h4 class="font-weight-bold">United Nations</h4>

@@ -114,6 +114,14 @@
 	.category-description {
 		font-size: 14px;
 	}
+	@media(max-width:800px){
+		#phone{
+			margin-top:20px;
+		}
+		#footer{
+			padding-top:0 !important;
+		}
+	}
 </style>
 @endsection
 
@@ -164,7 +172,7 @@
 <div class="col-md-10">
 	
 </div>
-<div class="row jumbotron mx-auto">
+<div class="row jumbotron mx-auto mb-0">
 	<div class="col-md-6">
 		<form action="/send-email-modal" method="POST"  id="contact-form">
   		{{csrf_field()}}
@@ -205,10 +213,10 @@
 			</div>
 		</form>
 	</div>
-	<div class="col-md-6">
-		<div style="margin: 0; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-		<h2 class="mb-3 text-center" style="color: #025297;">Want to talk right now?</h2>
-		<p class="text-center">
+	<div class="col-md-6 w-100" id="phone">
+		<div class="d-flex justify-content-center align-items-center flex-column w-100">
+			<h2 class="mb-3 text-center" style="color: #025297;">Want to talk right now?</h2>
+			<p class="text-center">
 			Give us a call:<br>
 			<p class="text-center" style="color: #EF6024; font-size: 24px; font-weight: 700;">+1 (727) 739 02 80</p>
 		</p>

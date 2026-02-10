@@ -1233,13 +1233,17 @@ a:hover {
     }
     .footer-ul{
         border-top:1px solid lightgray;
-        padding:10px;
+    }
+    
+    .footer-ul li{
+        margin-bottom:0 !important;
     }
     .footer-ul h6{
         font-weight: bold;
         font-size:1.3rem;
         text-align: left;
         padding-left:10px;
+        margin-top:13px;
     }
     #main-image{
         display: none;

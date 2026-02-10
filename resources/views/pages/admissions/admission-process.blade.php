@@ -132,9 +132,9 @@
     </ol>
 </div>
 
-<img src="{{ asset('images/admission-process.png') }}" alt="" />
+<img src="{{ asset('images/admission-process.png') }}" alt="" class="w-100"/>
 
-<div class="container-fluid bg-white box pl-0 pr-o">
+<div class="container-fluid bg-white box pl-0 pr-0 page-content">
     <div class="container">
         <div class="text-center">
             <h1 class="page-headings">Admission Process</h1>

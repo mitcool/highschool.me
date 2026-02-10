@@ -20,7 +20,7 @@
 	</ol>
 </div>
 
-<img src="{{ asset('images/education-and-partnership.png') }}" alt="">
+<img src="{{ asset('images/education-and-partnership.png') }}" alt="" class="w-100">
 <div class="container-fluid ">
 	<div class="row justify-content-center">
 		<div class="col-md-10 col-lg-8 bg-white page-content shadow" style="padding:30px;margin:20px 0;">

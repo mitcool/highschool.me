@@ -118,7 +118,7 @@
         <li class="breadcrumb-item active" aria-current="page">English Courses (ESOL)</li>
     </ol>
 </div>
-<img src="{{ asset('images/esol-background.png') }}" alt="">
+<img src="{{ asset('images/esol-background.png') }}" alt="" class="w-100">
 
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
     <h1 class="text-center page-headings">English Courses (ESOL)</h1> <br>

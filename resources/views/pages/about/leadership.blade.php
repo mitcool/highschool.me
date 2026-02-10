@@ -1,5 +1,18 @@
 @extends('template')
 
+@section('headCSS')
+	<style>
+		@media(max-width:1200px){
+			.benefit-wrapper{
+				margin-top:15px;
+			}
+            .video iframe{
+                height:300px;
+            }
+		}
+	</style>
+@endsection
+
 @section('content')
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
@@ -36,7 +49,7 @@
         <!-- <div class="d-flex" id="benefit_wrapper"> -->
 
         <div class="row col-md-12 ml-0 mr-0" >
-            <div class="col-lg-3  text-center ">
+            <div class="col-xl-3 benefit-wrapper  text-center ">
                 <div class="benefit-box">
                     <img src="{{ asset('images/icons/badge.png') }}" alt="" class="welcome-icon-big">
                     <h3 style="font-size:1.25rem;color:#045397;min-height:40px;">Accredited Online Courses</h3>
@@ -44,21 +57,21 @@
                     <!-- Removing <p></p> becuase ck3 editor put <p> and become 3x time more -->
                 </div>
             </div>
-            <div class="col-lg-3 text-center ">
+            <div class="col-xl-3 benefit-wrapper text-center ">
                 <div class="benefit-box">
                     <img src="{{ asset('images/icons/idea.png') }}" alt="" class="welcome-icon-big">
                     <h3 style="font-size:1.25rem;color:#045397;min-height:40px;">Flexible Learning Schedule</h3>
                     <p>Study when and where it works for you—whether that’s early mornings, late nights, or weekends.</p>
                 </div>
             </div>
-            <div class="col-lg-3 text-center ">
+            <div class="col-xl-3 benefit-wrapper text-center ">
                 <div class="benefit-box">
                      <img src="{{ asset('images/icons/commitment.png') }}" alt="" class="welcome-icon-big">
                     <h3 style="font-size:1.25rem;color:#045397;min-height:40px;">Personalized Support</h3>
                     <p>Our certified teachers, tutors, and mentors are always just a message away, ready to guide you every step of the way.</p>
                 </div>
             </div>
-             <div class="col-lg-3 text-center  ">
+             <div class="col-xl-3 benefit-wrapper text-center  ">
                 <div class="benefit-box">
                     <img src="{{ asset('images/icons/open-book.png') }}" alt="" class="welcome-icon-big">
                     <h3 style="font-size:1.25rem;color:#045397;min-height:40px;">College & Career Ready</h3>

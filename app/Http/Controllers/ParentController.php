@@ -35,7 +35,7 @@ use App\HelpDesk;
 use App\Mail\StudentCreated;
 use App\Mail\StudentCredentials;
 use App\Mail\StudentCreatedAdmin;
-use App\Mail\PaymentSuccessFull;
+use App\Mail\PaymentSuccessfull;
 use App\Mail\ParentReuploadDocument;
 use App\Mail\FamilyConsultationRequest;
 use App\Mail\FamilyConsultationRequestAdmin;
@@ -405,7 +405,7 @@ class ParentController extends Controller
             ->update(['status' => 3]);
 
          try{
-            Mail::to(auth()->user()->email)->send(new PaymentSuccessFull);
+            Mail::to(auth()->user()->email)->send(new PaymentSuccessfull);
         }catch(\Exception $e){
             info($e->getMessage());
         }
@@ -536,7 +536,7 @@ class ParentController extends Controller
         ParentStudent::where('student_id',$student_data['student_id'])->update(['status' => $student_data['status']]);
 
          try{
-            Mail::to(auth()->user()->email)->send(new PaymentSuccessFull);
+            Mail::to(auth()->user()->email)->send(new PaymentSuccessfull);
         }catch(\Exception $e){
             info($e->getMessage());
         }
