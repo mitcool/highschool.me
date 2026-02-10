@@ -24,7 +24,7 @@
                 @endif
             @endif
             <hr>
-            <a class="btn contact_btn_header" style="background: #EE6123;color:white;" href="">CONTACT</a>
+            <a class="btn contact_btn_header" style="background: #EE6123;color:white;" href="{{ route('student-advisory-service') }}">CONTACT</a>
             <hr>
   
            

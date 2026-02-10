@@ -219,7 +219,7 @@
 			<p class="text-center">
 			Give us a call:<br>
 			<p class="text-center" style="color: #EF6024; font-size: 24px; font-weight: 700;">+1 (727) 739 02 80</p>
-		</p>
+		
 		</div>
 	</div>
 </div>

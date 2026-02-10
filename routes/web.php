@@ -110,6 +110,9 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::get('/pre-exam/{subject_id}','StudentController@preExam')->name('student.pre-exam');
 	Route::get('/diplomas','StudentController@diplomas')->name('student.diplomas');
 	Route::get('/generate-pdf-diploma/{student_id}','StudentController@generatePdfDiploma')->name('student.generate-pdf-diploma');
+	Route::post('/request-diploma-copy','StudentController@requestDiplomaCopy')->name('request-diploma-copy');
+    Route::get('/request-diploma-copy-success','StudentController@requestDiplomaCopySuccess')->name('request-diploma-copy-success');
+
 });
 
 Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');

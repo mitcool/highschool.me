@@ -151,8 +151,11 @@
                         <a href="{{ route('student.generate-pdf-diploma',auth()->id()) }}">Link</a>
                     </td>
                     <td>
-                        <a href="">
-                            <button>Request copy</button>
+                        <form action="{{ route('request-diploma-copy') }}" class="confirm-first" method="POST">
+                            {{ csrf_field() }}
+                            <button class="orange-button">Request copy</button>
+                        </form>
+                            
                         </a>
                     </td>
                 </tbody>

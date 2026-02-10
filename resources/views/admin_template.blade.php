@@ -258,6 +258,10 @@
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Documents</span>
                         </a>
+                         <a class="nav-link collapsed" href="{{route('admin-student-diploma-requests')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Diploma Requests</span>
+                        </a>
                     </li>
 
                     <hr class="sidebar-divider">

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use DB;
+use Mail;
 
+use App\User;
 use App\AmbassadorService;
 use App\AmbassadorReward;
 use App\AmbassadorServiceAction;
@@ -28,7 +30,11 @@ use App\SelfAssessmentAnswer;
 use App\SelfAssessmentAttempt;
 use App\SelfAssessmentAttemptQuestion;
 use App\Fraud;
+use App\DiplomaPrintingRequest;
+
 use Barryvdh\DomPDF\Facade\Pdf;
+
+use App\Mail\NewDiplomaPrintingRequest;
 
 use Carbon\Carbon;
 
@@ -423,7 +429,43 @@ class StudentController extends Controller
     }
 
     public function generatePdfDiploma($student_id){
-        $pdf = Pdf::loadView('student.diploma-pdf')->setPaper('a4','landscape');
+        $pdf = Pdf::loadView('student.diploma-pdf')->set_option('isRemoteEnabled',true)->setPaper('a4','landscape');
         return $pdf->stream();
+    }
+    public function requestDiplomaCopy(){
+        $copy_fee = 250;
+
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $session = \Stripe\Checkout\Session::create([
+            'line_items'  => [
+                [
+                    'price_data' => [
+                        'currency'     => 'usd',
+                        'product_data' => [
+                            'name' => 'Application fee',
+                        ],
+                        'unit_amount'  =>  $copy_fee*100, 
+                    ],
+                    'quantity'   => 1,
+                ],
+            ],
+            'mode'        => 'payment',
+            'success_url' => route('request-diploma-copy-success'),
+            'cancel_url'  => route('student.diplomas'),
+        ]);
+        return redirect()->away($session->url);
+    }
+
+    public function requestDiplomaCopySuccess(){
+        $diploma_request = DiplomaPrintingRequest::create(['student_id' => auth()->id(),'status' => 0]);
+        $admin = User::where('role_id',1)->first();
+        try{
+            Mail::to($admin->email)->send(new NewDiplomaPrintingRequest($diploma_request));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+        return redirect()->route('student.diplomas')
+            ->with('success_message','Diploma copy requested successfully');
     }
 }

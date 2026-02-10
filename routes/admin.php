@@ -217,4 +217,6 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/delete-single-self-assessment-question/{question_id}', 'AdminController@deleteSelfAssessmentQuestion')->name('admin.delete-self-asses-question');
 
 	Route::get('/single/student/{student_id}','AdminStudentController@singleStudentProfile')->name('admin.single-student');
+
+	Route::get('/diploma-requests','AdminController@diplomaRequests')->name('admin-student-diploma-requests');
 });

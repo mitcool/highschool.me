@@ -86,6 +86,7 @@ use App\StudentAnswer;
 use App\SelfAssessmentQuestion;
 use App\SelfAssessmentAnswer;
 use App\EducatorCategory;
+use App\DiplomaPrintingRequest;
 
 use App\Mail\StudentCredentials;
 
@@ -1390,5 +1391,10 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success_message', 'Question and its answers deleted successfully.');
     }
-
+    
+    public function diplomaRequests(){
+        $diploma_requests = DiplomaPrintingRequest::orderBy('id','desc')->get();
+        return view('admin.diploma-requests')
+            ->with('diploma_requests',$diploma_requests);
+    }
 }
