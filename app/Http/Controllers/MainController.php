@@ -333,8 +333,18 @@ class MainController extends Controller
 public function sendHelpDeskQustion(Request $request){
   $user = auth()->user();
   $is_admin = $user->role_id == 1 ? 1 : 0; 
-  $is_parent = $user->role_id == 2 ? 1 : 0;
-  $slug = $request->slug ? $request->slug : $this->setHelpDeskNumber();  
+  $slug = $request->slug ? $request->slug : $this->setHelpDeskNumber();
+  $prev_message = HelpDesk::where('slug',$slug)->first();
+  if($user->role_id == 2){
+    $is_parent = 1;
+  }
+  elseif($user->role_id == 4){
+    $is_parent = 0;
+  }
+  else{
+     $is_parent = $prev_message->is_parent; //in case admin answer  
+  }
+  
   $help_desk = HelpDesk::create([
     'user_id' => $user->id,
     'is_new' => 1,
@@ -357,7 +367,7 @@ public function sendHelpDeskQustion(Request $request){
   }catch(\Exception $e){
     info($e->getMessage());
   }
-  return redirect()->route('help-desk')->with('success_message','Your question submitted successfully');
+  return redirect()->route('single-help-desk',$slug)->with('success_message','Your question submitted successfully');
 }
 
 public function singleHelpDesk($slug){

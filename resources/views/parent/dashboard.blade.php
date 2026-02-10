@@ -53,7 +53,7 @@
            
                 <div id="wrapper" style="padding:0 0px;">
                     <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion" id="accordionSidebar" style="background:#045397"
-">
+>
                         <li class="nav-item black">
                             <a class="nav-link" href="{{route('welcome')}}">
                                 <i class="fas fa-fw fa-home"></i>

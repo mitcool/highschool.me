@@ -106,7 +106,7 @@ class StudentController extends Controller
         $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
         $in_progress_courses =  $student->enrolled_courses->where('status',0);
         $completed_courses =  $student->enrolled_courses->where('status',1);
-        $needed_mandatory_courses = $this->checkMandatoryCourses($student_enrolled_courses);
+        $needed_mandatory_courses = $this->checkMandatoryCourses($student->enrolled_courses);
         
         return view('student.my-courses')
             ->with('in_progress_courses', $in_progress_courses)

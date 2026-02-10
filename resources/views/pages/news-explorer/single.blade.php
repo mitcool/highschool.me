@@ -6,7 +6,7 @@
 	<meta itemprop="description" name="description" content="{{ strip_tags($article->meta_description) }}" />
 	<meta property="og:description" content="{{ strip_tags($article->meta_description) }}"/>
 	<meta itemprop="url" property="og:url" content="{{ request()->url() }}"/>
-	<meta itemprop="image" property="og:image" content="{{ asset('news_images') }}/{{ $article->image }}"/>
+	<meta itemprop="image" property="og:image" content="{{ asset('images/news') }}/{{ $article->image }}"/>
 	<meta property="og:type" content="website">
 	<script type="application/ld+json">
 		{
@@ -169,7 +169,7 @@
 			@foreach($last_three_articles as $news)
 			<div class="col-lg-4 news_wrapper">
 					<div class="news_container h-100 shadow">
-					  	<img class="news-image w-100" src="{{ asset('news_images') }}/{{ $news->image }}" />
+					  	<img class="news-image w-100" src="{{ asset('images/news') }}/{{ $news->image }}" />
 					  	<div class="news-body">
 						    <h2 class="news-heading mt-2 text-center font-weight-bold h6">{{ $news->sections[0]->content }}</h2>
 							<div class="minutes">
