@@ -198,30 +198,6 @@ class StudentController extends Controller
     public function singleStudyMentorChat(){
         return view('student.single-study-mentor-chat');
     }
-
-    public function helpDesk(){
-        $template = 'student.dashboard';
-        $help_desk = HelpDesk::where('user_id',auth()->id())->whereNull('related_to')->get();
-        return view('help-desk.inbox')
-                ->with('help_desk',$help_desk);
-    }
-
-    public function newHelpDesk(){
-        $template = 'student.dashboard';
-        return view('help-desk.new')
-            ->with('template',$template);
-    }
-
-    public function sendHelpDeskQustion(Request $request){
-        $message = $request->only('title','message');
-        $message['user_id'] = auth()->user()->id;
-        $message['slug'] = $this->setHelpDeskNumber();
-        $message['is_new'] = 1;
-        $message['is_admin'] = 0;
-        $message['is_parent'] = 0;
-        HelpDesk::create($message);
-        return redirect()->route('student.help-desk')->with('success_message','Message successfully created');
-    }
     
     public function redeemRewards(Request $request) {
         $request->validate([
