@@ -116,32 +116,72 @@
 	        margin:10px 0;
 	        padding:10px;
 	    }
+        .user,.bot{
+            padding:20px;
+            border-top:1px solid black
+        }
+        .user{
+
+        }
+        .bot{
+            font-style: italic;
+            color:#004c99;
+        }
+        #chat-form{
+           display:flex;
+        }
+        #chat-box{
+            height: 70vh;
+            max-height: 70vh;
+            overflow-y:scroll;
+        }
+        #submit-button{
+            border:none;
+            padding:12px;
+            background: none;
+            border-bottom-right-radius:10px;
+            border-top-right-radius: 10px;
+            background: #d3521b;
+            border:1px solid #d3521b;
+            color: white;
+            margin-left:-5px;
+        }
+        #message{
+            border-right:none;
+            border:1px solid lightgrey;
+            border-bottom-left-radius:10px;
+            border-top-left-radius: 10px;
+            width:500px;
+            padding:12px;
+            
+        }
+        @media(max-width:1200px){
+
+        }
 	</style>
 @endsection
 
 @section('content')
-	<div class="container text-center pt-5" style="margin: 0 auto;">
-		<h2 class="text-center mb-5 program-title">Study mentor</h2>
-        <div class="page-content mt-3 text-justify">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi doloremque itaque vero dolorum est, culpa eveniet sed doloribus quo et quasi alias, fugiat voluptates facilis? Suscipit necessitatibus quia pariatur corrupti.</p>
-        </div>
-		<div class="shadow-lg mx-auto" s>
-            <div class="card-body">
-                   <div class="shadow-md" id="chat-box"></div>
-    <div class="loader hidden"></div>
-      <div style="position: relative">
-         <form id="chat-form" style="display:inline-block;position:fixed;bottom:10px;text-align-center;left: 60%;
-  transform: translateX(-50%);" enctype="multipart/form-data">
-        <div class="text-center">
-      
-        </div>
-        <input style="width:500px;padding:12px;" form="chat-form" type="text" id="message" name="message" placeholder="Your question here..." class="shadow-md outline outline-transparent"/>
-          <button class=" orange-button"> Submit </button>
-      </form>
-      </div>
+<div class="container text-center pt-5" style="margin: 0 auto;">
+    <h2 class="text-center mb-5 program-title">Study mentor</h2>
+    <div class="page-content mt-3 text-justify">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi doloremque itaque vero dolorum est, culpa eveniet sed doloribus quo et quasi alias, fugiat voluptates facilis? Suscipit necessitatibus quia pariatur corrupti.</p>
     </div>
-		</div>
-	</div>
+    <div class="shadow-lg mx-auto">
+        <div class="card-body">
+            <div class="shadow-md" id="chat-box"></div>
+            <div class="loader hidden"></div>
+            <div style="position:relative">
+            <form id="chat-form" enctype="multipart/form-data">
+                <hr>
+                <div class="mx-auto">
+                    <input  form="chat-form" type="text" id="message" name="message" placeholder="Your question here..."/>
+                    <button id="submit-button"> Submit </button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
 </div>
 
 @endsection
@@ -164,7 +204,7 @@ $('#chat-form').on('submit', function(e) {
             $('#message').val('');
             scrollChatBox();
             $.ajax({
-                url: '{{ route('student.study-mentor-chat') }}',
+                url: '{{ route('student.study-mentor-chat-post') }}',
                 type: 'POST',
                 data: formData ,
                 cache: false,
@@ -172,10 +212,9 @@ $('#chat-form').on('submit', function(e) {
                 processData: false,
                 enctype: 'multipart/form-data',
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                success: function(response) {
-                   console.log(response)
-                    var converter = new showdown.Converter({extensions: ['table']});
-                    let answer = response.message;
+                success: function(response) { 
+                    console.log(response)
+                    let answer = response;
                     $('#chat-box').append(`<div class="bot"><div style="display:flex;justify-content:space-between;"><strong>AI STUDY MENTOR:</strong><span class="copy"><i class="fas fa-copy"></i> Copy<span></div> ${answer}</div>`);
                     scrollChatBox();
                     addCopyButtonToTable();

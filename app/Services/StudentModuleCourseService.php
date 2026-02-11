@@ -7,13 +7,13 @@ use Cookie;
 use App\PaidGroupSession;
 use App\PaidMentoringSession;
 use App\PaidCoachingSession;
-use App\CourseType;
+use App\CurriculumType;
 use App\AdditionalCourse;
 
 class StudentModuleCourseService{
 
     public function get_courses(){
-        $courses_types = CourseType::where('type',2)->get();
+        $courses_types = CurriculumType::where('id','!=',11)->get();
         foreach($courses_types as $course_type){
              if(!Cookie::has('course-type-count-'.$course_type->id)){
                  Cookie::queue('course-type-count-'.$course_type->id, 0, 60);
@@ -28,7 +28,7 @@ class StudentModuleCourseService{
     }
 
     public function calculate_total(){
-        $courses_types = CourseType::where('type',2)->get();
+       $courses_types = CurriculumType::where('id','!=',11)->get();
         $total = 0;
         foreach($courses_types as $courses_type){
              if(!Cookie::has('course-type-count-'.$courses_type->id)){
@@ -44,7 +44,7 @@ class StudentModuleCourseService{
     }
 
     public function recordCourses($student_id){
-        $courses_types = CourseType::where('type',2)->get();
+        $courses_types = CurriculumType::where('id','!=',11)->get();
         foreach($courses_types as $courses_type){
              if(Cookie::has('course-type-count-'.$courses_type->id)){
                  $booked_courses = Cookie::get('course-type-count-'.$courses_type->id);

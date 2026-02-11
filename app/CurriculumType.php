@@ -55,4 +55,8 @@ class CurriculumType extends Model
             ])
             ->withTimestamps(false);
     }
+
+    public function price(){
+            return number_format(($this->price),2,'.',',');
+    }
 }

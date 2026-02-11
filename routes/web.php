@@ -34,7 +34,7 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::get('/student/profile/{student_id}','ParentController@studentProfile')->name('parent.student.profile');
 
-	Route::get('/parent/profile','ParentController@profile')->name('parent.profile');
+	Route::get('/profile','ParentController@profile')->name('parent.profile');
 
 	Route::get('/application-fee/{student_id}','ParentController@applicationFee')->name('application-fee');
 
@@ -98,7 +98,7 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::get('/study-mentor','StudentController@studyMentor')->name('student.study-mentor');
 	Route::get('/study-mentor/{mentor_id}','StudentController@singleStudyMentor')->name('student.single-study-mentor');
 	Route::get('/single-study-mentor-chat','StudentController@singleStudyMentorChat')->name('student.single-study-mentor-chat');
-	Route::post('/study-mentor-chat','StudentController@singleStudyMentorChat')->name('student.study-mentor-chat');
+	Route::post('/study-mentor-chat','StudentController@singleStudyMentorChatPost')->name('student.study-mentor-chat-post');
 	Route::get('/exams','StudentController@exams')->name('student.exams');
 	Route::get('/exams/{id}','StudentController@singleExam')->name('student.single-exam');
 	Route::post('/ambassador/redeem', 'StudentController@redeemRewards')->name('ambassador.redeem');

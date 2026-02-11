@@ -43,5 +43,8 @@ return [
         'key' => env('GOOGLE_RECAPTCHA_KEY'),
         'secret' => env('GOOGLE_RECAPTCHA_SECRET'),
     ],
+    'openai' => [
+        'key' => env('OPENAI_API_KEY'),
+    ],
 
 ];

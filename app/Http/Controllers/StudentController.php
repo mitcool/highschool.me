@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 use DB;
 use Mail;
@@ -202,9 +203,35 @@ class StudentController extends Controller
     }
 
     public function singleStudyMentorChat(){
+        session()->forget('conversation');
         return view('student.single-study-mentor-chat');
     }
-    
+    public function singleStudyMentorChatPost(Request $request){
+        $conversation = session()->has('conversation') ? session()->get('conversation') : [];
+        $request->validate([
+            'message' => 'required|string',
+        ]);
+        $message = $request->message;
+        $question = [
+            'role'=>'system',
+            'content' => $message
+        ];
+        $conversation[] = $question;
+        $response = Http::withToken(config('services.openai.key'))
+        ->post('https://api.openai.com/v1/responses',[ 
+                'model' => 'gpt-5.2',
+                'input' => $conversation
+        ]);
+        
+        $answer = $response['output'][0]['content'][0]['text']; 
+        $conversation[] = [
+            'role' => 'system',
+            'content' => $answer
+        ];
+        session()->put('conversation',$conversation);
+        return $answer;
+        
+    }
     public function redeemRewards(Request $request) {
         $request->validate([
             'rewards' => 'required|array|min:1',

@@ -359,7 +359,7 @@ class ParentController extends Controller
             info($e->getMessage());
         }
         session()->forget('student_data');
-        return redirect()->route('parent.create.student');
+        return redirect()->route('parent.student.profile',$student_id);
     }
 
     public function payments(){
@@ -418,6 +418,7 @@ class ParentController extends Controller
     public function enrollmentFeeSuccess(){
        $invoice_data = session()->get('invoice_data');
        $student_data = session()->get('student_data');
+
        $exprires_at = $student_data['payment_type'] == 0  
                 ? Carbon::now()->addMonths(1) 
                 : Carbon::now()->addYears(1); // monthly or yearly
@@ -427,6 +428,8 @@ class ParentController extends Controller
             'expires_at' => $exprires_at,
             'created_at' => Carbon::now()
         ]);
+
+        $this->insertAdditionalCourses($student_data['plan_id'],$student_data['student_id']);
 
         $this->createInvoice($invoice_data['amount'],$invoice_data['description']);
 
@@ -439,7 +442,75 @@ class ParentController extends Controller
             info($e->getMessage());
         }
 
-        return redirect()->route('parent.create.student');
+        return redirect()->route('parent.student.profile',$student_data['student_id']);
+    }
+
+    public function insertAdditionalCourses($plan_id,$student_id){
+        // Note SAT == ACT , 
+        //Corespondent to features table
+
+        $psat = $plan_id > 1 ?  1 : 1;
+        $sat = $plan_id > 1 ? 1 : 1;
+        $ap = 0;
+        $clep =0;
+        $cte = 0;
+        $esol = 0;
+
+        if($plan_id == 2){
+            $ap = 1;
+            $clep =1;
+            $cte = 2;
+            $esol = 0;
+        }
+        elseif($plan_id == 3){
+            $ap = 2;
+            $clep =2;
+            $cte = 4;
+            $esol = 1;
+        }
+
+        for($i=0;$i < $psat; $i++){
+            AdditionalCourse::insert([
+                'student_id' => $student_id,
+                'course_type' => 7,
+                'status' => 0 // not enrolled
+            ]);
+        }
+        for($i=0;$i < $sat; $i++){
+             AdditionalCourse::insert([
+                'student_id' => $student_id,
+                'course_type' => 8,
+                'status' => 0 // not enrolled
+            ]);
+        }
+        for($i=0;$i < $ap; $i++){
+            AdditionalCourse::insert([
+                'student_id' => $student_id,
+                'course_type' => 3,
+                'status' => 0 // not enrolled
+            ]);
+        }
+        for($i=0;$i < $clep; $i++){
+            AdditionalCourse::insert([
+                'student_id' => $student_id,
+                'course_type' => 5,
+                'status' => 0 // not enrolled
+            ]);
+        }
+        for($i=0;$i < $cte; $i++){
+             AdditionalCourse::insert([
+                'student_id' => $student_id,
+                'course_type' => 4,
+                'status' => 0 // not enrolled
+            ]);
+        }
+        for($i=0;$i < $esol; $i++){
+             AdditionalCourse::insert([
+                'student_id' => $student_id,
+                'course_type' => 6,
+                'status' => 0 // not enrolled
+            ]);
+        }
     }
 
     public function extendPlan(Request $request,$student_id){

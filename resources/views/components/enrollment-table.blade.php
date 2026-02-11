@@ -161,6 +161,9 @@
             padding: 5px 20px;
             border-radius: 6px;
         }
+        .page-content li {
+            background-image: none;
+        }
        
 </style>
  @if($track == 3)
@@ -171,11 +174,6 @@
       <div class="course-row d-flex justify-content-between align-items-center">
             <div>
                 {{ $tpc->course->title }}
-                {{-- @if(!is_null($credits))
-                    <span class="credit-text">
-                        ({{ number_format($credits, 1) }} Credit{{ $credits == 1 ? '' : 's' }})
-                    </span>
-                @endif --}}
             </div>
             @if(in_array($tpc->course_id,$enrolled_courses_ids))
                 <button class="btn btn-disabled">Enrolled</button>
@@ -301,12 +299,18 @@
                                                     @elseif($track == 4)
                                                         <a href="{{ route('parent.student.module.courses',$student->id) }}"><button class="btn btn-enroll">Buy now</button></a>
                                                     @else
-                                                    
-                                                    <form action="{{ route('enroll',$cc->course_id) }}" method="POST">
-                                                        {{ csrf_field() }}
-                                                        <input type="hidden" name="student_id" value="{{ $student->id }}">
-                                                        <button class="btn btn-enroll">Enroll</button>
-                                                    </form>
+                                                            @if($curriculumTypes[$cc->curriculum_type_id-1]->permission)
+                                                            <form action="{{ route('enroll',$cc->course_id) }}" method="POST">
+                                                                {{ csrf_field() }}
+                                                                <input type="hidden" name="student_id" value="{{ $student->id }}">
+                                                                <button class="btn btn-enroll"> Enroll</button>
+                                                            </form>
+                                                            @else
+                                                                <a href="{{ route('parent.student.module.courses',$student->id) }}" target="_blank">
+                                                                    <button class="btn btn-enroll"> Buy now</button>
+                                                                </a>
+                                                            @endif
+                                                       
                                                     @endif
                                                 </div>
                                             @endforeach
@@ -320,6 +324,7 @@
 
                         {{-- UNCATEGORIZED COURSES CARD (e.g. CLEP) --}}
                         @if($uncategorized->count())
+                            
                             @php
                                 $otherCollapseId = $tabId . '-other';
                                 $headerTitle = ($type->code === 'CLEP')
@@ -366,11 +371,17 @@
                                                     @elseif($student->status == 1)
                                                          <button class="btn btn-disabled">Enrolled</button>
                                                     @else
-                                                    <form action="{{ route('enroll',$cc->course_id) }}" method="POST">
-                                                        {{ csrf_field() }}
-                                                        <input type="hidden" name="student_id" value="{{ $student->id }}">
-                                                        <button class="btn btn-enroll">Enroll</button>
-                                                    </form>
+                                                        @if($curriculumTypes[$cc->curriculum_type_id-1]->permission)
+                                                            <form action="{{ route('enroll',$cc->course_id) }}" method="POST">
+                                                                {{ csrf_field() }}
+                                                                <input type="hidden" name="student_id" value="{{ $student->id }}">
+                                                                <button class="btn btn-enroll"> Enroll</button>
+                                                            </form>
+                                                        @else
+                                                            <a href="{{ route('parent.student.module.courses',$student->id) }}" target="_blank">
+                                                                <button class="btn btn-enroll"> Buy now</button>
+                                                            </a>
+                                                        @endif
                                                  @endif
                                             </div>
                                         @endforeach

@@ -139,7 +139,5 @@
 			<a href="{{ route('student.single-study-mentor-chat',1) }}" class="orange-button mt-4" style="text-decoration: none;">Start now</a>
 		</div>
 	</div>
-    
-
 @endsection
 
