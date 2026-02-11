@@ -71,7 +71,7 @@
 			<li class="breadcrumb-item active" aria-current="page">Graduation Requirements</li>
 		</ol>
 	</div>
-	<img src="{{ asset('/images/grad-requirements.png') }}">
+	<img src="{{ asset('/images/grad-requirements.png') }}" class="w-100">
 	<div class="container page-content">
 		<h1 class="text-center page-headings">Graduation Requirements</h1>
     <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tortor augue, ullamcorper vel dui nec, posuere sodales est.</h2>

@@ -2,8 +2,8 @@
 
 @section('content')
 
-<div class="container jumbotron bg-white">
-    <div class="shadow page-content" style="padding:20px;">
+<div class="container shadow bg-white" style="margin:50px auto">
+    <div class=" page-content" style="padding:20px;">
             <h4 style="color:#045397">{{ $student->name }} {{ $student->surname }}</h4>
             @if($student->date_of_birth) <p class="mb-0">Born: {{ $student->date_of_birth->format('d.m.Y')}}</p> @endif
             <p class="mb-0">Grade: {{ $student->student_details->grade }}</p>

@@ -8,7 +8,7 @@
     </ol>
 </div>
 
-<img src="{{ asset('images/enrollment-options.png') }}" alt="" />
+<img src="{{ asset('images/enrollment-options.png') }}" alt=""  class="w-100"/>
 
 <div class="container-fluid bg-white box">
     <div class="container">

@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class CheckStudent
+class CheckEducator
 {
     /**
      * Handle an incoming request.
@@ -19,9 +19,10 @@ class CheckStudent
         if(!auth()->user()){
             return redirect()->route('welcome');
         }
-        if(auth()->user()->role_id != 4){
+        if(auth()->user()->role_id != 5){
             abort(403);
         }
+
         return $next($request);
     }
 }

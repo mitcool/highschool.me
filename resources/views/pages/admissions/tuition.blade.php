@@ -113,7 +113,7 @@
     </ol>
 </div>
 
-<img src="{{ asset('images/crop-schoolgirl-sitting-with-studies-chair.png') }}" alt="">
+<img src="{{ asset('images/crop-schoolgirl-sitting-with-studies-chair.png') }}" alt="" class="w-100">
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
         <div class="row text-center container mx-auto">
             <div class="col-md-12">

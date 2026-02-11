@@ -117,7 +117,7 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 
 Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');
 
-Route::group(['prefix' => 'educator'],function(){
+Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 	Route::get('/dashboard', 'EducatorController@dashboard')->name('educator.dashboard');
 	Route::get('/courses','EducatorController@courses')->name('educator.courses');
 	Route::get('/meetings','EducatorController@meetings')->name('educator.meetings');

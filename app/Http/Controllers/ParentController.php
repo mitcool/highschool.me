@@ -24,13 +24,16 @@ use App\FamilyConsultation;
 use App\GroupSession;
 use App\MentoringSession;
 use App\UserGroupSession;
+use App\CoachingSession;
 use App\UserMentoringSession;
+use App\UserCoachingSessions;
 use App\PaidGroupSession;
 use App\PaidMentoringSession;
 use App\PaidCoachingSession;
 use App\CurriculumCourse;
 use App\StudentEnrolledCourse;
 use App\HelpDesk;
+use App\AdditionalCourse;
 
 use App\Mail\StudentCreated;
 use App\Mail\StudentCredentials;
@@ -95,20 +98,46 @@ class ParentController extends Controller
         return view('parent.create-student');
     }
     public function meetings(){
+
         $group_sessions = GroupSession::all();
         $mentoring_sessions = MentoringSession::all();
+        $coaching_sessions = CoachingSession::all();
 
         $user_group_sessions = UserGroupSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
         $user_mentoring_sessions = UserMentoringSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
-
-        $paid_group_sessions = PaidGroupSession::where('parent_id',auth()->user()->id)->where('status',0)->count();
-        $paid_mentoring_sessions = PaidMentoringSession::where('parent_id',auth()->user()->id)->where('status',0)->count();
-
+        $user_coaching_sessions = UserCoachingSessions::where('user_id',auth()->id())->pluck('session_id')->toArray();
+        
+        $permissions = $this->checkPermissionForSessionBooking();
+      
         return view('parent.meetings')
             ->with('group_sessions',$group_sessions)
             ->with('user_group_sessions',$user_group_sessions)
             ->with('mentoring_sessions',$mentoring_sessions)
-            ->with('user_mentoring_sessions',$user_mentoring_sessions);
+            ->with('user_mentoring_sessions',$user_mentoring_sessions)
+            ->with('user_coaching_sessions',$user_coaching_sessions)
+            ->with('permissions',$permissions)
+            ->with('coaching_sessions',$coaching_sessions);
+    }
+
+    public function checkPermissionForSessionBooking(){
+        $coaching_sessions_permission = false;
+        if(AdditionalCourse::where('status',0)->where('course_type',13)->count() > 0){
+            $coaching_sessions_permission = true;
+        }
+        $mentoring_sessions_permission = false;
+        if(AdditionalCourse::where('status',0)->where('course_type',12)->count() > 0){
+            $mentoring_sessions_permission = true;
+        }
+        $group_sessions_permission = false;
+        if(AdditionalCourse::where('status',0)->where('course_type',11)->count() > 0){
+            $group_sessions_permission = true;
+        }
+        $permissions = [
+            'coaching' => $coaching_sessions_permission,
+            'mentoring' => $mentoring_sessions_permission,
+            'group' => $group_sessions_permission
+        ];
+        return $permissions;
     }
 
     public function addStudent(Request $request){
@@ -205,7 +234,7 @@ class ParentController extends Controller
         StudentDocument::insert(['file'=>$birth_certificate_name,'type'=>5,'student_id'=>$student->id,'is_approved' => 0]);
 
         #school transcript (document 6) required
-        $school_transcript_name = $request->file('school_transcript')->move(base_path()."/public/documents/".$student->id, $student_id_name);
+        $school_transcript_name =$this->upload_file($request->file('school_transcript'),$path); 
         StudentDocument::insert(['file'=>$school_transcript_name,'type'=>6,'student_id'=>$student->id,'is_approved' => 0]);
 
         #withdrawal_confirmation (document 7) optinal
@@ -611,7 +640,7 @@ class ParentController extends Controller
                 'student_id'=>$student->id,
                 'is_approved' => 0
             ]);
-            ParentStudent::where('student_id',$student_id)->first()->update(['status' => 0]);
+            ParentStudent::where('student_id',$student_id)->first()->update(['status' => 1]);
         }
         try{
             Mail::to('mathias.kunze@onsites.com')->send(new ParentReuploadDocument);
@@ -659,7 +688,7 @@ class ParentController extends Controller
     public function studentCourseTypeSuccess($student_id){
         $this->student_module_course_service->recordCourses($student_id);
         $amount = $this->student_module_course_service->calculate_total();
-        $description = 'Services for group/mentoring/coaching sessions';
+        $description = 'Single course service';
         $this->createInvoice($amount,$description);
         return view('parent.student-course-type-success'); #Note the same view
     }

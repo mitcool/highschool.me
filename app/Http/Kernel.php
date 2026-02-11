@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'translateUrl' => \App\Http\Middleware\TranslateUrl::class,
         'parent' =>  \App\Http\Middleware\CheckParent::class,
         'student' =>  \App\Http\Middleware\CheckStudent::class,
+        'educator' =>  \App\Http\Middleware\CheckEducator::class,
         
     ];
 
