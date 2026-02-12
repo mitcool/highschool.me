@@ -77,7 +77,7 @@
        @foreach ($student->enrolled_courses as $enrolled_course)
             <div class="d-flex justify-content-between w-100">
                 
-                <p>{{ $enrolled_course->course->title }}</p>
+                <p>{{ $enrolled_course->course->course->title }}</p>
                 @if($enrolled_course->status == 0)
                 <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST">
                     {{ csrf_field() }}

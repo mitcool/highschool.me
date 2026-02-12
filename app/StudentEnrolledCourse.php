@@ -11,6 +11,6 @@ class StudentEnrolledCourse extends Model
 
     protected $fillable = ['status'];
     public function course(){
-        return $this->hasOne('App\CatalogCourse','id','catalog_course_id');
+        return $this->hasOne('App\CurriculumCourse','id','catalog_course_id');
     }
 }

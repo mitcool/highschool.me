@@ -43,11 +43,11 @@ class Controller extends BaseController
 
         $user_messages = [];
         $enrolled_courses_id = $student_enrolled_courses->pluck('catalog_course_id')->toArray();
-        $english_language_mandatory_courses_id = CurriculumCourse::where('category_id',1)->pluck('course_id')->toArray();
-        $mathematics_mandatory_courses_id = CurriculumCourse::where('category_id',2)->pluck('course_id')->toArray();
-        $biology = 28;
-        $phisics_and_chemistry = CurriculumCourse::whereIn('course_id',[34,37])->pluck('course_id')->toArray();
-        $anatomy_and_enviroment = CurriculumCourse::whereIn('course_id',[30,31])->pluck('course_id')->toArray();
+        $english_language_mandatory_courses_id = CurriculumCourse::where('category_id',1)->pluck('id')->toArray();
+        $mathematics_mandatory_courses_id = CurriculumCourse::where('category_id',2)->pluck('id')->toArray();
+        $biology = 9;
+        $phisics_and_chemistry = CurriculumCourse::whereIn('course_id',[10,11])->pluck('course_id')->toArray();
+        $anatomy_and_enviroment = CurriculumCourse::whereIn('course_id',[12,13])->pluck('course_id')->toArray();
         $social_studies_courses_id = CurriculumCourse::where('category_id',4)->pluck('course_id')->toArray();
         $fine_and_practical_arts = CurriculumCourse::where('category_id',5)->pluck('course_id')->toArray();
         $physical_education = CurriculumCourse::where('category_id',6)->pluck('course_id')->toArray();
@@ -148,9 +148,9 @@ class Controller extends BaseController
             $type = CurriculumCourse::where('course_id',$enrolled_course->id)->first()->curriculum_type_id;
             if($enrolled_course->status == 1){
                 if($type != 1){
-                    $elective_credits +=  $enrolled_course->course->default_credits;
+                    $elective_credits +=  $enrolled_course->course->course->default_credits;
                 }
-                $credits['completed_credits'] += $enrolled_course->course->default_credits;
+                $credits['completed_credits'] += $enrolled_course->course->course->default_credits;
             }
         }
         //TODO::More checks for related courses

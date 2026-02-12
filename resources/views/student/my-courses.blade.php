@@ -153,7 +153,7 @@
                     <div class="card-body pt-3">
                         <div class="d-flex flex-wrap badge-wrap">
                             @foreach($completed_courses as $completed_course)
-                                <span class="badge completed-pill">✓ {{ $completed_course->course->title }}</span>
+                                <span class="badge completed-pill">✓ {{ $completed_course->course->course->title }}</span>
                             @endforeach
                         </div>
                     </div>
@@ -172,10 +172,7 @@
                     <div class="card-body pt-3">
                         <div class="d-flex flex-wrap badge-wrap">
                             @foreach($in_progress_courses as $in_progress_course)
-                                <span class="badge progress-pill">□ {{ $in_progress_course->course->title }}</span>
-                                {{-- <span class="badge progress-pill">□ Anatomy &amp; Physiology</span>
-                                <span class="badge progress-pill">□ World History</span>
-                                <span class="badge progress-pill">□ U.S. Government</span> --}}
+                                <span class="badge progress-pill">□ {{ $in_progress_course->course->course->title }}</span>
                             @endforeach
                         </div>
                     </div>
@@ -201,9 +198,10 @@
                 </thead>
                 <tbody class="text-center">
                     @foreach($in_progress_courses as $in_progress_course) 
+                      
                         <tr>
-                            <td class="text-left">{{ $in_progress_course->course->title }}</td>
-                            <td>{{ $in_progress_course->course->curriculumCourses[0]->curriculumType->code }} </td>
+                            <td class="text-left">{{ $in_progress_course->course->course->title }}</td>
+                            <td>{{ $in_progress_course->course->curriculumType->code }} </td>
                             <td><a href="{{ route('student.single-course',$in_progress_course->catalog_course_id) }}" class="view-link">View</a></td>
                         </tr>
                     @endforeach

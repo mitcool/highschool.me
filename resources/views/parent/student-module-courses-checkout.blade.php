@@ -2,8 +2,8 @@
 
 @section('content')
 
-<div class="container jumbotron bg-white">
-    <div class="shadow" style="border-radius:5px;padding:20px;">
+<div class="container shadow bg-white" style="margin:20px auto;">
+    <div class="" style="border-radius:5px;padding:20px;">
         <h1 class="">Confirm your details</h1>
         <p class="h3  mt-2" style="color:#045397;font-weight:bold;">Personal Information</p>
         <form action="{{ route('parent.student.courses-type.pay',$student->id) }}" method="POST">
@@ -39,4 +39,6 @@
             </div>
         </form>
     </div>
+</div>
+
 @endsection

@@ -115,6 +115,7 @@ class StudentController extends Controller
         $completed_courses =  $student->enrolled_courses->where('status',1);
         $needed_mandatory_courses = $this->checkMandatoryCourses($student->enrolled_courses);
         
+        #dd($in_progress_courses->first()->course->course);
         return view('student.my-courses')
             ->with('in_progress_courses', $in_progress_courses)
             ->with('completed_courses',$completed_courses)

@@ -256,7 +256,7 @@ class ParentController extends Controller
         $student = User::find($student_id);
         $course_types = $this->student_module_course_service->get_courses();
         $total = $this->student_module_course_service->calculate_total();
-       # dd(Cookie::get());
+       
         return view('parent.student-module-courses')
             ->with('student',$student)
             ->with('total',$total)
@@ -267,15 +267,6 @@ class ParentController extends Controller
         $new_count = $action == 'increase' ? $current_count++ : $current_count--;
         if($current_count >= 1){
              Cookie::queue('course-type-count-'.$course_id, $current_count, 60);
-        }
-        return redirect()->back()->with('success_message','Courses count updated successfully');
-    }
-
-    public function changeCourseCount($session_id,$action){
-        $current_count = Cookie::get('course-type-count-'.$session_id);
-        $new_count = $action == 'increase' ? $current_count++ : $current_count--;
-        if($current_count >= 1){
-             Cookie::queue('course-type-count-'.$session_id, $current_count, 60);
         }
         return redirect()->back()->with('success_message','Courses count updated successfully');
     }
@@ -761,7 +752,7 @@ class ParentController extends Controller
         $amount = $this->student_module_course_service->calculate_total();
         $description = 'Single course service';
         $this->createInvoice($amount,$description);
-        return view('parent.student-course-type-success'); #Note the same view
+        return redirect()->route('parent.student.profile',$student_id); #Note the same view
     }
     public function studentSessionsSuccess($student_id){
         $this->student_sessions_service->recordSesssions($student_id);
@@ -803,9 +794,21 @@ class ParentController extends Controller
         $curriculum_course = CurriculumCourse::with('course')->find($course_id);
         $parent = auth()->user();
         $student = User::with('active_plan')->find($request->student_id);
+       
+        if($curriculum_course->curriculum_type_id != 1 && $curriculum_course->curriculum_type_id != 2){
+           $additional_course = AdditionalCourse::where('course_type',$curriculum_course->curriculum_type_id)
+            ->where('student_id',$student->id)
+            ->first();
+            if($additional_course){
+                $additional_course->update(['status' => 1]);
+            }
+            else{
+                return redirect()->back()->with('error','You don\'t have permission to enroll this course');
+            }
+        }
         
         StudentEnrolledCourse::insert([
-            'user_id' => $request->student_id,
+            'user_id' => $student->id,
             'catalog_course_id' => $curriculum_course->id,
             'created_at' => Carbon::now(),
             'status' => 0

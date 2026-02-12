@@ -28,7 +28,7 @@ class StudentModuleCourseService{
     }
 
     public function calculate_total(){
-       $courses_types = CurriculumType::where('id','!=',11)->get();
+        $courses_types = CurriculumType::where('id','!=',11)->get();
         $total = 0;
         foreach($courses_types as $courses_type){
              if(!Cookie::has('course-type-count-'.$courses_type->id)){
