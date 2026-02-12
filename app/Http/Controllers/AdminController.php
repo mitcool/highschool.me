@@ -86,10 +86,12 @@ use App\StudentAnswer;
 use App\SelfAssessmentQuestion;
 use App\SelfAssessmentAnswer;
 use App\EducatorCategory;
+use App\LeaveRequest;
 use App\DiplomaPrintingRequest;
 use App\StudentEnrolledCourse;
 
 use App\Mail\StudentCredentials;
+use App\Mail\LeaveRequestAnswer;
 
 class AdminController extends Controller
 {
@@ -964,6 +966,9 @@ class AdminController extends Controller
         $currentRequiredFlag = $course->curriculumTypes->first()->pivot->required_flag;
         $currentRequirementText = $course->curriculumTypes->first()->pivot->requirement_text;
 
+        $courseFiles = $course->files;
+        $courseVideos = $course->videos;
+
         return view('admin.edit-enrollment-course')
             ->with('course', $course)
             ->with('curriculumTypes', $curriculumTypes)
@@ -971,8 +976,214 @@ class AdminController extends Controller
             ->with('currentCurriculumTypeId', $currentCurriculumTypeId)
             ->with('currentCategoryId', $currentCategoryId)
             ->with('currentRequiredFlag', $currentRequiredFlag)
-            ->with('currentRequirementText', $currentRequirementText);
+            ->with('currentRequirementText', $currentRequirementText)
+            ->with('courseFiles', $courseFiles)
+            ->with('courseVideos', $courseVideos);
     }
+
+    public function updateEnrollmentCourse(Request $request, $course_id) {
+        $course = CatalogCourse::with('curriculumTypes')->findOrFail($course_id);
+
+        // Curriculum type chosen in the edit form
+        $curriculumType = CurriculumType::findOrFail($request->input('curriculum_type_id'));
+
+        // Base validation rules
+        $rules = [
+            'curriculum_type_id' => ['required', 'exists:curriculum_types,id'],
+            'title'              => ['required', 'string', 'max:255'],
+            'fldoe_course_code'  => ['nullable', 'string', 'max:20'],
+            'course_number'      => ['nullable', 'string', 'max:20'],
+            'default_credits'    => ['nullable', 'numeric', 'min:0'],
+            'category_id'        => ['nullable', 'exists:course_categories,id'],
+            'required_flag'      => ['nullable', 'boolean'],
+            'requirement_text'   => ['nullable', 'string', 'max:255'],
+            'notes'              => ['nullable', 'string'],
+
+            // files (links)
+            'resource_files'          => ['nullable', 'array'],
+            'resource_files.*'        => ['nullable', 'string'], // you can add url rule if all are URLs
+            'resource_files_labels'   => ['nullable', 'array'],
+            'resource_files_labels.*' => ['nullable', 'string', 'max:255'],
+
+            // videos
+            'video_titles'       => ['nullable', 'array'],
+            'video_titles.*'     => ['nullable', 'string', 'max:255'],
+            'video_urls'         => ['nullable', 'array'],
+            'video_urls.*'       => ['nullable', 'url', 'max:2048'],
+        ];
+
+        // Type-specific validation
+        switch ($curriculumType->code) {
+            case 'AP':
+                $rules = array_merge($rules, [
+                    'ap_subject_code' => ['required', 'string', 'max:20'],
+                    'ap_exam_code'    => ['required', 'string', 'max:10'],
+                ]);
+                break;
+
+            case 'ESOL':
+                $rules = array_merge($rules, [
+                    'lld_level'  => ['required', 'string', 'max:50'],
+                    'cefr_level' => ['required', 'string', 'max:10'],
+                ]);
+                break;
+
+            case 'CLEP':
+                // no extra fields
+                break;
+        }
+
+        $data = $request->validate($rules);
+
+        $requiredFlag = isset($data['required_flag']) ? (bool) $data['required_flag'] : false;
+
+        DB::transaction(function () use ($course, $curriculumType, $data, $requiredFlag) {
+
+            /**
+             * 1) Update CatalogCourse
+             */
+            $course->update([
+                'fldoe_course_code' => $data['fldoe_course_code'] ?? null,
+                'course_number'     => $data['course_number'] ?? null,
+                'title'             => $data['title'],
+                'default_credits'   => $data['default_credits'] ?? null,
+            ]);
+
+            /**
+             * 2) Update curriculum link row
+             * Your add method uses CurriculumCourse::create(), so we update or create that row.
+             */
+            $curriculumCourse = CurriculumCourse::updateOrCreate(
+                [
+                    'course_id' => $course->id,
+                    // IMPORTANT: if you allow a course to be in multiple curriculum types,
+                    // this key is correct. If it must be only ONE type, see note below.
+                    'curriculum_type_id' => $curriculumType->id,
+                ],
+                [
+                    'category_id'      => $data['category_id'] ?? null,
+                    'required_flag'    => $requiredFlag,
+                    'requirement_text' => $data['requirement_text'] ?? null,
+                    'notes'            => $data['notes'] ?? null,
+                ]
+            );
+
+            /**
+             * OPTIONAL cleanup:
+             * If a course is supposed to belong to ONLY ONE curriculum type,
+             * delete other curriculum_course rows for that course.
+             */
+            CurriculumCourse::where('course_id', $course->id)
+                ->where('curriculum_type_id', '!=', $curriculumType->id)
+                ->delete();
+
+            /**
+             * 3) Type-specific details (update/create + cleanup others)
+             */
+            if ($curriculumType->code === 'AP') {
+                ApDetail::updateOrCreate(
+                    ['course_id' => $course->id],
+                    [
+                        'ap_subject_code' => $data['ap_subject_code'],
+                        'ap_exam_code'    => $data['ap_exam_code'],
+                    ]
+                );
+
+                // cleanup other types
+                EsolDetail::where('course_id', $course->id)->delete();
+                ClepDetail::where('course_id', $course->id)->delete();
+            }
+            elseif ($curriculumType->code === 'ESOL') {
+                EsolDetail::updateOrCreate(
+                    ['course_id' => $course->id],
+                    [
+                        'lld_level'  => $data['lld_level'],
+                        'cefr_level' => $data['cefr_level'],
+                    ]
+                );
+
+                ApDetail::where('course_id', $course->id)->delete();
+                ClepDetail::where('course_id', $course->id)->delete();
+            }
+            elseif ($curriculumType->code === 'CLEP') {
+                ClepDetail::updateOrCreate(
+                    ['course_id' => $course->id],
+                    []
+                );
+
+                ApDetail::where('course_id', $course->id)->delete();
+                EsolDetail::where('course_id', $course->id)->delete();
+            }
+            else {
+                // generic types -> remove all type detail rows
+                ApDetail::where('course_id', $course->id)->delete();
+                EsolDetail::where('course_id', $course->id)->delete();
+                ClepDetail::where('course_id', $course->id)->delete();
+            }
+
+            /**
+             * 4) Replace FILE links (course_files)
+             */
+            CourseFile::where('course_id', $course->id)->delete();
+
+            $files  = $data['resource_files'] ?? [];
+            $labels = $data['resource_files_labels'] ?? [];
+
+            if (is_array($files)) {
+                foreach ($files as $index => $link) {
+                    $link = trim((string) $link);
+                    $label = isset($labels[$index]) ? trim((string) $labels[$index]) : null;
+
+                    // skip completely empty rows
+                    if ($link === '' && ($label === '' || $label === null)) {
+                        continue;
+                    }
+
+                    CourseFile::create([
+                        'course_id'   => $course->id,
+                        'label'       => $label ?: null,
+                        'stored_path' => $link, // this is your "link to file"
+                    ]);
+                }
+            }
+
+            /**
+             * 5) Replace VIDEO links (course_videos)
+             */
+            CourseVideo::where('course_id', $course->id)->delete();
+
+            $videoTitles = $data['video_titles'] ?? [];
+            $videoUrls   = $data['video_urls'] ?? [];
+
+            if (is_array($videoUrls)) {
+                foreach ($videoUrls as $index => $url) {
+                    $title = isset($videoTitles[$index]) ? trim((string)$videoTitles[$index]) : null;
+                    $url   = trim((string)$url);
+
+                    // skip empty rows
+                    if ($url === '' && ($title === '' || $title === null)) {
+                        continue;
+                    }
+
+                    if ($title === '' || $title === null) {
+                        $title = 'Video ' . ($index + 1);
+                    }
+
+                    CourseVideo::create([
+                        'course_id' => $course->id,
+                        'title'     => $title,
+                        'url'       => $url,
+                        'position'  => $index,
+                    ]);
+                }
+            }
+        });
+
+        return redirect()
+            ->back()
+            ->with('success_message', 'Course updated successfully.');
+    }
+
 
     public function showAmbassadorLinks() {
         $activities = AmbassadorActivity::with(['user', 'action'])
@@ -1015,6 +1226,36 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success_message','Reward added successfully');
     }
+
+    public function showEditRewardPage(Request $request, $reward_id) {
+        $reward = AmbassadorReward::findOrFail($reward_id);
+
+        return view('admin.ambassador-program.edit-single-reward')->with('reward', $reward);
+    }
+
+    public function updateReward(Request $request, $id) {
+        $reward = AmbassadorReward::findOrFail($id);
+
+        $validated = $request->validate([
+            'name'   => ['required', 'string', 'max:255'],
+            'points' => ['required', 'numeric', 'min:0'],
+        ]);
+
+        $reward->update($validated);
+
+        return redirect()
+            ->route('admin.ambassador-rewards')
+            ->with('success_message', 'Reward updated successfully.');
+    }
+
+    // public function deleteReward($id) {
+    //     $reward = AmbassadorReward::findOrFail($id);
+    //     $reward->delete();
+
+    //     return redirect()
+    //         ->route('admin.ambassador-rewards')
+    //         ->with('success_message', 'Reward deleted successfully.');
+    // }
 
     public function showActivitiesPage() {
         $ambassador_services = AmbassadorService::all();
@@ -1393,7 +1634,7 @@ class AdminController extends Controller
         return redirect()->back()->with('success_message', 'Question and its answers deleted successfully.');
     }
     
-    public function diplomaRequests(){
+     public function diplomaRequests(){
         $diploma_requests = DiplomaPrintingRequest::orderBy('id','desc')->get();
         return view('admin.diploma-requests')
             ->with('diploma_requests',$diploma_requests);
@@ -1416,4 +1657,59 @@ class AdminController extends Controller
         StudentEnrolledCourse::where('catalog_course_id',$course_id)->delete();
         return redirect()->back()->with('success_message','The course was transferred back successfully');
     }
+
+    public function requestedLeavesPage() {
+        $leaveRequests = LeaveRequest::orderByDesc('created_at')->paginate(10);
+
+        return view('admin.leaves.requested-leaves')->with('leaveRequests', $leaveRequests);
+    }
+
+    public function singleLeaveRequestPage(Request $request, $request_id) {
+        $leaveRequest = LeaveRequest::where('id', $request_id)->first();
+
+        return view('admin.leaves.single-leave-request')->with('leaveRequest', $leaveRequest);
+    }
+
+    public function approveLeaveRequest(Request $request, $request_id) {
+        $leave = LeaveRequest::findOrFail($request_id);
+
+        $leave->update([
+            'status' => LeaveRequest::STATUS_APPROVED
+        ]);
+
+        $statusText = $leave->status_text;
+
+        $admins = User::where('role_id', 1)->get();
+        foreach($admins as $admin) {
+            try{
+                Mail::to($admin->email)->send(new LeaveRequestAnswer($statusText));
+            }catch(\Exception $e){
+                info($e->getMessage());
+            }
+        }
+
+        return back()->with('success', 'Request approved');
+    }
+
+    public function denyLeaveRequest(Request $request, $request_id) {
+        $leave = LeaveRequest::findOrFail($request_id);
+
+        $leave->update([
+            'status' => LeaveRequest::STATUS_DENIED
+        ]);
+
+        $statusText = $leave->status_text;
+
+        $admins = User::where('role_id', 1)->get();
+        foreach($admins as $admin) {
+            try{
+                Mail::to($admin->email)->send(new LeaveRequestAnswer($statusText));
+            }catch(\Exception $e){
+                info($e->getMessage());
+            }
+        }
+
+        return back()->with('success', 'Request denied');
+    }
+
 }

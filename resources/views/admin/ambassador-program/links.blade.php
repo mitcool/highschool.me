@@ -17,6 +17,7 @@
             <tr>
                 <th>Date</th>
                 <th>Student</th>
+                <th>Platform</th>
                 <th>Type</th>
                 <th>Link</th>
                 <th>Status</th>
@@ -34,6 +35,10 @@
 
                     <!-- Activity Type -->
                     <td>
+                        {{ optional($activity->service)->name }}
+                    </td>
+                    <!-- Activity Type -->
+                    <td>
                         @if(!$activity->action)
                             {{ $activity->link }}
                         @else
@@ -43,9 +48,13 @@
 
                     <!-- Link -->
                     <td>
-                        <a href="{{ $activity->link }}" target="_blank" class="btn btn-link p-0">
-                            View
-                        </a>
+                        @if(!$activity->service_id)
+                            -
+                        @else
+                            <a data-toggle="modal" data-target="#confirmModal-{{$activity->id}}" class="btn btn-link p-0">
+                                View
+                            </a>
+                        @endif
                     </td>
 
                     <!-- Status Dropdown -->
@@ -65,6 +74,33 @@
         </tbody>
     </table>
 </div>
+
+@foreach($activities as $activity)
+    <div class="modal fade" id="confirmModal-{{$activity->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content" style="border-radius:10px;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalTitle">Confirm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body" id="confirmModalBody">
+                    <span style="text-wrap: wrap;">
+                        Are you sure you want to visit the following link:<br>
+                        {{ $activity->link }}
+                    </span>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                    <a id="confirmModalBtn" class="btn btn-primary" href="{{ $activity->link }}" target="_blank">Confirm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+@endforeach
 @endsection
 
 @section('scripts')

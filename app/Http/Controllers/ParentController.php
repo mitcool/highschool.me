@@ -33,6 +33,7 @@ use App\PaidCoachingSession;
 use App\CurriculumCourse;
 use App\StudentEnrolledCourse;
 use App\HelpDesk;
+use App\LeaveRequest;
 use App\AdditionalCourse;
 
 use App\Mail\StudentCreated;
@@ -52,15 +53,15 @@ use App\Services\StudentModuleCourseService;
 class ParentController extends Controller
 {
     private function setInvoiceNumber(){
-    	$next_invoice = Invoice::count() == 0 ? 1 : Invoice::count() + 1;
+        $next_invoice = Invoice::count() == 0 ? 1 : Invoice::count() + 1;
         $numlength = strlen((string)$next_invoice);
-    	$invoice_number = '01';
+        $invoice_number = '01';
        
         for ($i = 3; $i <= (10 - $numlength); $i++) {
             $invoice_number .= '0';
         }
         $invoice_number .= $next_invoice;
-    	return $invoice_number;
+        return $invoice_number;
     }
 
     private function createInvoice($amount,$description){
@@ -912,6 +913,37 @@ class ParentController extends Controller
     public function resetPassPage() {
         
         return view('parent.reset-password');
+    }
+
+    public function requestLeavePage() {
+        $children = User::where('id', auth()->user()->id)->with('students')->get();
+
+        return view('parent.request-leave')->with('children', $children);
+    }
+
+    public function requestLeave(Request $request) {
+        $request->validate([
+            'leave_type' => 'required|integer',
+            'file' => 'required|file|max:2048',
+            'message' => 'required|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+        ]);
+
+        $path = base_path()."/public/documents/leave_requests/";
+        $file = $this->upload_file($request->file('file'), $path);
+
+        LeaveRequest::create([
+            'student_id' => $request->student_id,
+            'type'       => $request->leave_type,
+            'file'       => $file,
+            'message'    => $request->message,
+            'start_date' => $request->start_date,
+            'end_date'   => $request->end_date,
+            'status'     => LeaveRequest::STATUS_PENDING
+        ]);
+
+        return redirect()->back()->with('success_message', 'Leave request submitted successfully!');
     }
 }
 

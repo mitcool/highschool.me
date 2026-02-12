@@ -28,7 +28,7 @@
 @endsection
 
 @section('content')
-<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+<div class="container border bg-white" style="margin-top:50px;padding:20px;">    
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <div class="card shadow-sm">
@@ -50,7 +50,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('add-enrollment-course') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.update-enrollment-course', $course->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         {{-- STEP 1: Curriculum Type --}}
@@ -325,42 +325,62 @@
                             Only the common catalog and curriculum fields are needed for this type.
                         </div>
 
+                        @php
+                            // If validation fails, prefer old() values
+                            $oldFiles = old('resource_files');
+                            $oldLabels = old('resource_files_labels');
+
+                            $files = is_array($oldFiles)
+                                ? collect($oldFiles)->map(fn($u, $i) => ['stored_path' => $u, 'label' => $oldLabels[$i] ?? ''])
+                                : ($courseFiles ?? collect())->map(fn($f) => ['stored_path' => $f->stored_path, 'label' => $f->label]);
+
+                            if ($files->count() === 0) {
+                                $files = collect([['stored_path' => '', 'label' => '']]);
+                            }
+                        @endphp
+
                         {{-- FILES --}}
                         <div class="card border-0 mb-3">
                             <div class="card-body bg-light rounded">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <h6 class="fw-semibold mb-0">Course Files</h6>
                                     <button type="button" class="btn btn-sm btn-outline-primary" id="add-file-row">
-                                        + Add file
+                                        + Add link to file
                                     </button>
                                 </div>
+
                                 <p class="text-muted small mb-3">
-                                    Upload PDFs, slides, docs, etc. You can attach multiple files.
+                                    Upload links to PDFs, slides, docs, etc. You can attach multiple links.
                                 </p>
 
                                 <div id="file-rows">
-                                    {{-- initial file row --}}
-                                    <div class="row g-2 align-items-center mb-2 file-row">
-                                        <div class="col-md-8">
-                                            <input
-                                                type="file"
-                                                name="resource_files[]"
-                                                class="form-control"
-                                            >
+                                    @foreach($files as $i => $f)
+                                        <div class="row g-2 align-items-center mb-2 file-row">
+                                            <div class="col-md-8">
+                                                <input
+                                                    type="text"
+                                                    name="resource_files[]"
+                                                    class="form-control"
+                                                    placeholder="https://..."
+                                                    value="{{ $f['stored_path'] }}"
+                                                >
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input
+                                                    type="text"
+                                                    name="resource_files_labels[]"
+                                                    class="form-control"
+                                                    placeholder="Name"
+                                                    value="{{ $f['label'] }}"
+                                                >
+                                            </div>
+                                            <div class="col-md-1 text-end">
+                                                @if($i > 0)
+                                                    <button type="button" class="btn btn-sm btn-outline-danger remove-file-row">&times;</button>
+                                                @endif
+                                            </div>
                                         </div>
-                                        <div class="col-md-3">
-                                            <input
-                                                type="text"
-                                                name="resource_files_labels[]"
-                                                class="form-control"
-                                                placeholder="Optional description"
-                                                value="{{ old('resource_files_labels.0') }}"
-                                            >
-                                        </div>
-                                        <div class="col-md-1 text-end">
-                                            {{-- remove button appears only on cloned rows (via JS) --}}
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -369,25 +389,29 @@
                         <template id="file-row-template">
                             <div class="row g-2 align-items-center mb-2 file-row">
                                 <div class="col-md-8">
-                                    <input
-                                        type="file"
-                                        name="resource_files[]"
-                                        class="form-control"
-                                    >
+                                    <input type="text" name="resource_files[]" class="form-control" placeholder="https://...">
                                 </div>
                                 <div class="col-md-3">
-                                    <input
-                                        type="text"
-                                        name="resource_files_labels[]"
-                                        class="form-control"
-                                        placeholder="Optional description"
-                                    >
+                                    <input type="text" name="resource_files_labels[]" class="form-control" placeholder="Name">
                                 </div>
                                 <div class="col-md-1 text-end">
                                     <button type="button" class="btn btn-sm btn-outline-danger remove-file-row">&times;</button>
                                 </div>
                             </div>
                         </template>
+
+                        @php
+                            $oldTitles = old('video_titles');
+                            $oldUrls = old('video_urls');
+
+                            $videos = is_array($oldTitles)
+                                ? collect($oldTitles)->map(fn($t, $i) => ['title' => $t, 'url' => $oldUrls[$i] ?? ''])
+                                : ($courseVideos ?? collect())->map(fn($v) => ['title' => $v->title, 'url' => $v->url]);
+
+                            if ($videos->count() === 0) {
+                                $videos = collect([['title' => '', 'url' => '']]);
+                            }
+                        @endphp
 
                         {{-- VIDEOS --}}
                         <div class="card border-0 mb-3">
@@ -398,35 +422,39 @@
                                         + Add video
                                     </button>
                                 </div>
+
                                 <p class="text-muted small mb-3">
                                     Add links to external videos (YouTube, Vimeo, etc.) and give each a friendly name.
                                 </p>
 
                                 <div id="video-rows">
-                                    {{-- initial video row --}}
-                                    <div class="row g-2 align-items-center mb-2 video-row">
-                                        <div class="col-md-4">
-                                            <input
-                                                type="text"
-                                                name="video_titles[]"
-                                                class="form-control"
-                                                placeholder="Video title"
-                                                value="{{ old('video_titles.0') }}"
-                                            >
+                                    @foreach($videos as $i => $v)
+                                        <div class="row g-2 align-items-center mb-2 video-row">
+                                            <div class="col-md-4">
+                                                <input
+                                                    type="text"
+                                                    name="video_titles[]"
+                                                    class="form-control"
+                                                    placeholder="Video title"
+                                                    value="{{ $v['title'] }}"
+                                                >
+                                            </div>
+                                            <div class="col-md-7">
+                                                <input
+                                                    type="url"
+                                                    name="video_urls[]"
+                                                    class="form-control"
+                                                    placeholder="https://..."
+                                                    value="{{ $v['url'] }}"
+                                                >
+                                            </div>
+                                            <div class="col-md-1 text-end">
+                                                @if($i > 0)
+                                                    <button type="button" class="btn btn-sm btn-outline-danger remove-video-row">&times;</button>
+                                                @endif
+                                            </div>
                                         </div>
-                                        <div class="col-md-7">
-                                            <input
-                                                type="url"
-                                                name="video_urls[]"
-                                                class="form-control"
-                                                placeholder="https://..."
-                                                value="{{ old('video_urls.0') }}"
-                                            >
-                                        </div>
-                                        <div class="col-md-1 text-end">
-                                            {{-- remove button on clones only --}}
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -435,20 +463,10 @@
                         <template id="video-row-template">
                             <div class="row g-2 align-items-center mb-2 video-row">
                                 <div class="col-md-4">
-                                    <input
-                                        type="text"
-                                        name="video_titles[]"
-                                        class="form-control"
-                                        placeholder="Video title"
-                                    >
+                                    <input type="text" name="video_titles[]" class="form-control" placeholder="Video title">
                                 </div>
                                 <div class="col-md-7">
-                                    <input
-                                        type="url"
-                                        name="video_urls[]"
-                                        class="form-control"
-                                        placeholder="https://..."
-                                    >
+                                    <input type="url" name="video_urls[]" class="form-control" placeholder="https://...">
                                 </div>
                                 <div class="col-md-1 text-end">
                                     <button type="button" class="btn btn-sm btn-outline-danger remove-video-row">&times;</button>
@@ -461,7 +479,7 @@
                                 Cancel
                             </a>
                             <button type="submit" class="btn btn-primary" style="margin-left: 30px;">
-                                Save Course
+                                Update Course
                             </button>
                         </div>
                     </form>

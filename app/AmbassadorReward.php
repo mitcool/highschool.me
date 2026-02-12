@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class AmbassadorReward extends Model
 {
     use HasFactory;
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'name',
+        'points'
+    ];
 }

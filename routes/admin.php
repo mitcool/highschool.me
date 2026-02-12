@@ -173,6 +173,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/add-enrollment-course', 'AdminController@AddEnrollmentCourse')->name('add-enrollment-course');
 	Route::get('/all-enrollment-courses', 'AdminController@allEnrollmentCoursesPage')->name('all-enrollment-courses');
 	Route::get('/edit-enrollment-course/{course_id}', 'AdminController@editEnrollmentCoursePage')->name('edit-enrollment-course');
+	Route::post('/update-enrollment-course/{course_id}', 'AdminController@updateEnrollmentCourse')->name('admin.update-enrollment-course');
 	
 	//Student documents 
 	Route::get('/students/documents','AdminStudentController@studentDocuments')->name('admin-student-documents');
@@ -197,6 +198,9 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/ambassador-activities', 'AdminController@showActivitiesPage')->name('admin.ambassador-activities');
 	Route::get('/add-activity', 'AdminController@showAddActivityPage')->name('admin.add-activity');
 	Route::post('/add-new-activity', 'AdminController@addActivity')->name('admin.add-new-activity');
+	Route::get('/edit-single-reward/{reward_id}', 'AdminController@showEditRewardPage')->name('admin.edit-single-reward');
+	Route::post('/edit-reward/{reward_id}', 'AdminController@updateReward')->name('admin.edit-reward');
+	Route::post('/delete-reward/{reward_id}', 'AdminController@deleteReward')->name('admin.delete-reward');
 
 	//Password functionality
 	Route::get('/change-password', 'AdminController@changePassword')->name('admin.change-password');
@@ -215,6 +219,12 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/edit-self-assessment-question/{question_id}', 'AdminController@editSelfAssessmentQuestionPage')->name('admin.edit-single-self-assessment-question');
 	Route::post('/edit-single-self-assessment-question/{question_id}', 'AdminController@editSelfAssessmentQuestion')->name('admin.self-assessment-update');
 	Route::post('/delete-single-self-assessment-question/{question_id}', 'AdminController@deleteSelfAssessmentQuestion')->name('admin.delete-self-asses-question');
+
+	//Student leaves functionality
+	Route::get('/all-requested-leaves', 'AdminController@requestedLeavesPage')->name('admin.all-requested-leaves');
+	Route::get('/single-leave-reuqest/{request_id}', 'AdminController@singleLeaveRequestPage')->name('admin.single-leave-reuqest');
+	Route::patch('/leave-requests/approve/{request_id}', 'AdminController@approveLeaveRequest')->name('admin.leave_requests.approve');
+    Route::patch('/leave-requests/deny/{request_id}', 'AdminController@denyLeaveRequest')->name('admin.leave_requests.deny');
 
 	Route::get('/single/student/{student_id}','AdminStudentController@singleStudentProfile')->name('admin.single-student');
 

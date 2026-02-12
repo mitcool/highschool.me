@@ -67,6 +67,16 @@
         background-color: #d14f0a !important;
         border-color: #d14f0a !important;
     }
+
+    .password-details {
+        font-size: 10px;
+        color: red;
+    }
+
+    .checkbox-details {
+        font-size: 10px;
+        color: red;
+    }
 </style>
 @endsection
 
@@ -99,7 +109,7 @@
 
                          {{-- Family Name --}}
                         <div class="form-group">
-                            <label for="middlename">{{ __('Middle Name') }}</label>
+                            <label for="middlename">{{ __('Second Name (Optional)') }}</label>
                             <input id="middlename" type="text"
                                    class="form-control{{ $errors->has('middlename') ? ' is-invalid' : '' }}"
                                    name="middlename" value="{{ old('middlename') }}">
@@ -152,6 +162,9 @@
                             <input id="password" type="password"
                                    class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
                                    name="password" required>
+                            <span class="password-details">
+                                <strong>Must be at least 10 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special symbol.</strong>
+                            </span>
                             @if ($errors->has('password'))
                                 <span class="invalid-feedback">
                                     <strong>{{ $errors->first('password') }}</strong>
@@ -180,6 +193,9 @@
                                     I agree to the <a href="/" target="_blank">Terms & Conditions</a>
                                 </label>
                             </div>
+                            <span class="checkbox-details">
+                                Be aware that we cannot sign students from the following countries: ........
+                            </span>
                         </div>
 
                         {{-- reCAPTCHA --}}

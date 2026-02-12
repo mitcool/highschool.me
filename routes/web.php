@@ -85,6 +85,10 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::get('/reset-password', 'ParentController@resetPassPage')->name('parent.reset.password.page');
 
+	#releted to leaves
+	Route::get('/request-leave', 'ParentController@requestLeavePage')->name('parent.request-leave');
+	Route::post('/store-leave', 'ParentController@requestLeave')->name('parent.store-leave');
+
 });
 
 Route::group(['prefix' => 'student','middleware' => 'student'],function(){

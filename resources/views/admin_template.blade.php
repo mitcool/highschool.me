@@ -258,7 +258,11 @@
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Documents</span>
                         </a>
-                         <a class="nav-link collapsed" href="{{route('admin-student-diploma-requests')}}">
+                        <a class="nav-link collapsed" href="{{route('admin.all-requested-leaves')}}">
+                            <i class="fas fa-fw fa-cog"></i>
+                            <span>Leave Requests</span>
+                        </a>
+            <a class="nav-link collapsed" href="{{route('admin-student-diploma-requests')}}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Diploma Requests</span>
                         </a>
@@ -351,8 +355,8 @@
 
             <x-flash-messages />
 
-            @yield('content')
-                      
+            @yield('content')          
+
             <a class="scroll-to-top rounded" href="#page-top">
                 <i class="fas fa-angle-up"></i>
             </a>

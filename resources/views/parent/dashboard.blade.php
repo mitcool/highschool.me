@@ -52,8 +52,7 @@
         <div class="row">
            
                 <div id="wrapper" style="padding:0 0px;">
-                    <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion" id="accordionSidebar" style="background:#045397"
->
+                    <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion" id="accordionSidebar" style="background:#045397">
                         <li class="nav-item black">
                             <a class="nav-link" href="{{route('welcome')}}">
                                 <i class="fas fa-fw fa-home"></i>
@@ -96,6 +95,12 @@
                                 </li>
                           @endforeach
                         @endif
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ route('parent.request-leave') }}">
+                                <i class="fas fa-fw fa-cog"></i>
+                                <span>Request Leave</span>
+                            </a>
+                        </li>
                        <div class="sidebar-heading">Payments and invoices</div>
                         <li class="nav-item active">
                             <a class="nav-link" href="{{route('parent.invoices')}}">
