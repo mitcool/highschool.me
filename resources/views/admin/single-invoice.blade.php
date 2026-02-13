@@ -115,6 +115,75 @@
     .btn-close:hover {
       background-color: #e24e00;
     }
+    @page { margin: 10mm; }
+
+    @media print {
+
+      html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        height: auto !important;
+        overflow: visible !important;
+      }
+
+      /* Remove admin layout */
+      header,
+      #wrapper,
+      footer,
+      #footer,
+      .scroll-to-top,
+      body > div[style*="background:#045397"] {
+        display: none !important;
+      }
+
+      /* Hide everything */
+      body * {
+        visibility: hidden !important;
+      }
+
+      /* Show only invoice */
+      .invoice-container,
+      .invoice-container * {
+        visibility: visible !important;
+      }
+
+      /* Position invoice correctly for printing */
+      .invoice-container {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        margin: 0 !important;
+        padding: 15mm !important;
+
+        box-shadow: none !important;
+        border-radius: 0 !important;
+
+        height: auto !important;
+        max-height: none !important;
+      }
+
+      /* Keep From / Bill To in two columns */
+      .invoice-container .row {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+      }
+
+      .invoice-container .col-md-6 {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+      }
+
+      /* Hide buttons */
+      .btn-print,
+      .btn-close {
+        display: none !important;
+      }
+    }
 </style>
 @endsection
 
@@ -136,7 +205,7 @@
     </div>
 
     <div class="row mt-4">
-      <div class="col-md-6">
+      <div class="col-md-8">
         <h6 class="section-title">From</h6>
         <p>
           ONSITES GROUP LTD<br>
@@ -147,7 +216,7 @@
           VAT 0000000000
         </p>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <h6 class="section-title">Bill To</h6>
         <p>
           {{$invoice->name}} {{$invoice->surname}}<br>

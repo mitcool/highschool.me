@@ -191,9 +191,115 @@ class StudentController extends Controller
         $course = CatalogCourse::find($course_id);
 
         $materials = CourseFile::where('course_id', $course_id)->get();
+        $videos = CourseVideo::where('course_id', $course_id)->get();
 
-        return view('student.single-course')->with('course',$course)->with('materials', $materials);
+        return view('student.single-course')->with('course',$course)->with('materials', $materials)->with('videos', $videos);
     }
+
+    public function singleMaterial(Request $request, $material_id) {
+        $file = CourseFile::where('id', $material_id)->firstOrFail();
+
+        $url = trim((string) $file->stored_path);
+
+        $iframeUrl = $this->normalizeFileUrlForIframe($file->stored_path);
+
+        return view('student.single-material')
+            ->with('file', $file)
+            ->with('iframeUrl', $iframeUrl);
+    }
+
+    private function normalizeFileUrlForIframe(string $url): string {
+        $url = trim($url);
+
+        // If it's already a drive preview link, keep it
+        if (str_contains($url, 'drive.google.com') && str_contains($url, '/preview')) {
+            return $url;
+        }
+
+        // Extract file ID from common Google Drive share URL formats
+        // Examples:
+        // https://drive.google.com/file/d/FILE_ID/view?usp=sharing
+        // https://drive.google.com/open?id=FILE_ID
+        // https://drive.google.com/uc?id=FILE_ID&export=download
+
+        $fileId = null;
+
+        // /file/d/{id}/...
+        if (preg_match('~/file/d/([a-zA-Z0-9_-]+)~', $url, $m)) {
+            $fileId = $m[1];
+        }
+
+        // ?id={id}
+        if (!$fileId) {
+            $parsed = parse_url($url);
+            parse_str($parsed['query'] ?? '', $q);
+            if (!empty($q['id'])) {
+                $fileId = $q['id'];
+            }
+        }
+
+        // If we got an ID, return iframe preview URL
+        if ($fileId) {
+            return "https://drive.google.com/file/d/{$fileId}/preview";
+        }
+
+        // Not a drive link (or unknown format) — return as-is
+        return $url;
+    }
+
+    public function singleVideo(Request $request, $video_id) {
+        $video = CourseVideo::where('id', $video_id)->firstOrFail();
+
+        $embedUrl = $this->youtubeEmbedUrl($video->url);
+
+        if (!$embedUrl) {
+            return back()->with('success_message', 'Invalid YouTube URL.');
+        }
+
+        return view('student.single-video')->with('video', $video)->with('embedUrl', $embedUrl);
+    }
+
+    private function youtubeEmbedUrl(string $url): ?string {
+        $url = trim($url);
+        if ($url === '') return null;
+
+        $parsed = parse_url($url);
+        $host = $parsed['host'] ?? '';
+        $path = $parsed['path'] ?? '';
+        $query = $parsed['query'] ?? '';
+
+        $id = null;
+
+        // youtu.be/VIDEO_ID
+        if (str_contains($host, 'youtu.be')) {
+            $id = ltrim($path, '/');
+        }
+
+        // youtube.com/watch?v=VIDEO_ID
+        if (!$id && str_contains($host, 'youtube.com')) {
+            // /embed/VIDEO_ID
+            if (str_starts_with($path, '/embed/')) {
+                $id = substr($path, strlen('/embed/'));
+            }
+            // /shorts/VIDEO_ID
+            elseif (str_starts_with($path, '/shorts/')) {
+                $id = substr($path, strlen('/shorts/'));
+            }
+            // /watch?v=VIDEO_ID
+            else {
+                parse_str($query, $q);
+                $id = $q['v'] ?? null;
+            }
+        }
+
+        // sanitize
+        $id = $id ? preg_replace('/[^a-zA-Z0-9_\-]/', '', $id) : null;
+        if (!$id) return null;
+
+        // normal embed
+        return "https://www.youtube.com/embed/{$id}";
+    }
+
 
     public function studyMentor(){
         return view('student.study-mentor');

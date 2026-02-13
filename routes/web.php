@@ -99,6 +99,8 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::post('/store-activity', 'StudentController@storeActivity')->name('student.store-activity');
 	Route::get('/my-courses', 'StudentController@myCoursesPage')->name('student.my-courses');
 	Route::get('/course/{course_id}','StudentController@singleCourse')->name('student.single-course');
+	Route::get('/course-material/{material_id}', 'StudentController@singleMaterial')->name('student.course-material');
+	Route::get('/course-video/{video_id}', 'StudentController@singleVideo')->name('student.course-video');
 	Route::get('/study-mentor','StudentController@studyMentor')->name('student.study-mentor');
 	Route::get('/study-mentor/{mentor_id}','StudentController@singleStudyMentor')->name('student.single-study-mentor');
 	Route::get('/single-study-mentor-chat','StudentController@singleStudyMentorChat')->name('student.single-study-mentor-chat');

@@ -2,213 +2,186 @@
 
 @section('css')
 <style>
-<style>
-        body {
-            background-color: #fcfcfc;
-            color: #212529;
-        }
+    body {
+        background: #fcfcfc;
+        color: #212529;
+    }
 
-        h2, h3, h4 {
-            color: #004c99;
-            font-weight: 700;
-        }
+    .materials-card {
+        background: #fff;
+        border: 1px solid #e6e6e6;
+        border-radius: 8px;
+        padding: 26px 28px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        max-width: 920px;
+        margin: 0 auto;
+    }
 
-        .section-spacer {
-            margin-top: 60px;
-            margin-bottom: 40px;
-            border-top: 2px dashed #ddd;
-            padding-top: 40px;
-        }
+    .materials-title {
+        color: #004c99;
+        font-weight: 700;
+        margin-bottom: 10px;
+        font-size: 22px;
+    }
 
-        /* =========================================
-           4. MY COURSES TABLE
-           ========================================= */
-        .table-container {
-            max-width: 650px;
-            margin: 0 auto;
-        }
+    .materials-desc {
+        color: #8a8a8a;
+        margin-bottom: 18px;
+        line-height: 1.35;
+    }
 
-        .course-table {
-            width: 100%;
-        }
+    .materials-divider {
+        border-top: 1px solid #dcdcdc;
+        margin: 10px 0 6px;
+    }
 
-        .course-table thead th {
-            border-bottom: 2px solid #dee2e6;
-            padding-bottom: 10px;
-            font-weight: 500;
-            color: #495057;
-            border-top: none;
-        }
+    .material-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 0;
+        border-bottom: 1px solid #dcdcdc;
+    }
 
-        .course-table tbody tr {
-            border-bottom: 1px solid #dee2e6;
-        }
+    .material-row:last-of-type {
+        border-bottom: 0;
+    }
 
-        .course-table tbody tr:last-child {
-            border-bottom: none;
-        }
+    .material-name {
+        flex: 1;
+        font-weight: 500;
+        color: #2b2b2b;
+    }
 
-        .course-table tbody td {
-            padding: 12px 0;
-            border-top: none !important; 
-        }
+    .self-link {
+        min-width: 150px;
+        text-align: right;
+        font-size: 13px;
+        color: #0b63c7;
+        text-decoration: underline;
+        font-weight: 500;
+        white-space: nowrap;
+    }
 
-        .view-link {
-            color: #007bff;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .view-link:hover { text-decoration: underline; }
+    .self-link:hover {
+        color: #084f9e;
+    }
 
-        /* =========================================
-           5. ENROLL PAGE (Tabs & Accordion)
-           ========================================= */
-        /* Tabs */
-        .custom-tabs {
-            justify-content: center;
-            margin-bottom: 20px;
-        }
+    .self-link.disabled {
+        color: #cfcfcf !important;
+        pointer-events: none;
+        text-decoration: none;
+    }
 
-        /* BS4 Nav Pills spacing */
-        .custom-tabs .nav-item {
-            margin: 0 4px;
-        }
+    .btn-open {
+        background: #e65100;
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 10px 18px;
+        min-width: 74px;
+        box-shadow: 0 6px 14px rgba(230,81,0,0.25);
+    }
 
-        .custom-tabs .nav-link {
-            background-color: white;
-            color: #004c99;
-            font-weight: 600;
-            border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            padding: 8px 16px;
-        }
+    .btn-open:hover {
+        background: #cf4900;
+        color: #fff;
+    }
 
-        .custom-tabs .nav-link.active {
-            background-color: #e65100;
-            color: #fff;
-        }
+    .btn-close-big {
+        background: #e65100;
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 12px 34px;
+        box-shadow: 0 6px 14px rgba(230,81,0,0.25);
+    }
 
-        /* Accordion - Adapted for BS4 Card Structure */
-        .custom-accordion .card {
-            border: none;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            overflow: hidden;
-        }
+    .btn-close-big:hover {
+        background: #cf4900;
+        color: #fff;
+    }
 
-        .custom-accordion .card-header {
-            background-color: white;
-            border-bottom: none;
-            padding: 0;
-        }
+    .bottom-actions {
+        text-align: center;
+        margin-top: 26px;
+    }
 
-        .custom-accordion .btn-header {
-            color: #004c99;
-            font-size: 1.1rem;
-            font-weight: 500;
-            text-decoration: none;
-            width: 100%;
-            text-align: left;
-            padding: 1rem 1.25rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .custom-accordion .btn-header:hover, 
-        .custom-accordion .btn-header:focus {
-            text-decoration: none;
-            box-shadow: none;
-        }
-
-        .custom-accordion .btn-header::after {
-            content: '';
-            width: 16px;
-            height: 16px;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23004c99'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-size: contain;
-            transition: transform 0.2s;
-        }
-
-        .custom-accordion .btn-header.collapsed::after {
-            transform: rotate(-90deg);
-        }
-
-        .course-row {
-            padding: 15px 0;
-            border-bottom: 1px solid #dee2e6;
-        }
-        .course-row:last-child { border-bottom: none; }
-
-        .credit-text { color: #4dabf7; font-weight: 400; }
-
-        .btn-enroll {
-            background-color: #cc4400;
-            color: white;
-            border: none;
-            font-weight: 600;
-            padding: 5px 20px;
-            border-radius: 6px;
-        }
-        .btn-enroll:hover {
-            background-color: #b33b00;
-            color: white;
-        }
-        .btn-enrolled {
-            background-color: #f3f3f3;
-            color: white;
-            border: none;
-            font-weight: 600;
-            padding: 5px 20px;
-            border-radius: 6px;
-        }
-       
+    .section-spacing {
+        margin-top: 40px;
+    }
 </style>
 @endsection
 
 @section('content')
 <div class="container my-5">
     <h2 class="text-center mb-4">{{ $course->title }}</h2>
-   
-    <div class="table-responsive shadow" style="padding:20px;margin-top:50px;">
-        <h3>Materials</h3>
 
+    <div class="materials-card">
+        <div class="materials-title">Materials</div>
+        <div class="materials-desc">
+            Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque.
+            Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet.
+        </div>
+
+        <div class="materials-divider"></div>
+
+        {{-- MATERIALS --}}
         @forelse($materials as $material)
-            <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
-                <span class="fw-medium">
-                    {{ $material->label }}
-                </span>
+            @php
+                $hasSelfAssessment = true; // change logic if needed
+            @endphp
 
-                <a href=""
-                   class="btn btn-warning text-white px-4">
+            <div class="material-row">
+                <div class="material-name">{{ $material->label }}</div>
+
+                @if($hasSelfAssessment)
+                    <a class="self-link"
+                       href="{{ route('student.self-assessment-test', $material->id) }}">
+                        Self Assessment
+                    </a>
+                @else
+                    <span class="self-link disabled">Self Assessment</span>
+                @endif
+
+                <a class="btn btn-open"
+                   href="{{ route('student.course-material', $material->id) }}">
                     Open
                 </a>
             </div>
-
-            <div class="row mt-2">
-                <div class="col-12 text-end">
-                    <a href="{{ route('student.self-assessment-test', $material->id) }}"
-                       class="btn btn-warning text-white px-4">
-                        Self-assessment Test
-                    </a>
-                </div>
-            </div>
         @empty
-            <p class="text-muted text-center">
-                No materials available for this course.
-            </p>
+            <p class="text-muted text-center my-4">No materials available for this course.</p>
         @endforelse
 
-        @foreach ($course->videos as $video )
-            
-        @endforeach
+
+        {{-- VIDEOS SECTION --}}
+        <div class="materials-title section-spacing">Videos</div>
+        <div class="materials-divider"></div>
+
+        @forelse($videos as $video)
+            <div class="material-row">
+                <div class="material-name">{{ $video->title }}</div>
+
+                <a class="btn btn-open"
+                   href="{{ route('student.course-video', $video->id) }}">
+                    Open
+                </a>
+            </div>
+        @empty
+            <p class="text-muted text-center my-4">No videos available for this course.</p>
+        @endforelse
+
+
+        <div class="bottom-actions">
+            <a href="{{ url()->previous() }}" class="btn btn-close-big">
+                Close
+            </a>
+        </div>
     </div>
-    
 </div>
 @endsection
 
 @section('scripts')
-
 @endsection
