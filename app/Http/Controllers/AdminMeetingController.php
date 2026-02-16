@@ -27,7 +27,6 @@ class AdminMeetingController extends Controller
     }
 
     public function createGroupSession(Request $request){
-
         $request->validate([
             'date' => 'required',
             'start' => 'required',
@@ -35,11 +34,23 @@ class AdminMeetingController extends Controller
             'link' => 'required',
             'educator_id' => 'required'
         ]);
-        $group_session = $request->except('_token');
-        GroupSession::create($group_session);
-
-        //TODO::emails
-        return redirect()->route('admin-group-sessions')->with('success_message','Group session created successfully');
+        $dates = $request->date;
+        $start = $request->start;
+        $end = $request->end;
+        $link = $request->link;
+        $educator_id = $request->educator_id;
+        foreach($dates as $key => $date){
+            $group_session = [];
+            $group_session['date'] = $dates[$key];
+            $group_session['start'] = $start[$key];
+            $group_session['end'] = $end[$key];
+            $group_session['link'] = $link[$key];
+            $group_session['educator_id'] = $educator_id;
+            GroupSession::create($group_session);
+        }
+        
+        return redirect()->route('admin-group-sessions')
+            ->with('success_message','Group session created successfully');
     }
 
     public function mentoringSessions(){
@@ -56,10 +67,21 @@ class AdminMeetingController extends Controller
             'link' => 'required',
             'educator_id' => 'required'
         ]);
-        $group_session = $request->except('_token');
-        MentoringSession::create($group_session);
+        $dates = $request->date;
+        $start = $request->start;
+        $end = $request->end;
+        $link = $request->link;
+        $educator_id = $request->educator_id;
+        foreach($dates as $key => $date){
+            $mentoring_session = [];
+            $mentoring_session['date'] = $dates[$key];
+            $mentoring_session['start'] = $start[$key];
+            $mentoring_session['end'] = $end[$key];
+            $mentoring_session['link'] = $link[$key];
+            $mentoring_session['educator_id'] = $educator_id;
+            MentoringSession::create($mentoring_session);
+        }
 
-        //TODO::emails
         return redirect()->route('admin-mentoring-sessions')->with('success_message','Mentoring session created successfully');
     }
 
@@ -121,17 +143,21 @@ class AdminMeetingController extends Controller
     }
 
     public function createCoachingSession(Request $request){
-        $request->validate([
-            'date' => 'required',
-            'start' => 'required',
-            'end' => 'required',
-            'link' => 'required',
-            'educator_id' => 'required'
-        ]);
-        $group_session = $request->except('_token');
-        CoachingSession::create($group_session);
-
-        //TODO::emails
+        $dates = $request->date;
+        $start = $request->start;
+        $end = $request->end;
+        $link = $request->link;
+        $educator_id = $request->educator_id;
+        foreach($dates as $key => $date){
+            $coaching_session = [];
+            $coaching_session['date'] = $dates[$key];
+            $coaching_session['start'] = $start[$key];
+            $coaching_session['end'] = $end[$key];
+            $coaching_session['link'] = $link[$key];
+            $coaching_session['educator_id'] = $educator_id;
+            CoachingSession::create($coaching_session);
+        }
+       
         return redirect()->route('admin-coaching-sessions')->with('success_message','Coaching session created successfully');
     }
     public function addCoachingSession(){

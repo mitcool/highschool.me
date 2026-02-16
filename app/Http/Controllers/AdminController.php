@@ -1406,14 +1406,14 @@ class AdminController extends Controller
     public function exams(){
         $students = User::where('role_id',4)->get();
         $educators = User::where('role_id',5)->get();
-        $courses = CatalogCourse::all(); 
+        $courses = CurriculumCourse::all(); 
         return view('admin.exams')
             ->with('students',$students)
             ->with('educators',$educators)
             ->with('courses',$courses);
     }
     public function createExam(Request $request){
-        $exam = $request->only('date','time','course_id','student_id','educator_id','type');
+        $exam = $request->only('date','time','course_id','student_id','educator_id','type','pre_exam');
         $exam['status']=0;
         Exam::create($exam);
         return redirect()->back()->with('success_message','Exam created successfully');
@@ -1502,7 +1502,7 @@ class AdminController extends Controller
     }
 
     public function addExamQuestionsPage(Request $request) {
-        $courses = CatalogCourse::get();
+        $courses = CurriculumCourse::get();
         
         $questions = ExamQuestion::when($request->course_id, function ($query) use ($request) {
            
@@ -1711,5 +1711,10 @@ class AdminController extends Controller
 
         return back()->with('success', 'Request denied');
     }
-
+    
+    public function ChangeDiplomaPrintingStatus(Request $request,$diploma_request_id){
+        $diploma_request = DiplomaPrintingRequest::find($diploma_request_id);
+        $diploma_request->update(['status' => $diploma_request->status+1]);
+        return redirect()->back()->with('success_message','Diploma request updated successfully');
+    }
 }

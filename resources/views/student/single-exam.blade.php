@@ -142,7 +142,6 @@ document.addEventListener("paste", e => blockEvent(e, "Paste blocked"));
             handleViolation("Window lost focus");
         });
         
-     
     </script>
 @endif
 @endsection

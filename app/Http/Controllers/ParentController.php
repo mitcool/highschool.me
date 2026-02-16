@@ -98,17 +98,23 @@ class ParentController extends Controller
     public function createStudent(){
         return view('parent.create-student');
     }
-    public function meetings(){
-
-        $group_sessions = GroupSession::all();
-        $mentoring_sessions = MentoringSession::all();
-        $coaching_sessions = CoachingSession::all();
+    public function meetings_all(){
+        $students = ParentStudent::where('parent_id',auth()->id())->get();
+        return view('parent.meetings_all')
+            ->with('students',$students);
+    }
+    public function meetings_student($student_id){
+        $hour_now = Carbon::now()->format('H:i:s');
+      
+        $group_sessions = GroupSession::where('date','>',Carbon::now())->where('start','>',$hour_now)->get();
+        $mentoring_sessions = MentoringSession::where('date','>',Carbon::now())->where('start','>',$hour_now)->get();
+        $coaching_sessions = CoachingSession::where('date','>',Carbon::now())->where('start','>',$hour_now)->get();
 
         $user_group_sessions = UserGroupSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
         $user_mentoring_sessions = UserMentoringSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
         $user_coaching_sessions = UserCoachingSessions::where('user_id',auth()->id())->pluck('session_id')->toArray();
         
-        $permissions = $this->checkPermissionForSessionBooking();
+        $permissions = $this->checkPermissionForSessionBooking($student_id);
       
         return view('parent.meetings')
             ->with('group_sessions',$group_sessions)
@@ -117,20 +123,21 @@ class ParentController extends Controller
             ->with('user_mentoring_sessions',$user_mentoring_sessions)
             ->with('user_coaching_sessions',$user_coaching_sessions)
             ->with('permissions',$permissions)
-            ->with('coaching_sessions',$coaching_sessions);
+            ->with('coaching_sessions',$coaching_sessions)
+            ->with('student_id',$student_id);
     }
 
-    public function checkPermissionForSessionBooking(){
+    public function checkPermissionForSessionBooking($student_id){
         $coaching_sessions_permission = false;
-        if(AdditionalCourse::where('status',0)->where('course_type',13)->count() > 0){
+        if(AdditionalCourse::where('status',0)->where('student_id',$student_id)->where('course_type',14)->count() > 0){
             $coaching_sessions_permission = true;
         }
         $mentoring_sessions_permission = false;
-        if(AdditionalCourse::where('status',0)->where('course_type',12)->count() > 0){
+        if(AdditionalCourse::where('status',0)->where('student_id',$student_id)->where('course_type',13)->count() > 0){
             $mentoring_sessions_permission = true;
         }
         $group_sessions_permission = false;
-        if(AdditionalCourse::where('status',0)->where('course_type',11)->count() > 0){
+        if(AdditionalCourse::where('status',0)->where('student_id',$student_id)->where('course_type',12)->count() > 0){
             $group_sessions_permission = true;
         }
         $permissions = [
@@ -412,8 +419,8 @@ class ParentController extends Controller
        $student_data = session()->get('student_data');
 
        $exprires_at = $student_data['payment_type'] == 0  
-                ? Carbon::now()->addMonths(1) 
-                : Carbon::now()->addYears(1); // monthly or yearly
+                ? Carbon::now()->addMonths(1)->subDays(1) 
+                : Carbon::now()->addYears(1)->subDays(1); // monthly or yearly
         StudentPlan::insert([
             'plan_id' => $student_data['plan_id'],
             'student_id' => $student_data['student_id'],
@@ -440,25 +447,33 @@ class ParentController extends Controller
     public function insertAdditionalCourses($plan_id,$student_id){
         // Note SAT == ACT , 
         //Corespondent to features table
-
+        //Courses
         $psat = $plan_id > 1 ?  1 : 1;
         $sat = $plan_id > 1 ? 1 : 1;
         $ap = 0;
         $clep =0;
         $cte = 0;
         $esol = 0;
+        //Sessions
+        $group_sessions = 0;
+        $mentoring_sessions = 0;
+        $coaching_sessions = 0;
 
         if($plan_id == 2){
             $ap = 1;
             $clep =1;
             $cte = 2;
             $esol = 0;
+            $group_sessions = 1;
         }
         elseif($plan_id == 3){
             $ap = 2;
             $clep =2;
             $cte = 4;
             $esol = 1;
+            $group_sessions = 1;
+            $mentoring_sessions = 1;
+            $coaching_sessions = 1;
         }
 
         for($i=0;$i < $psat; $i++){
@@ -500,6 +515,27 @@ class ParentController extends Controller
              AdditionalCourse::insert([
                 'student_id' => $student_id,
                 'course_type' => 6,
+                'status' => 0 // not enrolled
+            ]);
+        }
+         for($i=0;$i < $group_sessions; $i++){
+             AdditionalCourse::insert([
+                'student_id' => $student_id,
+                'course_type' => 12,
+                'status' => 0 // not enrolled
+            ]);
+        }
+         for($i=0;$i < $mentoring_sessions; $i++){
+             AdditionalCourse::insert([
+                'student_id' => $student_id,
+                'course_type' => 13,
+                'status' => 0 // not enrolled
+            ]);
+        }
+         for($i=0;$i < $coaching_sessions; $i++){
+             AdditionalCourse::insert([
+                'student_id' => $student_id,
+                'course_type' => 14,
                 'status' => 0 // not enrolled
             ]);
         }
@@ -614,8 +650,8 @@ class ParentController extends Controller
        $previous_plan = StudentPlan::where('student_id',$student_data['student_id'])->orderBy('expires_at','desc')->first();
       
        $exprires_at = $student_data['payment_type'] == 0  
-                ? Carbon::parse($previous_plan->expires_at)->addMonths(1) 
-                : Carbon::parse($previous_plan->expires_at)->addYears(1); // monthly or yearly
+                ? Carbon::parse($previous_plan->expires_at)->addMonths(1)->subDays(1) 
+                : Carbon::parse($previous_plan->expires_at)->addYears(1)->subDays(1); // monthly or yearly
         StudentPlan::insert([
             'plan_id' => $student_data['plan_id'],
             'student_id' => $student_data['student_id'],

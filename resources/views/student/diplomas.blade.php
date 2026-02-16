@@ -140,22 +140,39 @@
                     <tr class="text-center">
                         <th class="text-left">Date</th>
                         <th>Digital Degree</th>
-                        <th>Link</th>
+                        <th>Transcipt</th>
+                        <th>Diploma</th>
                         <th>Request Copy*</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
-                    <td></td>
-                    <td></td>
+                    <td>
+                             
+                    </td>
+                    <td>
+                        {{ $student->student_details->track_name() }}
+                    </td>
+                    <td>
+                         <a href="{{ route('student.generate-pdf-transcript',auth()->id()) }}">Link</a>
+                    </td>
                     <td>
                         <a href="{{ route('student.generate-pdf-diploma',auth()->id()) }}">Link</a>
                     </td>
                     <td>
-                        <form action="{{ route('request-diploma-copy') }}" class="confirm-first" method="POST">
-                            {{ csrf_field() }}
-                            <button class="orange-button">Request copy</button>
-                        </form>
-                            
+                        @if($diploma_request)
+                            @if($diploma_request->status == 0)
+                                <button class="orange-button">Requested</button>
+                            @elseif($diploma_request->status == 1)
+                                <button class="orange-button">Sent</button>
+                            @elseif($diploma_request->status == 2)
+                                <button class="orange-button">Delivered</button>
+                            @endif
+                        @else
+                            <form action="{{ route('request-diploma-copy') }}" class="confirm-first" method="POST">
+                                {{ csrf_field() }}
+                                <button class="orange-button">Request copy</button>
+                            </form>
+                         @endif   
                         </a>
                     </td>
                 </tbody>

@@ -229,6 +229,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/single/student/{student_id}','AdminStudentController@singleStudentProfile')->name('admin.single-student');
 
 	Route::get('/diploma-requests','AdminController@diplomaRequests')->name('admin-student-diploma-requests');
+	Route::post('admin.change-diploma-printing-status/{request_id}','AdminController@ChangeDiplomaPrintingStatus')->name('admin.change-diploma-printing-status');
 
 	Route::post('/transfer-course/{course_id}','AdminController@transfer')->name('transfer');
 	Route::post('/transfer-course-back/{course_id}','AdminController@transferBack')->name('transfer-back');

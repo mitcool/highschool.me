@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class CoachingSession extends Model
 {
     use HasFactory;
+
+    public $timestamps = false;
+    protected $fillable = ['date','start','end','link','educator_id'];
+
+    protected $casts = [
+        'date' => 'datetime',
+        'start' => 'datetime',
+        'end' => 'datetime',
+    ];
 }

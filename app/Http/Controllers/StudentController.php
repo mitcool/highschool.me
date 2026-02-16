@@ -556,10 +556,12 @@ class StudentController extends Controller
     }
 
     public function diplomas(){
-        
+        $diploma_request = DiplomaPrintingRequest::where('student_id',auth()->id())->first();
         $student = auth()->user();
         $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);        
-        return view('student.diplomas');
+        return view('student.diplomas')
+            ->with('diploma_request',$diploma_request)
+            ->with('student',$student);
     }
 
     public function generatePdfDiploma($student_id){
@@ -601,5 +603,18 @@ class StudentController extends Controller
         }
         return redirect()->route('student.diplomas')
             ->with('success_message','Diploma copy requested successfully');
+    }
+
+    public function digitalTransript($student_id){
+        $student = User::with('student_details','exams')->find($student_id);
+        $exams = Exam::where('status',2)
+            ->where('grade','>',1)
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->date->format('Y'); // group by month
+            });
+
+        $pdf = Pdf::loadView('student.transcript-pdf',[ 'student'=> $student,'exams' => $exams ])->set_option('isRemoteEnabled',true)->setPaper('a4');
+        return $pdf->stream();
     }
 }

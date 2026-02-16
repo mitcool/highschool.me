@@ -17,4 +17,5 @@ class MentoringSession extends Model
         'start' => 'datetime',
         'end' => 'datetime',
     ];
+
 }

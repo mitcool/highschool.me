@@ -15,7 +15,7 @@
         <label class="font-weight-bold mb-0" for="">Course</label>
         <select required class="form-control" name="course_id" required>
             @foreach ($courses as $course )
-                <option value="{{ $course->id }}">{{ $course->title }}</option>
+                <option value="{{ $course->id }}">{{ $course->course->title }}</option>
             @endforeach
         </select><br>
         <label class="font-weight-bold mb-0" for="">Student</label>
@@ -38,6 +38,7 @@
         <div class="d-flex justify-content-center">
             <button type="submit" class="btn orange-button mx-2">Add Exam</button>
         </div>
+        <input type="hidden" name="pre_exam" value="0">
     </form>
 </div>
 @endsection

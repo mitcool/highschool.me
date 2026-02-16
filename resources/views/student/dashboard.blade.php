@@ -46,20 +46,13 @@
             <div id="wrapper" style="padding:0 0px;">
                 <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion" id="accordionSidebar" style="background:#045397">
                     <li class="nav-item black">
-                        <a class="nav-link" href="{{route('welcome')}}">
+                        <a class="nav-link" href="{{route('student.dashboard')}}">
                             <i class="fas fa-fw fa-home"></i>
-                            <span id="home-link">HomePage</span>
+                            <span id="home-link">Dashboard</span>
                         </a>
                     </li>
                     <hr class="sidebar-divider my-0">
-
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{route('student.dashboard')}}">
-                            <i class="fas fa-fw fa-tachometer-alt"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                   
+                                   
                     <div class="sidebar-heading">Meetings</div>
                     <li class="nav-item active">
                         <a class="nav-link" href="">
@@ -67,13 +60,13 @@
                             <span>Meetings</span>
                         </a>
                     </li>
-                    <div class="sidebar-heading">Documents</div>
+                    {{-- <div class="sidebar-heading">Documents</div>
                     <li class="nav-item active">
                         <a class="nav-link" href="">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Upload Documentation</span>
                         </a>
-                    </li>
+                    </li> --}}
 
                     <div class="sidebar-heading">Education</div>
                     <li class="nav-item active">

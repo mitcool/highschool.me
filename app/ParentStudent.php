@@ -30,12 +30,20 @@ class ParentStudent extends Model
      public function rejected_documents_count(){
         return StudentDocument::where('type','<',7)->where('student_id',$this->student_id)->where('is_approved',2)->count();
     }
-
-    public function date_of_birth(){
-        return Carbon::parse($this->date_of_birth)->format('d.m.Y');
-    }
-
+    
     public function plans(){
         return $this->hasMany('App\StudentPlan','student_id','student_id');
+    }
+
+    public function track_name(){
+        if($this->track = 1){
+           return '24-Credit-Graduation Standard Track';             
+        }
+        elseif($this->track==2){
+            return '18-Credit-ACCEL Graduation Track';
+        }
+        elseif($this->track==3){
+            return 'Credit Transfer Track';
+        }
     }
 }

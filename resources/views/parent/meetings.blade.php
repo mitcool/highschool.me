@@ -19,29 +19,22 @@
             </tr>
             @foreach ($group_sessions as $session)
                 <tr>
-                   
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
-                     <td>     
-                        @if(!in_array($session->id,$user_group_sessions) && $permissions['group'])
-                        <select name="student_id"  required class="form-control" form="session-form-{{ $session->id }}">
-                            <option value="" selected disabled>Please select student</option>
-                            @foreach (auth()->user()->students as $student )
-                                <option value="{{ $student->student_id }}">{{ $student->student->name }} {{ $student->student->name }}</option>
-                            @endforeach
-                        </select>           
-                        @endif
-                    </td>
+                     <td></td>
                     <td class="text-right">
-                        @if(in_array($session->id,$user_group_sessions))
+                        @if(in_array($session->session_id,$user_group_sessions))
                             <button class="btn-enrolled">Already Booked</button>
                         @else
                             @if($permissions['group'])
                                 <form action="{{ route('book-group-session',$session->id) }}" method="POST" id="session-form-{{ $session->id }}">
                                     {{ csrf_field() }}
+                                    <input type="hidden" name="student_id" value="{{ $student_id }}">
                                     <button class="btn-enroll">Confirm Appointments</button>
                                 </form>
                             @else
-                            
+                                <a href="{{ route('parent.student.sessions',$student_id) }}">
+                                    <button class="btn-enroll">Buy now</button>
+                                </a>
                             @endif
                         @endif
                     </td>
@@ -57,16 +50,7 @@
             @foreach ($mentoring_sessions as $session)
                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
-                    <td>          
-                        @if(!in_array($session->id,$user_mentoring_sessions) && $permissions['mentoring'])   
-                            <select name="student_id"  required class="form-control" form="mentoring-session-form-{{ $session->id }}">
-                                <option value="" selected disabled>Please select student</option>
-                                @foreach (auth()->user()->students as $student )
-                                    <option value="{{ $student->student_id }}">{{ $student->student->name }} {{ $student->student->name }}</option>
-                                @endforeach
-                            </select>           
-                        @endif     
-                    </td>
+                    <td></td>
                     <td class="text-right">
                         @if(in_array($session->id,$user_mentoring_sessions))
                             <button class="btn-enrolled">Already Booked</button>
@@ -74,10 +58,11 @@
                             @if($permissions['mentoring'])
                                 <form action="{{ route('book-mentoring-session',$session->id) }}" method="POST" id="mentoring-session-form-{{ $session->id }}">
                                     {{ csrf_field() }}
+                                    <input type="hidden" name="student_id" value="{{ $student_id }}">
                                     <button class="btn-enroll">Confirm Appointments</button>
                                 </form>
                             @else
-                                <a href="" class="btn-enroll">Buy now</a>
+                                <a href="{{ route('parent.student.sessions',$student_id) }}" class="btn-enroll">Buy now</a>
                             @endif
             
                         @endif
@@ -93,16 +78,7 @@
             @foreach ($coaching_sessions as $session)
                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
-                    <td>          
-                        @if(!in_array($session->id,$user_coaching_sessions) && $permissions['coaching'])   
-                        <select name="student_id"  required class="form-control" form="coaching-session-form-{{ $session->id }}">
-                            <option value="" selected disabled>Please select student</option>
-                            @foreach (auth()->user()->students as $student )
-                                <option value="{{ $student->student_id }}">{{ $student->student->name }} {{ $student->student->name }}</option>
-                            @endforeach
-                        </select>           
-                        @endif     
-                    </td>
+                    <td></td>
                     <td class="text-right">
                         @if(in_array($session->id,$user_coaching_sessions))
                             <button class="btn-enrolled">Already Booked</button>
@@ -110,10 +86,11 @@
                             @if($permissions['coaching'])
                                 <form action="{{ route('book-coaching-session',$session->id) }}" method="POST" id="coaching-session-form-{{ $session->id }}">
                                     {{ csrf_field() }}
+                                    <input type="hidden" name="student_id" value="{{ $student_id }}">
                                     <button class="btn-enroll">Confirm Appointments</button>
                                 </form>
                             @else
-
+                                <a href="{{ route('parent.student.sessions',$student_id) }}" class="btn-enroll">Buy now</a>
                             @endif
                         @endif
                     </td>

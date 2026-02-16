@@ -48,22 +48,13 @@
             <div id="wrapper" style="padding:0 0px;">
                 <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="padding-left:10px;background:#045397">
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{route('welcome')}}">
-                            <i class="fas fa-fw fa-home"></i>
-                            <span>HomePage</span>
-                        </a>
-                    </li>
-
-                    <hr class="sidebar-divider my-0">
-
-                    <li class="nav-item active">
                         <a class="nav-link" href="{{route('admin-dashboard')}}">
-                            <i class="fas fa-fw fa-tachometer-alt"></i>
+                            <i class="fas fa-fw fa-home"></i>
                             <span>Dashboard</span>
                         </a>
                     </li>
 
-                    <hr class="sidebar-divider">
+                    <hr class="sidebar-divider my-0">
 
                     <div class="sidebar-heading">Courses</div>
                     <li class="nav-item">

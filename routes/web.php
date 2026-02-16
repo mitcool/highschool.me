@@ -12,7 +12,9 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::get('/dashboard', 'ParentController@dashboard')->name('parent.dashboard');
 
-	Route::get('/meeting','ParentController@meetings')->name('parent.meetings');
+	Route::get('/meetings','ParentController@meetings_all')->name('parent.meetings');
+
+	Route::get('/meetings/{student_id}','ParentController@meetings_student')->name('parent.meetings.student');
 
 	Route::get('/student/add','ParentController@createStudent')->name('parent.create.student');
 
@@ -117,8 +119,8 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::get('/diplomas','StudentController@diplomas')->name('student.diplomas');
 	Route::get('/generate-pdf-diploma/{student_id}','StudentController@generatePdfDiploma')->name('student.generate-pdf-diploma');
 	Route::post('/request-diploma-copy','StudentController@requestDiplomaCopy')->name('request-diploma-copy');
-    Route::get('/request-diploma-copy-success','StudentController@requestDiplomaCopySuccess')->name('request-diploma-copy-success');
-
+    	Route::get('/request-diploma-copy-success','StudentController@requestDiplomaCopySuccess')->name('request-diploma-copy-success');
+	Route::get('/digital-transcript/{student_id}','StudentController@digitalTransript')->name('student.generate-pdf-transcript');
 });
 
 Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');

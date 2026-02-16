@@ -24,7 +24,7 @@
                     <option value="">-- Select Course --</option>
                     @foreach($courses as $course)
                         <option value="{{ $course->id }}">
-                            {{ $course->title }}
+                            {{ $course->course->title }}
                         </option>
                     @endforeach
                 </select>

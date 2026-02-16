@@ -89,6 +89,14 @@ class User extends Authenticatable
     
     }
 
+    public function date_of_birth(){
+        return Carbon::parse($this->date_of_birth)->format('d.m.Y');
+    }
+
+    public function exams(){
+        return $this->hasMany('App\Exam','student_id','id');
+    }
+    
     public function sendPasswordResetNotification($token)
     {
          try {

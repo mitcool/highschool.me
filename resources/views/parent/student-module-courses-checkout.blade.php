@@ -35,7 +35,7 @@
             <hr>
             <input type="checkbox" name="agree" required>&nbsp;I confirm that the information provided is accurate and that I agree to the processing of my information for this booking.
             <div class="text-right">
-            <button class="orange-button mt-3" ">Proceed to Payment</button> 
+            <button class="orange-button mt-3">Proceed to Payment</button> 
             </div>
         </form>
     </div>
