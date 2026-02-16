@@ -173,7 +173,6 @@
                                 <button class="orange-button">Request copy</button>
                             </form>
                          @endif   
-                        </a>
                     </td>
                 </tbody>
             </table>

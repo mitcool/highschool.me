@@ -18,7 +18,7 @@
     <body>
         <div style="padding:40px;">
             <div style="text-align:center">
-            <img src="{{ asset('images/logo.svg') }}" alt="" style="width:25%;margin:0 auto;">
+            <img src="{{ public_path('images/logo.svg') }}" alt="" style="width:25%;margin:0 auto;">
         </div>
         <hr style="height: 0x;border-top:3px solid #E9580C; margin-top:20px;">
         <table style="width:100%;margin-top:30px;">

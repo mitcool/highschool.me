@@ -11,7 +11,7 @@
     <body>
         <div style="padding:40px;">
             <div style="text-align:center">
-            <img src="{{ asset('images/logo.svg') }}" alt="" style="width:35%;margin:0 auto;">
+            <img src="{{ public_patht('images/logo.svg') }}" alt="" style="width:35%;margin:0 auto;">
         </div>
         <hr style="height: 0x;border-top:3px solid #E9580C; margin-top:20px;">
         <div style="text-align: center;">
