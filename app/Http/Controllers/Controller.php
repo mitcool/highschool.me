@@ -6,10 +6,12 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 
 use App\HelpDesk;
 use App\RelatedCourse;
 use App\CurriculumCourse;
+use App\Notification;
 
 use DB;
 
@@ -17,26 +19,26 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-	public function upload_file($request_file,$path){
-		$filename = $request_file->getClientOriginalName();
+    public function upload_file($request_file,$path){
+        $filename = $request_file->getClientOriginalName();
         $request_file->move($path, $filename);
-		return $filename;
-	}
+        return $filename;
+    }
    
-	public function unique_code($limit){
-		return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
-	}
+    public function unique_code($limit){
+        return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
+    }
 
-	 public function setHelpDeskNumber(){
-    	$next_help_desk = HelpDesk::count() == 0 ? 1 : HelpDesk::count() + 1;
+     public function setHelpDeskNumber(){
+        $next_help_desk = HelpDesk::count() == 0 ? 1 : HelpDesk::count() + 1;
         $numlength = strlen((string)$next_help_desk);
-    	$help_desk_number = '00';
+        $help_desk_number = '00';
        
         for ($i = 3; $i <= (6 - $numlength); $i++) {
             $help_desk_number .= '0';
         }
         $help_desk_number .= $next_help_desk;
-    	return $help_desk_number;
+        return $help_desk_number;
     }
     ### !-- PLEASE CHECK FOR DATABASE CHANGES !!!
     public function checkMandatoryCourses($student_enrolled_courses){
@@ -134,7 +136,7 @@ class Controller extends BaseController
         
         return $user_messages;
     }
-	 public function calculateCredits($student_enrolled_courses,$track){
+     public function calculateCredits($student_enrolled_courses,$track){
         $credits = [];
         $core_credits = $track == 1 ? 16 : 15;
         $elective_credits = 0;
@@ -163,6 +165,24 @@ class Controller extends BaseController
         }
         return $credits;
     }
+    
+    public function deleteSingleNotification(Request $request, $id) {
+        Notification::where('id', $id)->where('user_id', auth()->id())->delete();
+
+        return redirect()->back()->with('success_message', 'Successfully deleted selected notification!');
+    }
+
+    public function deleteAllNotifications() {
+        Notification::where('user_id', auth()->id())->delete();
+
+        return redirect()->back()->with('success_message', 'Successfully deleted all notifications!');
+    }
+
+    public function ajaxUnreadCount() {
+        $count = Notification::where('user_id', auth()->id())
+            ->whereNull('read_at')
+            ->count();
+
+        return response()->json(['count' => $count]);
+    }
 }
-
-

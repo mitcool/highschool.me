@@ -31,11 +31,53 @@
 		</div>
 		
 		<!-- On desktop screen -->
-		<div class="menuButton col-lg-10 col-md-10 col-8">
+		<div class="menuButton col-lg-10 col-md-10 col-8 position-relative">
+			@auth
+				{{-- Mobile notifications --}}
+			    <a id="mobileHeaderNotif"
+			    @if(auth()->user()->role_id == 1)
+					href="{{ route('admin.notifications') }}"
+				@elseif(auth()->user()->role_id == 2)
+					href="{{ route('parent.notifications') }}"
+				@elseif(auth()->user()->role_id == 3)
+					href=""
+				@elseif(auth()->user()->role_id == 4)
+					href="{{ route('student.notifications') }}"
+				@elseif(auth()->user()->role_id == 5)
+					href="{{ route('educator.notifications') }}"
+				@endif 
+			    >
+			        <i class="fas fa-user-circle"></i>
+			            <span id="notifBadgeMobile" style="display:none;">
+			                {{ $unreadNotificationsCount > 99 ? '99+' : $unreadNotificationsCount }}
+			            </span>
+			    </a>
+		    @endauth
 			<x-nav-mobile/>
 		</div>
 
 		<div class="twoButtons col-lg-3 col-md-3 justify-content-end align-items-center" style="padding-right:40px">
+			@auth
+				{{-- Notifications --}}
+			    <a 
+			    @if(auth()->user()->role_id == 1)
+					href="{{ route('admin.notifications') }}"
+				@elseif(auth()->user()->role_id == 2)
+					href="{{ route('parent.notifications') }}"
+				@elseif(auth()->user()->role_id == 3)
+					href=""
+				@elseif(auth()->user()->role_id == 4)
+					href="{{ route('student.notifications') }}"
+				@elseif(auth()->user()->role_id == 5)
+					href="{{ route('educator.notifications') }}"
+				@endif 
+			    class="notif-btn" title="Notifications">
+			        <i class="fas fa-user-circle" style="font-size: 22px;"></i>
+			            <span class="notif-badge" id="notifBadge" style="display:none;">
+			                {{ $unreadNotificationsCount > 99 ? '99+' : $unreadNotificationsCount }}
+			            </span>
+			    </a>
+		    @endauth
 			@auth
 				@if(auth()->user()->role_id == 1)
 					<a class="btn mx-2 orange-button" href="{{ route('admin-dashboard') }}">DASHBOARD</a>
@@ -59,3 +101,25 @@
 		</div>
 	</div>
 </header>
+
+<script>
+	function loadUnreadCount() {
+        $.ajax({
+            url: "{{ route('get-unread-count') }}",
+            type: "GET",
+            success: function (res) {
+                console.log(res);
+                if (res.count > 0) {
+                    $("#notifBadge").text(res.count).show();
+                    $("#notifBadgeMobile").text(res.count).show();
+                } else {
+                    $("#notifBadge").hide();
+                    $("#notifBadgeMobile").hide();
+                }
+            }
+        });
+    }
+
+    loadUnreadCount();
+    setInterval(loadUnreadCount, 5000);
+</script>

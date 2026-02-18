@@ -35,6 +35,7 @@ use App\StudentEnrolledCourse;
 use App\HelpDesk;
 use App\LeaveRequest;
 use App\AdditionalCourse;
+use App\Notification;
 
 use App\Mail\StudentCreated;
 use App\Mail\StudentCredentials;
@@ -103,12 +104,11 @@ class ParentController extends Controller
         return view('parent.meetings_all')
             ->with('students',$students);
     }
-    public function meetings_student($student_id){
-        $hour_now = Carbon::now()->format('H:i:s');
-      
-        $group_sessions = GroupSession::where('date','>',Carbon::now())->where('start','>',$hour_now)->get();
-        $mentoring_sessions = MentoringSession::where('date','>',Carbon::now())->where('start','>',$hour_now)->get();
-        $coaching_sessions = CoachingSession::where('date','>',Carbon::now())->where('start','>',$hour_now)->get();
+    public function meetings(){
+
+        $group_sessions = GroupSession::all();
+        $mentoring_sessions = MentoringSession::all();
+        $coaching_sessions = CoachingSession::all();
 
         $user_group_sessions = UserGroupSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
         $user_mentoring_sessions = UserMentoringSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
@@ -979,7 +979,27 @@ class ParentController extends Controller
             'status'     => LeaveRequest::STATUS_PENDING
         ]);
 
+        Notification::add(
+            auth()->id(),
+            'Leave request submitted successfully!'
+        );
+        Notification::addForAdmins('New leave request submitted.');
+
         return redirect()->back()->with('success_message', 'Leave request submitted successfully!');
+    }
+
+    public function showNotifications() {
+        // Mark all unread as read WHEN opening the page
+        Notification::where('user_id', auth()->id())
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
+        // Load notifications
+        $notifications = Notification::where('user_id', auth()->id())
+            ->latest()
+            ->paginate(20);
+
+        return view('parent.all-notifications')->with('notifications', $notifications);
     }
 }
 

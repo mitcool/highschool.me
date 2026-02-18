@@ -91,6 +91,9 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	Route::get('/request-leave', 'ParentController@requestLeavePage')->name('parent.request-leave');
 	Route::post('/store-leave', 'ParentController@requestLeave')->name('parent.store-leave');
 
+	#notifications
+	Route::get('/all-notifications', 'ParentController@showNotifications')->name('parent.notifications');
+
 });
 
 Route::group(['prefix' => 'student','middleware' => 'student'],function(){
@@ -120,7 +123,11 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::get('/generate-pdf-diploma/{student_id}','StudentController@generatePdfDiploma')->name('student.generate-pdf-diploma');
 	Route::post('/request-diploma-copy','StudentController@requestDiplomaCopy')->name('request-diploma-copy');
     	Route::get('/request-diploma-copy-success','StudentController@requestDiplomaCopySuccess')->name('request-diploma-copy-success');
-	Route::get('/digital-transcript/{student_id}','StudentController@digitalTransript')->name('student.generate-pdf-transcript');
+    
+    	Route::get('/digital-transcript/{student_id}','StudentController@digitalTransript')->name('student.generate-pdf-transcript');
+    
+    	#notifications
+	Route::get('/all-notifications', 'StudentController@showNotifications')->name('student.notifications');
 });
 
 Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');
@@ -135,6 +142,9 @@ Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 	Route::get('/submitions','EducatorController@submitions')->name('educator.submitions');
 	Route::get('/invoices','EducatorController@invoices')->name('educator.invoices');
 	Route::get('/reset-password', 'EducatorController@resetPassPage')->name('educator.reset.password.page');
+
+	#notifications
+	Route::get('/all-notifications', 'EducatorController@showNotifications')->name('educator.notifications');
 
 });
 
@@ -255,6 +265,13 @@ Route::middleware('auth')->group(function () {
 	Route::get('/help-desk/new/{slug?}','MainController@newHelpDesk')->name('new-help-desk');
 	Route::get('/single-help-desk/{slug}','MainController@singleHelpDesk')->name('single-help-desk');
 	Route::post('/send-message/{slug?}','MainController@sendHelpDeskQustion')->name('send-help-desk');
+});
+
+#delete single notification and all notifications, ajax - get count of unread notifications
+Route::middleware('auth')->group(function () {
+	Route::post('/delete-single-notification/{notification_id}', 'Controller@deleteSingleNotification')->name('admin.delete-single-notification');
+	Route::post('/delete-notifications', 'Controller@deleteAllNotifications')->name('admin.delete-notifications');
+	Route::get('/get-unread-count', 'Controller@ajaxUnreadCount')->name('get-unread-count');
 });
 		
 // Route::post('/get-selected-program', 'MainController@getSelectedProgram')->name('get-selected-program');

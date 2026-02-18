@@ -12,6 +12,7 @@ use App\ExamQuestion;
 use App\SelfAssessmentQuestion;
 use App\Invoice;
 use App\Exam;
+use App\Notification;
 
 class EducatorController extends Controller
 {
@@ -76,6 +77,20 @@ class EducatorController extends Controller
     public function resetPassPage() {
         
         return view('educator.reset-password');
+    }
+
+    public function showNotifications() {
+        // Mark all unread as read WHEN opening the page
+        Notification::where('user_id', auth()->id())
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
+        // Load notifications
+        $notifications = Notification::where('user_id', auth()->id())
+            ->latest()
+            ->paginate(20);
+
+        return view('educator.all-notifications')->with('notifications', $notifications);
     }
 
 }

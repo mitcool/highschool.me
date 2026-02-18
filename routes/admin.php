@@ -233,4 +233,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 
 	Route::post('/transfer-course/{course_id}','AdminController@transfer')->name('transfer');
 	Route::post('/transfer-course-back/{course_id}','AdminController@transferBack')->name('transfer-back');
+
+	//Notifications
+	Route::get('/notifications', 'AdminController@showNotifications')->name('admin.notifications');
 });

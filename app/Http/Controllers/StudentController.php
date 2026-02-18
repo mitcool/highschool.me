@@ -32,6 +32,7 @@ use App\SelfAssessmentAttempt;
 use App\SelfAssessmentAttemptQuestion;
 use App\Fraud;
 use App\DiplomaPrintingRequest;
+use App\Notification;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -604,7 +605,7 @@ class StudentController extends Controller
         return redirect()->route('student.diplomas')
             ->with('success_message','Diploma copy requested successfully');
     }
-
+    
     public function digitalTransript($student_id){
         $student = User::with('student_details','exams')->find($student_id);
         $exams = Exam::where('status',2)
@@ -616,5 +617,19 @@ class StudentController extends Controller
 
         $pdf = Pdf::loadView('student.transcript-pdf',[ 'student'=> $student,'exams' => $exams ])->set_option('isRemoteEnabled',true)->setPaper('a4');
         return $pdf->stream();
+    }
+
+    public function showNotifications() {
+        // Mark all unread as read WHEN opening the page
+        Notification::where('user_id', auth()->id())
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
+        // Load notifications
+        $notifications = Notification::where('user_id', auth()->id())
+            ->latest()
+            ->paginate(20);
+
+        return view('student.all-notifications')->with('notifications', $notifications);
     }
 }

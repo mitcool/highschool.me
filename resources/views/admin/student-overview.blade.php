@@ -8,9 +8,9 @@
     <table class="table table-striped">
         <tr>
             
-            <th colspan="5" class="text-left">
+            <th colspan="6" class="text-left">
                 <form action="{{ route('admin-student-overview') }}" class="d-flex">
-                    <input type="text" class="form-control mr-2" name="search">
+                    <input type="text" class="form-control mr-2" name="search" placeholder="Search by name">
                     <div>
                         <button class="btn btn-info">Search</button>
                     </div>

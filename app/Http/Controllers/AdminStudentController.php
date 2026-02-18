@@ -71,7 +71,7 @@ class AdminStudentController extends Controller
 
     public function overview(Request $request){
         $search = $request->search;
-        $students = User::where('role_id',4)->get();
+        $students = User::where('role_id',4)->orderBy('created_at', 'desc')->get();
         if($search){
             $students = User::where('role_id',4)
                 ->with('student_details')
@@ -79,6 +79,7 @@ class AdminStudentController extends Controller
                 ->orWhere('middlename','like','%'.$search.'%')
                 ->orWhere('surname','like','%'.$search.'%')
                 ->orWhere('email','like','%'.$search.'%')
+                ->orderBy('created_at', 'desc')
                 ->get();
         }
         return view('admin.student-overview')

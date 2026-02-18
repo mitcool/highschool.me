@@ -1609,3 +1609,79 @@ blockquote p::after {
         margin-top: 15px;
     }
 }
+
+/*notifications badge*/
+.notif-btn{
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    color: #045397;
+    text-decoration: none;
+    margin-right: 10px;
+}
+.notif-btn:hover{
+    color: #045397;
+    text-decoration: none;
+    background: #f8f9fa;
+}
+.notif-badge{
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #dc3545; /* red */
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    border: 2px solid #fff;
+}
+
+/* only affects mobile hamburger area */
+.menuButton{
+    position: relative;
+}
+
+/* notification icon positioned left of hamburger */
+#mobileHeaderNotif{
+    display: block;
+    position: absolute;
+    right: 100px;
+    top: 25%;
+    font-size: 22px;
+    color: #045397;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+}
+
+#mobileHeaderNotif span{
+    position: absolute;
+    top: -6px;
+    right: -10px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: #dc3545;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+}

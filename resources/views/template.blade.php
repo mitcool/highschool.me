@@ -38,6 +38,5 @@
 		    });
 		});
 	</script>
-	</script>
 	</body>
 </html>

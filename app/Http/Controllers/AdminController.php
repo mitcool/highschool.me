@@ -89,6 +89,7 @@ use App\EducatorCategory;
 use App\LeaveRequest;
 use App\DiplomaPrintingRequest;
 use App\StudentEnrolledCourse;
+use App\Notification;
 
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
@@ -1688,7 +1689,12 @@ class AdminController extends Controller
             }
         }
 
-        return back()->with('success', 'Request approved');
+        Notification::add(
+            auth()->id(),
+            'You successfully approve a leave request.'
+        );
+
+        return back()->with('success_message', 'Request approved');
     }
 
     public function denyLeaveRequest(Request $request, $request_id) {
@@ -1709,7 +1715,12 @@ class AdminController extends Controller
             }
         }
 
-        return back()->with('success', 'Request denied');
+        Notification::add(
+            auth()->id(),
+            'You successfully denied a leave request.'
+        );
+
+        return back()->with('success_message', 'Request denied');
     }
     
     public function ChangeDiplomaPrintingStatus(Request $request,$diploma_request_id){
@@ -1717,4 +1728,19 @@ class AdminController extends Controller
         $diploma_request->update(['status' => $diploma_request->status+1]);
         return redirect()->back()->with('success_message','Diploma request updated successfully');
     }
+
+    public function showNotifications() {
+        // Mark all unread as read WHEN opening the page
+        Notification::where('user_id', auth()->id())
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
+        // Load notifications
+        $notifications = Notification::where('user_id', auth()->id())
+            ->latest()
+            ->paginate(20);
+
+        return view('admin.all-notifications')->with('notifications', $notifications);
+    }
+
 }
