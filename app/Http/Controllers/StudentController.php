@@ -189,7 +189,7 @@ class StudentController extends Controller
     }
 
     public function singleCourse($course_id) {
-        $course = CatalogCourse::find($course_id);
+        $course = CurriculumCourse::find($course_id);
 
         $materials = CourseFile::where('course_id', $course_id)->get();
         $videos = CourseVideo::where('course_id', $course_id)->get();
