@@ -99,23 +99,26 @@ class ParentController extends Controller
     public function createStudent(){
         return view('parent.create-student');
     }
+
     public function meetings_all(){
         $students = ParentStudent::where('parent_id',auth()->id())->get();
         return view('parent.meetings_all')
             ->with('students',$students);
     }
-    public function meetings(){
-
-        $group_sessions = GroupSession::all();
-        $mentoring_sessions = MentoringSession::all();
-        $coaching_sessions = CoachingSession::all();
-
+    
+    public function meetings_student($student_id){
+        $hour_now = Carbon::now()->format('H:i:s');
+     
+        $group_sessions = GroupSession::where('date','>',Carbon::now())->where('start','>',$hour_now)->get();
+        $mentoring_sessions = MentoringSession::where('date','>',Carbon::now())->where('start','>',$hour_now)->get();
+        $coaching_sessions = CoachingSession::where('date','>',Carbon::now())->where('start','>',$hour_now)->get();
+ 
         $user_group_sessions = UserGroupSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
         $user_mentoring_sessions = UserMentoringSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
         $user_coaching_sessions = UserCoachingSessions::where('user_id',auth()->id())->pluck('session_id')->toArray();
-        
+       
         $permissions = $this->checkPermissionForSessionBooking($student_id);
-      
+     
         return view('parent.meetings')
             ->with('group_sessions',$group_sessions)
             ->with('user_group_sessions',$user_group_sessions)
