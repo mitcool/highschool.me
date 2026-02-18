@@ -1,18 +1,42 @@
 @extends('admin_template')
 
+@section('css')
+<style>
+    #info{
+        font-size: 1.2rem;
+    }
+</style>
+@endsection
 @section('content')
 
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
-    <h2 class="text-center">Documents </h2>
-    <h5 class="text-center text-primary"> <span class="font-weight-bold">Student:</span> <span class="font-italic">"{{ $student->student->name }} {{ $student->student->surname }}"</span> </h5>
-    <h5 class="text-center text-primary"> <span class="font-weight-bold">Parent:</span> <span class="font-italic">"{{ $student->parent->name }} {{ $student->parent->surname }}"</span> </h5>
+    <h2 class="text-center">New Student Application</h2>
     <hr>
-        
+    <div class="row text-left" id="info">
+        <div class="col-md-6">
+            <p class=" text-primary"> <span class="font-weight-bold text-dark">Student name:</span> <span class="font-italic">"{{ $student->student->fullname() }}"</span> </p>
+            <p><span class="font-weight-bold">Born:</span> {{ $student->student->date_of_birth() }}</p>
+            <p><span class="font-weight-bold">Track:</span> {{ $student->track_name() }}</p>
+            <p><span class="font-weight-bold">Date of Submitions:</span> {{ $student->student->created_at->format('d.m.Y') }}</p>
+        </div>
+        <div class="col-md-6">
+            <p class="text-right text-primary"> <span class="font-weight-bold text-dark">Parent name:</span> <span class="font-italic">"{{ $student->parent->fullname() }}"</span> </p>
+        </div>
+
+        <div class="col-md-12" style="color:#737373;margin-top:40px;">
+            Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet.
+        </div>
+    </div>
+    
+    <hr>
+       <div>
+            <h4 style="color:#045397;margin:20px 0;">Uploaded Documentation</h4>
+       </div>
        <table class="table table-striped">
             @foreach ($student->student->documents as $document )
                 <tr>
                     <td class="font-weight-bold">{{ $document->document_type->name }}:</td> 
-                    <td><a target="_blank" href="{{ asset('documents') }}/{{ $student->student_id }}/{{ $document->file }}">{{ $document->file }}</a></td>
+                    <td><a target="_blank" href="{{ asset('documents') }}/{{ $student->student_id }}/{{ $document->file }}">Open</a></td>
                     <td class="text-center"> 
                         <button 
                             class="approve-button btn  @if($document->is_approved == 1) btn-success @else btn-secondary @endif"  
@@ -36,19 +60,19 @@
             </div>
             <button class="btn btn-info mt-4">Approve Student</button>
         </form>
-      
-         <form action="{{ route('wrong-document') }}" method="POST" class="text-center my-3 {{ $student->rejected_documents_count() > 0 ? ' d-block ' : 'd-none' }}" id="wrong-document">
-            {{ csrf_field() }}
-            <div>
-               <label class="font-weight-bold" for="">Feedback</label>
-               <textarea name="feedback" id="" cols="30" rows="10" class="form-control"></textarea>
-               <input type="hidden" name="student_id" value="{{ $student->student_id }}">
-               <input type="hidden" name="parent_id" value="{{ $student->parent_id }}">
-            </div>
-            <button class="btn btn-dark mt-2">Send Feedback</button>
-        </form>
-        
+
         <x-external-courses-table :student="$student->student"/>
+
+        <form action="{{ route('wrong-document') }}" method="POST" class="text-center my-3 {{ $student->rejected_documents_count() > 0 ? ' d-block ' : 'd-none' }}" id="wrong-document">
+        {{ csrf_field() }}
+            <div>
+                <label class="font-weight-bold" for="">Feedback</label>
+                <textarea name="feedback" id="" cols="30" rows="10" class="form-control" required></textarea>
+                <input type="hidden" name="student_id" value="{{ $student->student_id }}">
+                <input type="hidden" name="parent_id" value="{{ $student->parent_id }}">
+            </div>
+            <button style="background:#045397;color:white;" class="btn mt-2">Send Feedback</button>
+        </form>
 
 </div>
 @endsection

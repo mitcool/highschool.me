@@ -9,7 +9,7 @@
 
     @forelse ($students as $student )
         <li class="list-group-item d-flex align-items-center my-1 justify-content-between">
-             <p class="mb-0 font-weight-bold">{{ $student->student->name }} {{ $student->student->surname }}</p>
+             <p class="mb-0 font-weight-bold">{{ $student->student->fullname() }} </p>
              <a href="{{ route('single-student-documents',$student->student->id) }}">Check documents</a>
         </li>
     @empty

@@ -60,6 +60,7 @@ class AdminStudentController extends Controller
 
     public function wrongDocument(Request $request){
         $parent_student = ParentStudent::where('parent_id',$request->parent_id)->first();
+        $parent_student->update(['feedback' => $request->feedback]);
         $feedback = $request->feedback;
         try{
             Mail::to($parent_student->parent->email)->send(new WrongDocument($feedback,$parent_student));
@@ -89,9 +90,9 @@ class AdminStudentController extends Controller
     public function singleStudentProfile($student_id){
         $student = User::find($student_id);
         $student_enrolled_courses = StudentEnrolledCourse::where('user_id',$student_id)->get(); 
-        $credits = $this->calculateCredits($student_enrolled_courses);
-        $in_progress_courses =  $student_enrolled_courses->where('status',0);
-        $completed_courses =  $student_enrolled_courses->where('status',1);
+        $credits = $this->calculateCredits($student_enrolled_courses,$student->student_details->track);
+        $in_progress_courses =  $student_enrolled_courses->whereIn('status',[StudentEnrolledCourse::STATUS_START_STUDY,StudentEnrolledCourse::STATUS_READY_FOR_EXAM]);
+        $completed_courses =  $student_enrolled_courses->where('status',StudentEnrolledCourse::STATUS_COMPLETED);
         $needed_mandatory_courses = $this->checkMandatoryCourses($student_enrolled_courses);
         return view('admin.student-profile')
             ->with('credits',$credits)

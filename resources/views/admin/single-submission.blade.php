@@ -44,7 +44,7 @@
                         </div>
                     @endforeach
                         <label for=""class="text-danger mb-0 mt-2">Grade</label>
-                        <input type="number" name="grade" class="form-control" required>
+                        <input type="number" name="grade" class="form-control" step="0.1" required>
                         <label for=""class="text-danger mb-0 mt-2">Add overall comment</label>
                         <input type="text" name="exam_comment" class="form-control" required>
                         <div class="mt-2 d-flex justify-content-center">

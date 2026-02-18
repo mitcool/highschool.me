@@ -99,26 +99,24 @@ class ParentController extends Controller
     public function createStudent(){
         return view('parent.create-student');
     }
-
     public function meetings_all(){
         $students = ParentStudent::where('parent_id',auth()->id())->get();
         return view('parent.meetings_all')
             ->with('students',$students);
     }
-    
     public function meetings_student($student_id){
         $hour_now = Carbon::now()->format('H:i:s');
-     
+      
         $group_sessions = GroupSession::where('date','>',Carbon::now())->where('start','>',$hour_now)->get();
         $mentoring_sessions = MentoringSession::where('date','>',Carbon::now())->where('start','>',$hour_now)->get();
         $coaching_sessions = CoachingSession::where('date','>',Carbon::now())->where('start','>',$hour_now)->get();
- 
+
         $user_group_sessions = UserGroupSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
         $user_mentoring_sessions = UserMentoringSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
         $user_coaching_sessions = UserCoachingSessions::where('user_id',auth()->id())->pluck('session_id')->toArray();
-       
+        
         $permissions = $this->checkPermissionForSessionBooking($student_id);
-     
+      
         return view('parent.meetings')
             ->with('group_sessions',$group_sessions)
             ->with('user_group_sessions',$user_group_sessions)
@@ -714,7 +712,21 @@ class ParentController extends Controller
     }
 
     public function updateInfo(Request $request){
+        $request->validate([
+            "email" => 'required',
+            'country_id'=> 'required',
+            'city' => 'required',
+            'street' => 'required',
+            'street_number' => 'required',
+            'zip' => 'required',
+            "phone" => "required|regex:/^[1-9]\d{7,14}$/",
+        ]);
         $user = $request->email;
+        if(auth()->user()->email != $request->email){
+            if(User::where('email',$request->email)->count() > 0){
+                return redirect()->back()->with('error','Email has already been taken');
+            }
+        }
         $details = $request->only('city','street','street_number','zip','country_id','phone');
         $details['user_id'] = auth()->id();
         InvoiceDetail::updateOrCreate(['user_id'=>auth()->user()->id],$details);
@@ -851,7 +863,7 @@ class ParentController extends Controller
             'user_id' => $student->id,
             'catalog_course_id' => $curriculum_course->id,
             'created_at' => Carbon::now(),
-            'status' => 0
+            'status' => StudentEnrolledCourse::STATUS_ENROLLED
         ]);
 
         try{
@@ -866,41 +878,19 @@ class ParentController extends Controller
             info($e->getMessage());
         }
 
-
         return redirect()->back()->with('success_message','The course has been enrolled successfully');
     }
 
-    public function isAPermissionForEnrollment($student,$curriculum_course){
-        $plan = $student->active_plan;
-        $type = $curriculum_course->curriculum_type_id;
-        $allowed_courses = 0;
-        $plan_type = $plan->plan_id; #core pro or elite
-        dd($curriculum_course);
-        #AP Courses
-        if($type == 3){
-           if($plan_type == 2){
-                $allowed_courses = 1;
-           }
-           elseif($plan_type == 3){
-                $allowed_courses = 2;
-           };
-        }
-
-        if($plan->plan_id == 1){
-            
-        }
-        
-    }
     public function updateEnrolledCourseStatus($enrolled_course_id){
         $enrolled_course = StudentEnrolledCourse::find($enrolled_course_id);
         #Start Study
         if($enrolled_course->status == 0){
-            $enrolled_course->update(['status' => 1]);
+            $enrolled_course->update(['status' => StudentEnrolledCourse::STATUS_START_STUDY]);
             $message = 'Student is ready for studing';
         }
         #Ready For Exam
         elseif($enrolled_course->status == 1){
-            $enrolled_course->update(['status' => 2]);
+            $enrolled_course->update(['status' => StudentEnrolledCourse::STATUS_READY_FOR_EXAM]);
             $message = 'Student is ready for exam';
             try{
                 Mail::to('mathias.kunze@onsites.com')->send(new StudentReadyForExam($enrolled_course));

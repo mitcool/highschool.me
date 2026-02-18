@@ -112,8 +112,8 @@ class StudentController extends Controller
         $student = auth()->user();
         
         $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
-        $in_progress_courses =  $student->enrolled_courses->where('status',0);
-        $completed_courses =  $student->enrolled_courses->where('status',1);
+        $in_progress_courses =  $student->enrolled_courses->whereIn('status',[StudentEnrolledCourse::STATUS_ENROLLED,StudentEnrolledCourse::STATUS_READY_FOR_EXAM]);
+        $completed_courses =  $student->enrolled_courses->where('status',StudentEnrolledCourse::STATUS_COMPLETED);
         $needed_mandatory_courses = $this->checkMandatoryCourses($student->enrolled_courses);
         
         #dd($in_progress_courses->first()->course->course);
@@ -605,7 +605,7 @@ class StudentController extends Controller
         return redirect()->route('student.diplomas')
             ->with('success_message','Diploma copy requested successfully');
     }
-    
+
     public function digitalTransript($student_id){
         $student = User::with('student_details','exams')->find($student_id);
         $exams = Exam::where('status',2)

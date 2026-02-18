@@ -117,7 +117,7 @@
 
 @section('content')
 <div class="container my-5">
-    <h2 class="text-center mb-4">{{ $course->title }}</h2>
+    <h2 class="text-center mb-4">{{ $course->course->title }}</h2>
 
     <div class="materials-card">
         <div class="materials-title">Materials</div>

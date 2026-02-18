@@ -1476,6 +1476,7 @@ class AdminController extends Controller
         $exam = Exam::find($exam_id);
         $grade = $request->grade;
         $exam_comment = $request->exam_comment;
+        $course = StudentEnrolledCourse::where('user_id',$exam->student_id)->where('catalog_course_id',$exam->course_id)->first();
         if($exam->type == 1){
             $answers_comments = $request->answer_comment;
             foreach($answers_comments as $answer_id => $comment){
@@ -1488,7 +1489,7 @@ class AdminController extends Controller
             'status' => 2
         ]);
         if($grade > 1){
-            StudentEnrolledCourse::where('user_id',$exam->student_id)->where('subject_id',$exam->course_id)-first();    
+            $course->update(['status' => StudentEnrolledCourse::STATUS_COMPLETED]);
         }
 
         return redirect()->back()->with('success_message','Exam evaluated successfully');
@@ -1642,14 +1643,14 @@ class AdminController extends Controller
     }
 
     public function transfer(Request $request,$course_id){
-        $catalog_course = CatalogCourse::find($course_id);
+        $course = CurriculumCourse::find($course_id);
 
         $student = User::with('active_plan')->find($request->student_id);
         StudentEnrolledCourse::insert([
             'user_id' => $request->student_id,
-            'catalog_course_id' => $catalog_course->id,
+            'catalog_course_id' => $course->id,
             'created_at' => Carbon::now(),
-            'status' => 1
+            'status' => StudentEnrolledCourse::STATUS_COMPLETED
         ]);
 
         return redirect()->back()->with('success_message','Course transferred successfully');

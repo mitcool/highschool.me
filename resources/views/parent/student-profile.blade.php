@@ -13,7 +13,9 @@
     @if($status == 1)
             <h4 style="color:#E9580C">Pending Documentation Approval</h4>
             <p class="mb-0">This account is currently under review. You will be notified once the documents have been reviewed.</p>
-       
+            @if($student->student_details->feedback)
+            <p class="mb-0 text-danger">{{ $student->student_details->feedback }}</p>
+            @endif
     {{-- Pending enrollemnt and plan fee to be paind --}}
     @elseif($status == 2)
         <h4 style="color:#E9580C">Documentation is Approved</h4>
@@ -24,7 +26,10 @@
             <p>The documentation for this student is approved. You must pay the following fees:</p>
             <input type="radio" checked readonly class="radio"> Enrolment Fee <span style="color:#E9580C">($300.00)</span> 
             <p>Mandatory International Transfer Program Fee:</p>
-            <input type="radio" checked readonly class="radio"> Program Fee  <span style="color:#E9580C">($1900.00)</span>
+            <input type="radio" name="type" value="1" class="radio"> Program Fee  <span style="color:#E9580C">($1900.00)</span>
+            <p>Mandatory International Transfer Program Fee:</p>
+            <input type="radio" name="type"  value="2" class="radio"> Program Fee  <span style="color:#E9580C">($1900.00)</span>
+            
             <p class="mb-0 font-weight-bold mt-3">You can find more information about the Payment Plans <a href="{{ route('tuition') }}">HERE.</a></p>
             <hr>
             <div class="d-flex justify-content-between">

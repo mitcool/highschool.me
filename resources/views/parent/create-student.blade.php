@@ -12,7 +12,7 @@
         </div>
         <div  class="mb-3">
             <label for="" class="font-weight-bold mb-0">Middle name(optional)</label>
-            <input type="text" value="{{ old('middlename') }}" name="middlename" class="form-control">
+            <input type="text" value="{{ old('middlename') }}"  name="middlename" class="form-control">
         </div>
          <div  class="mb-3">
             <label for="" class="font-weight-bold mb-0">Surname<span class="text-danger">*</span></label>

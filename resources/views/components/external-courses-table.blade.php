@@ -173,7 +173,7 @@
  @if($track == 3)
     <div class="container my-5">
     
-    <h2 class="text-center mb-4">Transfer subjects</h2>   
+    <h4 class="text-center mb-4">Transfer subjects</h4>   
     @foreach($transfer_program_courses as $tpc)
       <div class="course-row d-flex justify-content-between align-items-center">
             <div>
@@ -184,13 +184,13 @@
                     </span>
                 @endif --}}
             </div>
-            @if(in_array($tpc->course_id,$enrolled_courses_ids))
-                <form class="confim-first" action="{{ route('transfer-back',$tpc->course_id) }}" method="POST">
+            @if(in_array($tpc->id,$enrolled_courses_ids))
+                <form class="confim-first" action="{{ route('transfer-back',$tpc->id) }}" method="POST">
                     {{ csrf_field() }}
                     <button class="btn btn-transfer-back">Transfer Back</button>
                 </form> 
             @else
-            <form action="{{ route('transfer',$tpc->course_id) }}" method="POST">
+            <form action="{{ route('transfer',$tpc->id) }}" method="POST">
                 {{ csrf_field() }}
                 <input type="hidden" name="student_id" value="{{ $student->id }}">
                 <button class="btn btn-enroll">Transfer</button>
@@ -306,13 +306,13 @@
                                                             </span>
                                                         @endif
                                                     </div>
-                                                    @if(in_array($cc->course_id,$enrolled_courses_ids))
-                                                        <form class="confim-first" action="{{ route('transfer-back',$cc->course_id) }}" method="POST">
+                                                    @if(in_array($cc->id,$enrolled_courses_ids))
+                                                        <form class="confim-first" action="{{ route('transfer-back',$cc->id) }}" method="POST">
                                                             {{ csrf_field() }}
                                                             <button class="btn  btn-transfer-back">Transfer Back</button>
                                                         </form> 
                                                     @else
-                                                        <form class="confim-first" action="{{ route('transfer',$cc->course_id) }}" method="POST">
+                                                        <form class="confim-first" action="{{ route('transfer',$cc->id) }}" method="POST">
                                                             {{ csrf_field() }}
                                                             <input type="hidden" name="student_id" value="{{ $student->id }}">
                                                             <button class="btn btn-enroll">Transfer</button>
@@ -371,15 +371,15 @@
                                                         </span>
                                                     @endif
                                                 </div>
-                                                    @if(in_array($cc->course_id,$enrolled_courses_ids))
+                                                    @if(in_array($cc->id,$enrolled_courses_ids))
                                                          <button class="btn btn-disabled">transfer</button>
                                                     @elseif($student->status == 1)
-                                                        <form class="confim-first" action="{{ route('transfer-back',$cc->course_id) }}" method="POST">
+                                                        <form class="confim-first" action="{{ route('transfer-back',$cc->id) }}" method="POST">
                                                             {{ csrf_field() }}
                                                             <button class="btn  btn-transfer-back">Transfer Back</button>
                                                         </form>                                       
                                                     @else
-                                                    <form class="confim-first" action="{{ route('transfer',$cc->course_id) }}" method="POST">
+                                                    <form class="confim-first" action="{{ route('transfer',$cc->id) }}" method="POST">
                                                         {{ csrf_field() }}
                                                         <input type="hidden" name="student_id" value="{{ $student->id }}">
                                                         <button class="btn btn-enroll">Transfer</button>
