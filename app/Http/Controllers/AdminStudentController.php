@@ -17,7 +17,7 @@ use App\Mail\WrongDocument;
 class AdminStudentController extends Controller
 {
     public function studentDocuments(){
-        $students = ParentStudent::whereIn('status',[1,4])->get();   //pending approval or check reupload documents
+        $students = ParentStudent::orderBy('created_at','desc')->whereIn('status',[1,4])->get();   //pending approval or check reupload documents
         return view('admin.student-documents')
             ->with('students',$students);
     }
