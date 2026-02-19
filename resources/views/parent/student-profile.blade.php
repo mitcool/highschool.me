@@ -4,12 +4,14 @@
 
 <div class="container shadow bg-white" style="margin:50px auto">
     <div class=" page-content" style="padding:20px;">
-            <h4 style="color:#045397">{{ $student->name }} {{ $student->surname }}</h4>
+            <h4 style="color:#045397">{{ $student->fullname() }}</h4>
             @if($student->date_of_birth) <p class="mb-0">Born: {{ $student->date_of_birth->format('d.m.Y')}}</p> @endif
-            <p class="mb-0">Grade: {{ $student->student_details->grade }}</p>
+            @if($student->student_details->track == 1 || $student->student_details->track == 2) 
+                <p class="mb-0">Grade: {{ $student->student_details->grade }}</p>
+            @endif
             <hr>
+    </div>
     
-
     @if($status == 1)
             <h4 style="color:#E9580C">Pending Documentation Approval</h4>
             <p class="mb-0">This account is currently under review. You will be notified once the documents have been reviewed.</p>
@@ -19,17 +21,15 @@
     {{-- Pending enrollemnt and plan fee to be paind --}}
     @elseif($status == 2)
         <h4 style="color:#E9580C">Documentation is Approved</h4>
-
         @if($student->student_details->track == 3)
         <form action="{{ route('parent.transfer-program-pay',$student->id) }}" method="POST">
             {{ csrf_field() }}
             <p>The documentation for this student is approved. You must pay the following fees:</p>
             <input type="radio" checked readonly class="radio"> Enrolment Fee <span style="color:#E9580C">($300.00)</span> 
             <p>Mandatory International Transfer Program Fee:</p>
-            <input type="radio" name="type" value="1" class="radio"> Program Fee  <span style="color:#E9580C">($1900.00)</span>
+            <input type="radio" checked name="type" value="1" class="radio"> Per Year  <span style="color:#E9580C">($1900.00)</span><br>
+            <input type="radio" name="type"  value="2" class="radio"> Per Month  <span style="color:#E9580C">($190.00)</span>
             <p>Mandatory International Transfer Program Fee:</p>
-            <input type="radio" name="type"  value="2" class="radio"> Program Fee  <span style="color:#E9580C">($1900.00)</span>
-            
             <p class="mb-0 font-weight-bold mt-3">You can find more information about the Payment Plans <a href="{{ route('tuition') }}">HERE.</a></p>
             <hr>
             <div class="d-flex justify-content-between">
@@ -78,9 +78,9 @@
     {{-- Active Student --}}
     @elseif($status == 3)
         <x-enrollment-table :student="$student"></x-enrollment-table>
-        <h2 class="text-center ">Enrolled courses</h2>
+        <h2 class="text-center" style="margin-top:50px;">Enrolled courses</h2>
        @foreach ($student->enrolled_courses as $enrolled_course)
-            <div class="d-flex justify-content-between w-100">
+            <div class="d-flex justify-content-between w-100 my-2">
                 
                 <p>{{ $enrolled_course->course->course->title }}</p>
                 @if($enrolled_course->status == 0)
@@ -92,19 +92,15 @@
                 @elseif($enrolled_course->status == 1) 
                <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST">
                     {{ csrf_field() }}
-                    <button class="btn btn-enroll">Ready for Exam</button>
+                    <button class="btn btn-enroll bg-warning">Ready for Exam</button>
                 </form>
                 @elseif($enrolled_course->status == 2) 
              
-                    <button class="btn btn-secondary">Pending exam date</button>
+                    <button class="btn btn-enroll bg-danger">Pending exam date</button>
                 
                  @elseif($enrolled_course->status == 3) 
                
-                    <button class="btn btn-secondary">Exam schedualed</button>
-                
-                 @elseif($enrolled_course->status == 4) 
-               
-                    <button class="btn btn-secondary">Result of exam</button>
+                    <button class="btn btn-enroll bg-success">Completed</button>
                 
                 @endif     
             </div> 

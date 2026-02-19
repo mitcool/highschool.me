@@ -112,7 +112,7 @@ class StudentController extends Controller
         $student = auth()->user();
         
         $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
-        $in_progress_courses =  $student->enrolled_courses->whereIn('status',[StudentEnrolledCourse::STATUS_ENROLLED,StudentEnrolledCourse::STATUS_READY_FOR_EXAM]);
+        $in_progress_courses =  $student->enrolled_courses->whereIn('status',[StudentEnrolledCourse::STATUS_START_STUDY,StudentEnrolledCourse::STATUS_READY_FOR_EXAM]);
         $completed_courses =  $student->enrolled_courses->where('status',StudentEnrolledCourse::STATUS_COMPLETED);
         $needed_mandatory_courses = $this->checkMandatoryCourses($student->enrolled_courses);
         
@@ -545,7 +545,7 @@ class StudentController extends Controller
         $questions = ExamQuestion::where('subject_id',$exam->course_id)
                                 ->inRandomOrder()
                                 ->take(10)
-                                ->where('type',0)
+                                ->where('type',ExamQuestion::TYPE_PRE_EXAM)
                                 ->get();
         
         $exam->update([
@@ -554,6 +554,10 @@ class StudentController extends Controller
         return view('student.pre-exam')
             ->with('questions',$questions);
        
+    }
+
+    public function submitPreExam(){
+        return redirect()->route('student.exams')->with('success_message','Pre exam submitted successfully');
     }
 
     public function diplomas(){

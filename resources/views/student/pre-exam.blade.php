@@ -21,7 +21,7 @@
                 <span id="timer"></span>
             </div>
 		</div>
-        <form action="{{ route('submit-exam',0) }}" method="POST" enctype="multipart/form-data" id="exam-form">
+        <form action="{{ route('submit-pre-exam-exam',0) }}" method="POST" enctype="multipart/form-data" id="exam-form">
             {{ csrf_field() }}
             @foreach ($questions as $key => $question)
             <div class="shadow p-3">
@@ -43,13 +43,7 @@
 
 @section('scripts')
 <script>
-function blockEvent(e, reason) {
-    e.preventDefault();
-    console.warn(reason);
-}
-document.addEventListener("copy", e => blockEvent(e, "Copy blocked"));
-document.addEventListener("cut", e => blockEvent(e, "Cut blocked"));
-document.addEventListener("paste", e => blockEvent(e, "Paste blocked"));
+
  let timeRemaining = 90 * 60; // 60 minutes in seconds
 
   function updateTimer() {
@@ -73,54 +67,4 @@ document.addEventListener("paste", e => blockEvent(e, "Paste blocked"));
   updateTimer(); // initial render
   const timerInterval = setInterval(updateTimer, 1000);
 </script>
-
-    <script>
-        
-        let violations = 0;
-        const MAX_VIOLATIONS = 5;
-
-        function handleViolation(reason) {
-            violations++;
-
-            if(violations == 1 || violations == 2){
-               
-                alert('First Warning')
-            }
-            if(violations == 3 || violations == 4){
-               
-                alert('Second Warning')
-            }
-            if (violations >= MAX_VIOLATIONS) {
-                //Auto-submit or lock exam
-                $.ajax({
-                        method: "POST",
-                        url: "{{route('fail-exam', 0)}}",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    }).done(function(response) {
-                        window.location.reload();
-                    });
-            }
-        }
-
-        // Detect tab switch or minimize
-        document.addEventListener("visibilitychange", (e) => {
-            e.preventDefault();
-            // alert('works')
-            if (document.hidden) {
-                handleViolation("Tab switched or page hidden");
-            }
-        });
-
-        // // Detect window focus loss
-        window.addEventListener("blur", (e) => {
-            e.preventDefault();
-            // alert('works')
-            handleViolation("Window lost focus");
-        });
-        
-     
-    </script>
-
 @endsection

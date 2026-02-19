@@ -136,6 +136,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 
 	//Exams
 	Route::get('/exams','AdminController@exams')->name('admin-exams');
+	Route::post('/get-courses','AdminController@getCourses')->name('get-courses');
 	Route::post('/exams/add','AdminController@createExam')->name('create-exam');
 	Route::get('/submissions','AdminController@showSubmissions')->name('admin-submissions');
 	Route::get('/add-exam-questions', 'AdminController@addExamQuestionsPage')->name('admin.add-exam-question');

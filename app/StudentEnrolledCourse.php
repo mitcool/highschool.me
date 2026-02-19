@@ -19,4 +19,8 @@ class StudentEnrolledCourse extends Model
     public function course(){
         return $this->hasOne('App\CurriculumCourse','id','catalog_course_id');
     }
+
+    public function student(){
+        return $this->hasOne('App\User','id','user_id');
+    }
 }

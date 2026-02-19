@@ -131,6 +131,7 @@
 
 @section('content')
 <div class="container my-5">
+    @if(auth()->user()->student_details->track == 1 || auth()->user()->student_details->track == 2)
     <div class="card graduation-card p-4">
         <h2 class="text-center mb-4">Graduation Process</h2>
         <div class="position-relative mb-4">
@@ -180,13 +181,15 @@
             </div>
         </div>
     </div>
+    @endif
 
     <div class="table-container mx-auto mt-5">
         <h2 class="text-center mb-4">My Courses</h2>
-        @foreach ($needed_mandatory_courses as $message)
-            <p class="text-danger mb-0">{{ $message }}</p>
-        @endforeach
-        
+        @if(auth()->user()->student_details->track == 1 || auth()->user()->student_details->track == 2)
+            @foreach ($needed_mandatory_courses as $message)
+                <p class="text-danger mb-0">{{ $message }}</p>
+            @endforeach
+        @endif
         <div class="table-responsive">
             <table class="table course-table">
                 <thead>

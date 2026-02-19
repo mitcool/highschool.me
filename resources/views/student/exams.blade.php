@@ -23,14 +23,12 @@
                             <td>{{ $exam->course->course->title }}</td>
                             <td>
                                 @if($exam->pre_exam == 0)
-                                <a href="{{ route('student.pre-exam',$exam->id) }}">Link &#187;</a>
+                                    <a href="{{ route('student.pre-exam',$exam->id) }}">Link &#187;</a>
                                 @endif
                             </td>
                             <td>
                                 @if($exam->is_active())
-                                
-                                        <a href="{{ route('student.single-exam',$exam->id) }}" class="view-link">Link&#187;</a>
-                                    
+                                    <a href="{{ route('student.single-exam',$exam->id) }}" class="view-link">Link&#187;</a>
                                 @endif
                             </td>
                         </tr>

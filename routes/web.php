@@ -83,7 +83,7 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::post('/transfer-program-pay/{student_id}','ParentController@transferProgramPay')->name('parent.transfer-program-pay');
 
-	Route::get('/transfer-program-pay-success/{student_id}','ParentController@transferProgramPaySuccess')->name('parent.transfer-pay-success');
+	Route::get('/transfer-program-pay-success/{student_id}/{type}','ParentController@transferProgramPaySuccess')->name('parent.transfer-pay-success');
 
 	Route::get('/reset-password', 'ParentController@resetPassPage')->name('parent.reset.password.page');
 
@@ -119,6 +119,7 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::post('/self-assessment-test-submit/{attempt}', 'StudentController@submitSelfAssessmentTest')->name('student.self-assessment-test-submit');
 	Route::get('/self-assessment-test-review', 'StudentController@selfAssessmentTestReview')->name('student.self-assessment-review');
 	Route::get('/pre-exam/{subject_id}','StudentController@preExam')->name('student.pre-exam');
+	Route::post('/submit-pre-exam','StudentController@submitPreExam')->name('submit-pre-exam-exam');
 	Route::get('/diplomas','StudentController@diplomas')->name('student.diplomas');
 	Route::get('/generate-pdf-diploma/{student_id}','StudentController@generatePdfDiploma')->name('student.generate-pdf-diploma');
 	Route::post('/request-diploma-copy','StudentController@requestDiplomaCopy')->name('request-diploma-copy');

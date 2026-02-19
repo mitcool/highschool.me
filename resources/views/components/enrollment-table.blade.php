@@ -178,7 +178,7 @@
             @if(in_array($tpc->id,$enrolled_courses_ids))
                 <button class="btn btn-disabled">Enrolled</button>
             @else
-            <form action="{{ route('enroll',$tpc->course_id) }}" method="POST">
+            <form action="{{ route('enroll',$tpc->id) }}" method="POST">
                 {{ csrf_field() }}
                 <input type="hidden" name="student_id" value="{{ $student->id }}">
                 <button class="btn btn-enroll">Enroll</button>

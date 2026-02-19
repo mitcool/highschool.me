@@ -1405,10 +1405,12 @@ class AdminController extends Controller
     }
     
     public function exams(){
-        $students = User::where('role_id',4)->get();
+        $students = StudentEnrolledCourse::where('status',StudentEnrolledCourse::STATUS_READY_FOR_EXAM)->get();
         $educators = User::where('role_id',5)->get();
-        $courses = CurriculumCourse::all(); 
+        $courses = CurriculumCourse::all();
+        $exams = Exam::orderBy('created_at','desc')->get();
         return view('admin.exams')
+            ->with('exams',$exams)
             ->with('students',$students)
             ->with('educators',$educators)
             ->with('courses',$courses);
@@ -1743,5 +1745,9 @@ class AdminController extends Controller
 
         return view('admin.all-notifications')->with('notifications', $notifications);
     }
-
+    public function getCourses(Request $request){
+        $student_id = $request->student_id;
+        $courses = StudentEnrolledCourse::with('course.course')->where('user_id',$student_id)->where('status',StudentEnrolledCourse::STATUS_READY_FOR_EXAM)->get();
+        return $courses;
+    }
 }

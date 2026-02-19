@@ -844,10 +844,12 @@ class ParentController extends Controller
     public function enroll(Request $request,$course_id){
        
         $curriculum_course = CurriculumCourse::with('course')->find($course_id);
+        
         $parent = auth()->user();
         $student = User::with('active_plan')->find($request->student_id);
-       
-        if($curriculum_course->curriculum_type_id != 1 && $curriculum_course->curriculum_type_id != 2){
+
+        #Check if they enroll NOT Core or elective courses (1 and 2) or it is TRANSFER PROGRAM (11)
+        if($curriculum_course->curriculum_type_id != 1 && $curriculum_course->curriculum_type_id != 2 && $curriculum_course->curriculum_type_id != 11 ){
            $additional_course = AdditionalCourse::where('course_type',$curriculum_course->curriculum_type_id)
             ->where('student_id',$student->id)
             ->first();
@@ -855,6 +857,7 @@ class ParentController extends Controller
                 $additional_course->update(['status' => 1]);
             }
             else{
+                
                 return redirect()->back()->with('error','You don\'t have permission to enroll this course');
             }
         }
@@ -902,10 +905,12 @@ class ParentController extends Controller
         return redirect()->back()->with('success_message',$message);
     }
 
-    public function transferProgramPay($student_id){
+    public function transferProgramPay(Request $request, $student_id){
+       
         $student = User::find($student_id);
         $enrollement_fee = 300;
-        $program_fee = 1900;
+        $type = $request->type;
+        $program_fee = $type == 1 ? 1900 : 190;
         $total = $enrollement_fee + $program_fee;
         
          \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -924,19 +929,35 @@ class ParentController extends Controller
                 ],
             ],
             'mode'        => 'payment',
-            'success_url' => route('parent.transfer-pay-success',$student_id),
+            'success_url' => route('parent.transfer-pay-success',[$student_id,$type]),
             'cancel_url'  => route('parent.student.profile',$student_id),
         ]);
 
          return redirect()->away($session->url);
     }
 
-    public function transferProgramPaySuccess($student_id){
+    public function transferProgramPaySuccess($student_id,$type){
 
-        //$this->createInvoice($invoice_data['amount'],$invoice_data['description']);
+        $student = User::find($student_id);
+        $enrollement_fee = 300;
+        $program_fee = $type == 1 ? 1900 : 190;
+        $total = $enrollement_fee + $program_fee;
+        
+        $this->createInvoice($total,'Transfer program enrollment');
 
+        $expires_at = $type == 1 
+                ? Carbon::now()->addMonths(1)->subDays(1) 
+                : Carbon::now()->addYears(1)->subDays(1); 
         ParentStudent::where('student_id',$student_id)
             ->update(['status' => 3]);
+
+        StudentPlan::insert([
+            'plan_id' => 4,
+            'student_id' => $student_id,
+            'expires_at' => $expires_at
+        ]);
+
+        return redirect()->route('parent.student.profile',$student_id);
     }
 
     public function resetPassPage() {
