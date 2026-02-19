@@ -215,7 +215,7 @@ class ParentController extends Controller
     }
 
     public function studentDocumentsSubmit(Request $request){
-
+    
         $student_id = $request->id;
         $student = User::find($student_id);
         $grade = $request->grade;

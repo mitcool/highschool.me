@@ -131,11 +131,16 @@
                         </div>
 
                         {{-- reCAPTCHA --}}
-                        <div class="form-group text-center mt-4 mb-4">
+                        <div class="form-group text-center mt-4 mb-1">
                             <div class="g-recaptcha d-inline-block"
                                  data-sitekey="{{ config('services.recaptcha.key') }}">
                             </div>
                         </div>
+                        @if ($errors->has('g-recaptcha-response'))
+                                <p class="invalid-feedback d-block my-2 mx-auto text-center">
+                                    <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                </p>
+                            @endif
 
                         {{-- Actions --}}
                         <div class="form-group text-center mb-0">
