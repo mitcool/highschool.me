@@ -2,9 +2,8 @@
 
 @section('content')
 
-<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+<div class="container border bg-white mt-2" style="padding:20px;">    
     <h2 class="text-center">Courses</h2>
-
     <form action="{{ route('course.add') }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
         <label for="" class="font-weight-bold my-2">Name</label>

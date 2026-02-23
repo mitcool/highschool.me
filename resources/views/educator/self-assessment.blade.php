@@ -1,13 +1,13 @@
 @extends('educator.dashboard')
 
 @section('content')
-<div class="container">
+<div class="container mt-2">
     <div class="card shadow-sm p-4 mx-auto" style="max-width: 900px;">
-        <h3 class="text-center mb-4">
+        <h3 class="text-center page-headings">
             Add Self-assessment Question
         </h3>
 
-        <form method="POST" action="{{ route('admin.add-asses-question') }}">
+        <form method="POST" action="{{ route('educator.add-asses-question') }}">
             @csrf
 
             {{-- Course --}}
@@ -16,7 +16,7 @@
                 <select class="form-control" id="course_id" name="course_id" required>
                     <option value="">Select course</option>
                     @foreach($courses as $course)
-                        <option value="{{ $course->id }}">{{ $course->title }}</option>
+                        <option value="{{ $course->course->id }}">{{ $course->course->title }}</option>
                     @endforeach
                 </select>
             </div>
@@ -101,7 +101,7 @@
         </form>
     </div>
 
-    <div class="card shadow-sm p-4 mx-auto mt-5" style="max-width: 900px;">
+    <div class="card shadow-sm p-4 mx-auto my-3" style="max-width: 900px;">
 
         <h3 class="text-center mb-4">
             List with existing questions
@@ -122,11 +122,11 @@
                         <td>{{ \Illuminate\Support\Str::limit($question->question, 70) }}</td>
                         <td>{{ $question->course->title ?? '-' }}</td>
                         <td class="text-center">
-                            <a href="{{ route('admin.edit-single-self-assessment-question', $question->id) }}">Edit</a>
+                            <a href="{{ route('educator.edit-single-self-assessment-question', $question->id) }}">Edit</a>
                         </td>
                         <td class="text-center">
                             <form method="POST"
-                                  action="{{ route('admin.delete-self-asses-question', $question->id) }}"
+                                  action="{{ route('educator.delete-self-asses-question', $question->id) }}"
                                   onsubmit="return confirm('Are you sure?')">
                                 @csrf
                                 <button class="btn btn-link p-0 text-danger">
@@ -170,7 +170,7 @@
                 }
 
                 $.ajax({
-                    url: "{{ route('admin.materials-by-course', ':id') }}".replace(':id', courseId),
+                    url: "{{ route('educator.materials-by-course', ':id') }}".replace(':id', courseId),
                     type: 'GET',
                     dataType: 'json',
                     success: function (materials) {

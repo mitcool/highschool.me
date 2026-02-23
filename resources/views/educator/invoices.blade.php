@@ -58,22 +58,28 @@
 
 @section('content')
 <div class="invoice-container col-md-12">
-    <h3 class="invoice-header mb-4">Invoices</h3>
-    <div class="d-flex justify-content-between fw-bold mb-2 text-secondary px-2">
-		<span>Date</span>
-		<span>Invoice #</span>
-		<span>Amount</span>
-		<span></span>
-    </div>
+    <h3 class="invoice-header mb-4">Credit Memos</h3>
+	@if(count($invoices)>0)
+		<div class="d-flex justify-content-between fw-bold mb-2 text-secondary px-2">
+			<span>Date</span>
+			<span>Credit Memo #</span>
+			<span>Amount</span>
+			<span></span>
+		</div>
+	@endif
     <!-- Example invoice rows -->
-    @foreach($invoices as $invoice)
+    @forelse($invoices as $invoice)
     <div class="invoice-row">
 		<span class="invoice-date">{{ $invoice->created_at->format('d.m.Y') }}</span>
 		<span class="invoice-number">{{ $invoice->invoice_number }}</span>
 		<span class="invoice-amount">${{ number_format($invoice->price,2,'.',',') }}</span>
 		<a class="view" href="{{ route('parent.single-invoice', $invoice->id) }}">View</a>
     </div>
-    @endforeach
+	@empty
+	<div class="invoice-row text-center">
+		<p class="mx-auto mb-0">No credit memos at the moment</p>
+    </div>
+    @endforelse
 </div>
 @endsection
 

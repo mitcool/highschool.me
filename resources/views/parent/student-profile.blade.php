@@ -81,28 +81,36 @@
         <h2 class="text-center" style="margin-top:50px;">Enrolled courses</h2>
        @foreach ($student->enrolled_courses as $enrolled_course)
             <div class="d-flex justify-content-between w-100 my-2">
-                
                 <p>{{ $enrolled_course->course->course->title }}</p>
+
+                {{-- Status Enrolled -> 0 --}}
                 @if($enrolled_course->status == 0)
+
                 <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST">
                     {{ csrf_field() }}
-                    <button class="btn btn-enroll">Start Study</button>
+                    <button class="btn btn btn-outline-secondary"><i class="fas fa-clock"></i> Start Study</button>
                 </form>  
-                
+                {{-- Status STATUS_START_STUDY -> 1 --}}
                 @elseif($enrolled_course->status == 1) 
-               <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST">
-                    {{ csrf_field() }}
-                    <button class="btn btn-enroll bg-warning">Ready for Exam</button>
+                <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST">
+                        {{ csrf_field() }}
+                        <button class="btn btn-info"><i class="fas fa-clock"></i> Ready for Exam</button>
                 </form>
+
+                {{-- STATUS_READY_FOR_EXAM -> 2 --}}
                 @elseif($enrolled_course->status == 2) 
-             
-                    <button class="btn btn-enroll bg-danger">Pending exam date</button>
-                
+                    <button class="btn  btn-outline-secondary">Pending Exam Date</button>
+                {{-- STATUS_EXAM_APPOINTED -> 3 --}}
                  @elseif($enrolled_course->status == 3) 
-               
-                    <button class="btn btn-enroll bg-success">Completed</button>
-                
+                <button class="btn  btn-warning">Exam on date...</button>
+                    {{-- STATUS_EXAM_SUBMITED->4  --}}
+               @elseif($enrolled_course->status == 4) 
+                    <button class="btn  btn-secondary">Pending Exam Results</button>
+                    {{--STATUS_COMPLETED  --}}
+               @elseif($enrolled_course->status == 5) 
+                    <button class="btn  btn-success">Completed</button>
                 @endif     
+
             </div> 
        @endforeach 
 

@@ -9,13 +9,12 @@
 @endsection
 
 @section('content')
-<div class="shadow container bg-white my-3">
-
+<div class="shadow container bg-white my-3">    
     {{-- ADD QUESTION FORM --}}
     <form action="{{ route('educator.exam-question-add') }}" method="POST">
         @csrf
 
-        <h3 class="text-center page-headings">Add Exam Question</h3>
+        <h3 class="page-headings text-center">Add Exam Question</h3>
 
         <div class="row">
 
@@ -57,7 +56,7 @@
 
     {{-- FILTER --}}
     <hr>
-    <h3 class="text-center mb-3">Filter Questions by Course</h3>
+    <h3 class="text-center my-5">Filter Questions by Course</h3>
 
     <form method="GET" action="{{ route('educator.add-exam-question') }}">
         <div class="row justify-content-center mb-4">
@@ -69,7 +68,7 @@
                     @foreach($courses as $course)
                         <option value="{{ $course->id }}"
                             {{ request('course_id') == $course->id ? 'selected' : '' }}>
-                            {{ $course->title }}
+                            {{ $course->course->title }}
                         </option>
                     @endforeach
                 </select>
@@ -87,7 +86,7 @@
     </form>
 
     {{-- QUESTIONS LIST --}}
-    <h3 class="text-center mb-3">Existing Questions</h3>
+    <h3 class="text-center my-5">Existing Questions</h3>
 
     <ul class="list-group text-center mb-3">
         @forelse($questions as $question)

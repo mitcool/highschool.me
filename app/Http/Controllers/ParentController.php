@@ -105,11 +105,31 @@ class ParentController extends Controller
             ->with('students',$students);
     }
     public function meetings_student($student_id){
-        $hour_now = Carbon::now()->format('H:i:s');
+        $now = Carbon::now();
       
-        $group_sessions = GroupSession::where('date','>',Carbon::now())->where('start','>',$hour_now)->get();
-        $mentoring_sessions = MentoringSession::where('date','>',Carbon::now())->where('start','>',$hour_now)->get();
-        $coaching_sessions = CoachingSession::where('date','>',Carbon::now())->where('start','>',$hour_now)->get();
+         $group_sessions = GroupSession::where(function ($query) use ($now) {
+                $query->where('date', '>', $now->toDateString())
+                    ->orWhere(function ($q) use ($now) {
+                        $q->where('date', $now->toDateString())
+                            ->where('start', '>', $now->toTimeString());
+                    });
+        })->get();
+
+        $mentoring_sessions = MentoringSession::where(function ($query) use ($now) {
+                $query->where('date', '>', $now->toDateString())
+                    ->orWhere(function ($q) use ($now) {
+                        $q->where('date', $now->toDateString())
+                            ->where('start', '>', $now->toTimeString());
+                    });
+        })->get();
+       
+        $coaching_sessions = CoachingSession::where(function ($query) use ($now) {
+                $query->where('date', '>', $now->toDateString())
+                    ->orWhere(function ($q) use ($now) {
+                        $q->where('date', $now->toDateString())
+                            ->where('start', '>', $now->toTimeString());
+                    });
+        })->get();
 
         $user_group_sessions = UserGroupSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
         $user_mentoring_sessions = UserMentoringSession::where('user_id',auth()->id())->pluck('session_id')->toArray();

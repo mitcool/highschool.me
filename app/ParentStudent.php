@@ -36,7 +36,7 @@ class ParentStudent extends Model
     }
 
     public function track_name(){
-        if($this->track = 1){
+        if($this->track == 1){
            return '24-Credit-Graduation Standard Track';             
         }
         elseif($this->track==2){

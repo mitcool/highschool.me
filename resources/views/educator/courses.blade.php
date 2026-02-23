@@ -1,7 +1,7 @@
 @extends('educator.dashboard')
 
 @section('content')
-<div class="shadow container jumbotron bg-white">
+<div class="shadow container bg-white my-3">
     <h1 class="text-center page-headings">Courses</h1>
     <table class="table">
         <thead>

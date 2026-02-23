@@ -442,7 +442,7 @@ class AdminController extends Controller
             unlink(public_path($old_image_path ));
         }catch(\Exception $e){
         
-            info($e);
+            info($e->getMessage());
         }
 
         $file_name = $input['name'].'.'.$request->file('picture')->getClientOriginalExtension();
@@ -761,20 +761,6 @@ class AdminController extends Controller
         return redirect()->back()->with('success_message','Course created successfully');
      }
 
-    //  public function editCourse($course_id){
-    //     $course = Course::find($course_id);
-    //     $courses = Course::all();
-    //     return view('admin.edit-single-course')
-    //         ->with('courses',$courses)
-    //         ->with('course',$course);
-    //  }
-
-    //  public function updateCourse(Request $request, $course_id){
-    //     $course = $request->except('_token');
-    //     Course::find($course_id)->update($course);
-    //     return redirect()->back()->with('success_message','Course updated successfully');
-    //  }
-
     public function showInvoices() {
         $invoices = Invoice::all();
 
@@ -801,7 +787,6 @@ class AdminController extends Controller
     }
 
     public function AddEnrollmentCourse(Request $request) {
-        Log::info($request);
         // Get the curriculum type first so we know which extra fields are required
         $curriculumType = CurriculumType::findOrFail($request->input('curriculum_type_id'));
 
@@ -914,8 +899,6 @@ class AdminController extends Controller
                     if (!$uploadedFile) {
                         continue;
                     }
-                    Log::info($uploadedFile);
-
                     CourseFile::create([
                         'course_id'     => $course->id,
                         'label'         => isset($labels[$index]) ? $labels[$index] : null,
@@ -984,7 +967,7 @@ class AdminController extends Controller
 
     public function updateEnrollmentCourse(Request $request, $course_id) {
         $course = CatalogCourse::with('curriculumTypes')->findOrFail($course_id);
-
+        
         // Curriculum type chosen in the edit form
         $curriculumType = CurriculumType::findOrFail($request->input('curriculum_type_id'));
 
@@ -1461,7 +1444,7 @@ class AdminController extends Controller
     }
     
     public function showSubmissions(){
-        $exams = Exam::where('status',1)->get();
+        $exams = Exam::where('status',Exam::STATUS_SUBMITTED)->get();
         return view('admin.submissions')
             ->with('exams',$exams);
     }
@@ -1488,10 +1471,13 @@ class AdminController extends Controller
         $exam->update([
             'grade' => $grade,
             'comment'=> $exam_comment,
-            'status' => 2
+            'status' => Exam::STATUS_EVALUATED
         ]);
         if($grade > 1){
             $course->update(['status' => StudentEnrolledCourse::STATUS_COMPLETED]);
+        }
+        else{
+            $course->update(['status' => StudentEnrolledCourse::STATUS_READY_FOR_EXAM]);
         }
 
         return redirect()->back()->with('success_message','Exam evaluated successfully');
@@ -1547,10 +1533,8 @@ class AdminController extends Controller
     }
 
     public function addSelfAssessmentQuestionPage() {
-        $courses = CatalogCourse::get();
-
+        $courses = CurriculumCourse::get();
         $questions = SelfAssessmentQuestion::with('course')->orderBy('id', 'desc')->paginate(10);
-
         return view('admin.add-self-assess-question')->with('courses', $courses)->with('questions', $questions);
     }
 
@@ -1683,13 +1667,11 @@ class AdminController extends Controller
 
         $statusText = $leave->status_text;
 
-        $admins = User::where('role_id', 1)->get();
-        foreach($admins as $admin) {
-            try{
-                Mail::to($admin->email)->send(new LeaveRequestAnswer($statusText));
-            }catch(\Exception $e){
-                info($e->getMessage());
-            }
+        $admin = User::where('role_id', 1)->first();
+        try{
+            Mail::to($admin->email)->send(new LeaveRequestAnswer($statusText));
+        }catch(\Exception $e){
+            info($e->getMessage());
         }
 
         Notification::add(
@@ -1747,7 +1729,10 @@ class AdminController extends Controller
     }
     public function getCourses(Request $request){
         $student_id = $request->student_id;
-        $courses = StudentEnrolledCourse::with('course.course')->where('user_id',$student_id)->where('status',StudentEnrolledCourse::STATUS_READY_FOR_EXAM)->get();
+                
+        $courses = StudentEnrolledCourse::with('course.course')->where('user_id',$student_id)
+            ->where('status',StudentEnrolledCourse::STATUS_READY_FOR_EXAM)
+            ->get();
         return $courses;
     }
 }

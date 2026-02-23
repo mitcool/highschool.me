@@ -112,6 +112,7 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::post('/study-mentor-chat','StudentController@singleStudyMentorChatPost')->name('student.study-mentor-chat-post');
 	Route::get('/exams','StudentController@exams')->name('student.exams');
 	Route::get('/exams/{id}','StudentController@singleExam')->name('student.single-exam');
+	Route::get('/exams/result/{id}','StudentController@singleExamResults')->name('student.single-exam-results');
 	Route::post('/ambassador/redeem', 'StudentController@redeemRewards')->name('ambassador.redeem');
 	Route::post('/submit-exam/{exam_id}','StudentController@submitExam')->name('submit-exam');
 	Route::post('/fail-exam/{exam_id}','StudentController@failExam')->name('fail-exam');
@@ -123,11 +124,9 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::get('/diplomas','StudentController@diplomas')->name('student.diplomas');
 	Route::get('/generate-pdf-diploma/{student_id}','StudentController@generatePdfDiploma')->name('student.generate-pdf-diploma');
 	Route::post('/request-diploma-copy','StudentController@requestDiplomaCopy')->name('request-diploma-copy');
-    	Route::get('/request-diploma-copy-success','StudentController@requestDiplomaCopySuccess')->name('request-diploma-copy-success');
-    
-    	Route::get('/digital-transcript/{student_id}','StudentController@digitalTransript')->name('student.generate-pdf-transcript');
-    
-    	#notifications
+    Route::get('/request-diploma-copy-success','StudentController@requestDiplomaCopySuccess')->name('request-diploma-copy-success');
+    Route::get('/digital-transcript/{student_id}','StudentController@digitalTransript')->name('student.generate-pdf-transcript');    
+ 	#notifications
 	Route::get('/all-notifications', 'StudentController@showNotifications')->name('student.notifications');
 });
 
@@ -138,11 +137,23 @@ Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 	Route::get('/courses','EducatorController@courses')->name('educator.courses');
 	Route::get('/meetings','EducatorController@meetings')->name('educator.meetings');
 	Route::get('/exams','EducatorController@exams')->name('educator.exams');
-	Route::get('/exam-questions','EducatorController@examQuestions')->name('educator.exam-questions');
 	Route::get('/self-assesment','EducatorController@selfAssessment')->name('educator.self-assessment');
-	Route::get('/submitions','EducatorController@submitions')->name('educator.submitions');
+	Route::get('/submissions','EducatorController@submissions')->name('educator.submissions');
 	Route::get('/invoices','EducatorController@invoices')->name('educator.invoices');
 	Route::get('/reset-password', 'EducatorController@resetPassPage')->name('educator.reset.password.page');
+	Route::post('/add-asses-question', 'EducatorController@storeSelfAssessQuestion')->name('educator.add-asses-question');
+	Route::get('/edit-self-assessment-question/{question_id}', 'EducatorController@editSelfAssessmentQuestionPage')->name('educator.edit-single-self-assessment-question');
+	Route::post('/edit-single-self-assessment-question/{question_id}', 'EducatorController@editSelfAssessmentQuestion')->name('educator.self-assessment-update');
+	Route::post('/delete-single-self-assessment-question/{question_id}', 'EducatorController@deleteSelfAssessmentQuestion')->name('educator.delete-self-asses-question');
+	Route::post('/exams/add','EducatorController@createExam')->name('educator.create-exam');
+	Route::get('/add-exam-questions', 'EducatorController@addExamQuestionsPage')->name('educator.add-exam-question');
+	Route::post('/add-exam-question', 'EducatorController@addExamQuestion')->name('educator.exam-question-add');
+	Route::get('/edit-exam-question/{question_id}', 'EducatorController@editQuestionPage')->name('educator.update-exam-question');
+	Route::post('/edit-exam-single-question/{question_id}', 'EducatorController@editExamQuestion')->name('educator.update-question-exam');
+	Route::post('/delete-exam-question', 'EducatorController@deleteExamQuestion')->name('educator.delete-exam-question');
+	Route::get('/materials-by-course/{course}', 'EducatorController@materialsByCourse')->name('educator.materials-by-course');
+	Route::get('/submissions/{submition_id}','EducatorController@showSingleSubmission')->name('educator.single-submission');
+	Route::post('/evaluate-exam/{exam_id}','EducatorController@evaluateExam')->name('educator.evaluate-exam');
 
 	#notifications
 	Route::get('/all-notifications', 'EducatorController@showNotifications')->name('educator.notifications');
@@ -310,6 +321,8 @@ Route::post('/subscribe','MainController@subscribe')->name('subscribe');
 Route::post('/unsubscribe-user/{id}','MainController@unsubscribeUser')->name('unsubscribe-user');
 
 Route::get('/verify/mail/{confcode}', 'MainController@verifyAccount');
+
+Route::post('/get-courses','AdminController@getCourses')->name('get-courses');
 
 /*
 Route::get('/down', function() {

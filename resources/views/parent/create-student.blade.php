@@ -2,8 +2,8 @@
 
 @section('content')
 
-<div class="shadow container jumbotron bg-white">
-    <h1 class="text-center">Add child</h1>
+<div class="shadow container mt-3 bg-white">
+    <h1 class="text-center page-headings">Add child</h1>
     <form action="{{ route('student.add') }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div  class="mb-3">

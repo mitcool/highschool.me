@@ -17,6 +17,10 @@ class Exam extends Model
         'time' => 'datetime'
     ];
 
+    const STATUS_APPOINTED = 0;
+    const STATUS_SUBMITTED = 1;
+    const STATUS_EVALUATED = 2;
+
     public function student(){
         return $this->hasOne('App\User','id','student_id');
     }

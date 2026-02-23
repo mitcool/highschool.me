@@ -112,7 +112,11 @@ class StudentController extends Controller
         $student = auth()->user();
         
         $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
-        $in_progress_courses =  $student->enrolled_courses->whereIn('status',[StudentEnrolledCourse::STATUS_START_STUDY,StudentEnrolledCourse::STATUS_READY_FOR_EXAM]);
+        $in_progress_courses =  $student->enrolled_courses
+                        ->whereIn('status',[StudentEnrolledCourse::STATUS_START_STUDY,
+                                            StudentEnrolledCourse::STATUS_READY_FOR_EXAM,
+                                            StudentEnrolledCourse::STATUS_EXAM_APPOINTED,
+                                            StudentEnrolledCourse::STATUS_EXAM_SUBMITED]);
         $completed_courses =  $student->enrolled_courses->where('status',StudentEnrolledCourse::STATUS_COMPLETED);
         $needed_mandatory_courses = $this->checkMandatoryCourses($student->enrolled_courses);
         
@@ -133,7 +137,11 @@ class StudentController extends Controller
 
     public function singleExam($exam_id){
         $exam = Exam::find($exam_id);
-        $questions = ExamQuestion::where('subject_id',$exam->course_id)->inRandomOrder()->take(10)->get();
+        $questions = ExamQuestion::where('subject_id',$exam->course_id)
+            ->where('type',ExamQuestion::TYPE_FINAL_EXAM)    
+            ->inRandomOrder()
+            ->take(10)
+            ->get();
         
         if($exam->type == 2){
             $questions = null;
@@ -143,6 +151,13 @@ class StudentController extends Controller
             ->with('exam',$exam);
     }
 
+    public function singleExamResults($exam_id){
+        $exam = Exam::find($exam_id);
+        $answers = StudentAnswer::where('exam_id',$exam_id)->get();
+        return view('student.exam-results')
+            ->with('exam',$exam)
+            ->with('answers',$answers);
+    }
 
     public function submitExam(Request $request, $exam_id){
        
@@ -171,7 +186,7 @@ class StudentController extends Controller
         }
         $exam->update(['status' => $submitted_from_student]);
             //TODO::emails
-            return redirect()->back()
+            return redirect()->route('student.exams')
                 ->with('success_message','You successfully submitted your exam');
     }
 
@@ -179,7 +194,7 @@ class StudentController extends Controller
         $exam = Exam::find($exam_id);
         if($exam->status == 0){
             $exam->update([
-            'status' => 2,
+            'status' => Exam::STATUS_EVALUATED,
             'grade' => 0
         ]);
         }
@@ -189,12 +204,18 @@ class StudentController extends Controller
     }
 
     public function singleCourse($course_id) {
-        $course = CurriculumCourse::find($course_id);
+        $enrolled_course = StudentEnrolledCourse::where('user_id',auth()->id())->where('catalog_course_id',$course_id)->first();
+        if(!$enrolled_course){
+            abort(403);
+        };
+        
+        $materials = CourseFile::where('course_id', $enrolled_course->course->course_id)->get();
+        $videos = CourseVideo::where('course_id', $enrolled_course->course->course_id)->get();
 
-        $materials = CourseFile::where('course_id', $course_id)->get();
-        $videos = CourseVideo::where('course_id', $course_id)->get();
-
-        return view('student.single-course')->with('course',$course)->with('materials', $materials)->with('videos', $videos);
+        return view('student.single-course')
+            ->with('enrolled_course',$enrolled_course)
+            ->with('materials', $materials)
+            ->with('videos', $videos);
     }
 
     public function singleMaterial(Request $request, $material_id) {
@@ -420,7 +441,7 @@ class StudentController extends Controller
         $attempt = SelfAssessmentAttempt::where('user_id', $user->id)
             ->where('material_id', $material_id)
             ->first();
-
+       
         // Already coompleted - review mode
         if ($attempt && $attempt->completed) {
 
@@ -428,20 +449,25 @@ class StudentController extends Controller
                 ->with(['question.answers', 'selectedAnswer'])
                 ->get();
 
+            
             $totalQuestions = $attemptQuestions->count();
-            $correctAnswers = $attemptQuestions->where(function ($aq) {
-                return $aq->selectedAnswer && $aq->selectedAnswer->is_correct;
-            })->count();
-            $totalPoints = $attemptQuestions->where(function ($aq) {
-                return $aq->selectedAnswer && $aq->selectedAnswer->is_correct;
-            })->count(); // 1 point per correct answer
 
+            $correctAnswers = 0;
+            $totalPoints = 0; // 1 point per correct answer
+            
+            foreach($attemptQuestions as $aq){
+                if($aq->selectedAnswer && $aq->selectedAnswer->is_correct == 1){
+                    $correctAnswers+=1;
+                    $totalPoints+=1;
+                }
+                
+            }
             return view('student.self-assessment-review', [
                 'attempt' => $attempt,
                 'attemptQuestions' => $attemptQuestions,
                 'totalQuestions' => $totalQuestions,
                 'correctAnswers' => $correctAnswers,
-                 'totalPoints' => $totalPoints,
+                'totalPoints' => $totalPoints,
             ]);
         }
 
@@ -467,13 +493,15 @@ class StudentController extends Controller
                     'question_id' => $question->id,
                 ]);
             }
+          
         }
 
         // If time expired → auto-finish
         if ($now->greaterThanOrEqualTo($attempt->ends_at)) {
             return redirect()->route('student.self-assessment-test-submit', $attempt->id);
         }
-
+        
+        
         // Load SAME questions every time
         $questions = SelfAssessmentAttemptQuestion::where('attempt_id', $attempt->id)
             ->with(['question.answers'])

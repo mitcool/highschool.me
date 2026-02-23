@@ -117,7 +117,7 @@
 
 @section('content')
 <div class="container my-5">
-    <h2 class="text-center mb-4">{{ $course->course->title }}</h2>
+    <h2 class="text-center mb-4 page-headings">{{ $enrolled_course->course->course->title }}</h2>
 
     <div class="materials-card">
         <div class="materials-title">Materials</div>
@@ -137,7 +137,7 @@
             <div class="material-row">
                 <div class="material-name">{{ $material->label }}</div>
 
-                @if($hasSelfAssessment)
+                @if($hasSelfAssessment && $enrolled_course->status < 4)
                     <a class="self-link"
                        href="{{ route('student.self-assessment-test', $material->id) }}">
                         Self Assessment

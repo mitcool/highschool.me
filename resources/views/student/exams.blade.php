@@ -28,7 +28,14 @@
                             </td>
                             <td>
                                 @if($exam->is_active())
-                                    <a href="{{ route('student.single-exam',$exam->id) }}" class="view-link">Link&#187;</a>
+                                    @if($exam->status == 0)
+                                        <a href="{{ route('student.single-exam',$exam->id) }}" class="view-link">Link&#187;</a>
+                                    @elseif($exam->grade)
+                                        <a href="{{ route('student.single-exam-results',$exam->id) }}"><span class="badge badge-secondary">Details...</span>
+                                        </a>
+                                    @else
+                                        <span class="badge badge-secondary"> <i class="fas fa-clock"></i> Pending results</span>
+                                    @endif
                                 @endif
                             </td>
                         </tr>

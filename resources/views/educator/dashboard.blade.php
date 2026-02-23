@@ -6,8 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="author" content="">
-    <link rel="stylesheet" href="{{ asset('css/main/style.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/main/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
     <link href="{{asset('css/admin/sb-admin-2.min.css')}}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{asset('/assets/fontawesome-free-5.5.0-web/css/all.min.css')}}">
@@ -19,6 +20,7 @@
 
     @yield('css')
     <style>
+     
         .sidebar {
             background-color: #AB0050!important;
         }
@@ -80,7 +82,7 @@
                         </a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{route('educator.exam-questions')}}">
+                        <a class="nav-link" href="{{route('educator.add-exam-question')}}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Exam Questions</span>
                         </a>
@@ -92,7 +94,7 @@
                         </a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{route('educator.submitions')}}">
+                        <a class="nav-link" href="{{route('educator.submissions')}}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Submitted Exams</span>
                         </a>
@@ -101,7 +103,7 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="{{route('educator.invoices')}}">
                             <i class="fas fa-fw fa-cog"></i>
-                            <span>Invoices</span>
+                            <span>Credit Memos</span>
                         </a>
                     </li>
 

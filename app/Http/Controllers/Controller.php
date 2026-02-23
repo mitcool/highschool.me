@@ -148,7 +148,7 @@ class Controller extends BaseController
         foreach($student_enrolled_courses as $enrolled_course){
             $credits['needed_credits'] += $enrolled_course->course->default_credits;
             $type = CurriculumCourse::where('course_id',$enrolled_course->id)->first()->curriculum_type_id;
-            if($enrolled_course->status == 1){
+            if($enrolled_course->status == 5){
                 if($type != 1){
                     $elective_credits +=  $enrolled_course->course->course->default_credits;
                 }
