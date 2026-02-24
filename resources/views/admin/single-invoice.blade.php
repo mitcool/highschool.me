@@ -208,22 +208,23 @@
       <div class="col-md-8">
         <h6 class="section-title">From</h6>
         <p>
-          ONSITES GROUP LTD<br>
-          87 Prilep Street<br>
-          Business Centre “Bee Garden”<br>
-          Varna, Bulgaria<br>
-          email@mail.com<br>
-          VAT 0000000000
+          ONSITES HIGH SCHOOL LLC<br>
+          100 Southeast 2nd Street<br>
+          Suite 2000-1005<br>
+          Miami, FL 33131<br>
+          USA<br>
+          finance@highschool.me<br>
+          Tax ID (EIN): 37-2186116
         </p>
       </div>
       <div class="col-md-4">
         <h6 class="section-title">Bill To</h6>
         <p>
           {{$invoice->name}} {{$invoice->surname}}<br>
+          {{$invoice->street}}, {{$invoice->street_number}}<br>
           {{$invoice->city}}, {{$invoice->ZIPcode}}<br>
           {{$invoice->country->name}}<br>
           {{$invoice->user_email}}<br>
-          VAT {{$invoice->VAT_number}}
         </p>
       </div>
     </div>

@@ -48,6 +48,7 @@
         <div style="padding:10px 0 ;">
             <h4 style="color:#045397;font-weight-bold">Upload Documentation</h4>
             <p>Please ensure that the files are uploaded in PDF format</p>
+        <p>Each document must not exceed 5MB!</p>
         </div>
         {{-- Parent ID --}}
          <div class="mb-3 d-flex justify-content-between">

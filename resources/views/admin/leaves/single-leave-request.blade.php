@@ -86,7 +86,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="k">Student Name: <span class="v-strong">{{ $leaveRequest->student->name ?? '—' }} {{ $leaveRequest->student->surname ?? '—' }}</span></div>
-                <div class="k">Born: {{ $leaveRequest->student->date_of_birth->format('F d, Y') ?? '—' }}</div>
+                <div class="k">Born: {{ optional($leaveRequest->student->date_of_birth)->format('F d, Y') ?? '—' }}</div>
                 <div class="k">Date of Submission: {{ ($leaveRequest->created_at)->format('F d, Y') }}</div>
             </div>
         </div>

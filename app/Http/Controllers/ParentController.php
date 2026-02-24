@@ -237,18 +237,23 @@ class ParentController extends Controller
     public function studentDocumentsSubmit(Request $request){
         #!!! Note student ID is type of document don't mix with student->id 
         $request->validate([
-            'grade'  => 'required',
-            'parent_id' => 'required|file|mimes:pdf',
-            'custody_document' => 'required|file|mimes:pdf',
-            'proof_of_residence' => 'required|file|mimes:pdf' ,
-            'student_id' => 'required|file|mimes:pdf',
-            'birth_certificate' => 'required|file|mimes:pdf',
-            'school_transcript' => 'required|file|mimes:pdf' ,
-            'withdrawal_confirmation' => 'file|mimes:pdf',
-            'iep' => 'file|mimes:pdf',
-            'id' => 'required'
-        ]);
+            // Required documents
+        'grade'  => 'required',
+        'id' => 'required',
+            'parent_id'          => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
+            'custody_document'   => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
+            'proof_of_residence' => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
+            'student_id'         => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
+            'birth_certificate'  => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
+            'school_transcript'  => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
 
+            // Optional documents
+            'withdrawal_confirmation' => ['nullable', 'file', 'mimetypes:application/pdf', 'max:5120'],
+            'iep'                     => ['nullable', 'file', 'mimetypes:application/pdf', 'max:5120'],
+        ], [
+            '*.mimetypes' => 'All documents must be valid PDF files.',
+            '*.max'       => 'Each document must not exceed 5MB.',
+        ]);
         $student_id = $request->id;
         $student = User::find($student_id);
         $grade = $request->grade;
@@ -913,6 +918,7 @@ class ParentController extends Controller
         }catch(\Exception $e){
             info($e->getMessage());
         }
+
 
         return redirect()->back()->with('success_message','The course has been enrolled successfully');
     }
