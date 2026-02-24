@@ -53,12 +53,36 @@
      	text-decoration: none;
      	color: #fff;
     }
+	/* Default link color */
+	.pagination .page-link {
+		color: #ff6600; /* your color */
+	}
+
+	/* Hover state */
+	.pagination .page-link:hover {
+		color: #ffffff;
+		background-color: #ff6600;
+		border-color: #ff6600;
+	}
+
+	/* Active page */
+	.pagination .page-item.active .page-link {
+		background-color: #ff6600;
+		border-color: #ff6600;
+		color: #ffffff;
+	}
+
+	/* Disabled buttons */
+	.pagination .page-item.disabled .page-link {
+		color: #999999;
+	}
 </style>
 @endsection
 
 @section('content')
-<div class="invoice-container col-md-12">
-    <h3 class="invoice-header mb-4">Invoices</h3>
+<div class="container wrapper shadow h-100">
+    <h1 class="text-center h2" style="color:#045397">Invoices</h1>
+    <hr>
     <div class="d-flex justify-content-between fw-bold mb-2 text-secondary px-2">
 		<span>Date</span>
 		<span>Invoice #</span>
@@ -74,6 +98,7 @@
 		<a class="view" href="{{ route('parent.single-invoice', $invoice->id) }}">View</a>
     </div>
     @endforeach
+	<div class="d-flex justify-content-center">{{ $invoices->links() }}</div>
 </div>
 @endsection
 

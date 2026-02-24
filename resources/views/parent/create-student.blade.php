@@ -1,9 +1,10 @@
 @extends('parent.dashboard')
 
 @section('content')
-
-<div class="shadow container mt-3 bg-white">
-    <h1 class="text-center page-headings">Add child</h1>
+<div class="shadow container wrapper h-100">
+    <h1 class="text-center h2" style="color:#045397">Add Student</h1>
+    <hr>
+    
     <form action="{{ route('student.add') }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div  class="mb-3">

@@ -1,10 +1,10 @@
 @extends($template)
 
 @section('content')
-   <div class="container jumbotron bg-white">
-        <h2 class="font-weight-bold text-center" style="color:#003A6B;margin-bottom:20px;"><i class="fa fa-envelope-open" aria-hidden="true"></i> Message</h2>
+   <div class="container wrapper shadow h-100">
+        <h2 class="h2 text-center" style="color:#003A6B;margin-bottom:20px;"><i class="fa fa-envelope-open" aria-hidden="true"></i> Message</h2>
         @foreach($help_desk_messages as $hd)
-            <div class="shadow {{ $hd->is_admin==1 ? ' bg-light ' : '' }}" style="padding:20px;margin-top:10px;" >   
+            <div class="border {{ $hd->is_admin==1 ? ' bg-light ' : '' }}" style="padding:20px;margin-top:10px;" >   
                 <div class="d-flex justify-content-between">
                     <h5 class="font-weight-bold mb-0">From: {{ $hd->user->fullname() }}</h5>
                     <p class="mb-0">{{ $hd->created_at->format('d.m.Y') }}</p>

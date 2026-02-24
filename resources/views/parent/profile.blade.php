@@ -12,9 +12,9 @@
 
 @endsection
 @section('content')
-<div class="container jumbotron bg-white">
-    <div class="shadow" style="padding:20px;">
-        <h1 class="h3 text-center">Hello {{ auth()->user()->name }} You can edit your profile details here.</h1>
+<div class="container wrapper shadow">
+    <div class="" style="padding:20px;">
+        <h1 style="color:#045397" class="h2 text-center">Hello {{ auth()->user()->name }} You can edit your profile details here.</h1>
         <form action="{{ route('parent.update-info') }}" method="POST">
             {{ csrf_field() }}
             <div>

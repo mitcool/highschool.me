@@ -18,6 +18,11 @@ input::-webkit-inner-spin-button {
 ul {
     padding-left: 20px !important;
 }
+.wrapper{
+    background-color: white;
+    padding:20px;
+    margin:20px 0;
+}
  #main-image-mobile{
     display: none;
  }

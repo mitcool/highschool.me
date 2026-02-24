@@ -1,9 +1,6 @@
 @extends('admin_template')
 
 @section('content')
-@extends('admin_template')
-
-@section('content')
 
 <div class="jumbotron container shadow bg-white">
     <h1 class="text-center">Course Types</h1>

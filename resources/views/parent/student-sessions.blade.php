@@ -1,10 +1,10 @@
 @extends('parent.dashboard')
 
 @section('content')
-<div class="bg-white w-75" style="padding:30px;">
+<div class="container wrapper shadow h-100">
     <div class="page-content" style="padding:20px;">
-        <h1>Premier Learning Services</h1>
-         <h2 class="h5">Access high-quality learning and mentoring options to elevate your educational experience.</h2>
+        <h1 class="h2 text-center"  style="color:#045397">Premier Learning Services</h1>
+         <p class="text-center">Access high-quality learning and mentoring options to elevate your educational experience.</p>
          <hr>
         <h4 class="h4" style="color:#045397">{{ $student->name }} {{ $student->surname }}</h4>
              @if($student->date_of_birth) 
@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-md-8" >
             @foreach ($sessions as $session )
-                    <div class="shadow" style="border-radius:5px;padding:20px;">
+                    <div class="border my-1" style="border-radius:5px;padding:20px;">
                         <h4 style="color:#E9580C;font-weight:bold">{{ $session->name }}</h4>
                         <hr>
                         <p>Fee per Session: ${{ $session->price() }}</p>
@@ -39,7 +39,7 @@
             @endforeach
             </div>
             <div class="col-md-4">
-                <div class="shadow" style="border-radius:5px;padding:20px;">
+                <div class="border" style="border-radius:5px;padding:20px;">
                 <p class="h4 text-center" style="color:#045397;font-weight:bold;">Your Booking Summary</p>
                 <hr>
                 @foreach ($sessions as $session )
@@ -60,5 +60,6 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection

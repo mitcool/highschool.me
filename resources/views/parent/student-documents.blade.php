@@ -24,8 +24,8 @@
 </style>
 @endsection
 @section('content')
-<div class="shadow container my-3 bg-white">
-    <h1 class="text-center page-headings">Documents</h1>
+<div class="shadow container wrapper h-100">
+    <h1 class="text-center h2" style="color:#045397">Documents</h1>
     <form action="{{ route('parent.student.documents.submit') }}" method="POST" enctype="multipart/form-data" id="document-form">
         {{ csrf_field() }}
         <div  class="mb-3">
@@ -155,7 +155,6 @@
             <button class="shadow orange-button">Proceed</button>
         </div>
     </form>
-</div>
 </div>
 @endsection
 

@@ -225,7 +225,7 @@
                     aria-controls="{{ $tabId }}"
                     aria-selected="{{ $loop->first ? 'true' : 'false' }}"
                 >
-                    {{ $typeLabels[$type->code] }}
+                    {{ $typeLabels[$type->code] }} 
                 </a>
             </li>
         @endforeach
@@ -296,8 +296,6 @@
                                                     </div>
                                                     @if(in_array($cc->id,$enrolled_courses_ids))
                                                          <button class="btn btn-disabled">Enrolled</button>
-                                                    @elseif($track == 4)
-                                                        <a href="{{ route('parent.student.module.courses',$student->id) }}"><button class="btn btn-enroll">Buy now</button></a>
                                                     @else
                                                         @if($curriculumTypes[$cc->curriculum_type_id-1]->permission)
                                                             <form action="{{ route('enroll',$cc->id) }}" method="POST">
@@ -367,8 +365,6 @@
                                                 </div>
                                                     @if(in_array($cc->id,$enrolled_courses_ids))
                                                          <button class="btn btn-disabled">Enrolled</button>
-                                                    @elseif($student->status == 1)
-                                                         <button class="btn btn-disabled">Enrolled</button>
                                                     @else
                                                         @if($curriculumTypes[$cc->curriculum_type_id-1]->permission)
                                                             <form action="{{ route('enroll',$cc->id) }}" method="POST">
@@ -381,7 +377,7 @@
                                                                 <button class="btn btn-enroll"> Buy now</button>
                                                             </a>
                                                         @endif
-                                                 @endif
+                                                    @endif
                                             </div>
                                         @endforeach
                                     </div>

@@ -209,9 +209,9 @@ class ParentController extends Controller
             'track' => $education_option
         ]);
         try{
-
-        }catch(\Exception $e){
             Mail::to($student->email)->send(new StudentCredentials($student,$password));
+        }catch(\Exception $e){
+            info($e->getMessage());
         }
         if($education_option == 1 || $education_option == 2 || $education_option == 3){
             return redirect()->route('parent.student.documents',$student->id);
@@ -382,7 +382,7 @@ class ParentController extends Controller
     }
     public function applicationFeeSuccess($student_id){
         $application_fee = 150;
-        $student_data = session()->get('student_data');
+        
         ParentStudent::where('student_id',$student_id)->update(['status' => 1]);
         $this->createInvoice($application_fee,'Application Fee');
 
@@ -396,6 +396,11 @@ class ParentController extends Controller
         }catch(\Exception $e){
             info($e->getMessage());
         }
+        // try{
+        //     Mail::to($user->email)
+        // }catch(\Exception $e){
+
+        // }
         session()->forget('student_data');
         return redirect()->route('parent.student.profile',$student_id);
     }
@@ -712,7 +717,7 @@ class ParentController extends Controller
     }
 
     public function invoices(){
-        $invoices = Invoice::where('user_email',auth()->user()->email)->get();
+        $invoices = Invoice::where('user_email',auth()->user()->email)->paginate(10);
         return view('parent.invoices')
             ->with('invoices',$invoices);
     }

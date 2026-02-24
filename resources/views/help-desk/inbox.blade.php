@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class=" container bg-white" style="margin-top:50px;padding:20px;"> 
+<div class=" container wrapper shadow h-100"> 
      <div class="text-left mb-3"> 
         <a href="{{ route('new-help-desk') }}" class=" orange-button mb-3">New Message</a>
     </div>

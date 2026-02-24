@@ -1,9 +1,9 @@
 @extends($template)
 
 @section('content')
-    <div class="container jumbotron bg-white">
-        <h2 class="font-weight-bold text-center" style="color:#003A6B;">Submit your question</h2>
-        <div class="shadow" style="padding:20px;">
+    <div class="container wrapper shadow h-100">
+        <h2 class="h2 text-center" style="color:#003A6B;">Submit your question</h2>
+        <div style="padding:20px;">
             <form action="{{ route('send-help-desk') }}" method="POST">
                 {{ csrf_field() }}
                 <label class="font-weight-bold mb-0 mt-2" for="" class="d-block" >Title</label>
