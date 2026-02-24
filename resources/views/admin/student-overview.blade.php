@@ -31,16 +31,8 @@
                 <td class="text-center">{{ $student->student_id() }}</td> 
                 <td class="text-center">{{ $student->fullname() }}</td>
                 <td class="text-center">
-                    @if( $student->student_details->track == 1 )
-                        24-track
-                    @elseif( $student->student_details->track == 2 )
-                        18-track
-                    @elseif( $student->student_details->track == 3 )
-                        Transfer-program
-                    @elseif( $student->student_details->track == 4 )
-                        Single Course
-                    @elseif( $student->student_details->track == 5 )
-                        Sessions
+                    @if($student->student_details->track != 0)
+                        {{ $student->student_details->track_name() }}
                     @else
                         Not Paid
                     @endif

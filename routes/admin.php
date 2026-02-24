@@ -155,19 +155,20 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/add-family-consultation/{request_id}','AdminMeetingController@addFamilyConsultation')->name('add-family-consultation');
 	Route::post('/create-family-consultation/{request_id}','AdminMeetingController@createFamilyConsultation')->name('create-family-consultation');
 	Route::post('/mark-family-consultation-as-completed/{request_id}','AdminMeetingController@markFamilyConsultationAsCompleted')->name('mark-family-consultation-as-completed');
-	//Courses
-	Route::get('/courses','AdminController@courses')->name('admin-courses');
-	Route::post('/courses/add','AdminController@addCourse')->name('course.add');
-	Route::get('/course/edit/{course_id}','AdminController@editCourse')->name('course.edit');
-	Route::post('/courses/update/{course_id}','AdminController@updateCourse')->name('course.update');
-	Route::post('/courses/delete','AdminController@deleteCourse')->name('course.delete');
+	
+	// //Courses
+	// Route::get('/courses','AdminController@courses')->name('admin-courses');
+	// Route::post('/courses/add','AdminController@addCourse')->name('course.add');
+	// Route::get('/course/edit/{course_id}','AdminController@editCourse')->name('course.edit');
+	// Route::post('/courses/update/{course_id}','AdminController@updateCourse')->name('course.update');
+	// Route::post('/courses/delete','AdminController@deleteCourse')->name('course.delete');
 
 	//Public Courses
 	Route::get('/courses-types','AdminController@courseTypes')->name('admin-courses-types');
 	Route::post('/courses-types/add','AdminController@addCourseType')->name('course-types.add');
 	Route::get('/course-types/edit/{course_id}','AdminController@editCourseType')->name('course-type.edit');
 	Route::post('/courses-types/update/{course_id}','AdminController@updateCourseType')->name('course-type.update');
-	Route::post('/courses-types/delete','AdminController@deleteCourseType')->name('course-type.delete');
+	Route::post('/courses-types/delete/{course_id}','AdminController@deleteCourseType')->name('course-type.delete');
 
 	//Courses for the enrollment process
 	Route::get('/enrollment-courses', 'AdminController@showAddEnrollmentCourse')->name('enrollment-courses');

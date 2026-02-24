@@ -95,7 +95,11 @@ class EducatorController extends Controller
     public function selfAssessment(){
         $categories = EducatorCategory::where('educator_id',auth()->id())->pluck('category_id')->toArray();
         $courses = CurriculumCourse::whereIn('category_id',$categories)->get();
-        $questions = SelfAssessmentQuestion::with('course')->orderBy('id', 'desc')->paginate(10);
+        $courses_ids = $courses->pluck('course_id')->toArray();
+        $questions = SelfAssessmentQuestion::with('course')
+            ->whereIn('course_id',$courses_ids)
+            ->orderBy('id', 'desc')
+            ->paginate(10);
         return view('educator.self-assessment')
             ->with('courses', $courses)
             ->with('questions', $questions);

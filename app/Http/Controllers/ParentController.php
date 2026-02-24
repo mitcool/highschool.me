@@ -173,7 +173,7 @@ class ParentController extends Controller
         $request->validate([
             'name' => 'required',
             'surname' => 'required',
-            'email' => 'required|unique:users,email',
+            'email' => 'required|email:rfc,dns|unique:users,email',
             'date_of_birth' => 'required',
             'education_option' => 'required'
         ]);
@@ -235,7 +235,20 @@ class ParentController extends Controller
     }
 
     public function studentDocumentsSubmit(Request $request){
-    
+        #!!! Note student ID is type of document don't mix with student->id 
+        $request->validate([
+            'grade'  => 'required',
+            'parent_id' => 'required|file|mimes:pdf',
+            'custody_document' => 'required|file|mimes:pdf',
+            'proof_of_residence' => 'required|file|mimes:pdf' ,
+            'student_id' => 'required|file|mimes:pdf',
+            'birth_certificate' => 'required|file|mimes:pdf',
+            'school_transcript' => 'required|file|mimes:pdf' ,
+            'withdrawal_confirmation' => 'file|mimes:pdf',
+            'iep' => 'file|mimes:pdf',
+            'id' => 'required'
+        ]);
+
         $student_id = $request->id;
         $student = User::find($student_id);
         $grade = $request->grade;

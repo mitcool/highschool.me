@@ -717,7 +717,16 @@ class AdminController extends Controller
             ->with('course',$course);
      }
 
+     public function updateCourseType(Request $request,$course_id){
+        $course = $request->only('name','description','price');
+        $course['type'] = 0;
+        $course = CourseType::find($course_id)->update($course);
+
+        return redirect()->back()->with('success_message','Course type updated successfully');
+     }
+
      public function addCourseType(Request $request){
+      
         $course = $request->only('name','description','price');
         $course['type'] = 0;
         $course = CourseType::create($course);
@@ -727,40 +736,15 @@ class AdminController extends Controller
         $nickname = 'course-'.$course->id;
         $path = "/images/courses/".$pic_name;
         $this->createImage($nickname,$path);
-        return redirect()->back()->with('success_message','Course created successfully');
+        return redirect()->back()->with('success_message','Course type created successfully');
      }
 
-     public function editCourse($course_id){
-        $course = CourseType::find($course_id);
-        $courses = CourseType::all();
-        return view('admin.edit-single-course')
-            ->with('courses',$courses)
-            ->with('course',$course);
+     public function deleteCourseType($course_type_id){
+        CourseType::find($course_type_id)->delete();
+        return redirect()->route('admin-courses-types')->with('success_message','Course type deleted successfully');
      }
 
-     public function updateCourse(Request $request, $course_id){
-        $course = $request->except('_token');
-        Course::find($course_id)->update($course);
-        return redirect()->back()->with('success_message','Course updated successfully');
-     } 
-    public function courses(){
-        $courses = Course::all();
-        return view('admin.courses')
-            ->with('courses',$courses);
-     }
-     public function addCourse(Request $request){
-        $course = $request->only('name','description','price');
-        $course['type'] = 0;
-        $course = Course::create($course);
-        $file = $request->file('image');
-        $pic_name = $file->getClientOriginalName();
-        $request->file('image')->move(base_path()."/public/images/courses", $pic_name);
-        $nickname = 'course-'.$course->id;
-        $path = "/images/courses/".$pic_name;
-        $this->createImage($nickname,$path);
-        return redirect()->back()->with('success_message','Course created successfully');
-     }
-
+    
     public function showInvoices() {
         $invoices = Invoice::all();
 
@@ -1317,7 +1301,7 @@ class AdminController extends Controller
             'firstname' => 'required',
             'middlename' => 'nullable',
             'surname' => 'required',
-            'email' => 'required|unique:users,email',
+            'email' => 'required|email:rfc,dns|unique:users,email',
             'categories' => 'required'
         ]);
         $educator_role_id = 5;

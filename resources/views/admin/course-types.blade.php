@@ -6,7 +6,7 @@
 
     <h2 class="text-center">Course Types</h2>
 
-    <form action="{{ route('course.add') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('course-types.add') }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
         <label for="" class="font-weight-bold my-2">Name</label>
         <input class="form-control" type="text" name="name" required>
@@ -18,7 +18,7 @@
         <input type="file" name="image" required>
         <hr>
         <div class="text-center">
-            <button class="btn btn-info">Add course</button>
+            <button class="btn btn-info">Add Course Type</button>
         </div>
     </form>
     <hr>
@@ -27,10 +27,10 @@
         <li class="list-group-item d-flex justify-content-between">
             {{ $course->name }}   
             <div class="d-flex">
-                <a class="btn btn-warning" href="{{ route('course-type.edit',$course->id) }}">Edit Course</a> &nbsp; 
-                <form action="{{ route('course-type.delete',$course->id) }}" class="confirm-first">
+                <a class="btn btn-warning" href="{{ route('course-type.edit',$course->id) }}">Edit Course Type</a> &nbsp; 
+                <form action="{{ route('course-type.delete',$course->id) }}" class="confirm-first" method="POST">
                     {{ csrf_field() }}
-                     <button class="btn btn-danger">Delete Course</button>
+                     <button class="btn btn-danger">Delete Course Type</button>
                 </form>
             </div>
         </li>
