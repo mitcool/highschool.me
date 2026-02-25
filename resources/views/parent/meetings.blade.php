@@ -17,7 +17,7 @@
                 </th>
                 <th></th>
             </tr>
-            @foreach ($group_sessions as $session)
+            @forelse ($group_sessions as $session)
                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
                      <td></td>
@@ -39,7 +39,12 @@
                         @endif
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="3">At the moment, there are no group sessions scheduled.</td>
+                </tr>
+            @endforelse
+
             {{-- Mentoring Sessions --}}
              <tr>
                 <th colspan="2">
@@ -47,7 +52,7 @@
                 </th>
                 <th></th>
             </tr>
-            @foreach ($mentoring_sessions as $session)
+            @forelse ($mentoring_sessions as $session)
                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
                     <td></td>
@@ -64,18 +69,23 @@
                             @else
                                 <a href="{{ route('parent.student.sessions',$student_id) }}" class="btn-enroll">Buy now</a>
                             @endif
-            
                         @endif
                     </td>
                 </tr>
-            @endforeach
-              <tr>
+            @empty
+                <tr>
+                    <td colspan="3">At the moment, there are no personal sessions scheduled.</td>
+                </tr>
+            @endforelse
+
+            {{-- Coaching Sessions --}}
+            <tr>
                 <th colspan="2">
                     <h5>Coaching sessions</h5>
                 </th>
                 <th></th>
             </tr>
-            @foreach ($coaching_sessions as $session)
+            @forelse ($coaching_sessions as $session)
                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
                     <td></td>
@@ -95,17 +105,12 @@
                         @endif
                     </td>
                 </tr>
-                @endforeach
-
-            
+                @empty
+                    <tr>
+                        <td colspan="3">At the moment, there are no coaching sessions scheduled.</td>
+                    </tr>
+            @endforelse
         </tbody>
     </table>
-    
-    {{-- @foreach (auth()->user()->students as $student )
-        <div>
-            <a href="{{ route('parent.student.sessions',$student->student_id) }}">{{ $student->student->name }} {{ $student->student->name }}</a>
-        </div>
-    @endforeach --}}
-
 </div>
 @endsection

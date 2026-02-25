@@ -112,7 +112,7 @@
 @endsection
 
 @section('content')
-<div class="container py-4">
+<div class="container wrapper shadow h-100">
     <div class="activity-wrapper">
         <div class="activity-title">Activity</div>
 

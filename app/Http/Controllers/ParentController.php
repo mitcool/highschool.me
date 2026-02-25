@@ -236,10 +236,9 @@ class ParentController extends Controller
 
     public function studentDocumentsSubmit(Request $request){
         #!!! Note student ID is type of document don't mix with student->id 
-        $request->validate([
-            // Required documents
-        'grade'  => 'required',
-        'id' => 'required',
+        $validation_rules = [
+            // Required documents  
+            'id' => 'required', #user id
             'parent_id'          => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
             'custody_document'   => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
             'proof_of_residence' => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
@@ -250,12 +249,22 @@ class ParentController extends Controller
             // Optional documents
             'withdrawal_confirmation' => ['nullable', 'file', 'mimetypes:application/pdf', 'max:5120'],
             'iep'                     => ['nullable', 'file', 'mimetypes:application/pdf', 'max:5120'],
-        ], [
+        ];
+
+        $validation_messages = [
             '*.mimetypes' => 'All documents must be valid PDF files.',
             '*.max'       => 'Each document must not exceed 5MB.',
-        ]);
+        ];
+
         $student_id = $request->id;
         $student = User::find($student_id);
+
+        #!!! Only track 1 and 2 needs grade 
+        if($student->student_details->track == 1 || $student->student_details->track == 2){
+            $validation_rules['grade'] = 'required';
+        }
+        
+        $request->validate($validation_rules,$validation_messages);
         $grade = $request->grade;
         ParentStudent::where('student_id',$student_id)->first()->update([ 'grade'=>$grade ]);
 
