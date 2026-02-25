@@ -229,6 +229,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
     Route::patch('/leave-requests/deny/{request_id}', 'AdminController@denyLeaveRequest')->name('admin.leave_requests.deny');
 
 	Route::get('/single/student/{student_id}','AdminStudentController@singleStudentProfile')->name('admin.single-student');
+	Route::get('/single/student/uploaded-documents/{student_id}', 'AdminStudentController@uploadedDocumentsFromParentPage')->name('admin.single-student-uploaded-documents');
 
 	Route::get('/diploma-requests','AdminController@diplomaRequests')->name('admin-student-diploma-requests');
 	Route::post('admin.change-diploma-printing-status/{request_id}','AdminController@ChangeDiplomaPrintingStatus')->name('admin.change-diploma-printing-status');

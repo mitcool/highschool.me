@@ -142,7 +142,7 @@
         </div>
     </div>
 	<hr>
-    <a href="">View Uploaded documents</a>
+    <a href="{{ route('admin.single-student-uploaded-documents', $student->id) }}">View Uploaded documents</a>
     <hr>
     <h2 class="page-headings">Degrees and Courses</h2>
    <div class="card graduation-card p-4">

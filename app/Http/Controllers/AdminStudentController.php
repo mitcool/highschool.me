@@ -100,5 +100,11 @@ class AdminStudentController extends Controller
             ->with('in_progress_courses',$in_progress_courses)
             ->with('student',$student);
     }
+
+    public function uploadedDocumentsFromParentPage(Request $request, $student_id) {
+        $uploaded_documents = StudentDocument::where('student_id', $student_id)->get();
+
+        return view('admin.student-uploaded-documents')->with('uploaded_documents', $uploaded_documents);
+    }
    
 }

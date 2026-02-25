@@ -15,6 +15,10 @@ class StudentDocument extends Model
         return $this->hasOne('App\DocumentType','id','type');
     }
 
+    public function student() {
+        return $this->belongsTo(User::class, 'student_id');
+    }
+
     public $timestamps = false;
 
    
