@@ -52,7 +52,7 @@
         <div class="mb-4">
             <strong>Student Name:</strong>
             <span class="text-primary fw-bold">
-                {{ optional($uploaded_documents->first())->student->name ?? '—' }}
+                {{ optional($uploaded_documents->first())->student->name ?? '—' }} {{ optional($uploaded_documents->first())->student->surname ?? '—' }}
             </span>
         </div>
 
