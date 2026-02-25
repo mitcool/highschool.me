@@ -591,9 +591,10 @@ class StudentController extends Controller
     public function diplomas(){
         $diploma_request = DiplomaPrintingRequest::where('student_id',auth()->id())->first();
         $student = auth()->user();
-        $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);        
+        $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
         return view('student.diplomas')
             ->with('diploma_request',$diploma_request)
+            ->with('credits',$credits)
             ->with('student',$student);
     }
 

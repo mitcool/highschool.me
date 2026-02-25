@@ -294,6 +294,7 @@ class EducatorController extends Controller
             'status' => Exam::STATUS_EVALUATED
         ]);
         if($grade > 1){
+            $exam->update(['passed_at' => Carbon::now()]);
             $course->update(['status' => StudentEnrolledCourse::STATUS_COMPLETED]);
         }
         else{

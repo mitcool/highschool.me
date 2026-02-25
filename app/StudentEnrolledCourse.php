@@ -26,4 +26,8 @@ class StudentEnrolledCourse extends Model
     public function student(){
         return $this->hasOne('App\User','id','user_id');
     }
+
+    public function passed_exam(){
+        return $this->hasOne('App\Exam','course_id','catalog_course_id')->where('grade','>',1);
+    }
 }

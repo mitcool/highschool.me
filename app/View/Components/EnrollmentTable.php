@@ -47,9 +47,6 @@ class EnrollmentTable extends Component
         $this->student = $student;
         $this->track = $this->student->student_details->track;
         $this->transfer_program_courses = CurriculumCourse::where('curriculum_type_id',11)->get();
-        foreach($this->curriculumTypes as $type){
-            info($type->id.'->'.$type->permission);
-        }
     }
 
 

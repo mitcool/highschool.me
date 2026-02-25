@@ -135,6 +135,7 @@
         <h2 class="text-center mb-4">Degree Transcripts</h2>
         
         <div class="table-responsive">
+            @if($credits['diploma'] == 1)
             <table class="table course-table">
                 <thead>
                     <tr class="text-center">
@@ -147,16 +148,23 @@
                 </thead>
                 <tbody class="text-center">
                     <td>
-                             
+                        @if($credits['diploma'] == 1)
+                            {{ $credits['graduation_date'] }}   
+                        @endif
                     </td>
                     <td>
                         {{ $student->student_details->track_name() }}
                     </td>
                     <td>
-                         <a href="{{ route('student.generate-pdf-transcript',auth()->id()) }}">Link</a>
+                         @if($credits['completed_courses'] > 0)
+                            <a href="{{ route('student.generate-pdf-transcript',auth()->id()) }}">Link</a>
+                         @endif
                     </td>
+                   
                     <td>
-                        <a href="{{ route('student.generate-pdf-diploma',auth()->id()) }}">Link</a>
+                        @if($credits['diploma'] == 1)
+                            <a href="{{ route('student.generate-pdf-diploma',auth()->id()) }}">Link</a>
+                        @endif
                     </td>
                     <td>
                         @if($diploma_request)
@@ -168,15 +176,22 @@
                                 <button class="orange-button">Delivered</button>
                             @endif
                         @else
-                            <form action="{{ route('request-diploma-copy') }}" class="confirm-first" method="POST">
-                                {{ csrf_field() }}
-                                <button class="orange-button">Request copy</button>
-                            </form>
+                            @if($credits['diploma'] == 1)
+                                <form action="{{ route('request-diploma-copy') }}" class="confirm-first" method="POST">
+                                    {{ csrf_field() }}
+                                    <button class="orange-button">Request copy</button>
+                                </form>
+                            @endif
                          @endif   
                     </td>
                 </tbody>
             </table>
-            <p>* Charges may apply for receiving a physical copy</p>
+            @else
+                <p class="text-center">Your diploma cannot be issued at this time because some required courses remain incomplete.</p>
+            @endif
+            @if($credits['diploma'] == 1)
+                <p>* Charges may apply for receiving a physical copy</p>
+            @endif
         </div>
     </div>
 </div>

@@ -12,6 +12,7 @@ use App\HelpDesk;
 use App\RelatedCourse;
 use App\CurriculumCourse;
 use App\Notification;
+use App\StudentEnrolledCourse;
 
 use DB;
 
@@ -140,20 +141,31 @@ class Controller extends BaseController
         $credits = [];
         $core_credits = $track == 1 ? 16 : 15;
         $elective_credits = 0;
+        $total_grade = 0;
+        $average_grade = 0;
+        $completed_courses = 0;
         $needed_elective_credits = $track == 1 ? 8 : 3;
         $credits['needed_credits'] = 0;
         $credits['completed_credits'] = 0;
         $credits['diploma'] = 0;
+        $credits['graduation_date'] = '';
         
         foreach($student_enrolled_courses as $enrolled_course){
             $credits['needed_credits'] += $enrolled_course->course->default_credits;
             $type = CurriculumCourse::where('course_id',$enrolled_course->id)->first()->curriculum_type_id;
-            if($enrolled_course->status == 5){
+            if($enrolled_course->status == StudentEnrolledCourse::STATUS_COMPLETED){
                 if($type != 1){
                     $elective_credits +=  $enrolled_course->course->course->default_credits;
                 }
+                if($enrolled_course->passed_exam){
+                    $total_grade += $enrolled_course->passed_exam->grade;
+                    $completed_courses++;
+                }
                 $credits['completed_credits'] += $enrolled_course->course->course->default_credits;
             }
+        }
+        if($completed_courses > 0){
+            $average_grade = $total_grade/$completed_courses;
         }
         //TODO::More checks for related courses
         if($elective_credits < $needed_elective_credits){
@@ -162,7 +174,13 @@ class Controller extends BaseController
         $credits['needed_credits'] = $core_credits + $elective_credits;
         if($credits['completed_credits'] >= $credits['needed_credits']){
             $credits['diploma'] = 1;
+            $credits['graduation_date'] = $student_enrolled_courses
+                                                    ->where('status',StudentEnrolledCourse::STATUS_COMPLETED)
+                                                    ->last()->passed_exam->passed_at;;
         }
+        $credits['completed_courses'] = $completed_courses;
+        $credits['average_grade'] = $average_grade;
+        
         return $credits;
     }
     
