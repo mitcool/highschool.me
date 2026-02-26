@@ -67,7 +67,7 @@
                         </div>
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary" style="background-color: #E9580C; border-color: #E9580C;">
+                            <button type="submit" class="btn btn-primary" style="background-color: #AB0050; border-color: #E9580C;">
                                 Update Password
                             </button>
                         </div>

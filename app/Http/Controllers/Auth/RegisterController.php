@@ -99,7 +99,7 @@ class RegisterController extends Controller
         try{
             Mail::to($data['email'])->send(new VerificationProfile($data));
         }catch(\Exception $e) {
-            Log::info($e);
+            info($e);
         }
 
         Session::flash('success_message', $success_message);

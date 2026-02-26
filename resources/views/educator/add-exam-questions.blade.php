@@ -9,12 +9,12 @@
 @endsection
 
 @section('content')
-<div class="shadow container bg-white my-3">    
+<div class="shadow container wrapper">    
     {{-- ADD QUESTION FORM --}}
     <form action="{{ route('educator.exam-question-add') }}" method="POST">
         @csrf
 
-        <h3 class="page-headings text-center">Add Exam Question</h3>
+        <h3 class="blue-heading h2 text-center">Add Exam Question</h3>
 
         <div class="row">
 

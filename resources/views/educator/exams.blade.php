@@ -2,8 +2,8 @@
 
 @section('content')
 
-<div class="shadow container bg-white my-3">
-    <h2 class="text-center page-headings">Add Exam</h2>
+<div class="shadow container wrapper">
+    <h2 class="text-center blue-heading h2">Add Exam</h2>
     <hr/>
      <form action="{{ route('educator.create-exam') }}" method="POST" >
         {{ csrf_field() }}
@@ -38,7 +38,7 @@
         <input type="hidden" name="pre_exam" value="0">
     </form>
     <hr>
-     <h2 class="text-center page-headings">Exams</h2>
+     <h2 class="text-center blue-heading h2">Exams</h2>
      <table class="table">
         <tr>
             <th>Date</th>

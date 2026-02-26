@@ -63,7 +63,7 @@ class EducatorController extends Controller
     public function courses(){
         $educator = auth()->user();
         $categories = $educator->educator_categories->pluck('category_id')->toArray();
-        $courses = CurriculumCourse::whereIn('category_id',$categories)->get();
+        $courses = CurriculumCourse::whereIn('category_id',$categories)->paginate(15);
         return view('educator.courses')
             ->with('courses',$courses);
     }

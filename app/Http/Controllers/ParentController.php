@@ -321,7 +321,7 @@ class ParentController extends Controller
     public function changeCourseTypeCount($course_id,$action){
         $current_count = Cookie::get('course-type-count-'.$course_id);
         $new_count = $action == 'increase' ? $current_count++ : $current_count--;
-        if($current_count >= 1){
+        if($current_count >= 0){
              Cookie::queue('course-type-count-'.$course_id, $current_count, 60);
         }
         return redirect()->back()->with('success_message','Courses count updated successfully');
@@ -331,6 +331,10 @@ class ParentController extends Controller
         $student = User::find($student_id);
         $course_types = $this->student_module_course_service->get_courses();
         $total = $this->student_module_course_service->calculate_total();
+        if($total <= 0){
+            return redirect()->route('parent.student.module.courses',$student_id)
+                        ->with('success_message','Please select a service first');
+        };
          return view('parent.student-module-courses-checkout')
             ->with('student',$student)
             ->with('total',$total)

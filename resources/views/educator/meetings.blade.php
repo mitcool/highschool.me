@@ -2,8 +2,8 @@
 
 @section('content')
 
-<div class="shadow container bg-white my-3">
-    <h1 class="text-center page-headings">Your Meetings</h1>
+<div class="shadow container wrapper">
+    <h1 class="text-center h2 blue-heading">Your Meetings</h1>
     <hr>
    
     <h3 class="text-center">Sessions Schedules</h3>

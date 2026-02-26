@@ -1,9 +1,9 @@
 @extends('educator.dashboard')
 
 @section('content')
-<div class="container mt-2">
-    <div class="card shadow-sm p-4 mx-auto" style="max-width: 900px;">
-        <h3 class="text-center page-headings">
+<div class="container wrapper shadow">
+    <div>
+        <h3 class="text-center blue-heading h2">
             Add Self-assessment Question
         </h3>
 
@@ -101,9 +101,9 @@
         </form>
     </div>
 
-    <div class="card shadow-sm p-4 mx-auto my-3" style="max-width: 900px;">
-
-        <h3 class="text-center mb-4">
+    <div class="">
+        <hr>
+        <h3 class="text-center my-4">
             List with existing questions
         </h3>
 

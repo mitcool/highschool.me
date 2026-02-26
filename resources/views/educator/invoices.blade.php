@@ -2,10 +2,7 @@
 
 @section('css')
 <style>
-	body {
-		background-color: #fafafa;
-		font-family: 'Poppins', sans-serif;
-    }
+	
     .invoice-container {
 		max-width: 1000px;
 		margin: 60px auto;
@@ -57,8 +54,8 @@
 @endsection
 
 @section('content')
-<div class="invoice-container col-md-12">
-    <h3 class="invoice-header mb-4">Credit Memos</h3>
+<div class="container wrapper shadown">
+    <h3 class="blue-heading h2 text-center">Credit Memos</h3>
 	@if(count($invoices)>0)
 		<div class="d-flex justify-content-between fw-bold mb-2 text-secondary px-2">
 			<span>Date</span>

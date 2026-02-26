@@ -2,12 +2,13 @@
 
 @section('content')
 
-<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+<div class="container wrapper shadow">    
 
-    <div class="table-container mx-auto mt-5">
-        <h2 class="text-center">Exam Submissions</h2>
+    <div class="table-container mx-auto">
+        <h2 class="text-center blue-heading h2">Exam Submissions</h2>
         <div class="table-responsive">
             <table class="table course-table">
+                @if(count($exams) > 0)
                 <thead>
                     <tr class="text-center">
                        
@@ -17,6 +18,11 @@
                         <th>Link</th>
                     </tr>
                 </thead>
+                @else
+                <tr>
+                    <td colspan="4" class="text-center">No submissions at the moment</td>
+                </tr>
+                @endif
                 <tbody class="text-center">
                    @foreach($exams as $exam)
                         <tr>
