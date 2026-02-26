@@ -10,10 +10,10 @@
 @section('content')
 
 
-<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+<div class=" container border wrapper">    
   <div class="row my-3"  style="padding:30px;">
     <div class="col-md-12">
-        <h2 class="text-center pt-5">Welcome {{ auth()->user()->fullname() }}</h2>
+        <h2 class="text-center">Welcome {{ auth()->user()->fullname() }}</h2>
         <hr>
         <div>
          <p> <span class="font-weight-bold">Course types</span> – Adding new course type (such as CLEP, AP, etc.). You have the list with all the types of courses – you can change the prices, names and descriptions here. It is not recommended to delete them!</p>
