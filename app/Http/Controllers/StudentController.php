@@ -560,7 +560,7 @@ class StudentController extends Controller
 
         // TODO::Check from Vasko
         AmbassadorActivity::insert([
-            'service_id' => 7,
+            'service_id' => 7, // Just for test
             'user_id'=> auth()->id(),
             'status' => 'Approved',
             'redeem_points'=> $score,

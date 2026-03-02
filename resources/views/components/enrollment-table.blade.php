@@ -281,35 +281,39 @@
                                     <div class="card-body pt-0">
                                         @if($hasCourses)
                                             @foreach($category->curriculumCourses as $cc)
-                                                @php
-                                                    $course  = $cc->course;
-                                                    $credits = $cc->credits_override ?? $course->default_credits;
-                                                @endphp
-                                                <div class="course-row d-flex justify-content-between align-items-center">
-                                                    <div>
-                                                        {{ $course->title }}
-                                                        @if(!is_null($credits))
-                                                            <span class="credit-text">
-                                                                ({{ number_format($credits, 1) }} Credit{{ $credits == 1 ? '' : 's' }})
-                                                            </span>
+                                               {{-- Without Transfer Program Courses --}}
+                                                @if($cc->curriculum_type_id != 11) 
+                                                    @php
+                                                        $course  = $cc->course;
+                                                        $credits = $cc->credits_override ?? $course->default_credits;
+                                                    @endphp
+                                                    <div class="course-row d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            {{ $course->title }}
+                                                            @if(!is_null($credits))
+                                                                <span class="credit-text">
+                                                                    ({{ number_format($credits, 1) }} Credit{{ $credits == 1 ? '' : 's' }})
+                                                                </span>
+                                                            @endif
+                                                        </div>
+                                                       
+                                                        @if(in_array($cc->id,$enrolled_courses_ids))
+                                                            <button class="btn btn-disabled">Enrolled</button>
+                                                        @else
+                                                            @if($curriculumTypes[$cc->curriculum_type_id-1]->permission)
+                                                                <form class="confirm-first" action="{{ route('enroll',$cc->id) }}" method="POST">
+                                                                    {{ csrf_field() }}
+                                                                    <input type="hidden" name="student_id" value="{{ $student->id }}">
+                                                                    <button class="btn btn-enroll"> Enroll</button>
+                                                                </form>
+                                                            @else
+                                                                <a href="{{ route('parent.student.module.courses',$student->id) }}" target="_blank">
+                                                                    <button class="btn btn-enroll"> Buy now</button>
+                                                                </a>
+                                                            @endif
                                                         @endif
                                                     </div>
-                                                    @if(in_array($cc->id,$enrolled_courses_ids))
-                                                         <button class="btn btn-disabled">Enrolled</button>
-                                                    @else
-                                                        @if($curriculumTypes[$cc->curriculum_type_id-1]->permission)
-                                                            <form class="confirm-first" action="{{ route('enroll',$cc->id) }}" method="POST">
-                                                                {{ csrf_field() }}
-                                                                <input type="hidden" name="student_id" value="{{ $student->id }}">
-                                                                <button class="btn btn-enroll"> Enroll</button>
-                                                            </form>
-                                                        @else
-                                                            <a href="{{ route('parent.student.module.courses',$student->id) }}" target="_blank">
-                                                                <button class="btn btn-enroll"> Buy now</button>
-                                                            </a>
-                                                        @endif
-                                                    @endif
-                                                </div>
+                                                @endif
                                             @endforeach
                                         @else
                                             <p class="text-muted p-3 mb-0">No courses available in this category yet.</p>
@@ -363,6 +367,7 @@
                                                         </span>
                                                     @endif
                                                 </div>
+                                                    
                                                     @if(in_array($cc->id,$enrolled_courses_ids))
                                                          <button class="btn btn-disabled">Enrolled</button>
                                                     @else
