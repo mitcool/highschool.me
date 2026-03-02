@@ -275,7 +275,6 @@ class AdminController extends Controller
     
     public function deleteFaq(Request $request, $faq_id){
         Faq::find($faq_id)->delete();
-        FaqTranslation::where('id', $faq_id)->delete();
         return redirect()->back()->with('success_message',"Successfully deleted FAQ");
     }
 

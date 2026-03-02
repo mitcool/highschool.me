@@ -59,7 +59,7 @@ class AdminStudentController extends Controller
     }
 
     public function wrongDocument(Request $request){
-        $parent_student = ParentStudent::where('parent_id',$request->parent_id)->first();
+        $parent_student = ParentStudent::where('parent_id',$request->parent_id)->where('student_id',$request->student_id)->first();
         $parent_student->update(['feedback' => $request->feedback]);
         $feedback = $request->feedback;
         try{
