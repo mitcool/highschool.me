@@ -152,7 +152,7 @@ class Controller extends BaseController
         
         foreach($student_enrolled_courses as $enrolled_course){
             $credits['needed_credits'] += $enrolled_course->course->default_credits;
-            $type = CurriculumCourse::where('course_id',$enrolled_course->id)->first()->curriculum_type_id;
+            $type = CurriculumCourse::where('id',$enrolled_course->catalog_course_id)->first()->curriculum_type_id;
             if($enrolled_course->status == StudentEnrolledCourse::STATUS_COMPLETED){
                 if($type != 1){
                     $elective_credits +=  $enrolled_course->course->course->default_credits;
@@ -176,7 +176,7 @@ class Controller extends BaseController
             $credits['diploma'] = 1;
             $credits['graduation_date'] = $student_enrolled_courses
                                                     ->where('status',StudentEnrolledCourse::STATUS_COMPLETED)
-                                                    ->last()->passed_exam->passed_at;;
+                                                    ->last()->passed_exam->passed_at;
         }
         $credits['completed_courses'] = $completed_courses;
         $credits['average_grade'] = $average_grade;
