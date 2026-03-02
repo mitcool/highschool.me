@@ -9,7 +9,7 @@
 @endsection
 @section('content')
 
-<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+<div class="shadow container wrapper">    
     <h2 class="text-center">New Student Application</h2>
     <hr>
     <div class="row text-left" id="info">
@@ -53,7 +53,7 @@
         </table>
       
         <hr>
-        <form action="{{ route('approve.student',$student->student_id) }}" method="POST" class="text-center my-3 {{ $student->approved_documents_count() > 5 ? ' d-block ' : 'd-none' }} " id="approve-student-form">
+        <form action="{{ route('approve.student',$student->student_id) }}" method="POST" class="confirm-first text-center my-3 {{ $student->approved_documents_count() > 5 ? ' d-block ' : 'd-none' }} " id="approve-student-form">
             {{ csrf_field() }}
             <div class="">
                 <input type="checkbox" name="is_disabled"> IEP / 504

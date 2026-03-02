@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+<div class="shadow container wrapper">    
     <h2 class="text-center">Plans</h2>
     <hr>
     <p class="text-danger">* Only developers can add a new plan</p>

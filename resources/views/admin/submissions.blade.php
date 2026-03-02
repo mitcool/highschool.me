@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+<div class="shadow container wrapper">    
 
     <div class="table-container mx-auto mt-5">
         <h2 class="text-center">Exam Submissions</h2>

@@ -1,9 +1,32 @@
 @extends('parent.dashboard')
 
+@section('css')
+<style>
+    .custom-form-label{
+        border:1px solid lightgray;
+        padding:8px;
+        margin-right: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+    .custom-file-input{
+        position: absolute;
+        left: -9999px;  
+    }
+    label{
+        margin-bottom: 0!important;
+    }
+    .error-message{
+        color:red;
+        font-size:0.7rem;
+    }
+</style>
+@endsection
 @section('content')
 
 <div class="container shadow wrapper h-100">
     <div class=" page-content">
+        {{-- Student Details --}}
         <h4 style="color:#045397">{{ $student->fullname() }}</h4>
         @if($student->date_of_birth) <p class="mb-0">Born: {{ $student->date_of_birth->format('d.m.Y')}}</p> @endif
         @if($student->student_details->track == 1 || $student->student_details->track == 2) 
@@ -12,13 +35,14 @@
         <hr>
     </div>
     
+    {{-- Pending documentation approval --}}
     @if($status == 1)
     <div class="page-content">
         <h4 style="color:#E9580C">Pending Documentation Approval</h4>
         <p class="mb-0">This account is currently under review. You will be notified once the documents have been reviewed.</p>
-        @if($student->student_details->feedback)
+        {{-- @if($student->student_details->feedback)
             <p class="mb-0 text-danger">{{ $student->student_details->feedback }}</p>
-        @endif
+        @endif --}}
     </div>
             
     {{-- Pending enrollemnt and plan fee to be paind --}}
@@ -86,13 +110,13 @@
 
                 {{-- Status Enrolled -> 0 --}}
                 @if($enrolled_course->status == 0)
-                    <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST">
+                    <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST" class="confirm-first">
                         {{ csrf_field() }}
                         <button class="btn btn btn-outline-secondary"><i class="fas fa-clock"></i> Start Study</button>
                     </form>  
                 {{-- Status STATUS_START_STUDY -> 1 --}}
                 @elseif($enrolled_course->status == 1) 
-                    <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST">
+                    <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST" class="confirm-first">
                         {{ csrf_field() }}
                         <button class="btn btn-info"><i class="fas fa-clock"></i> Ready for Exam</button>
                     </form>
@@ -116,12 +140,17 @@
     @elseif($status == 4)
         <form action="{{ route('parent.reupload.document',$student->id) }}" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
-            
+            @if($student->student_details->feedback)
+                <p class="text-danger">{{ $student->student_details->feedback }}</p>
+            @endif
             @foreach ($student->documents as $document )
                 @if($document->is_approved == 2)
                 <div class="mb-3 d-flex  justify-content-between">
-                    <label  class="font-weight-bold mb-0 "> {{ $document->document_type->name }} <span class="text-danger">*</span></label>
-                    <input name="documents[]" required type="file" id="formFile">
+                    <label for="document-{{ $document->id }}"  class="font-weight-bold mb-0 "> {{ $document->document_type->name }} <span class="text-danger">*</span></label>
+                    <label for="document-{{ $document->id }}" class="custom-form-label">
+                        <i class="fas fa-upload"></i> Upload File
+                    </label>
+                    <input name="documents[]" class="d-none custom-file-input" required type="file" id="document-{{ $document->id }}"">
                     <input type="hidden" name="types[]" value="{{ $document->type }}">
                 </div>
                 @endif
@@ -159,7 +188,31 @@
             let plan_price = payment_type == 0 ? plan.attr('data-price-per-month') : plan.attr('data-price-per-year');
             let total = Number(plan_price) + 300;
             $('#total').html('$' + total.toFixed(2));
-        })
+        });
+        
+        $('.custom-file-input').on('change',function(){
+            var file = this.files[0];
+            $('.error-message').html('')
+            if (file) {
+                var fileName = file.name;          
+                var fileExtension = fileName.split('.').pop(); 
+                if(fileExtension != 'pdf'){
+                    alert('Please upload pdf file');
+                }
+                else{
+                    if(fileName.length > 10){
+                        fileName = fileName.substring(0,8)+'...'+fileExtension
+                    }
+                    $(this).closest('div').find('.custom-form-label')
+                            .css('color','#fff')
+                            .css('background','#28a745')
+                            .html(fileName)
+                }
+            }
+            else{
+                return;
+            }
+        });
     })
 </script>
 @endsection

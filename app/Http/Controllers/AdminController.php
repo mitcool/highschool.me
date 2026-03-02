@@ -268,13 +268,8 @@ class AdminController extends Controller
     }
 
     public function editFaq(Request $request,$id){
-       $input = $request->only('category_id','question','answer');
-       $faq_id = FaqTranslation::find($id)->faq_id;
-       Faq::where('id',$faq_id)->update(['category_id' => $input['category_id']]);
-       FaqTranslation::where('id',$id)->update([
-            'question'=>$input['question'],
-            'answer' => $input['answer'],
-       ]);
+       $faq = $request->only('question','answer','meta_title','meta_description','category_id');
+       Faq::find($id)->update($faq);
        return redirect()->back()->with('success_message',"Successfully edited FAQ");
     }
     
@@ -1372,7 +1367,7 @@ class AdminController extends Controller
     }
     
     public function exams(){
-        $students = StudentEnrolledCourse::where('status',StudentEnrolledCourse::STATUS_READY_FOR_EXAM)->get();
+        $students = StudentEnrolledCourse::where('status',StudentEnrolledCourse::STATUS_READY_FOR_EXAM)->select('user_id')->distinct()->get();
         $educators = User::where('role_id',5)->get();
         $courses = CurriculumCourse::all();
         $exams = Exam::orderBy('created_at','desc')->get();
@@ -1613,22 +1608,23 @@ class AdminController extends Controller
             ->with('diploma_requests',$diploma_requests);
     }
 
-    public function transfer(Request $request,$course_id){
-        $course = CurriculumCourse::find($course_id);
-
-        $student = User::with('active_plan')->find($request->student_id);
+    public function transfer(Request $request){
+        $course_id = $request->course_id;
+        $student_id = $request->student_id;
         StudentEnrolledCourse::insert([
-            'user_id' => $request->student_id,
-            'catalog_course_id' => $course->id,
+            'user_id' => $student_id,
+            'catalog_course_id' => $course_id,
             'created_at' => Carbon::now(),
             'status' => StudentEnrolledCourse::STATUS_COMPLETED
         ]);
 
-        return redirect()->back()->with('success_message','Course transferred successfully');
+        return 1;
     }
-    public function transferBack(Request $request,$course_id){
-        StudentEnrolledCourse::where('catalog_course_id',$course_id)->delete();
-        return redirect()->back()->with('success_message','The course was transferred back successfully');
+    public function transferBack(Request $request){
+        $course_id = $request->course_id;
+        $student_id = $request->student_id;
+        StudentEnrolledCourse::where('catalog_course_id',$course_id)->where('user_id',$student_id)->delete();
+        return 1;
     }
 
     public function requestedLeavesPage() {

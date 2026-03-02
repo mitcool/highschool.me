@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+<div class="shadow container wrapper">    
 
 	<div class="row">
 		<div class="col-md-12 text-center">

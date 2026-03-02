@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+<div class="shadow container wrapper">    
     <div class="text-center mb-5 mt-4">
         <h2>All Courses</h2>
     </div>
@@ -19,6 +19,7 @@
             <tr>
                 <th>Code</th>
                 <th>Course Title</th>
+                <th>Course Type</th>
                 <th>Mandatory</th>
                 <th>Credits</th>
                 <th>Edit</th>
@@ -31,8 +32,17 @@
                     <!-- Code -->
                     <td>{{ $course->fldoe_course_code }}</td>
 
+                    
                     <!-- Title -->
                     <td>{{ $course->title }}</td>
+
+                    
+                    {{-- Type --}}
+                    <td>
+                        @foreach ($course->curriculumTypes as $type)
+                            {{ $type->name }}
+                        @endforeach
+                    </td>
 
                     <!-- Activity Type -->
                     <td>

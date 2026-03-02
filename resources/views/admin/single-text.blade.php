@@ -7,7 +7,7 @@
 
 @section('content')
 
-<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+<div class="shadow container wrapper">    
 	<form action=" {{route('change-text')}}" method="POST">
 	@csrf
 		<div class="row">

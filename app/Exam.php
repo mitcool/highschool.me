@@ -63,4 +63,8 @@ class Exam extends Model
         #dd('start  => '. $now . ' date  => '. $date. 'diff => '.$diff);
         return  $diff < 90;
     }
+
+    public function frauds(){
+        return $this->hasMany('App\Fraud','exam_id','id');
+    }
 }

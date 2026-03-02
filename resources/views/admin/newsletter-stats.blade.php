@@ -6,7 +6,7 @@
 
 @section('content')
 
-<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+<div class="shadow container wrapper">    
 
    <form action="{{ route('find-subscriber') }}" class="my-3">
       <div class="input-group mb-3">

@@ -16,7 +16,7 @@
  }
 </style>
 @section('content')
-<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+<div class="shadow container wrapper">    
 	<h1 class="text-center">Create a new meeting</h1>
 
     <form action="{{ route('meeting.add') }}" method="POST">

@@ -54,7 +54,7 @@
 @endsection
 
 @section('content')
-<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+<div class="shadow container wrapper">    
     <h2 class="text-center">Invoices</h2>
     <div class="d-flex justify-content-between fw-bold mb-2 text-secondary px-2">
 		<span>Date</span>

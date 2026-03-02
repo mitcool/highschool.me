@@ -15,6 +15,29 @@ class ParentStudent extends Model
 
     protected $fillable = ['status','expired_at','is_disabled','grade','parent_id','student_id','track','feedback'];
 
+    //STATUSES
+    const CREATED = 0;
+    const PAID_APPLICATION_FEE = 1;
+    const DOCUMENTS_APPROVED = 2;
+    const ACTIVE = 3;
+
+    public function status_name(){
+        $status_name = '';
+        if($this->status == 0){
+            $status_name = 'No uploaded documents';
+        }
+        elseif($this->status == 1){
+            $status_name = 'Application fee paid';           
+        }
+        elseif($this->status == 2){
+            $status_name = 'Approved documents';            
+        }
+        elseif($this->status == 3){
+            $status_name = 'Enrollment fee paid (Active student)';           
+        }
+        return $status_name;
+    }
+
     public function student(){
         return $this->hasOne('App\User','id','student_id');
     }

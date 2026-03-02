@@ -1,7 +1,7 @@
 @extends('admin_template')
 
 @section('content')
-<div class="container shadow mx-auto" style="padding:30px;margin-top:20px;">
+<div class="shadow container wrapper">
 		<form action="{{route('edit-academic')}}" method="POST" enctype="multipart/form-data">
 			{{csrf_field()}}
 			<div class="container" style="padding:30px;">

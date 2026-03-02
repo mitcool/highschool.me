@@ -10,7 +10,7 @@
 @section('content')
 
 
-<div class=" container border wrapper">    
+<div class="shadow container wrapper">    
   <div class="row my-3"  style="padding:30px;">
     <div class="col-md-12">
         <h2 class="text-center">Welcome {{ auth()->user()->fullname() }}</h2>

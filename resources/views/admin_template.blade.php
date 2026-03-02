@@ -37,6 +37,29 @@
         #footer{
             margin-top:0 !important;
         }
+        /* Default link color */
+        .pagination .page-link {
+            color: #ff6600; /* your color */
+        }
+
+        /* Hover state */
+        .pagination .page-link:hover {
+            color: #ffffff;
+            background-color: #ff6600;
+            border-color: #ff6600;
+        }
+
+        /* Active page */
+        .pagination .page-item.active .page-link {
+            background-color: #ff6600;
+            border-color: #ff6600;
+            color: #ffffff;
+        }
+
+        /* Disabled buttons */
+        .pagination .page-item.disabled .page-link {
+            color: #999999;
+        }
     </style>
 
 </head>

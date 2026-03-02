@@ -5,7 +5,7 @@
 @endsection
 	
 @section('content')
-<div class="container" style="margin-top:40px;">
+<div class="shadow container wrapper">
 	<form method="POST" action="{{route('upload-partner')}}" enctype="multipart/form-data">
 		{{csrf_field()}}
 		<div class="row">

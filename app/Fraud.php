@@ -9,5 +9,5 @@ class Fraud extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['exam_id','student_id'];
+    protected $fillable = ['exam_id','name'];
 }

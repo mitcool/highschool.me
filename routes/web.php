@@ -126,7 +126,8 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::post('/request-diploma-copy','StudentController@requestDiplomaCopy')->name('request-diploma-copy');
     Route::get('/request-diploma-copy-success','StudentController@requestDiplomaCopySuccess')->name('request-diploma-copy-success');
     Route::get('/digital-transcript/{student_id}','StudentController@digitalTransript')->name('student.generate-pdf-transcript');    
- 	#notifications
+ 	Route::post('/record-fraud','StudentController@recordFraud')->name('record-fraud');
+	#notifications
 	Route::get('/all-notifications', 'StudentController@showNotifications')->name('student.notifications');
 });
 
@@ -154,7 +155,6 @@ Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 	Route::get('/materials-by-course/{course}', 'EducatorController@materialsByCourse')->name('educator.materials-by-course');
 	Route::get('/submissions/{submition_id}','EducatorController@showSingleSubmission')->name('educator.single-submission');
 	Route::post('/evaluate-exam/{exam_id}','EducatorController@evaluateExam')->name('educator.evaluate-exam');
-
 	#notifications
 	Route::get('/all-notifications', 'EducatorController@showNotifications')->name('educator.notifications');
 

@@ -185,16 +185,9 @@
                 @endif --}}
             </div>
             @if(in_array($tpc->id,$enrolled_courses_ids))
-                <form class="confim-first" action="{{ route('transfer-back',$tpc->id) }}" method="POST">
-                    {{ csrf_field() }}
-                    <button class="btn btn-transfer-back">Transfer Back</button>
-                </form> 
+                <button class="btn btn-transfer-back" data-student-id="{{ $student->id }}" data-course-id="{{ $tpc->id }}">Transfer Back</button>
             @else
-            <form action="{{ route('transfer',$tpc->id) }}" method="POST">
-                {{ csrf_field() }}
-                <input type="hidden" name="student_id" value="{{ $student->id }}">
-                <button class="btn btn-enroll">Transfer</button>
-            </form>
+                <button class="btn btn-enroll btn-transfer" data-student-id="{{ $student->id }}" data-course-id="{{ $tpc->id }}">Transfer</button>
             @endif
         </div>   
         @endforeach
@@ -307,16 +300,9 @@
                                                         @endif
                                                     </div>
                                                     @if(in_array($cc->id,$enrolled_courses_ids))
-                                                        <form class="confim-first" action="{{ route('transfer-back',$cc->id) }}" method="POST">
-                                                            {{ csrf_field() }}
-                                                            <button class="btn  btn-transfer-back">Transfer Back</button>
-                                                        </form> 
+                                                        <button data-student-id="{{ $student->id }}" data-course-id="{{ $cc->id }}" class="btn  btn-transfer-back">Transfer Back</button>
                                                     @else
-                                                        <form class="confim-first" action="{{ route('transfer',$cc->id) }}" method="POST">
-                                                            {{ csrf_field() }}
-                                                            <input type="hidden" name="student_id" value="{{ $student->id }}">
-                                                            <button class="btn btn-enroll">Transfer</button>
-                                                        </form>
+                                                        <button data-student-id="{{ $student->id }}" data-course-id="{{ $cc->id }}" class="btn btn-enroll btn-transfer">Transfer</button>
                                                     @endif
                                                 </div>
                                             @endforeach
@@ -371,20 +357,12 @@
                                                         </span>
                                                     @endif
                                                 </div>
-                                                    @if(in_array($cc->id,$enrolled_courses_ids))
-                                                         <button class="btn btn-disabled">transfer</button>
-                                                    @elseif($student->status == 1)
-                                                        <form class="confim-first" action="{{ route('transfer-back',$cc->id) }}" method="POST">
-                                                            {{ csrf_field() }}
-                                                            <button class="btn  btn-transfer-back">Transfer Back</button>
-                                                        </form>                                       
-                                                    @else
-                                                    <form class="confim-first" action="{{ route('transfer',$cc->id) }}" method="POST">
-                                                        {{ csrf_field() }}
-                                                        <input type="hidden" name="student_id" value="{{ $student->id }}">
-                                                        <button class="btn btn-enroll">Transfer</button>
-                                                    </form>
-                                                 @endif
+                                                @if($student->status == 1)
+                                                    <button data-student-id="{{ $student->id }}" data-course-id="{{ $cc->id }}" class="btn btn-transfer-back">Transfer Back</button>                                         
+                                                @else
+                                                    <button data-student-id="{{ $student->id }}" data-course-id="{{ $cc->id }}" class="btn btn-enroll btn-transfer">Transfer</button>
+                                                
+                                                @endif
                                             </div>
                                         @endforeach
                                     </div>
@@ -403,3 +381,46 @@
     </div>
 </div>
 @endif
+
+<script>
+
+        $(document).on('click','.btn-transfer',function(){
+          
+            let btn = $(this);
+            let student_id = $(this).attr('data-student-id');
+            let course_id = $(this).attr('data-course-id');
+            if( confirm('Are you sure')){
+                $.ajax({
+                    data: {student_id: student_id,course_id:course_id},
+                    method: "POST",
+                    url: "{{route('transfer')}}",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                }).done(function(courses) {
+                    btn.removeClass('btn-transfer').addClass('btn-enroll').addClass('btn-transfer-back').html('Transfer Back')
+                }); 
+            }
+            
+         });
+
+         $(document).on('click','.btn-transfer-back',function(){
+            let btn = $(this);
+            let student_id = $(this).attr('data-student-id');
+            let course_id = $(this).attr('data-course-id');
+            if(confirm('Are you sure')){
+                $.ajax({
+                    data: {student_id: student_id,course_id:course_id},
+                    method: "POST",
+                    url: "{{route('transfer-back')}}",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                }).done(function(courses) {
+                    btn.removeClass('btn-transfer-back').addClass('btn-transfer').addClass('btn-enroll').html('Transfer')
+                }); 
+            }
+         })
+  
+
+</script>

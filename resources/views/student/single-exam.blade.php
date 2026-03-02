@@ -65,83 +65,91 @@
 
 @section('scripts')
 <script>
-function blockEvent(e, reason) {
-    e.preventDefault();
-    console.warn(reason);
-}
-document.addEventListener("copy", e => blockEvent(e, "Copy blocked"));
-document.addEventListener("cut", e => blockEvent(e, "Cut blocked"));
-document.addEventListener("paste", e => blockEvent(e, "Paste blocked"));
- let timeRemaining = 90 * 60; // 60 minutes in seconds
-
-  function updateTimer() {
-    const hours = Math.floor(timeRemaining / 3600);
-    const minutes = Math.floor((timeRemaining % 3600) / 60);
-    const seconds = timeRemaining % 60;
-
-    document.getElementById("timer").textContent =
-      String(hours).padStart(2, "0") + ":" +
-      String(minutes).padStart(2, "0") + ":" +
-      String(seconds).padStart(2, "0");
-
-    if (timeRemaining > 0) {
-      timeRemaining--;
-    } else {
-      document.getElementById('exam-form').submit();
-     
-      return;
+    //Blocking Copy,Cut ,Paste
+    function blockEvent(e, reason) {
+        let exam_id = {{ $exam->id }};
+        recordFraud(exam_id,reason);
+        e.preventDefault();
     }
-  }
-  updateTimer(); // initial render
-  const timerInterval = setInterval(updateTimer, 1000);
+    document.addEventListener("copy", e => blockEvent(e, "Copy attempt"));
+    document.addEventListener("cut", e => blockEvent(e, "Cut attempt"));
+    document.addEventListener("paste", e => blockEvent(e, "Paste attempt"));
+    
+    //Timer
+    let timeRemaining = 90 * 60; // 60 minutes in seconds
+    function updateTimer() {
+        const hours = Math.floor(timeRemaining / 3600);
+        const minutes = Math.floor((timeRemaining % 3600) / 60);
+        const seconds = timeRemaining % 60;
+
+        document.getElementById("timer").textContent =
+            String(hours).padStart(2, "0") + ":" +
+            String(minutes).padStart(2, "0") + ":" +
+            String(seconds).padStart(2, "0");
+
+        if (timeRemaining > 0) {
+            timeRemaining--;
+        } else {
+            document.getElementById('exam-form').submit();
+        return;
+        }
+    }
+    updateTimer(); // initial render
+    const timerInterval = setInterval(updateTimer, 1000);
 </script>
+
 @if($exam->status == 0 && $exam->type == 1)
     <script>
-        
-        let violations = 0;
-        const MAX_VIOLATIONS = 5;
 
-        function handleViolation(reason) {
-            violations++;
+        var isSubmitting = false;
 
-            if(violations == 1 || violations == 2){
-               
-                alert('First Warning')
+        // Detect form submission because it count it like a tab switch otherwise
+        $("#exam-form").on("submit", function () {
+            isSubmitting = true;
+        });
+        let tabSwitchCount = 0;
+        document.addEventListener("visibilitychange", function (e) {
+            if (document.hidden && !isSubmitting) {
+                tabSwitchCount++;
+                //console.log("Tab switched " + tabSwitchCount + " times");
             }
-            if(violations == 3 || violations == 4){
-               
-                alert('Second Warning')
+            if(tabSwitchCount == 1 && !isSubmitting){
+               let name = 'First switch of the tab';
+               let exam_id = {{ $exam->id }};
+               alert('First Warning')
+               recordFraud(exam_id,name);
             }
-            if (violations >= MAX_VIOLATIONS) {
-                //Auto-submit or lock exam
+            else if(tabSwitchCount == 2 && !isSubmitting){
+               let name = 'Second switch of the tab';
+               let exam_id = {{ $exam->id }};
+               alert('Second Warning');
+               recordFraud(exam_id,name);
+            }
+            else if(tabSwitchCount > 2){
                 $.ajax({
-                        method: "POST",
-                        url: "{{route('fail-exam', $exam->id)}}",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    }).done(function(response) {
-                        window.location.reload();
-                    });
+                    method: "POST",
+                    url: "{{route('fail-exam', $exam->id)}}",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                }).done(function(response) {
+                    window.location.reload();
+                });
             }
+        });
+
+        const recordFraud = (exam_id,name) => {
+            $.ajax({
+                method: "POST",
+                data:{name:name,exam_id:exam_id},
+                url: "{{route('record-fraud')}}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            }).done(function(response) {
+                
+            });
         }
-
-        // Detect tab switch or minimize
-        document.addEventListener("visibilitychange", (e) => {
-            e.preventDefault();
-            // alert('works')
-            if (document.hidden) {
-                handleViolation("Tab switched or page hidden");
-            }
-        });
-
-        // // Detect window focus loss
-        window.addEventListener("blur", (e) => {
-            e.preventDefault();
-            // alert('works')
-            handleViolation("Window lost focus");
-        });
-        
     </script>
 @endif
 @endsection

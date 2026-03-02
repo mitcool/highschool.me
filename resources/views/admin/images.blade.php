@@ -2,8 +2,8 @@
 
 @section('content')
 
-<div class="container text-center">
-    <div class="shadow" style="margin:50px 0;padding:20px;">
+<div class="shadow container wrapper">
+    <div class="border" style="margin:50px 0;padding:20px;">
 
         <h1 class="text-center">Add new image</h1>
         <p class="text-danger">*Please add image only after consultation with Web Developer</p>

@@ -44,7 +44,7 @@
 @endsection
 
 @section('content')
-<div class="container py-5">
+<div class="shadow container wrapper">
     <div class="text-center mb-5">
         <h1>Documents</h1>
     </div>

@@ -1,7 +1,7 @@
 @extends('admin_template')
 
 @section('content')
-<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+<div class="shadow container wrapper">    
 
     <form action="{{ route('admin.add-student-in-spotlight') }}" method="POST" enctype="multipart/form-data">
         {{csrf_field()}}

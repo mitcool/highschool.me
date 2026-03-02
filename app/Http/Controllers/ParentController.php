@@ -195,11 +195,11 @@ class ParentController extends Controller
             'is_verified' => 0,
         ]);
 
-        $status = 0;
+        $status = ParentStudent::CREATED;
 
         // They don't need document approval for sessions and single course
         if($education_option == 4 || $education_option == 5){
-            $status = 3;
+            $status = ParentStudent::ACTIVE;
         }
         ParentStudent::create([
             'parent_id' => auth()->user()->id,
@@ -396,7 +396,7 @@ class ParentController extends Controller
     public function applicationFeeSuccess($student_id){
         $application_fee = 150;
         
-        ParentStudent::where('student_id',$student_id)->update(['status' => 1]);
+        ParentStudent::where('student_id',$student_id)->update(['status' => ParentStudent::PAID_APPLICATION_FEE]);
         $this->createInvoice($application_fee,'Application Fee');
 
         try{
@@ -432,12 +432,11 @@ class ParentController extends Controller
         $plan_price = $payment_type == 0 ? $plan->price_per_month : $plan->price_per_year;
         $period = $payment_type == 0 ? 'per month' : 'per year';
         $amount = $plan_price + $enrollment_fee;
-        $enrollment_fee_status = 2;
         $invoice_description = 'Enrollment fee and '.$plan->name. ' package ('. $period .')';
 
         $student_data = [
             'student_id' => $student_id,
-            'status' => $enrollment_fee_status,
+            'status' => ParentStudent::DOCUMENTS_APPROVED,
             'plan_id' => $plan_id,
             'payment_type' => $payment_type //montly => 0 , yearly => 1
         ];
@@ -490,7 +489,7 @@ class ParentController extends Controller
         $this->createInvoice($invoice_data['amount'],$invoice_data['description']);
 
         ParentStudent::where('student_id',$student_data['student_id'])
-            ->update(['status' => 3]);
+            ->update(['status' => ParentStudent::ACTIVE]);
 
          try{
             Mail::to(auth()->user()->email)->send(new PaymentSuccessfull);
@@ -742,7 +741,7 @@ class ParentController extends Controller
     
     public function studentProfile($student_id){
         $status = ParentStudent::where('student_id',$student_id)->first()->status;
-        if($status == 0){
+        if($status == ParentStudent::CREATED){
             return redirect()->route('parent.student.documents',$student_id);
         }
         $student = User::find($student_id);
@@ -810,7 +809,7 @@ class ParentController extends Controller
                 'student_id'=>$student->id,
                 'is_approved' => 0
             ]);
-            ParentStudent::where('student_id',$student_id)->first()->update(['status' => 1]);
+            ParentStudent::where('student_id',$student_id)->first()->update(['status' => ParentStudent::PAID_APPLICATION_FEE]);
         }
         try{
             Mail::to('mathias.kunze@onsites.com')->send(new ParentReuploadDocument);
@@ -1006,7 +1005,7 @@ class ParentController extends Controller
                 ? Carbon::now()->addMonths(1)->subDays(1) 
                 : Carbon::now()->addYears(1)->subDays(1); 
         ParentStudent::where('student_id',$student_id)
-            ->update(['status' => 3]);
+            ->update(['status' => ParentStudent::ACTIVE]);
 
         StudentPlan::insert([
             'plan_id' => 4,

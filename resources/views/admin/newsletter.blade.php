@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+<div class="shadow container wrapper">    
 	<div class="shadow">
 		<h2 class="text-center page-headings">Send newsletter</h2>
 	<hr>

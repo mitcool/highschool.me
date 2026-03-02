@@ -198,8 +198,6 @@ class StudentController extends Controller
             'grade' => 0
         ]);
         }
-        $fraud = ['exam_id' => $exam_id, 'student_id' => auth()->id()];
-        Fraud::create($fraud);
         return;
     }
 
@@ -560,6 +558,15 @@ class StudentController extends Controller
             'completed' => 1,
         ]);
 
+        // TODO::Check from Vasko
+        AmbassadorActivity::insert([
+            'service_id' => 7,
+            'user_id'=> auth()->id(),
+            'status' => 'Approved',
+            'redeem_points'=> $score,
+            'created_at' => Carbon::now()
+        ]);
+
         return redirect()
             ->route('student.self-assessment-test', $attempt->material_id);
     }
@@ -664,5 +671,13 @@ class StudentController extends Controller
             ->paginate(20);
 
         return view('student.all-notifications')->with('notifications', $notifications);
+    }
+
+    public function recordFraud(Request $request){
+        $fraud = ($request->only('exam_id','name'));
+        if(Fraud::where('exam_id',$fraud['exam_id'])->where('name',$fraud['name'])->count()==0){
+            Fraud::create($fraud);
+        }
+        return 1;
     }
 }
