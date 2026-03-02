@@ -20,7 +20,7 @@ class CheckAdmin
     {
         //IMPLEMENT AUTHENTICATION FIRST
         if(!Auth::check() || Auth::user()->role_id != 1) {
-            return redirect()->route('welcome');
+           abort(403);
         }
         return $next($request);
     }

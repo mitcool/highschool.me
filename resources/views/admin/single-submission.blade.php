@@ -7,7 +7,7 @@
         <h5 class="text-center">Type of exam: <span class="font-weight-bold">{{ $exam->type == 1 ? 'Open Questions Exam' : 'Essay' }}</span></h5>
         @if(count($exam->frauds) > 0)
             <div class="border my-2 p-3 border-danger text-center rounded" style="border-style: dashed">
-                <h4>Fraud attemts:</h4>
+                <h4>Fraud attempts:</h4>
                 @foreach ($exam->frauds as $fraud )
                     <p class="text-danger">{{ $fraud->name }}({{ $fraud->created_at->format('d.m.Y H:i:s') }})</p>
                 @endforeach

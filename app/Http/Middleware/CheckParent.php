@@ -17,7 +17,7 @@ class CheckParent
     public function handle(Request $request, Closure $next)
     {
         if(!auth()->user()){
-            return redirect()->route('welcome');
+            abort(403);
         }
         if(auth()->user()->role_id != 2){
             abort(403);
