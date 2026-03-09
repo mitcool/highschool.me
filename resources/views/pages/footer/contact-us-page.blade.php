@@ -105,6 +105,12 @@
 		padding: 20px;
 		margin: 20px 0;
 		border-radius: 15px;
+		height: 100%;
+		width: 100%;
+	}
+	.category-container {
+		display: flex;
+		margin-top: 20px;
 	}
 	.category-topic {
 		font-size: 19px;
@@ -153,26 +159,26 @@
 
 <div style="background-color: #025297; padding: 20px;">
 	<div class="col-md-8" style="margin: 0 auto;">
-			<h2 class="text-white text-center mt-3 mb-4">
-				All topics in one place – straight to the right team
-			</h2>
-			<div class="row text-center">
-				@foreach($categories as $cat)
-				<div class="col-md-4" >
-					<div class="contact-categories">
-						<img src="{{ asset('/images/contact-page') }}/{{ $cat->icon }}" style="width: 115px; height: 110px;" class="pt-2">
-						<p class="mt-3 category-topic">{{ $cat->topic }}</p>
-						<p class="category-description">{{ $cat->description }}</p>
-					</div>
+		<h2 class="text-white text-center mt-3 mb-4">
+			All topics in one place – straight to the right team
+		</h2>
+		<div class="row text-center mb-5">
+			@foreach($categories as $cat)
+			<div class="col-md-4 category-container">
+				<div class="contact-categories">
+					<img src="{{ asset('/images/contact-page') }}/{{ $cat->icon }}" style="width: 115px; height: 110px;" class="pt-2">
+					<p class="mt-3 category-topic">{{ $cat->topic }}</p>
+					<p class="category-description">{{ $cat->description }}</p>
 				</div>
-				@endforeach
 			</div>
+			@endforeach
+		</div>
 	</div>
 </div>
 <div class="col-md-10">
 	
 </div>
-<div class="row jumbotron mx-auto mb-0">
+<div class="row col-md-10 mx-auto mb-0 pt-5 pb-5">
 	<div class="col-md-6">
 		<form action="/send-email-modal" method="POST"  id="contact-form">
   		{{csrf_field()}}
@@ -208,6 +214,14 @@
 					<label class="ohnohoney" for="email"></label>
 					<input class="ohnohoney" autocomplete="off" type="email" id="email" name="email" placeholder="{{trans('modals.cookies-accept-button')}}">
 					<input type="hidden" name="age">
+
+					{{-- reCAPTCHA --}}
+                    <div class="form-group text-center mt-4 mb-4">
+                        <div class="g-recaptcha d-inline-block"
+                             data-sitekey="{{ config('services.recaptcha.key') }}">
+                        </div>
+                    </div>
+
 					<button class="orange-button btn mt-3" style="border-radius: 30px;">Contact Us</button>
 				</div>
 			</div>
@@ -219,7 +233,6 @@
 			<p class="text-center">
 			Give us a call:<br>
 			<p class="text-center" style="color: #EF6024; font-size: 24px; font-weight: 700;">+1 (727) 739 02 80</p>
-		
 		</div>
 	</div>
 </div>
