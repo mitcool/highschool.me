@@ -101,7 +101,10 @@ class ParentController extends Controller
     }
     public function meetings_all(){
         $students = ParentStudent::where('parent_id',auth()->id())->get();
+        $student_ids = $students->pluck('student_id')->toArray();
+        $additional_courses = AdditionalCourse::whereIn('student_id',$student_ids)->whereIn('course_type',[12,13,14])->get()->groupBy('course_type');
         return view('parent.meetings_all')
+            ->with('additional_courses',$additional_courses)
             ->with('students',$students);
     }
     public function meetings_student($student_id){
@@ -353,7 +356,7 @@ class ParentController extends Controller
     public function changeSessionCount($session_id,$action){
         $current_count = Cookie::get('session-count-'.$session_id);
         $new_count = $action == 'increase' ? $current_count++ : $current_count--;
-        if($current_count >= 1){
+        if($current_count >= 0){
              Cookie::queue('session-count-'.$session_id, $current_count, 60);
         }
         return redirect()->back()->with('success_message','Session count updated successfully');
@@ -363,6 +366,9 @@ class ParentController extends Controller
         $student = User::find($student_id);
         $sessions = $this->student_sessions_service->get_sessions();
         $total = $this->student_sessions_service->calculate_total();
+        if($total <= 0){
+            return redirect()->route('parent.student.sessions',$student_id);
+        }
         return view('parent.session-checkout')
             ->with('total',$total)
             ->with('sessions',$sessions)
@@ -746,10 +752,20 @@ class ParentController extends Controller
         }
         $student = User::find($student_id);
         $plans = Plan::all();
+        $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
         $active_plan = StudentPlan::where('student_id',$student_id)->first();
+        $in_progress_courses =  $student->enrolled_courses
+                        ->whereIn('status',[StudentEnrolledCourse::STATUS_START_STUDY,
+                                            StudentEnrolledCourse::STATUS_READY_FOR_EXAM,
+                                            StudentEnrolledCourse::STATUS_EXAM_APPOINTED,
+                                            StudentEnrolledCourse::STATUS_EXAM_SUBMITED]);
+        $completed_courses =  $student->enrolled_courses->where('status',StudentEnrolledCourse::STATUS_COMPLETED);
         return view('parent.student-profile')
+            ->with('credits',$credits)
             ->with('active_plan',$active_plan)
             ->with('student',$student)
+            ->with('completed_courses',$completed_courses)
+            ->with('in_progress_courses',$in_progress_courses)
             ->with('plans',$plans)
             ->with('status',$status);
     }

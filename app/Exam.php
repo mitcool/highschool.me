@@ -59,9 +59,17 @@ class Exam extends Model
         $date = Carbon::parse($this->date)->format('Y-m-d').' '.Carbon::parse($this->time)->format('H:i');
         $now = Carbon::now();
         $date = Carbon::parse($date);
-        $diff = $date->diffInMinutes($now);
-        #dd('start  => '. $now . ' date  => '. $date. 'diff => '.$diff);
-        return  $diff < 90;
+        $diff = $date->diffInHours($now);
+        if($this->type == 2){
+            $allowed_time = 168;
+        }
+        elseif($this->type == 1 && $this->student->student_details->is_disabled == 1){
+            $allowed_time = 5;
+        }
+        else{
+            $allowed_time = 2;
+        }
+        return  $diff < $allowed_time;
     }
 
     public function frauds(){

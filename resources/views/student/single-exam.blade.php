@@ -65,18 +65,9 @@
 
 @section('scripts')
 <script>
-    //Blocking Copy,Cut ,Paste
-    function blockEvent(e, reason) {
-        let exam_id = {{ $exam->id }};
-        recordFraud(exam_id,reason);
-        e.preventDefault();
-    }
-    document.addEventListener("copy", e => blockEvent(e, "Copy attempt"));
-    document.addEventListener("cut", e => blockEvent(e, "Cut attempt"));
-    document.addEventListener("paste", e => blockEvent(e, "Paste attempt"));
-    
-    //Timer
-    let timeRemaining = 90 * 60; // 60 minutes in seconds
+   
+     //Timer
+    let timeRemaining = @json($time_left);
     function updateTimer() {
         const hours = Math.floor(timeRemaining / 3600);
         const minutes = Math.floor((timeRemaining % 3600) / 60);
@@ -97,12 +88,26 @@
     updateTimer(); // initial render
     const timerInterval = setInterval(updateTimer, 1000);
 </script>
+@if($exam->type == 1)
+<script>
+    //Blocking Copy,Cut ,Paste
+    function blockEvent(e, reason) {
+        let exam_id = {{ $exam->id }};
+        recordFraud(exam_id,reason);
+        e.preventDefault();
+    }
+    document.addEventListener("copy", e => blockEvent(e, "Copy attempt"));
+    document.addEventListener("cut", e => blockEvent(e, "Cut attempt"));
+    document.addEventListener("paste", e => blockEvent(e, "Paste attempt"));
+    
+   
+</script>
+
+@endif
 
 @if($exam->status == 0 && $exam->type == 1)
     <script>
-
         var isSubmitting = false;
-
         // Detect form submission because it count it like a tab switch otherwise
         $("#exam-form").on("submit", function () {
             isSubmitting = true;

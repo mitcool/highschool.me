@@ -20,6 +20,8 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    const MATHIAS_EMAIL = 'mathias_kunze@onsites.com';
+
     public function upload_file($request_file,$path){
         $filename = $request_file->getClientOriginalName();
         $request_file->move($path, $filename);

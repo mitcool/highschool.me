@@ -175,14 +175,12 @@
             <div>
                 {{ $tpc->course->title }}
             </div>
-            @if(in_array($tpc->id,$enrolled_courses_ids))
-                <button class="btn btn-disabled">Enrolled</button>
-            @else
-            <form action="{{ route('enroll',$tpc->id) }}" method="POST" class="confirm-first">
-                {{ csrf_field() }}
-                <input type="hidden" name="student_id" value="{{ $student->id }}">
-                <button class="btn btn-enroll">Enroll</button>
-            </form>
+            @if(!in_array($tpc->id,$enrolled_courses_ids))
+                <form action="{{ route('enroll',$tpc->id) }}" method="POST" class="confirm-first">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="student_id" value="{{ $student->id }}">
+                    <button class="btn btn-enroll">Enroll</button>
+                </form>
             @endif
         </div>   
         @endforeach
@@ -297,9 +295,7 @@
                                                             @endif
                                                         </div>
                                                        
-                                                        @if(in_array($cc->id,$enrolled_courses_ids))
-                                                            <button class="btn btn-disabled">Enrolled</button>
-                                                        @else
+                                                        @if(!in_array($cc->id,$enrolled_courses_ids))
                                                             @if($curriculumTypes[$cc->curriculum_type_id-1]->permission)
                                                                 <form class="confirm-first" action="{{ route('enroll',$cc->id) }}" method="POST">
                                                                     {{ csrf_field() }}

@@ -55,7 +55,7 @@
                                    
                     <div class="sidebar-heading">Meetings</div>
                     <li class="nav-item active">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="{{ route('student.meetings') }}">
                             <i class="fas fa-fw fa-cog"></i>
                             <span>Meetings</span>
                         </a>

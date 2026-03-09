@@ -33,10 +33,20 @@ use App\SelfAssessmentAttemptQuestion;
 use App\Fraud;
 use App\DiplomaPrintingRequest;
 use App\Notification;
+use App\GroupSession;
+use App\MentoringSession;
+use App\CoachingSession;
+use App\UserGroupSession;
+use App\UserMentoringSession;
+use App\UserCoachingSessions;
+use App\AdditionalCourse;
+use App\ParentStudent;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
 use App\Mail\NewDiplomaPrintingRequest;
+use App\Mail\ExamSubmitted;
+use App\Mail\ExamSubmittedAdmin;
 
 use Carbon\Carbon;
 
@@ -142,11 +152,28 @@ class StudentController extends Controller
             ->inRandomOrder()
             ->take(10)
             ->get();
-        
+        $time_started = Carbon::parse($exam->date->format('Y-m-d').' '.$exam->time->format('H:i:s'));
+        #Essay
+        if($exam->type == 2){
+            $one_week_later = $time_started->addWeek(1);
+            $time_left = Carbon::now()->diffInSeconds($one_week_later);
+        }
+        #Disabled kid
+        elseif($exam->type == 1 && $exam->student->student_details->is_disabled == 1){
+            $five_hours_later = $time_started->addHours(5);
+            $time_left = Carbon::now()->diffInSeconds($five_hours_later);
+        }
+        #Regular exam
+        else{
+            $two_hours_later = $time_started->addHours(2);
+            $time_left = Carbon::now()->diffInSeconds($two_hours_later);
+        }
+       
         if($exam->type == 2){
             $questions = null;
         }
         return view('student.single-exam')
+            ->with('time_left',$time_left)
             ->with('questions',$questions)
             ->with('exam',$exam);
     }
@@ -161,7 +188,6 @@ class StudentController extends Controller
 
     public function submitExam(Request $request, $exam_id){
        
-        $submitted_from_student = 1;
         $exam = Exam::find($exam_id);
         if($exam->type==1){
             $answers = $request->answers;
@@ -184,10 +210,25 @@ class StudentController extends Controller
             ]);
            
         }
-        $exam->update(['status' => $submitted_from_student]);
-            //TODO::emails
-            return redirect()->route('student.exams')
-                ->with('success_message','You successfully submitted your exam');
+        $exam->update(['status' => Exam::STATUS_SUBMITTED ]);
+
+        $parent = ParentStudent::where('student_id',auth()->id())->first()->parent;
+
+        try{
+            Mail::to($parent->email)->send(new ExamSubmitted($parent,$exam));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+        
+        try{
+            Mail::to(self::MATHIAS_EMAIL)->send(new ExamSubmittedAdmin($exam));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+
+        
+        return redirect()->route('student.exams')
+            ->with('success_message','You successfully submitted your exam');
     }
 
     public function failExam($exam_id){
@@ -679,4 +720,70 @@ class StudentController extends Controller
         }
         return 1;
     }
+
+    public function meetings(){
+         $now = Carbon::now();
+      
+         $group_sessions = GroupSession::where(function ($query) use ($now) {
+                $query->where('date', '>', $now->toDateString())
+                    ->orWhere(function ($q) use ($now) {
+                        $q->where('date', $now->toDateString())
+                            ->where('start', '>', $now->toTimeString());
+                    });
+        })->get();
+
+        $mentoring_sessions = MentoringSession::where(function ($query) use ($now) {
+                $query->where('date', '>', $now->toDateString())
+                    ->orWhere(function ($q) use ($now) {
+                        $q->where('date', $now->toDateString())
+                            ->where('start', '>', $now->toTimeString());
+                    });
+        })->get();
+       
+        $coaching_sessions = CoachingSession::where(function ($query) use ($now) {
+                $query->where('date', '>', $now->toDateString())
+                    ->orWhere(function ($q) use ($now) {
+                        $q->where('date', $now->toDateString())
+                            ->where('start', '>', $now->toTimeString());
+                    });
+        })->get();
+
+        $user_group_sessions = UserGroupSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
+        $user_mentoring_sessions = UserMentoringSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
+        $user_coaching_sessions = UserCoachingSessions::where('user_id',auth()->id())->pluck('session_id')->toArray();
+        $student_id = auth()->id();
+        $permissions = $this->checkPermissionForSessionBooking($student_id);
+      
+        return view('student.meetings')
+            ->with('group_sessions',$group_sessions)
+            ->with('user_group_sessions',$user_group_sessions)
+            ->with('mentoring_sessions',$mentoring_sessions)
+            ->with('user_mentoring_sessions',$user_mentoring_sessions)
+            ->with('user_coaching_sessions',$user_coaching_sessions)
+            ->with('permissions',$permissions)
+            ->with('coaching_sessions',$coaching_sessions)
+            ->with('student_id',$student_id);
+    }
+
+    public function checkPermissionForSessionBooking($student_id){
+        $coaching_sessions_permission = false;
+        if(AdditionalCourse::where('status',0)->where('student_id',$student_id)->where('course_type',14)->count() > 0){
+            $coaching_sessions_permission = true;
+        }
+        $mentoring_sessions_permission = false;
+        if(AdditionalCourse::where('status',0)->where('student_id',$student_id)->where('course_type',13)->count() > 0){
+            $mentoring_sessions_permission = true;
+        }
+        $group_sessions_permission = false;
+        if(AdditionalCourse::where('status',0)->where('student_id',$student_id)->where('course_type',12)->count() > 0){
+            $group_sessions_permission = true;
+        }
+        $permissions = [
+            'coaching' => $coaching_sessions_permission,
+            'mentoring' => $mentoring_sessions_permission,
+            'group' => $group_sessions_permission
+        ];
+        return $permissions;
+    }
+       
 }

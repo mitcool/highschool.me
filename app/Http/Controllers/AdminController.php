@@ -1459,6 +1459,12 @@ class AdminController extends Controller
             $course->update(['status' => StudentEnrolledCourse::STATUS_READY_FOR_EXAM]);
         }
 
+        try{
+
+        }catch(\Exception $e){
+            //TODO::email
+        }
+
         return redirect()->back()->with('success_message','Exam evaluated successfully');
         
     }
