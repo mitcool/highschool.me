@@ -43,7 +43,10 @@
 	</ol>
 </div>
 
-<x-image-component nickname="accreditation-cover" id="cover" class="main-pictures-pages " loading="eager" />
+{{--
+	<x-image-component nickname="accreditation-cover" id="cover" class="main-pictures-pages " loading="eager" />
+--}}
+
 <div class="container-fluid main_page_container ">
 	<div class="row justify-content-center">
 		<div class="col-md-10 col-lg-8 mb-4 bg-white">
@@ -59,7 +62,9 @@
 			<div class="row" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation">
 					<div>
-						<img src="{{ asset('images/icons/recognition-4.png') }}" class="w-100">
+						<a href="{{ route('first-iso') }}">
+							<img src="{{ asset('images/icons/recognition-4.png') }}" class="w-100">
+						</a>
 					</div>
 				</div>
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
@@ -78,7 +83,9 @@
 				</div>
 				<div class="col-12 col-md-12 col-lg-3 justify-content-end  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<img src="{{ asset('images/icons/recognition-5.png') }}" class="w-100">
+						<a href="{{ route('second-iso') }}">
+							<img src="{{ asset('images/icons/recognition-5.png') }}" class="w-100">
+						</a>
 					</div>
 				</div>
 				
@@ -86,7 +93,9 @@
 			<div class="row" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<img src="{{ asset('images/icons/recognition-6.png') }}" class="w-100">
+						<a href="{{ route('third-iso') }}">
+							<img src="{{ asset('images/icons/recognition-6.png') }}" class="w-100">
+						</a>
 					</div>
 				</div>
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">

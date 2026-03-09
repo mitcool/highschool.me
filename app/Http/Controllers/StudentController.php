@@ -560,9 +560,8 @@ class StudentController extends Controller
 
         // TODO::Check from Vasko
         AmbassadorActivity::insert([
-            'service_id' => 7, // Just for test
+            'link' => 'Points from Self Assessment Test',
             'user_id'=> auth()->id(),
-            'status' => 'Approved',
             'redeem_points'=> $score,
             'created_at' => Carbon::now()
         ]);

@@ -24,7 +24,7 @@ class FooterController extends Controller
     }
     
     public function terms(){
-
+      return view('pages.footer.terms_and_conditions');
     }
 
     public function welcomeToSchool(){

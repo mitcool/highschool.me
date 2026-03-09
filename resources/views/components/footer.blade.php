@@ -6,10 +6,24 @@
 					<x-image-component loading="lazy"  nickname="logo-header" class="logo-header-images logoFooter w-50"/>
 					<ul class="footer-ul px-0 company-details">
 						<li>Onsites High School</li>
-						<li>7901 4th Street North, Unit #17075</li>
-						<li>St Petersburg FL 33702</li>
-						<li>USA</li>
+						<li>100 Southeast 2nd Street, Suite 2000-1005</li>
+						<li>Miami Tower Miami, Florida 33131, USA</li>
+						<li>Phone: +1 (305) 404-5125</li>
 					</ul>
+					<div class="d-flex align-items-center" style="gap:10px;margin-top:8px;">
+						<a href="/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" style="color:#045397;">
+							<i class="fab fa-facebook-f" style="font-size:20px;"></i>
+						</a>
+						<a href="/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style="color:#045397;">
+							<i class="fab fa-instagram" style="font-size:20px;"></i>
+						</a>
+						<a href="/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" style="color:#045397;">
+							<i class="fab fa-linkedin-in" style="font-size:20px;"></i>
+						</a>
+						<a href="/" target="_blank" rel="noopener noreferrer" aria-label="YouTube" style="color:#045397;">
+							<i class="fab fa-youtube" style="font-size:20px;"></i>
+						</a>
+					</div>
 				</div>
 				<div class="col-md">
 					<ul class="footer-ul">
@@ -104,6 +118,30 @@
 						</a></li>
 					</ul>
 				</div> 
+				<div class="col-md">  
+					<ul class="footer-ul px-0">
+						<h6 class="text-uppercase">Admissions</h6>
+						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('admission-process') }}">
+							Admission process
+						</a></li>
+						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('enrollment-criteria') }}">
+							Enrollment criteria
+						</a></li>
+						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('enrollment-options') }}">
+							Enrollment options
+						</a></li>
+						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('tuition') }}">
+							Tuitition
+						</a></li>
+						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('tuition-assistance') }}">
+							Tuitition Assistance (PEP)
+						</a></li>
+						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('ambassador-program') }}">
+							Ambassador Program
+						</a></li>
+					</ul>
+					
+				</div> 
 				<div class="col-md">
 					<ul class="footer-ul">
 						<h6 class="text-uppercase">Resourses</h6>
@@ -117,7 +155,7 @@
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('accessibility')}}">
 							Accessibility
 						</a></li>
-						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('facts-hub')}}">
+						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('terms-and-conditions')}}">
 							Terms and Conditions
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
@@ -140,5 +178,5 @@
 </footer>
 
 <div style="background:#045397;color:white;text-align:center;padding:10px;width:100%">
-	ONSITES High School 2025 All Right Reserved
+	ONSITES High School <?php echo date("Y");?> All Right Reserved
 </div>

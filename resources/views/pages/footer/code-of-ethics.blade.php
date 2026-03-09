@@ -22,8 +22,9 @@
 	</ol>
 </div>
 
-<x-image-component nickname="code-of-ethics" class="imprint-images main-pictures-pages" loading="eager"/>
-
+{{--
+	<x-image-component nickname="code-of-ethics" class="imprint-images main-pictures-pages" loading="eager"/>
+--}}
 <div class="container-fluid main_page_container">
 	
 	<div class="row justify-content-center" >

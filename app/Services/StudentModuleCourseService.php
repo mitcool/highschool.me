@@ -13,7 +13,9 @@ use App\AdditionalCourse;
 class StudentModuleCourseService{
 
     public function get_courses(){
-        $courses_types = CurriculumType::where('id','!=',11)->get();
+        $courses_types = CurriculumType::with(['courses' => function ($query) {
+            $query->select('catalog_courses.id', 'title');
+        }])->where('id','!=',11)->get();
         foreach($courses_types as $course_type){
              if(!Cookie::has('course-type-count-'.$course_type->id)){
                  Cookie::queue('course-type-count-'.$course_type->id, 0, 60);

@@ -108,13 +108,13 @@
     .main-container{
         padding:20px;
         width:70%;
-        margin:0 auto"
+        margin:0 auto;
     }
     @media(max-width:1000px){
         .main-container{
             padding:20px;
             width:90%;
-            margin:0 auto"
+            margin:0 auto;
         }
         .reverse{
             flex-direction: column-reverse;

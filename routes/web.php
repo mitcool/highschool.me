@@ -175,6 +175,12 @@ Route::get('/academics','AboutController@showAcademics')->name('academics');
 
 Route::get('/accreditation','AboutController@showAccreditation')->name('accreditation');
 
+Route::get('/iso-9001-2015', 'AboutController@showFirstIso')->name('first-iso');
+
+Route::get('/iso-21001-2018', 'AboutController@showSecondIso')->name('second-iso');
+
+Route::get('/iso-27001-2022', 'AboutController@showThirdIso')->name('third-iso');
+
 Route::get('/blog','MainController@showBlog')->name('blog');
 
 Route::get('/blog/{slug}','MainController@showSingleBlog')->name('single-article');
@@ -258,6 +264,8 @@ Route::get('/tuition-assistance','AdmissionController@tuitionAssistance')->name(
 Route::get('/apply','AdmissionController@apply')->name('apply');
 
 Route::get('/ambassador-program','AdmissionController@ambassadorProgram')->name('ambassador-program');
+
+Route::get('/terms-and-conditions', 'FooterController@terms')->name('terms-and-conditions');
 
 Route::post('/parent/reupload/document/{student_id}','ParentController@reuploadDocuments')->name('parent.reupload.document');
 

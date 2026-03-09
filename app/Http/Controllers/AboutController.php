@@ -31,4 +31,13 @@ class AboutController extends Controller
   public function showPartnership(){
     return view('pages.about.partnership');
   }
+  public function showFirstIso() {
+    return view('pages.about.iso-2015');
+  }
+  public function showSecondIso() {
+    return view('pages.about.iso-2018');
+  }
+  public function showThirdIso() {
+    return view('pages.about.iso-2022');
+  }
 }

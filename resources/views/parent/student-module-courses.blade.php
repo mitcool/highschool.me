@@ -16,7 +16,12 @@
             <div class="col-md-8" >
             @foreach ($course_types as $course_type )
                 <div class="border my-1" style="border-radius:5px;padding:20px;">
-                    <h4 style="color:#E9580C;font-weight:bold">{{ $course_type->name }}</h4>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0" style="color:#E9580C;font-weight:bold">{{ $course_type->name }}</h4>
+                        <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#courseTypeModal{{ $course_type->id }}">
+                            View all
+                        </button>
+                    </div>
                     <hr>
                     <p>Fee per Session: ${{ $course_type->price() }}</p>
                     <p>Number of Sessions:</p>
@@ -59,4 +64,32 @@
     </div>
 </div>
 </div>
+
+@foreach ($course_types as $course_type)
+    <div class="modal fade" id="courseTypeModal{{ $course_type->id }}" tabindex="-1" role="dialog" aria-labelledby="courseTypeModalLabel{{ $course_type->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="courseTypeModalLabel{{ $course_type->id }}">{{ $course_type->name }} - All Courses</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @php($courses = $course_type->courses->sortBy('title'))
+
+                    @if($courses->count() > 0)
+                        <ul class="mb-0 pl-3">
+                            @foreach($courses as $course)
+                                <li class="mb-1">{{ $course->title }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p class="mb-0">No courses available for this type.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+@endforeach
 @endsection

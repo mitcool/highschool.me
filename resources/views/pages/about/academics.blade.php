@@ -1,4 +1,5 @@
 @extends('template')
+
 @section('seo')
 <title>{{ trans('academics.meta-title') }}</title>
 <meta itemprop="description" name="description" content="{{ trans('academics.meta-description') }}" />
@@ -16,11 +17,9 @@
 <link rel="alternate" href="{{ config('app.url') }}/en/lecturers" hreflang="en" />
 <link rel="alternate" href="{{ config('app.url') }}/de/dozenten" hreflang="de" />
 <link rel="alternate" href="{{ config('app.url') }}/en/lecturers" hreflang="x-default" />
-
 @endsection
 
 @section('headCSS')
-
 <style type="text/css">
 	.academic-box{
 		opacity:0.8;
@@ -33,11 +32,10 @@
 	}
 	
 	.active-box{
-		border:8px solid #035397;
+		border: 8px solid #035397;
 		
 	}
 	.active-box::after{
-		
 		content:"";
 		position: absolute;
 		bottom:-30px;
@@ -56,21 +54,31 @@
 			display:none !important;
 		}
 	}
-	
-	
+
+	.educator-box {
+		border:1px solid lightgrey;
+		border-radius: 15px;
+		position:relative;
+		cursor:pointer;
+		background:white;
+	}
 </style>
 @endsection
+
 @section('content')
 @php
     $breadcrumb_title = strtok(trans('academics.meta-title'), '|');
 @endphp
+
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb_title }}</li>
+		<li class="breadcrumb-item active" aria-current="page">Faculty and Educators</li>
 	</ol>
 </div>
+
 <x-image-component  id="cover" class="main-pictures-pages" nickname="academics-cover" loading="eager" />
+
 <div class="container-fluid main_page_container" style="background:#F3F3F3;">	
 	<div class="row justify-content-center">
 		<div class="col-md-12 col-lg-10" style="padding:30px;">
@@ -78,21 +86,19 @@
 			<div class="page-content">{!! trans('academics.content') !!}</div>
 			<div class="row">
 				@foreach($academics as $key => $academic)	
-					<div class="col-md-6 gap-2 my-2 px-3 w-100 "  data-id="{{$academic->id}}" data-key="{{ $key }}" data-name="{{$academic->name }}"data-description="{{ $academic->description }}">
-						<div style="border:1px solid lightgrey;position:relative;cursor:pointer;background:white;">
-							<div class="row p-2 my-3">
-							<div class="col-md-5">
-								<x-image-component nickname="academic-{{$academic->id}}" class="w-100" style="display:block;" id="test"/>
-							</div>
-							<div class="col-md-7">
-								<h5 class="name mt-3" style="color:#035397;font-weight-bold;">{{ $academic->name }}</h5>
-								<p class="description">{{ $academic->description }}</p>
+					<div class="col-md-6 gap-2 my-2 px-3 w-100"  data-id="{{$academic->id}}" data-key="{{ $key }}" data-name="{{$academic->name }}"data-description="{{ $academic->description }}">
+						<div class="educator-box">
+							<div class="row p-4">
+								<div class="col-md-4">
+									<x-image-component nickname="academic-{{$academic->id}}" class="w-100" style="display:block;" id="test"/>
+								</div>
+								<div class="col-md-8">
+									<h5 class="name" style="color:#035397;font-weight-bold;">{{ $academic->name }}</h5>
+									<p class="description">{{ $academic->description }}</p>
+								</div>		
 							</div>		
-						</div>		
-						</div>
-															
+						</div>									
 					</div>
-					
 				@endforeach
 			</div>		
 		</div>	
@@ -101,9 +107,7 @@
 @endsection
 
 @section('footerScripts')
-
 <script>
-
 	$(document).ready(function(){
 		$('.academic-box').on('click',function(){
 			if($(window).width() >= 768){

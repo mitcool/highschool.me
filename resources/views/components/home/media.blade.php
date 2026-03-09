@@ -5,14 +5,14 @@
         <p>Recognized where ambition lives. Covered by outlets that matter. Amplified for the world to see.</p>
     </div>
     <div class="container">
-        <div class="row  justify-content-center">
-            <div class="col-md-4">
+        <div class="row justify-content-center">
+            <div class="col-md-4 single-media-container">
                 <img src="{{ asset('images/forbes.webp') }}" alt="" class="w-100">
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 single-media-container">
                 <img src="{{ asset('images/bloomberg.webp') }}" alt="" class="w-100">
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 single-media-container">
                 <img src="{{ asset('images/businessinsider.webp') }}" alt="" class="w-100">
             </div>
         </div>

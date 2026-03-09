@@ -7,7 +7,6 @@ use App\AmbassadorService;
 use App\AmbassadorReward;
 use App\FeatureCategory;
 use App\Plan;
-use App\Course;
 
 class AdmissionController extends Controller
 {
@@ -24,10 +23,8 @@ class AdmissionController extends Controller
     public function tuition(){
       $feature_categories = FeatureCategory::all();
       $plans = Plan::all();
-      $courses = Course::all();
       return view('pages.admissions.tuition')
         ->with('feature_categories',$feature_categories)
-        ->with('courses',$courses)
         ->with('plans',$plans);
     }
      public function tuitionAssistance(){
