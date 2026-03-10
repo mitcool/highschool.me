@@ -18,10 +18,12 @@
             <input required  name="question" class="form-control" id="ckeditor-{{ $faq->id }}" value="{{$faq->question }}" />
             <label class="font-weight-bold" for="">Answer</label>
             <textarea required name="answer"  class="ckeditor" id="ckeditor-{{ $faq->id }}">{{ $faq->answer }}</textarea>
+            {{--
             <label class="font-weight-bold" for="">Meta title</label>
             <textarea class="form-control" name="meta_title">{{ $faq->meta_title }}</textarea>
             <label class="font-weight-bold" for="">Meta description</label>
             <textarea class="form-control" name="meta_description">{{ $faq->meta_description }}</textarea>
+            --}}
             <select name="category_id" class="form-control">
                 @foreach($faq_categories as $category)
                     <option {{ $category->id == $faq->category_id ? ' selected' : '' }} value="{{ $category->id }}">{{ $category->key }}</option>

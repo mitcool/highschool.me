@@ -52,13 +52,12 @@
 
 <div class="container-fluid main_page_container">
 	<div class="row justify-content-center">
-		<div class="col-md-10 col-lg-8 ">
-			
+		<div class="col-md-10 col-lg-8 mb-5">
 			<h1 class="page-headings">{{trans('faq.heading')}}</h1><br>
 			@foreach($faqcategories as $category)
-			<a class="faq-heading" href="{{route('single-faq-category',[$category->slug])}}">
-				<h2 data-toggle="collapse" data-target="#collapseExample_faq" aria-expanded="false" aria-controls="collapseExample" class="pl-2 m-0" style="font-size:1.5rem;">{{$category->name}}</h2>
-			</a>
+				<a class="faq-heading" href="{{route('single-faq-category',[$category->slug])}}">
+					<h2 data-toggle="collapse" data-target="#collapseExample_faq" aria-expanded="false" aria-controls="collapseExample" class="pl-2 m-0" style="font-size:1.5rem;">{{$category->key}}</h2>
+				</a>
 			@endforeach
 		</div>
 	</div>
