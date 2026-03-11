@@ -141,7 +141,7 @@
                     <tr class="text-center">
                         <th class="text-left">Date</th>
                         <th>Digital Degree</th>
-                        <th>Transcipt</th>
+                        <th>Transcript</th>
                         <th>Diploma</th>
                         <th>Request Copy*</th>
                     </tr>
