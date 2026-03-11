@@ -28,6 +28,7 @@ class CourseEnrolledParent extends Mailable
         return $this->view('email.course-enrolled-parent')
             ->with('parent',$this->parent)
             ->with('student',$this->student)
-            ->with('course',$this->course);
+            ->with('course',$this->course)
+            ->subject('Course enrolled successfully');
     }
 }

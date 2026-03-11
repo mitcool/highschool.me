@@ -393,6 +393,10 @@
                 return;
             }
         });
+
+        $('.enroll-form').on('submit',function(){
+            $(this).find('button').attr('disabled','true');
+        })
     })
 </script>
 @endsection

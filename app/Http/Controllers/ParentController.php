@@ -47,6 +47,8 @@ use App\Mail\FamilyConsultationRequestAdmin;
 use App\Mail\CourseEnrolledParent;
 use App\Mail\CourseEnrolledStudent;
 use App\Mail\StudentReadyForExam;
+use App\Mail\StudentStartStudy;
+use App\Mail\StudentStartStudyParent;
 
 use App\Services\StudentSessionsService;
 use App\Services\StudentModuleCourseService;
@@ -915,9 +917,12 @@ class ParentController extends Controller
     public function enroll(Request $request,$course_id){
        
         $curriculum_course = CurriculumCourse::with('course')->find($course_id);
-        
         $parent = auth()->user();
         $student = User::with('active_plan')->find($request->student_id);
+
+         if(StudentEnrolledCourse::where('catalog_course_id',$course_id)->where('user_id',$student->id)->count() > 0){
+            return redirect()->back()->with('error','The student has been enrolled to this course already');
+         }
 
         #Check if they enroll NOT Core or elective courses (1 and 2) or it is TRANSFER PROGRAM (11)
         if($curriculum_course->curriculum_type_id != 1 && $curriculum_course->curriculum_type_id != 2 && $curriculum_course->curriculum_type_id != 11 ){
@@ -962,6 +967,18 @@ class ParentController extends Controller
         if($enrolled_course->status == 0){
             $enrolled_course->update(['status' => StudentEnrolledCourse::STATUS_START_STUDY]);
             $message = 'Student is ready for studing';
+             try{
+                Mail::to($enrolled_course->student->email)->send(new StudentStartStudy($enrolled_course));
+            }catch(\Exception $e){
+                info($e->getMessage());
+            }
+
+            try{
+                Mail::to(auth()->user()->email)->send(new StudentStartStudyParent(auth()->user(),$enrolled_course));
+            }catch(\Exception $e){
+                info($e->getMessage());
+            }
+
         }
         #Ready For Exam
         elseif($enrolled_course->status == 1){
@@ -993,7 +1010,7 @@ class ParentController extends Controller
                     'price_data' => [
                         'currency'     => 'usd',
                         'product_data' => [
-                            'name' => 'Sessions payment',
+                            'name' => 'Transfer program/Application fee',
                         ],
                         'unit_amount'  => $total*100, 
                     ],

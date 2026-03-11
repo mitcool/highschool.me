@@ -96,7 +96,7 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                                     </h1>
                                                   
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        <span style="{{$style['bold']}}">Student is ready for exam 
+                                                        <span style="{{$style['bold']}}">{{ $enrolled_course->student->fullname() }} is ready for exam for subject "{{ $enrolled_course->course->course->title }}". Please select a date for it.
                                                         <br/>
                                                     </p>
                                                     

@@ -140,7 +140,7 @@ class StudentController extends Controller
     }
    
     public function exams(){
-        $exams = Exam::where('student_id',auth()->id())->get();
+        $exams = Exam::where('student_id',auth()->id())->latest()->get();
         return view('student.exams')
             ->with('exams',$exams);
     }
@@ -638,7 +638,14 @@ class StudentController extends Controller
     public function diplomas(){
         $diploma_request = DiplomaPrintingRequest::where('student_id',auth()->id())->first();
         $student = auth()->user();
-        $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
+        if($student->student_details->track == 3){
+            $credits = $this->checkTransferProgramDiploma($student->enrolled_courses);
+         
+        }
+        else{
+            $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
+        }
+        
         return view('student.diplomas')
             ->with('diploma_request',$diploma_request)
             ->with('credits',$credits)
@@ -646,7 +653,15 @@ class StudentController extends Controller
     }
 
     public function generatePdfDiploma($student_id){
-        $pdf = Pdf::loadView('student.diploma-pdf')->set_option('isRemoteEnabled',true)->setPaper('a4','landscape');
+        $student = User::find($student_id);
+        if($student->student_details->track == 3){
+            $credits = $this->checkTransferProgramDiploma($student->enrolled_courses);
+         
+        }
+        else{
+            $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
+        }
+        $pdf = Pdf::loadView('student.diploma-pdf',['student' => $student,'credits' => $credits])->set_option('isRemoteEnabled',true)->setPaper('a4','landscape');
         return $pdf->stream();
     }
     public function requestDiplomaCopy(){

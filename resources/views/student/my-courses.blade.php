@@ -193,21 +193,27 @@
         <div class="table-responsive">
             <table class="table course-table">
                 <thead>
-                    <tr class="text-center">
-                        <th class="text-left">Subject</th>
-                        <th>Course Type</th>
-                        <th>Resources</th>
-                    </tr>
+                    @if(count($in_progress_courses) > 0)
+                        <tr class="text-center">
+                            <th class="text-left">Subject</th>
+                            <th>Course Type</th>
+                            <th>Resources</th>
+                        </tr>
+                    @endif
                 </thead>
                 <tbody class="text-center">
-                    @foreach($in_progress_courses as $in_progress_course) 
+                    @forelse($in_progress_courses as $in_progress_course) 
                       
                         <tr>
                             <td class="text-left">{{ $in_progress_course->course->course->title }}</td>
                             <td>{{ $in_progress_course->course->curriculumType->code }} </td>
                             <td><a href="{{ route('student.single-course',$in_progress_course->catalog_course_id) }}" class="view-link">View</a></td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="3">You have no active courses at the moment</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

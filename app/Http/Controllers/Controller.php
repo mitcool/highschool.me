@@ -178,17 +178,41 @@ class Controller extends BaseController
             $credits['diploma'] = 1;
             $credits['graduation_date'] = $student_enrolled_courses
                                                     ->where('status',StudentEnrolledCourse::STATUS_COMPLETED)
-                                                    ->last()->passed_exam->passed_at;
+                                                    ->last()->passed_exam->passed_at->format('d.m.Y');
         }
         $credits['completed_courses'] = $completed_courses;
         $credits['average_grade'] = $average_grade;
         
         return $credits;
     }
+
+    public function checkTransferProgramDiploma($enrolled_courses){
+        $student_info = [];
+        $completed_courses = 0;
+        $total_grade = 0;
+        $needed_courses = CurriculumCourse::where('curriculum_type_id',11)->count(); //all TP courses
+        foreach($enrolled_courses as $course){
+            
+            if($course->course->curriculum_type_id && $course->status == StudentEnrolledCourse::STATUS_COMPLETED){
+                $completed_courses++;
+                $total_grade += $course->passed_exam->grade;
+            }
+        }
+        if($completed_courses>=$needed_courses){
+            $student_info['diploma'] = 1;
+            $student_info['avarage_grade'] = $total_grade/$completed_courses;
+            $student_info['graduation_date'] = $enrolled_courses
+                                                    ->where('status',StudentEnrolledCourse::STATUS_COMPLETED)
+                                                    ->last()->passed_exam->passed_at->format('d.m.Y');
+        }
+        
+       
+        return $student_info;
+       
+    }
     
     public function deleteSingleNotification(Request $request, $id) {
         Notification::where('id', $id)->where('user_id', auth()->id())->delete();
-
         return redirect()->back()->with('success_message', 'Successfully deleted selected notification!');
     }
 

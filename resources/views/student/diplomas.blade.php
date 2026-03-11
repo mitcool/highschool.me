@@ -147,7 +147,7 @@
                     </tr>
                 </thead>
                 <tbody class="text-center">
-                    <td>
+                    <td class="text-left">
                         @if($credits['diploma'] == 1)
                             {{ $credits['graduation_date'] }}   
                         @endif
@@ -156,7 +156,7 @@
                         {{ $student->student_details->track_name() }}
                     </td>
                     <td>
-                         @if($credits['completed_courses'] > 0)
+                         @if($credits['diploma'] == 1)
                             <a href="{{ route('student.generate-pdf-transcript',auth()->id()) }}">Link</a>
                          @endif
                     </td>

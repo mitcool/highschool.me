@@ -14,7 +14,8 @@ class Exam extends Model
 
      protected $casts = [
         'date' => 'datetime',
-        'time' => 'datetime'
+        'time' => 'datetime',
+        'passed_at'=> 'datetime'
     ];
 
     const STATUS_APPOINTED = 0;

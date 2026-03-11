@@ -92,11 +92,15 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear {{ $parent->fullname() }},
+                                                        Dear {{ $exam->student->fullname() }},
                                                     </h1>
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        {{ $student->fullname() }} is successfully enrolled to course "{{ $course->course->title }}". Please click "Start study" button when the student is ready to begin his studying process.
-                                                        <br/>
+                                                        We would like to inform you that you have a date for an exam for <strong>{{ $exam->course->course->title }}</strong>
+                                                        The exam will take place on {{ $exam->date->format('d.m.Y') }} at {{ $exam->time->format('H:i') }}
+                                                            
+                                                    </p>
+                                                    <p style="{{ $style['paragraph-black'] }}">
+                                                        If you have any questions or need additional information, please feel free to contact us.
                                                     </p>
                                                     
                                                     <!-- Salutation -->
@@ -120,7 +124,7 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                     <td style="{{ $fontFamily }} {{ $style['email-footer_cell'] }}">
                                         <p style="{{ $style['paragraph-sub'] }}">
                                             &copy; 
-                                            GRADUATE.ME
+                                            HIGHSCHOOL.ME
                                         </p>
                                     </td>
                                 </tr>
@@ -131,6 +135,5 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
             </td>
         </tr>
     </table>
-    
 </body>
 </html>

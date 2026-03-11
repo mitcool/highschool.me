@@ -11,15 +11,15 @@
     <body>
         <div style="padding:40px;">
             <div style="text-align:center">
-            <img src="{{ public_patht('images/logo.svg') }}" alt="" style="width:35%;margin:0 auto;">
+            <img src="{{ public_path('images/logo.svg') }}" alt="" style="width:35%;margin:0 auto;">
         </div>
         <hr style="height: 0x;border-top:3px solid #E9580C; margin-top:20px;">
         <div style="text-align: center;">
-            <h1 style="text-align:center;color:#FFD631;font-size:40px;margin-bottom:0;">HIGH SCHOOL DIPLOMA</h1>
+            <h1 style="text-align:center;color:#FFD631;font-size:40px;margin-bottom:0;">HIGH SCHOOL {{ $credits['avarage_grade'] >= 3.5 ? 'HONORS' : '' }} DIPLOMA</h1>
             <p style="color:#14213D">THIS CERTIFICATE IS PROUDLY PRESENTED TO</p>
-             <h1 style="font-size:40px;margin-top:50px;color:#E9580C;">JOHN SMITH</h1>
+             <h1 style="font-size:40px;margin-top:50px;color:#E9580C;">{{ $student->fullname() }}</h1>
              <p style="color:#14213D">for successfully completing the requirements prescribed for graduation</p>
-             <p style="color:#14213D">Given on, 24th May, 2026</p>
+             <p style="color:#14213D">Given on {{ $credits['graduation_date'] }} </p>
         </div>
         
         <div style="margin-top:150px;">

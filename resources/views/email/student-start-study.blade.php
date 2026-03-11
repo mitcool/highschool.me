@@ -92,10 +92,11 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear {{ $parent->fullname() }},
+                                                        Dear {{ $enrolled_course->student->fullname() }},
                                                     </h1>
+                                                  
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        {{ $student->fullname() }} is successfully enrolled to course "{{ $course->course->title }}". Please click "Start study" button when the student is ready to begin his studying process.
+                                                        <span style="{{$style['bold']}}">You can start studying"{{ $enrolled_course->course->course->title }}"
                                                         <br/>
                                                     </p>
                                                     
@@ -120,7 +121,7 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                     <td style="{{ $fontFamily }} {{ $style['email-footer_cell'] }}">
                                         <p style="{{ $style['paragraph-sub'] }}">
                                             &copy; 
-                                            GRADUATE.ME
+                                            HIGHSCHOOL.ME
                                         </p>
                                     </td>
                                 </tr>
@@ -131,6 +132,5 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
             </td>
         </tr>
     </table>
-    
 </body>
 </html>

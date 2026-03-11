@@ -93,6 +93,7 @@ use App\Notification;
 
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
+use App\Mail\ExamDate;
 
 class AdminController extends Controller
 {
@@ -1379,7 +1380,16 @@ class AdminController extends Controller
     public function createExam(Request $request){
         $exam = $request->only('date','time','course_id','student_id','educator_id','type','pre_exam');
         $exam['status']=0;
-        Exam::create($exam);
+        $new_exam = Exam::create($exam);
+        StudentEnrolledCourse::where('catalog_course_id',$exam['course_id'])->where('user_id',$exam['student_id'])->update([
+            'status' => StudentEnrolledCourse::STATUS_EXAM_APPOINTED
+        ]);
+        try{
+            Mail::to($new_exam->student->email)->send(new ExamDate($new_exam));
+        }catch(\Exception $e){  
+            info($e->getMessage());
+        }
+        
         return redirect()->back()->with('success_message','Exam created successfully');
     }
     
@@ -1436,6 +1446,10 @@ class AdminController extends Controller
     }
 
     public function evaluateExam(Request $request,$exam_id){
+        $request->validate([
+            'grade' => 'required|numeric|between:0,5',
+            'exam_comment' => 'required'
+        ]);
         $exam = Exam::find($exam_id);
         $grade = $request->grade;
         $exam_comment = $request->exam_comment;

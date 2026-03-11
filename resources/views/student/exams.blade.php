@@ -22,21 +22,21 @@
                             <td>{{ $exam->time->format('H:i')}}</td>
                             <td>{{ $exam->course->course->title }}</td>
                             <td>
-                                @if($exam->pre_exam == 0)
+                                @if($exam->pre_exam == 0 && $exam->status == 0)
                                     <a href="{{ route('student.pre-exam',$exam->id) }}">Link &#187;</a>
                                 @endif
                             </td>
                             <td>
-                                @if($exam->is_active())
-                                    @if($exam->status == 0)
-                                        <a href="{{ route('student.single-exam',$exam->id) }}" class="view-link">Link&#187;</a>
-                                    @elseif($exam->grade)
-                                        <a href="{{ route('student.single-exam-results',$exam->id) }}"><span class="badge badge-secondary">Details...</span>
-                                        </a>
-                                    @else
-                                        <span class="badge badge-secondary"> <i class="fas fa-clock"></i> Pending results</span>
-                                    @endif
+                               
+                                @if($exam->status == 0)
+                                    <a href="{{ route('student.single-exam',$exam->id) }}" class="view-link">Link&#187;</a>
+                                @elseif($exam->status)
+                                    <a href="{{ route('student.single-exam-results',$exam->id) }}"><span class="badge badge-secondary">Details...</span>
+                                    </a>
+                                @else
+                                    <span class="badge badge-secondary"> <i class="fas fa-clock"></i> Pending results</span>
                                 @endif
+                              
                             </td>
                         </tr>
                     @endforeach
