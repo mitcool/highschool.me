@@ -390,14 +390,18 @@ class StudentController extends Controller
                 'model' => 'gpt-5.2',
                 'input' => $conversation
         ]);
-        
+
+        $token_used = ($response["usage"]["total_tokens"]);
+        $user_tokens = auth()->user()->student_details->tokens;
+        $tokens_left = $user_tokens - $token_used;
+        auth()->user()->student_details->update(['tokens'=>$tokens_left]);
         $answer = $response['output'][0]['content'][0]['text']; 
         $conversation[] = [
             'role' => 'system',
             'content' => $answer
         ];
         session()->put('conversation',$conversation);
-        return $answer;
+        return ['answer'=>$answer,'tokens_left' => $tokens_left];
         
     }
     public function redeemRewards(Request $request) {

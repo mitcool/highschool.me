@@ -13,7 +13,7 @@ class ParentStudent extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['status','expired_at','is_disabled','grade','parent_id','student_id','track','feedback'];
+    protected $fillable = ['status','expired_at','is_disabled','grade','parent_id','student_id','track','feedback','tokens'];
 
     //STATUSES
     const CREATED = 0;

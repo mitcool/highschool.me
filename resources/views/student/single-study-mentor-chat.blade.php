@@ -155,6 +155,9 @@
             padding:12px;
             
         }
+        .copy{
+            cursor: pointer;
+        }
         @media(max-width:1200px){
 
         }
@@ -163,6 +166,7 @@
 
 @section('content')
 <div class="container text-center pt-5" style="margin: 0 auto;">
+    <div class="text-right"><span class="font-weight-bold">Tokens left:</span> <span id="tokens">{{ auth()->user()->student_details->tokens }}<span></div>
     <h2 class="text-center mb-5 program-title">Study mentor</h2>
     <div class="page-content mt-3 text-justify">
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi doloremque itaque vero dolorum est, culpa eveniet sed doloribus quo et quasi alias, fugiat voluptates facilis? Suscipit necessitatibus quia pariatur corrupti.</p>
@@ -187,57 +191,72 @@
 @endsection
 
 @section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
 <script>
 $('#chat-form').on('submit', function(e) {
-          var objDiv = document.getElementById("chat-box");
-          e.preventDefault();
-          $('.loader').removeClass('hidden')
-          var form = this;
-          formData = new FormData(form);
-            let message = (formData.get('message'));
-            if(message == ''){
-                $('.loader').addClass('hidden')
-               return;
-            }
-          
-            $('#chat-box').append(`<div class="user"><strong>You:</strong> ${message}</div>`);
-            $('#message').val('');
-            scrollChatBox();
-            $.ajax({
-                url: '{{ route('student.study-mentor-chat-post') }}',
-                type: 'POST',
-                data: formData ,
-                cache: false,
-                contentType: false,
-                processData: false,
-                enctype: 'multipart/form-data',
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                success: function(response) { 
-                    console.log(response)
-                    let answer = response;
-                    $('#chat-box').append(`<div class="bot"><div style="display:flex;justify-content:space-between;"><strong>AI STUDY MENTOR:</strong><span class="copy"><i class="fas fa-copy"></i> Copy<span></div> ${answer}</div>`);
-                    scrollChatBox();
-                    addCopyButtonToTable();
-                    $('.loader').addClass('hidden');
-                },
-                error: function(error) {
-                    console.log(error.responseJSON.message)
-                    $('#chat-box').append(`<div class="bot error"><strong>AI MENTOR:</strong> ${error.responseJSON.message}.</div>`);
-                    $('.loader').addClass('hidden');
-                }
+    var objDiv = document.getElementById("chat-box");
+    e.preventDefault();
+    $('.loader').removeClass('hidden')
+    var form = this;
+    formData = new FormData(form);
+    let message = (formData.get('message'));
+    if(message == ''){
+        $('.loader').addClass('hidden')
+        return;
+    }
     
-            });
-        });
-		function addCopyButtonToTable(){
-          $('#chat-box table').each(function(){
-              $(this).prepend('<caption class="copy-table" style="text-align:right"><i class="fas fa-copy"></i> Copy</caption>')
-          })
+    $('#chat-box').append(`<div class="user"><strong>You:</strong> ${message}</div>`);
+    $('#message').val('');
+    scrollChatBox();
+    $.ajax({
+        url: '{{ route('student.study-mentor-chat-post') }}',
+        type: 'POST',
+        data: formData ,
+        cache: false,
+        contentType: false,
+        processData: false,
+        enctype: 'multipart/form-data',
+        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+        success: function(response) {
+            var converter = new showdown.Converter();
+            let answer = converter.makeHtml(response.answer);
+            $('#tokens').html(response.tokens_left);
+            $('#chat-box').append(`<div class="bot"><div style="display:flex;justify-content:space-between;"><strong>AI STUDY MENTOR:</strong><span class="copy"><i class="fas fa-copy"></i> Copy<span></div> ${answer}</div>`);
+            scrollChatBox();
+            addCopyButtonToTable();
+            $('.loader').addClass('hidden');
+        },
+        error: function(error) {
+            console.log(error.responseJSON.message)
+            $('#chat-box').append(`<div class="bot error"><strong>AI MENTOR:</strong> ${error.responseJSON.message}.</div>`);
+            $('.loader').addClass('hidden');
         }
-		function scrollChatBox(){
-        $("#chat-box").animate({
-          scrollTop: $('#chat-box')[0].scrollHeight - $('#chat-box')[0].clientHeight
-        }, 1000);
-        }
+
+    });
+});
+function addCopyButtonToTable(){
+    $('#chat-box table').each(function(){
+        $(this).prepend('<caption class="copy-table" style="text-align:right"><i class="fas fa-copy"></i> Copy</caption>')
+    })
+}
+function scrollChatBox(){
+$("#chat-box").animate({
+    scrollTop: $('#chat-box')[0].scrollHeight - $('#chat-box')[0].clientHeight
+}, 1000);
+}
+$(document).on('click','.copy',function(){
+    var el = document.createElement('textarea');
+    el.value = $(this).closest('.bot').text().replace('AI STUDY MENTOR: Copy','');
+    el.setAttribute('readonly', '');
+    el.style = {
+        position: 'absolute',
+        left: '-9999px'
+    };
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+})
 </script>
   
 @endsection

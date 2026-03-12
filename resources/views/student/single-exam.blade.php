@@ -110,7 +110,11 @@
         var isSubmitting = false;
         // Detect form submission because it count it like a tab switch otherwise
         $("#exam-form").on("submit", function () {
-            isSubmitting = true;
+            if(confirm('Are you sure')){
+                isSubmitting = true;
+                $(this).find('button').attr('disabled',true)
+            }
+            
         });
         let tabSwitchCount = 0;
         document.addEventListener("visibilitychange", function (e) {
