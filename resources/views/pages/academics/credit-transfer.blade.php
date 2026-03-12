@@ -47,7 +47,7 @@
 		<li class="breadcrumb-item active" aria-current="page">Credit Transfer</li>
 	</ol>
 </div>
-<x-image-component nickname="study_registration" class="study_registration-images main-pictures-pages" loading="eager"/>
+<x-image-component nickname="credit_transfer" class="study_registration-images main-pictures-pages" loading="eager"/>
 	<div class="container-fluid bg-white main_page_container">	
 		<div class="row justify-content-center" >		
 			<div class="col-lg-8 shadow  p-4 page-content bg-white text-justify" style="margin: 0 auto;">
