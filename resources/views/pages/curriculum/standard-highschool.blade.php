@@ -115,6 +115,10 @@
             width:80%;
             margin:0 auto;
     }
+    .package-container {
+        border-radius: 10px;
+        padding-bottom: 5px;
+    }
     @media (max-width: 800px) {
         .feature-scroll {
             overflow-x: auto;
@@ -148,7 +152,7 @@
     <div class="row text-center container mx-auto">
         @foreach($plans as $plan)
             <div class="col-lg-4 p-4">
-                <div class="shadow wrapper">
+                <div class="shadow package-container">
                     <div class="plan-name"><span class="font-weight-bold">{{ $plan->name }}</span> Package</div>
                     <div class="tuition">Tuition fee</div>
                     <div style="padding: 10px;">

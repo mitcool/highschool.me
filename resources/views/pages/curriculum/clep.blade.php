@@ -109,6 +109,9 @@
         background-color: #045397;
         color: white;
     }
+    .clep-container {
+        border-radius: 10px;
+    }
 </style>
 @endsection
 @section('content')
@@ -130,7 +133,7 @@
 <div class="container-fluid pl-0 pr-0">
     <div class="row text-center w-85 container mx-auto">
         <div class="col-md-12 pb-5">
-            <div class="shadow wrapper h-100">
+            <div class="shadow h-100 clep-container">
                 <div class="course-name text-center"> {{ $course->name }}</div>
                 <div class="description">{!! $course->description!!}</div>
                 <div class="text-center tuition">Course fee</div>

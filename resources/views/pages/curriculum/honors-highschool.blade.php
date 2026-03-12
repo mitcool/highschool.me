@@ -109,6 +109,9 @@
         background-color: #045397;
         color: white;
     }
+    .module-container {
+        border-radius: 10px;
+    }
 </style>
 @endsection
 @section('content')
@@ -124,16 +127,14 @@
     <h1 class="text-center page-headings">Module & Honors Courses</h1> <br>
     <h2 class="text-center font-weight-bold" style="margin-bottom:20px;">Lorem Ipsum</h2>
     <p class="page-content">All paths include full access to every graduation track, rolling enrollment, 12-month schooling, cross-grade learning, and credit-transfer options. Students benefit from subject-specific AI mentors, human educator support, real-time performance tracking, and access to awards programs and parent services. Higher tiers add personal mentoring, college & career coaching, and extended family support – creating a complete learning experience that adapts to every life situation.</p>
-    <hr>
-   
-   
-    
+    <hr>  
 </div>
+
 <div class="container-fluid pl-0 pr-0">
     <div class="row text-center w-85  mx-auto container">
         @foreach ($courses as  $course)
             <div class="col-md-6 pb-5">
-                <div class="shadow wrapper h-100">
+                <div class="shadow h-100 module-container">
                     <div class="course-name text-center"> {{ $course->name }}</div>
                     <div class="description">{!! $course->description!!}</div>
                     <div class="text-center tuition">Course fee</div>
@@ -150,7 +151,6 @@
             <x-three-buttons/>
         </div>
     </div>
-    
 </div>
 
 @endsection

@@ -109,6 +109,9 @@
         background-color: #045397;
         color: white;
     }
+    .program-container {
+        border-radius: 10px;
+    }
 </style>
 @endsection
 @section('content')
@@ -129,7 +132,7 @@
 <div class="container-fluid pl-0 pr-0">
     <div class="row text-center container mx-auto pt-3 pb-5">
         <div class="col-md-12">
-            <div class="shadow wrapper h-100">
+            <div class="shadow h-100 program-container">
                 <div class="course-name text-center"> {{ $course->name }}</div>
                 <div class="description">{!! $course->description!!}</div>
                 <div class="text-center tuition">Program Fee</div>

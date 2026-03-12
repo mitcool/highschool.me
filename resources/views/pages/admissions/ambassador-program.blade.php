@@ -15,6 +15,14 @@
     .service-wrapper{
         margin:10px 0;
         padding:10px;
+        border-radius: 15px;
+        -webkit-box-shadow: 0px 0px 20px -5px rgba(0,0,0,0.55); 
+        box-shadow: 0px 0px 20px -5px rgba(0,0,0,0.55);
+    }
+    .reward-container {
+        border-radius: 15px;
+        -webkit-box-shadow: 0px 0px 20px -5px rgba(0,0,0,0.55); 
+        box-shadow: 0px 0px 20px -5px rgba(0,0,0,0.55);
     }
 </style>
 
@@ -46,12 +54,12 @@
                 Participants earn points by completing approved social media activities that highlight and promote Onsites High School. Examples include following official school accounts, sharing or creating posts about school events, tagging the school in stories or videos, and participating in challenges or livestreams. Each platform—such as Facebook, Instagram, YouTube, TikTok, Twitter (X), and LinkedIn—offers different ways to contribute, with point values assigned based on the level of engagement and creativity involved. Higher-impact activities, such as hosting livestreams or creating original content, receive greater rewards.
             </p>
             @foreach($ambassador_services as $service)
-                <div class="service-wrapper bg-white">
+                <div class="service-wrapper bg-white pl-3 pr-3">
                     <div class="d-flex justify-content-between" style="padding:10px 0;font-size:1.1rem;color:#045397;font-weight:bold">
                             <div>{{ $service->name }}</div>
-                            <div><i class="fas fa-chevron-up service-icon"></i></div>
+                            <div><i class="fas {{ $loop->first ? 'fa-chevron-up' : 'fa-chevron-down' }} service-icon"></i></div>
                     </div>
-                    <div class="service-action d-none">
+                    <div class="service-action {{ $loop->first ? '' : 'd-none' }}">
                         @foreach ($service->actions as $action )
                             <div class="d-flex justify-content-between">
                                 <div>{{ $action->name }}</div>
@@ -79,25 +87,25 @@
              <p>
                 Points earned through participation can be exchanged for a variety of items. Students may also choose to redeem their points through bundle packages, which combine multiple items at different reward levels. These bundles are designed to offer flexibility and motivation for continued engagement, with options suited to various interests and achievement milestones.
             </p>
-            <div class="shadow bg-white p-2" style="border-radius:5px;">
-           <div class="d-flex justify-content-between" id="open-rewards" style="color:#14213D;font-weight:bold;color:#E9580C;padding:10px 0;">
-                <div>Reward List</div> 
-                <div><i class="fas fa-chevron-up" id="icon" ></i></div>
-            </div> 
-            <div id="rewards" class="d-none">
-            <div class="d-flex justify-content-between" style="color:#14213D;font-weight:bold">
-                <div>Reward</div> 
-                <div>Points</div>
-            </div> 
-             <hr class="my-1">
-            @foreach($ambassador_rewards as $reward)
-                <div class="d-flex justify-content-between">
-                    <div>{{ $reward->name }}</div> 
-                    <div style="color:#E9580C;font-weight:bold">{{ $reward->points }}</div>
+            <div class="shadow bg-white p-3 reward-container">
+                <div class="d-flex justify-content-between" id="open-rewards" style="color:#14213D;font-weight:bold;color:#E9580C;padding:10px 0;">
+                    <div>Reward List</div> 
+                    <div><i class="fas fa-chevron-up" id="icon" ></i></div>
                 </div> 
-            <hr class="my-1">
-            @endforeach
-            </div>
+                <div id="rewards">
+                    <div class="d-flex justify-content-between" style="color:#14213D;font-weight:bold">
+                        <div>Reward</div> 
+                        <div>Points</div>
+                    </div> 
+                    <hr class="my-1">
+                    @foreach($ambassador_rewards as $reward)
+                        <div class="d-flex justify-content-between">
+                            <div>{{ $reward->name }}</div> 
+                            <div style="color:#E9580C;font-weight:bold">{{ $reward->points }}</div>
+                        </div> 
+                    <hr class="my-1">
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
@@ -116,6 +124,8 @@
             </p>
         </div>
     </div>
+
+    <x-three-buttons/>
 @endsection
 
 @section('footerScripts')
@@ -123,26 +133,26 @@
     $('#open-rewards').on('click',function(){
         if($('#rewards').hasClass('d-none')){
              $('#rewards').removeClass('d-none');
-             $('#icon').removeClass('fa-chevron-up')
-             $('#icon').addClass('fa-chevron-down')
+             $('#icon').removeClass('fa-chevron-down')
+             $('#icon').addClass('fa-chevron-up')
         }
         else{
              $('#rewards').addClass('d-none');
-             $('#icon').removeClass('fa-chevron-down')
-             $('#icon').addClass('fa-chevron-up')
+             $('#icon').removeClass('fa-chevron-up')
+             $('#icon').addClass('fa-chevron-down')
         }
     });
 
     $('.service-wrapper').on('click',function(){
         if($(this).find('.service-action').hasClass('d-none')){
              $(this).find('.service-action').removeClass('d-none')
-             $(this).find('.service-icon').removeClass('fa-chevron-up')
-             $(this).find('.service-icon').addClass('fa-chevron-down')
+             $(this).find('.service-icon').removeClass('fa-chevron-down')
+             $(this).find('.service-icon').addClass('fa-chevron-up')
         }
         else{
              $(this).find('.service-action').addClass('d-none')
-             $(this).find('.service-icon').removeClass('fa-chevron-down')
-             $(this).find('.service-icon').addClass('fa-chevron-up')
+             $(this).find('.service-icon').removeClass('fa-chevron-up')
+             $(this).find('.service-icon').addClass('fa-chevron-down')
         }
     })
 </script>

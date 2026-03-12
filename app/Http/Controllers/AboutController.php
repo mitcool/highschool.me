@@ -40,4 +40,13 @@ class AboutController extends Controller
   public function showThirdIso() {
     return view('pages.about.iso-2022');
   }
+  public function showFloridaDepartment() {
+    return view('pages.about.florida-department');
+  }
+  public function showCollegeBoard() {
+    return view('pages.about.college-board');
+  }
+  public function showUNpage() {
+    return view('pages.about.un-page');
+  }
 }

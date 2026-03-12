@@ -109,6 +109,9 @@
         background-color: #045397;
         color: white;
     }
+    .learning-container {
+        border-radius: 10px;
+    }
 </style>
 @endsection
 @section('content')
@@ -130,7 +133,7 @@
     <div class="row text-center w-85 container mx-auto">
         @foreach ($courses as $key => $course)
          <div class="col-md-4 my-2 pb-5">
-                <div class="shadow wrapper h-100">
+                <div class="shadow h-100 learning-container">
                     <div class="course-name text-center"> {{ $course->name }}</div>
                     <div class="description">{!! $course->description!!}</div>
                     <div class="text-center tuition">Session Fee</div>

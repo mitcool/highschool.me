@@ -45,10 +45,10 @@
 	</ol>
 </div>
 
-<div class="container-fluid main_page_container ">
+<div class="container-fluid main_page_container pt-0">
 	<div class="row justify-content-center">
-		<div class="col-md-10 col-lg-8 mb-4 text-center">
-			<img src="{{ asset('images/icons/recognition-4.png') }}">
+		<div class="mb-4 text-center">
+			<img src="{{ asset('images/recognition-pages/cover-iso-2015.webp') }}">
 		</div>
 		<div class="col-md-10 col-lg-8 mb-4 text-center">
 			<h1>ISO 9001:2015</h1>

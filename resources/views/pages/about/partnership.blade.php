@@ -7,8 +7,8 @@
 		border:1px solid #707070;
 		height: 100%;
 		margin:20px 0;
-		border-radius: 30px;
-		background: white;
+		border-radius: 15px;
+		background: white!important;
 	}
 	@media(max-width:1200px){
 		.box-wrapper{
@@ -51,35 +51,38 @@
 </div>
 <div class="container-fluid bg-light" style="padding:20px;">
 	<div class="container">
+		<div class="text-center mt-3">
+			<h2 style="color: #045397;">Education Partners</h2>
+		</div>
 		<div class="row">
-			<div class="col-md-4 text-center box-wrapper">
+			<div class="col-md-4 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/partnership-1.png') }}" alt="" class="">
 				</div>
 			</div>
-			<div class="col-md-4 text-center box-wrapper">
+			<div class="col-md-4 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/partnership-3.png') }}" alt="" class="">
 				</div>
 			</div>
-			<div class="col-md-4 text-center box-wrapper">
+			<div class="col-md-4 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/partnership-2.png') }}" alt="" class="">
 				</div>
 			</div>
 		</div>
 		<div class="row mt-2" style="margin-bottom:50px;">
-			<div class="col-md-4 text-center box-wrapper">
+			<div class="col-md-4 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/partnership-1.png') }}" alt="" class="">
 				</div>
 			</div>
-			<div class="col-md-4 text-center box-wrapper">
+			<div class="col-md-4 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/partnership-3.png') }}" alt="" class="">
 				</div>
 			</div>
-			<div class="col-md-4 text-center box-wrapper">
+			<div class="col-md-4 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/partnership-2.png') }}" alt="" class="">
 				</div>
@@ -89,90 +92,92 @@
 </div>
 <div class="container-fluid bg-white">
 	<div class="container">
-		<h2 class="page-headings">Industry Providers</h2>
+		<div class="text-center mt-4">
+			<h2 style="color: #045397;">Industry Providers</h2>
+		</div>
 		<div class="row mt-2">
-			<div class="col-md-3 text-center box-wrapper">
+			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/l01.png') }}" alt="" class="w-100">
 				</div>
 			</div>
-			<div class="col-md-3 text-center box-wrapper">
+			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/l02.png') }}" alt="" class="w-100">
 				</div>
 			</div>
-			<div class="col-md-3 text-center box-wrapper">
+			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/l03.png') }}" alt="" class="w-100">
 				</div>
 			</div>
-			<div class="col-md-3 text-center box-wrapper">
+			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/l04.png') }}" alt="" class="w-100">
 				</div>
 			</div>
 		</div>
 		<div class="row mt-2">
-			<div class="col-md-3 text-center box-wrapper">
+			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/l05.png') }}" alt="" class="w-100">
 				</div>
 			</div>
-			<div class="col-md-3 text-center box-wrapper">
+			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/l06.png') }}" alt="" class="w-100">
 				</div>
 			</div>
-			<div class="col-md-3 text-center box-wrapper">
+			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/l07.png') }}" alt="" class="w-100">
 				</div>
 			</div>
-			<div class="col-md-3 text-center box-wrapper">
+			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/l08.png') }}" alt="" class="w-100">
 				</div>
 			</div>
 		</div>
 		<div class="row mt-2" >
-			<div class="col-md-3 text-center box-wrapper">
+			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/l09.png') }}" alt="" class="w-100">
 				</div>
 			</div>
-			<div class="col-md-3 text-center box-wrapper">
+			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/l10.png') }}" alt="" class="w-100">
 				</div>
 			</div>
-			<div class="col-md-3 text-center box-wrapper">
+			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/l11.png') }}" alt="" class="w-100">
 				</div>
 			</div>
-			<div class="col-md-3 text-center box-wrapper">
+			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/l12.png') }}" alt="" class="w-100">
 				</div>
 			</div>
 		</div>
 		<div class="row mt-2" style="margin-bottom: 50px;">
-			<div class="col-md-3 text-center box-wrapper">
+			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/l13.png') }}" alt="" class="w-100">
 				</div>
 			</div>
-			<div class="col-md-3 text-center box-wrapper">
+			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/l14.png') }}" alt="" class="w-100">
 				</div>
 			</div>
-			<div class="col-md-3 text-center box-wrapper">
+			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/l15.png') }}" alt="" class="w-100">
 				</div>
 			</div>
-			<div class="col-md-3 text-center box-wrapper">
+			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
 					<img src="{{ asset('images/l16.png') }}" alt="" class="w-100">
 				</div>

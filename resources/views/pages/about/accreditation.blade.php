@@ -62,6 +62,36 @@
 			<div class="row" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation">
 					<div>
+						<a href="{{ route('florida-department') }}">
+							<img src="{{ asset('images/icons/recognition-1.png') }}" class="w-100">
+						</a>
+					</div>
+				</div>
+				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
+					<div class="text p-2 page-content">
+						<h4 class="font-weight-bold">Florida Department of Education</h4>
+						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis explicabo quam id delectus alias unde, commodi quis assumenda odit inventore.</p> 
+					</div>
+				</div>
+			</div>
+			<div class="row reverse" style="padding:20px;">
+				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
+					<div class="text p-2 page-content">
+						<h4 class="font-weight-bold">College Board</h4>
+						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis explicabo quam id delectus alias unde, commodi quis assumenda odit inventore.</p>
+					</div>
+				</div>
+				<div class="col-12 col-md-12 col-lg-3 justify-content-end  d-flex align-items-center image-accreditation" id="collegium-humanum">
+					<div>
+						<a href="{{ route('college-board') }}">
+							<img src="{{ asset('images/icons/recognition-2.png') }}" class="w-100">
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="row" style="padding:20px;">
+				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation">
+					<div>
 						<a href="{{ route('first-iso') }}">
 							<img src="{{ asset('images/icons/recognition-4.png') }}" class="w-100">
 						</a>
@@ -88,7 +118,6 @@
 						</a>
 					</div>
 				</div>
-				
 			</div>
 			<div class="row" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation" id="collegium-humanum">
@@ -114,7 +143,9 @@
 				</div>
 				<div class="col-12 col-md-12 col-lg-3 justify-content-end  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<img src="{{ asset('images/icons/recognition-3.png') }}" class="w-100">
+						<a href="{{ route('united-nations') }}">
+							<img src="{{ asset('images/icons/recognition-3.png') }}" class="w-100">
+						</a>
 					</div>
 				</div>
 			</div>
