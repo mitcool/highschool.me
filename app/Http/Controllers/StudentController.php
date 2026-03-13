@@ -212,6 +212,10 @@ class StudentController extends Controller
         }
         $exam->update(['status' => Exam::STATUS_SUBMITTED ]);
 
+        StudentEnrolledCourse::where('catalog_course_id',$exam->course_id)->where('user_id',auth()->id())->update([
+            'status' => StudentEnrolledCourse::STATUS_EXAM_SUBMITED
+        ]);
+
         $parent = ParentStudent::where('student_id',auth()->id())->first()->parent;
 
         try{

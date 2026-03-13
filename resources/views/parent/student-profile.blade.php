@@ -305,7 +305,7 @@
                         <button class="btn  btn-outline-secondary">Pending Exam Date</button>
                     {{-- STATUS_EXAM_APPOINTED -> 3 --}}
                     @elseif($enrolled_course->status == 3) 
-                        <button class="btn  btn-warning">Exam on date...</button>
+                        <button class="btn  btn-warning">Exam on {{ $enrolled_course->exam->date->format('d.m.Y') }}</button>
                         {{-- STATUS_EXAM_SUBMITED->4  --}}
                     @elseif($enrolled_course->status == 4) 
                         <button class="btn  btn-secondary">Pending Exam Results</button>

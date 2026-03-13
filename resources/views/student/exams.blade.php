@@ -30,7 +30,7 @@
                                
                                 @if($exam->status == 0)
                                     <a href="{{ route('student.single-exam',$exam->id) }}" class="view-link">Link&#187;</a>
-                                @elseif($exam->status)
+                                @elseif($exam->status == 2)
                                     <a href="{{ route('student.single-exam-results',$exam->id) }}"><span class="badge badge-secondary">Details...</span>
                                     </a>
                                 @else

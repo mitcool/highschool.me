@@ -27,7 +27,7 @@
                 @endforeach
             @else
                 <div class="text-right">
-                    <a class="text-decoration-none btn btn-secondary" href="{{ asset('exams') }}/{{ $exam->id }}/{{ $answers[0]->answer }}" target="_blank" download"><i class="fas fa-download"></i> Download here</a>
+                    <a class="text-decoration-none btn btn-secondary" href="{{ asset('exams') }}/{{ $exam->id }}/{{ $answers[0]->answer }}" target="_blank" download><i class="fas fa-download"></i> Download here</a>
                 </div>
             @endif
             <div class="border p-2 my-3">
