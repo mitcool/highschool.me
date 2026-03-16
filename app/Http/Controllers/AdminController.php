@@ -94,6 +94,11 @@ use App\Notification;
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
 use App\Mail\ExamDate;
+use App\Mail\ExamUpdated;
+use App\Mail\ExamUpdatedParent;
+use App\Mail\ExamDeleted;
+use App\Mail\ExamDeletedParent;
+use App\Mail\EducatorCategoryApproved;
 
 class AdminController extends Controller
 {
@@ -1281,12 +1286,14 @@ class AdminController extends Controller
     }
 
     public function educators(){
+        $new_category_requests = EducatorCategory::where('status',0)->get()->groupBy('educator_id');
         $categories = SubjectArea::all();
         $educators = User::where('role_id',5)->get();
         foreach($educators as $educator){
             $educator->array_educator_categories  = $educator->educator_categories->pluck('category_id')->toArray();
         }
         return view('admin.educators')
+            ->with('new_category_requests',$new_category_requests)
             ->with('educators',$educators)
             ->with('categories',$categories);
     }
@@ -1318,7 +1325,8 @@ class AdminController extends Controller
         foreach($categories as $category_id){
             EducatorCategory::insert([
                 'educator_id' => $educator->id,
-                'category_id' => $category_id
+                'category_id' => $category_id,
+                'status' => 1
             ]);
         }
         try{
@@ -1368,11 +1376,13 @@ class AdminController extends Controller
     
     public function exams(){
         $students = StudentEnrolledCourse::where('status',StudentEnrolledCourse::STATUS_READY_FOR_EXAM)->select('user_id')->distinct()->get();
-        $educators = User::where('role_id',5)->get();
         $courses = CurriculumCourse::all();
         $exams = Exam::orderBy('created_at','desc')->get();
+        $educators = User::where('role_id',5)->get();
+        $all_courses = CurriculumCourse::all();
         return view('admin.exams')
             ->with('exams',$exams)
+            ->with('all_courses',$all_courses)
             ->with('students',$students)
             ->with('educators',$educators)
             ->with('courses',$courses);
@@ -1734,5 +1744,65 @@ class AdminController extends Controller
             ->where('status',StudentEnrolledCourse::STATUS_READY_FOR_EXAM)
             ->get();
         return $courses;
+    }
+
+    public function editExam(Request $request,$exam_id){
+        $exam_request = $request->except('_token');
+        $exam = Exam::find($exam_id);
+        $exam->update($exam_request);
+        $parent = ParentStudent::where('student_id',$exam->student_id)->first()->parent;
+       
+        try{
+            Mail::to($exam->student->email)->send(new ExamUpdated($exam));    
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+        try{
+            
+            Mail::to($exam->student->email)->send(new ExamUpdatedParent($parent,$exam));    
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+        return redirect()->back()->with('success_message','Exam updated successfully');
+    }
+    public function deleteExam($exam_id){
+        $exam = Exam::find($exam_id);
+        $exam->delete();
+        $parent = ParentStudent::where('student_id',$exam->student->id)->first()->parent;
+        
+        try{
+           Mail::to($exam->student->email)->send(new ExamDeleted($exam));
+        }catch(\Exception $e){
+           info($e->getMessage());
+        }
+
+        try{
+            Mail::to($parent->email)->send(new ExamDeletedParent($parent,$exam));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+        return redirect()->back()->with('success_message','Exam deleted successfully');
+    }
+
+    public function changeEducatorCategoryStatus($action,$id){
+        $category = EducatorCategory::find($id);
+        if(!$category){
+            abort(404);
+        }
+        if($action=='approve'){
+            $category->update(['status'=>1]);
+            try{
+               Mail::to($category->educator->email)->send(new EducatorCategoryApproved($category));
+            }catch(\Exception $e){
+                info($e->getMessage());
+            }
+        }
+        elseif($action=='decline'){
+            $category->delete();
+        }
+        else{
+            abort(404);
+        }
+        return redirect()->back()->with('success_message','Educator category approved successfully');
     }
 }

@@ -4,11 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
 class Exam extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     protected $fillable = ['date','time','course_id','student_id','educator_id','type','status','grade','comment','pre_exam','passed_at'];
 
@@ -21,6 +22,9 @@ class Exam extends Model
     const STATUS_APPOINTED = 0;
     const STATUS_SUBMITTED = 1;
     const STATUS_EVALUATED = 2;
+
+    const TYPE_OPEN_EXAM  = 1;
+    const TYPE_ESSAY = 2;
 
     public function student(){
         return $this->hasOne('App\User','id','student_id');

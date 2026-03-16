@@ -95,12 +95,54 @@
             </div>
         @endforeach
     </table>
+
+@if($new_category_requests)
+<div class="modal fade" id="request-category-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Please check if the educator is qualified for following categories:</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <table class="table">
+                @foreach ($new_category_requests as $categories )
+                    @foreach($categories as $category)
+                        <tr>
+                            <td>{{ $category->educator->fullname() }}</td>
+                            <td>{{ $category->category->name }}</td>
+                            <td>
+                                <form action="{{ route('change-educator-category-status',['approve',$category->id]) }}" method="POST">
+                                    {{ csrf_field() }}
+                                    <button class="btn-success btn">Approve</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="{{ route('change-educator-category-status',['decline',$category->id]) }}" method="POST">
+                                    {{ csrf_field() }}
+                                    <button class="btn-danger btn">Reject</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endforeach
+            </table>
+        </div>
+    </div>
+</div>
+@endif
 @endsection
 
 @section('scripts')
 <script>
     $(function(){
-
+    
+    let new_category_requests = @json($new_category_requests);
+    if(Object.entries(new_category_requests).length > 0){
+        $('#request-category-modal').modal('show')
+    }
     var requiredCheckboxes = $(':checkbox[required]');
 
     requiredCheckboxes.change(function(){

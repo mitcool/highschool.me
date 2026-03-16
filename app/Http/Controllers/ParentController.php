@@ -211,7 +211,8 @@ class ParentController extends Controller
             'student_id'=> $student->id,
             'status' => $status,
             'is_disabled' => 0,
-            'track' => $education_option
+            'track' => $education_option,
+            'tokens' => 500  // Defined by marketing team (TOKENS == QUESTIONS) //After selection of plan update in case they have Pro or Elite
         ]);
         try{
             Mail::to($student->email)->send(new StudentCredentials($student,$password));
@@ -481,6 +482,7 @@ class ParentController extends Controller
     public function enrollmentFeeSuccess(){
        $invoice_data = session()->get('invoice_data');
        $student_data = session()->get('student_data');
+       $tokens = $student_data['plan_id'] == 1 ? 500 : 1200;
 
        $exprires_at = $student_data['payment_type'] == 0  
                 ? Carbon::now()->addMonths(1)->subDays(1) 
@@ -497,7 +499,7 @@ class ParentController extends Controller
         $this->createInvoice($invoice_data['amount'],$invoice_data['description']);
 
         ParentStudent::where('student_id',$student_data['student_id'])
-            ->update(['status' => ParentStudent::ACTIVE]);
+            ->update(['status' => ParentStudent::ACTIVE,'tokens' => $tokens]);
 
          try{
             Mail::to(auth()->user()->email)->send(new PaymentSuccessfull);

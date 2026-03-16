@@ -41,6 +41,7 @@ use App\UserMentoringSession;
 use App\UserCoachingSessions;
 use App\AdditionalCourse;
 use App\ParentStudent;
+use App\StudyMentor;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -187,9 +188,15 @@ class StudentController extends Controller
     }
 
     public function submitExam(Request $request, $exam_id){
-       
+
         $exam = Exam::find($exam_id);
-        if($exam->type==1){
+        if($exam->type == 2){
+             if($request->validate([
+                'essay' => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
+            ]));
+        }
+               
+        if($exam->type== EXAM::TYPE_ESSAY){
             $answers = $request->answers;
             foreach($answers as $question_id => $answer){
                 StudentAnswer::insert([
@@ -367,18 +374,39 @@ class StudentController extends Controller
 
 
     public function studyMentor(){
-        return view('student.study-mentor');
+        if(auth()->user()->student_details->track == 4){
+            $categories_ids = [];
+            foreach(auth()->user()->enrolled_courses as $enrolled_course){
+                $categories_ids[] = $enrolled_course->course->category_id;
+            }
+           
+            $study_mentors = StudyMentor::whereIn('category_id',$categories_ids)->get();
+        }
+        else{
+            $study_mentors = StudyMentor::all();
+        }
+        
+        return view('student.study-mentor')
+            ->with('study_mentors',$study_mentors);
     }
 
-    public function singleStudyMentor(){
-        return view('student.single-study-mentor');
+    public function singleStudyMentor($slug){
+        $mentor = StudyMentor::where('slug',$slug)->first();
+        return view('student.single-study-mentor')
+            ->with('mentor',$mentor);
     }
 
-    public function singleStudyMentorChat(){
+    public function singleStudyMentorChat($slug){
+        $mentor = StudyMentor::where('slug',$slug)->first();
         session()->forget('conversation');
-        return view('student.single-study-mentor-chat');
+        return view('student.single-study-mentor-chat')
+            ->with('mentor',$mentor);
     }
     public function singleStudyMentorChatPost(Request $request){
+        $user_tokens = auth()->user()->student_details->tokens;
+        if($user_tokens <= 0){
+            return ['answer'=> 'You have no questions left. Please contact the support team','tokens_left' => 0];
+        }
         $conversation = session()->has('conversation') ? session()->get('conversation') : [];
         $request->validate([
             'message' => 'required|string',
@@ -395,9 +423,9 @@ class StudentController extends Controller
                 'input' => $conversation
         ]);
 
-        $token_used = ($response["usage"]["total_tokens"]);
+       
         $user_tokens = auth()->user()->student_details->tokens;
-        $tokens_left = $user_tokens - $token_used;
+        $tokens_left = $user_tokens - 1;
         auth()->user()->student_details->update(['tokens'=>$tokens_left]);
         $answer = $response['output'][0]['content'][0]['text']; 
         $conversation[] = [

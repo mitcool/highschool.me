@@ -121,22 +121,22 @@
 
 @section('content')
 	<div class="container text-center pt-5" style="margin: 0 auto;">
-		<h2 class="text-center mb-5 program-title">Study mentor</h2>
+		<h2 class="text-center mb-5 program-title">{{ $mentor->name }}</h2>
         <div class="page-content mt-3 text-justify">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi doloremque itaque vero dolorum est, culpa eveniet sed doloribus quo et quasi alias, fugiat voluptates facilis? Suscipit necessitatibus quia pariatur corrupti.</p>
+            <p>{{ $mentor->description }}</p>
         </div>
 		<div class="shadow-lg mx-auto">
             <div class="card-body">
                  <div class="video mt-3">
-                    <iframe height="600" width=100%" src="https://www.youtube.com/embed/FbXEqmzu05I?si=wYLlYX3WT1ENmdOd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <iframe height="600" width="100%" src="{{ $mentor->video }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
                 <div class="page-content mt-3">
-                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi doloremque itaque vero dolorum est, culpa eveniet sed doloribus quo et quasi alias, fugiat voluptates facilis? Suscipit necessitatibus quia pariatur corrupti.</p>
+                     <p></p>
                 </div>
             </div>
         </div>
         <div style="margin:50px 0;">
-			<a href="{{ route('student.single-study-mentor-chat',1) }}" class="orange-button mt-4" style="text-decoration: none;">Start now</a>
+			<a href="{{ route('student.single-study-mentor-chat',$mentor->slug) }}" class="orange-button mt-4" style="text-decoration: none;">Start now</a>
 		</div>
 	</div>
 @endsection

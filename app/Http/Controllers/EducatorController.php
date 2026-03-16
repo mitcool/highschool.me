@@ -20,7 +20,9 @@ use App\EducatorCategory;
 use App\SelfAssessmentAnswer;
 use App\StudentEnrolledCourse;
 use App\CourseFile;
+use App\CourseVideo;
 use App\StudentAnswer;
+use App\CourseCategory;
 
 class EducatorController extends Controller
 {
@@ -62,18 +64,25 @@ class EducatorController extends Controller
     }
     public function courses(){
         $educator = auth()->user();
-        $categories = $educator->educator_categories->pluck('category_id')->toArray();
-        $courses = CurriculumCourse::whereIn('category_id',$categories)->paginate(15);
+        $categories = $educator->educator_categories->where('status',1)->pluck('category_id')->toArray();
+        $courses = CurriculumCourse::whereIn('category_id',$categories)->paginate(11);
+        $course_categories = CourseCategory::all();
         return view('educator.courses')
+            ->with('course_categories',$course_categories)
+            ->with('categories',$categories)
             ->with('courses',$courses);
     }
     public function exams(){
         $students = StudentEnrolledCourse::where('status',StudentEnrolledCourse::STATUS_READY_FOR_EXAM)->get();
+        $all_students = User::where('role_id',4)->get();
+        $all_courses = CurriculumCourse::all();
         $educators = User::where('role_id',5)->get();
         $courses = CurriculumCourse::all();
-        $exams = Exam::orderBy('created_at','desc')->get();
+        $exams = Exam::orderBy('created_at','desc')->where('educator_id',auth()->id())->where('status',Exam::STATUS_APPOINTED)->get();
        # dd($exams);
         return view('educator.exams')
+            ->with('all_students',$all_students)
+            ->with('all_courses',$all_courses)
             ->with('exams',$exams)
             ->with('students',$students)
             ->with('educators',$educators)
@@ -303,5 +312,85 @@ class EducatorController extends Controller
 
         return redirect()->back()->with('success_message','Exam evaluated successfully');
         
+    }
+
+    public function editCourseMaterials($cc_id){
+        $course = CurriculumCourse::find($cc_id);
+        $course_files  = CourseFile::where('course_id',$course->course_id)->get();
+        $course_videos  = CourseVideo::where('course_id',$course->course_id)->get();
+        return view('educator.course-materials')
+            ->with('course_files',$course_files)
+            ->with('course_videos',$course_videos)
+            ->with('course',$course);
+    }
+
+    public function addCourseMaterials(Request $request){
+        $course = CatalogCourse::find($request->course_id);
+        
+        // 1) Save FILES (if any)
+        $files  = request()->input('resource_files', []);
+        $labels = request()->input('resource_files_labels', []);
+
+        CourseFile::where('course_id',$course->id)->delete();
+        CourseVideo::where('course_id',$course->id)->delete();
+        
+
+        if (is_array($files)) {
+            foreach ($files as $index => $uploadedFile) {
+                if (!$uploadedFile) {
+                    continue;
+                }
+                CourseFile::create([
+                    'course_id'     => $course->id,
+                    'label'         => isset($labels[$index]) ? $labels[$index] : null,
+                    'stored_path'   => $uploadedFile,
+                ]);
+            }
+        }
+
+        // 2) Save VIDEOS (if any)
+        $videoTitles = request()->input('video_titles', []);
+        $videoUrls   = request()->input('video_urls', []);
+
+        if (is_array($videoUrls)) {
+            foreach ($videoUrls as $index => $url) {
+                $title = isset($videoTitles[$index]) ? trim($videoTitles[$index]) : null;
+                $url   = trim((string) $url);
+
+                // skip completely empty rows
+                if ($url === '' && ($title === '' || $title === null)) {
+                    continue;
+                }
+
+                if ($title === '' || $title === null) {
+                    $title = 'Video ' . ($index + 1);
+                }
+
+                CourseVideo::create([
+                    'course_id' => $course->id,
+                    'title'     => $title,
+                    'url'       => $url,
+                    'position'  => $index,
+                ]);
+            }
+        }
+
+        return redirect()->back()->with('success_message','Course Material updated successfully');
+    }
+
+    public function requestNewCourse(Request $request){
+        if(!$request->categories){
+            return redirect()->back();
+        }
+        $categories = $request->categories;
+        foreach($categories as $category_id){
+            EducatorCategory::insert([
+                'category_id' => $category_id,
+                'educator_id' => auth()->id(),
+                'status' => 0
+            ]);
+        }
+
+        return redirect()->back()->with('success_message','Your request was successfull');
     }
 }

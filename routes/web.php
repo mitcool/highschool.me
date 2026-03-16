@@ -107,8 +107,8 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::get('/course-material/{material_id}', 'StudentController@singleMaterial')->name('student.course-material');
 	Route::get('/course-video/{video_id}', 'StudentController@singleVideo')->name('student.course-video');
 	Route::get('/study-mentor','StudentController@studyMentor')->name('student.study-mentor');
-	Route::get('/study-mentor/{mentor_id}','StudentController@singleStudyMentor')->name('student.single-study-mentor');
-	Route::get('/single-study-mentor-chat','StudentController@singleStudyMentorChat')->name('student.single-study-mentor-chat');
+	Route::get('/study-mentor/{slug}','StudentController@singleStudyMentor')->name('student.single-study-mentor');
+	Route::get('/single-study-mentor-chat/{slug}','StudentController@singleStudyMentorChat')->name('student.single-study-mentor-chat');
 	Route::post('/study-mentor-chat','StudentController@singleStudyMentorChatPost')->name('student.study-mentor-chat-post');
 	Route::get('/exams','StudentController@exams')->name('student.exams');
 	Route::get('/exams/{id}','StudentController@singleExam')->name('student.single-exam');
@@ -156,6 +156,9 @@ Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 	Route::get('/materials-by-course/{course}', 'EducatorController@materialsByCourse')->name('educator.materials-by-course');
 	Route::get('/submissions/{submition_id}','EducatorController@showSingleSubmission')->name('educator.single-submission');
 	Route::post('/evaluate-exam/{exam_id}','EducatorController@evaluateExam')->name('educator.evaluate-exam');
+	Route::get('/materials/{course_id}','EducatorController@editCourseMaterials')->name('educator.course-materials');
+	Route::post('/course-material/add','EducatorController@addCourseMaterials')->name('educator.add-course-material');
+	Route::post('/new-course-request','EducatorController@requestNewCourse')->name('educator.request-new-course');
 	#notifications
 	Route::get('/all-notifications', 'EducatorController@showNotifications')->name('educator.notifications');
 
@@ -338,6 +341,13 @@ Route::post('/unsubscribe-user/{id}','MainController@unsubscribeUser')->name('un
 Route::get('/verify/mail/{confcode}', 'MainController@verifyAccount');
 
 Route::post('/get-courses','AdminController@getCourses')->name('get-courses');
+
+#Both -> admin and educator
+
+Route::post('/delete-exam/{exam_id}','AdminController@deleteExam')->name('delete-exam');
+
+Route::post('/edit-exam/{exam_id}','AdminController@editExam')->name('edit-exam');
+
 
 /*
 Route::get('/down', function() {

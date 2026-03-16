@@ -166,8 +166,8 @@
 
 @section('content')
 <div class="container text-center pt-5" style="margin: 0 auto;">
-    <div class="text-right"><span class="font-weight-bold">Tokens left:</span> <span id="tokens">{{ auth()->user()->student_details->tokens }}<span></div>
-    <h2 class="text-center mb-5 program-title">Study mentor</h2>
+    <div class="text-right"><span class="font-weight-bold">Questions left:</span> <span id="tokens">{{ auth()->user()->student_details->tokens }}<span></div>
+    <h2 class="text-center mb-5 program-title">{{ $mentor->name }}</h2>
     <div class="page-content mt-3 text-justify">
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi doloremque itaque vero dolorum est, culpa eveniet sed doloribus quo et quasi alias, fugiat voluptates facilis? Suscipit necessitatibus quia pariatur corrupti.</p>
     </div>
