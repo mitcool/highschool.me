@@ -73,7 +73,7 @@ class EducatorController extends Controller
             ->with('courses',$courses);
     }
     public function exams(){
-        $students = StudentEnrolledCourse::where('status',StudentEnrolledCourse::STATUS_READY_FOR_EXAM)->get();
+        $students = StudentEnrolledCourse::where('status',StudentEnrolledCourse::STATUS_READY_FOR_EXAM)->select('user_id')->distinct()->get();
         $all_students = User::where('role_id',4)->get();
         $all_courses = CurriculumCourse::all();
         $educators = User::where('role_id',5)->get();

@@ -23,7 +23,7 @@
                 <th class="text-right">Link</th>
             </tr>
             @endif
-            @foreach ($group_sessions as $session)
+            @forelse ($group_sessions as $session)
                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
                      <td></td>
@@ -31,7 +31,11 @@
                         {{ $session->link }}
                     </td>
                 </tr>
-            @endforeach
+            @empty
+            <tr>
+                <td colspan="4">No group sessions at the moment</td>
+            </tr>
+            @endforelse
             {{-- Mentoring Sessions --}}
              <tr>
                 <th colspan="2">
@@ -45,7 +49,7 @@
                 <th class="text-right">Link</th>
             </tr>
             @endif
-            @foreach ($mentoring_sessions as $session)
+            @forelse ($mentoring_sessions as $session)
                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
                     <td></td>
@@ -53,7 +57,11 @@
                          {{ $session->link }}
                     </td>
                 </tr>
-            @endforeach
+            @empty
+             <tr>
+                <td colspan="4">No mentoring sessions at the moment</td>
+            </tr>
+            @endforelse
               <tr>
                 <th colspan="2">
                     <h5>Coaching sessions</h5>
@@ -66,7 +74,7 @@
                 <th class="text-right">Link</th>
             </tr>
             @endif
-            @foreach ($coaching_sessions as $session)
+            @forelse ($coaching_sessions as $session)
                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
                     <td></td>
@@ -74,7 +82,11 @@
                          {{ $session->link }}
                     </td>
                 </tr>
-             @endforeach
+            @empty
+             <tr>
+                <td colspan="4">No coaching sessions at the moment</td>
+            </tr>
+             @endforelse
         </tbody>
     </table>
 </div>

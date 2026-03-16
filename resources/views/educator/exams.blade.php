@@ -24,8 +24,8 @@
 
         <label class="font-weight-bold mb-0" for="">Student <span class="text-danger">(*Note only students that have status Ready for exam)</span></label>
         <select required class="form-control" name="student_id" required id="student_id">
+            <option value="" selected disabled>Please select a student</option>
             @foreach ($students as $student )
-                <option value="" selected disabled>Please select a student</option>
                 <option value="{{ $student->student->id }}">{{ $student->student->fullname() }}</option>
             @endforeach
         </select><br>
