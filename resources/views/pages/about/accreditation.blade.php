@@ -18,6 +18,12 @@
 
 @section('headCSS')
 	<style>
+		.accreditation-read-more{
+			display:inline-block;
+			margin-top: 10px;
+			text-decoration:none !important;
+		}
+
 		@media(max-width:800px){
 			.image-accreditation div{
 				display: flex;
@@ -62,15 +68,14 @@
 			<div class="row" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation">
 					<div>
-						<a href="{{ route('florida-department') }}">
-							<img src="{{ asset('images/icons/recognition-1.png') }}" class="w-100">
-						</a>
+						<img src="{{ asset('images/icons/recognition-1.png') }}" class="w-100">
 					</div>
 				</div>
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
 					<div class="text p-2 page-content">
 						<h4 class="font-weight-bold">Florida Department of Education</h4>
-						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis explicabo quam id delectus alias unde, commodi quis assumenda odit inventore.</p> 
+						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis explicabo quam id delectus alias unde, commodi quis assumenda odit inventore.</p>
+						<a href="{{ route('florida-department') }}" class="orange-button btn accreditation-read-more">Read More</a>
 					</div>
 				</div>
 			</div>
@@ -79,73 +84,82 @@
 					<div class="text p-2 page-content">
 						<h4 class="font-weight-bold">College Board</h4>
 						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis explicabo quam id delectus alias unde, commodi quis assumenda odit inventore.</p>
+						<a href="{{ route('college-board') }}" class="orange-button btn accreditation-read-more">Read More</a>
 					</div>
 				</div>
 				<div class="col-12 col-md-12 col-lg-3 justify-content-end  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<a href="{{ route('college-board') }}">
-							<img src="{{ asset('images/icons/recognition-2.png') }}" class="w-100">
-						</a>
+						<img src="{{ asset('images/icons/recognition-2.png') }}" class="w-100">
 					</div>
 				</div>
 			</div>
 			<div class="row" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation">
 					<div>
-						<a href="{{ route('first-iso') }}">
-							<img src="{{ asset('images/icons/recognition-4.png') }}" class="w-100">
-						</a>
+						<img src="{{ asset('images/icons/logo-act-blue.png') }}" class="w-100">
 					</div>
 				</div>
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
 					<div class="text p-2 page-content">
-						<h4 class="font-weight-bold">ISO 9001:2015</h4>
-						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis explicabo quam id delectus alias unde, commodi quis assumenda odit inventore.</p> 
+						<h4 class="font-weight-bold">American College Test</h4>
+						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis explicabo quam id delectus alias unde, commodi quis assumenda odit inventore.</p>
+						<a href="{{ route('american-college-test') }}" class="orange-button btn accreditation-read-more">Read More</a>
 					</div>
 				</div>
 			</div>
 			<div class="row reverse" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
 					<div class="text p-2 page-content">
-						<h4 class="font-weight-bold">ISO 21001:2018</h4>
+						<h4 class="font-weight-bold">ISO 9001:2015</h4>
 						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis explicabo quam id delectus alias unde, commodi quis assumenda odit inventore.</p>
+						<a href="{{ route('first-iso') }}" class="orange-button btn accreditation-read-more">Read More</a>
 					</div>
 				</div>
 				<div class="col-12 col-md-12 col-lg-3 justify-content-end  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<a href="{{ route('second-iso') }}">
-							<img src="{{ asset('images/icons/recognition-5.png') }}" class="w-100">
-						</a>
+						<img src="{{ asset('images/icons/recognition-4.png') }}" class="w-100">
 					</div>
 				</div>
 			</div>
 			<div class="row" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<a href="{{ route('third-iso') }}">
-							<img src="{{ asset('images/icons/recognition-6.png') }}" class="w-100">
-						</a>
+						<img src="{{ asset('images/icons/recognition-5.png') }}" class="w-100">
 					</div>
 				</div>
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
 					<div class="text p-2 page-content">
-						<h4 class="font-weight-bold">ISO 27001:2022</h4>
+						<h4 class="font-weight-bold">ISO 21001:2018</h4>
 						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis explicabo quam id delectus alias unde, commodi quis assumenda odit inventore.</p>
+						<a href="{{ route('second-iso') }}" class="orange-button btn accreditation-read-more">Read More</a>
 					</div>
 				</div>
 			</div>
 			<div class="row reverse" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
 					<div class="text p-2 page-content">
-						<h4 class="font-weight-bold">United Nations</h4>
+						<h4 class="font-weight-bold">ISO 27001:2022</h4>
 						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis explicabo quam id delectus alias unde, commodi quis assumenda odit inventore.</p>
+						<a href="{{ route('third-iso') }}" class="orange-button btn accreditation-read-more">Read More</a>
 					</div>
 				</div>
 				<div class="col-12 col-md-12 col-lg-3 justify-content-end  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<a href="{{ route('united-nations') }}">
-							<img src="{{ asset('images/icons/recognition-3.png') }}" class="w-100">
-						</a>
+						<img src="{{ asset('images/icons/recognition-6.png') }}" class="w-100">
+					</div>
+				</div>
+			</div>
+			<div class="row" style="padding:20px;">
+				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation" id="collegium-humanum">
+					<div>
+						<img src="{{ asset('images/icons/recognition-3.png') }}" class="w-100">
+					</div>
+				</div>
+				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
+					<div class="text p-2 page-content">
+						<h4 class="font-weight-bold">United Nations</h4>
+						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis explicabo quam id delectus alias unde, commodi quis assumenda odit inventore.</p>
+						<a href="{{ route('united-nations') }}" class="orange-button btn accreditation-read-more">Read More</a>
 					</div>
 				</div>
 			</div>

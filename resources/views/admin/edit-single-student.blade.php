@@ -38,5 +38,10 @@
             </div>
         </div>
     </form>
+    <form action="" method="POST">
+        <div class="col-md-12 text-center mt-4">
+            <button class="btn btn-danger">Delete Student</button>
+        </div>
+    </form>
 </div>
 @endsection

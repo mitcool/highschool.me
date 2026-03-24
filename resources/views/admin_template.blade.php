@@ -60,6 +60,10 @@
         .pagination .page-item.disabled .page-link {
             color: #999999;
         }
+
+        .nav-item a {
+            width: 100%!important;
+        }
     </style>
 
 </head>
@@ -69,10 +73,10 @@
     <div class="container-fluid px-0">
         <div class="row">
             <div id="wrapper" style="padding:0 0px;">
-                <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="padding-left:10px;background:#045397">
+                <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="padding-left:10px;background:#045397;">
                     <li class="nav-item active">
                         <a class="nav-link" href="{{route('admin-dashboard')}}">
-                            <i class="fas fa-fw fa-home"></i>
+                            <i class="fas fa-home"></i>
                             <span>Dashboard</span>
                         </a>
                     </li>
@@ -82,13 +86,13 @@
                     <div class="sidebar-heading">Courses</div>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('admin-courses-types')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-book"></i>
                             <span>Courses Types</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('all-enrollment-courses')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-book"></i>
                             <span>Enrollment Courses</span>
                         </a>
                     </li>
@@ -98,19 +102,19 @@
                     <div class="sidebar-heading">Plans and features</div>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('admin-plans')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-book"></i>
                             <span>Plans</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('admin-features')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-clipboard"></i>
                             <span>Features</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('admin-features-order')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-clipboard-list"></i>
                             <span>Features order</span>
                         </a>
                     </li>
@@ -122,25 +126,25 @@
                     </div>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('admin-group-sessions')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-users"></i>
                             <span>Group Session for Students</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-mentoring-sessions') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-user-graduate"></i>
                             <span>Mentoring Session for Students</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-coaching-sessions') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-university"></i>
                             <span>College and Career Coaching</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-family-consultations') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-handshake"></i>
                             <span>Family Consultation</span>
                         </a>
                     </li>
@@ -152,19 +156,19 @@
                     </div>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin.ambassador-links') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-star"></i>
                             <span>Ambassador Links</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin.ambassador-activities') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-award"></i>
                             <span>Ambassador Activities</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin.ambassador-rewards') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-trophy"></i>
                             <span>Ambassador Rewards</span>
                         </a>
                     </li>
@@ -176,25 +180,25 @@
                     </div>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('dynamic-news')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-newspaper"></i>
                             <span>News Explorer</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-facts-hub') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-newspaper"></i>
                             <span>Facts Hub</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-press-release') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-bullhorn"></i>
                             <span>Press Release</span>
                         </a>
                     </li>
                      <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('edit-authors')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-user-edit"></i>
                             <span>Author's Information</span>
                         </a>
                     </li>
@@ -205,14 +209,14 @@
                     </div>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('admin-parent-help-desk')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-envelope"></i>
                             <span>Parent Help Desk</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('admin-student-help-desk')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-envelope"></i>
                             <span>Student Help Desk</span>
                         </a>
                     </li>
@@ -223,19 +227,19 @@
                     </div>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('faq-categories')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-pen-nib"></i>
                             <span>FAQ Categories</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('admin-faq')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-pen-nib"></i>
                             <span>FAQ</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('texts')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-pen-nib"></i>
                             <span>Texts</span>
                         </a>
                     </li>
@@ -247,13 +251,13 @@
                     </div>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('admin-newsletter')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-paper-plane"></i>
                             <span>Create Newsletter</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('admin-newsletter-stats')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-chart-pie"></i>
                             <span>Newsletter Stats</span>
                         </a>
                     </li>
@@ -265,19 +269,19 @@
                     </div>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-student-overview') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-user-graduate"></i>
                             <span>Overview</span>
                         </a>
                         <a class="nav-link collapsed" href="{{route('admin-student-documents')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-folder"></i>
                             <span>Documents</span>
                         </a>
                         <a class="nav-link collapsed" href="{{route('admin.all-requested-leaves')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-door-open"></i>
                             <span>Leave Requests</span>
                         </a>
             <a class="nav-link collapsed" href="{{route('admin-student-diploma-requests')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-scroll"></i>
                             <span>Diploma Requests</span>
                         </a>
                     </li>
@@ -288,31 +292,31 @@
                     </div>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-educators') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-user-tie"></i>
                             <span>Educators</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-exams') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-folder"></i>
                             <span>Exams</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin.add-exam-question') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-question"></i>
                             <span>Exam Questions</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin.add-self-assess-question') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-question"></i>
                             <span>Self Assesment Questions</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-submissions') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-file"></i>
                             <span>Submimissions</span>
                         </a>                     
                     </li>
@@ -322,7 +326,7 @@
                     </div>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-invoices') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-file-invoice"></i>
                             <span>Invoices</span>
                         </a>
                     </li>
@@ -332,14 +336,14 @@
                     </div>
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-academics') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-school"></i>
                             <span>Academics</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <hr class="sidebar-divider">
                         <a class="nav-link collapsed" href="{{ route('admin.students-in-spotlights') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-user-graduate"></i>
                             <span>Students in Spotlights</span>
                         </a>
                     </li>
@@ -350,7 +354,7 @@
                     <li class="nav-item">
                         <hr class="sidebar-divider">
                         <a class="nav-link collapsed" href="{{ route('admin.change-password') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-key"></i>
                             <span>Change password</span>
                         </a>
                     </li>
@@ -359,7 +363,7 @@
                         <form action="{{ route('logout') }}" method="post">
                             {{ csrf_field() }}
                             <button class="nav-link collapsed bg-transparent border-0">
-                                <i class="fas fa-fw fa-cog"></i>
+                                <i class="fas fa-sign-out-alt"></i>
                                 <span>Logout</span>
                             </button>
                         </form>

@@ -43,6 +43,9 @@
         #footer{
             margin-top:0;
         }
+        .nav-item a {
+            width: 100%!important;
+        }
     </style>
 
 </head>
@@ -56,7 +59,7 @@
                     <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion" id="accordionSidebar" style="background:#045397">
                         <li class="nav-item black">
                             <a class="nav-link" href="{{route('parent.dashboard')}}">
-                                <i class="fas fa-fw fa-home"></i>
+                                <i class="fas fa-home"></i>
                                 <span id="home-link">Dashboard</span>
                             </a>
                         </li>
@@ -65,7 +68,7 @@
                         <div class="sidebar-heading">Meetings</div>
                         <li class="nav-item active">
                             <a class="nav-link" href="{{route('parent.meetings')}}">
-                                <i class="fas fa-fw fa-cog"></i>
+                                <i class="fas fa-users"></i>
                                 <span>Meetings</span>
                             </a>
                         </li>
@@ -75,7 +78,7 @@
                        
                         <li class="nav-item active">
                             <a class="nav-link" href="{{route('parent.create.student')}}">
-                                <i class="fas fa-fw fa-cog"></i>
+                                <i class="fas fa-user-edit"></i>
                                 <span>Add Child</span>
                             </a>
                         </li>
@@ -83,7 +86,7 @@
                           @foreach (auth()->user()->students as $student)
                                 <li class="nav-item active">
                                     <a class="nav-link" href="{{route('parent.student.profile',$student->student->id)}}">
-                                        <i class="fas fa-fw fa-cog"></i>
+                                        <i class="fas fa-user-tie"></i>
                                         <span>{{ $student->student->name }} {{ $student->student->surname }}</span>
                                     </a>
                                 </li>
@@ -91,14 +94,14 @@
                         @endif
                         <li class="nav-item active">
                             <a class="nav-link" href="{{ route('parent.request-leave') }}">
-                                <i class="fas fa-fw fa-cog"></i>
+                                <i class="fas fa-scroll"></i>
                                 <span>Request Leave</span>
                             </a>
                         </li>
                        <div class="sidebar-heading">Payments and invoices</div>
                         <li class="nav-item active">
                             <a class="nav-link" href="{{route('parent.invoices')}}">
-                                <i class="fas fa-fw fa-cog"></i>
+                                <i class="fas fa-file-invoice"></i>
                                 <span>Payments and invoices</span>
                             </a>
                         </li>
@@ -106,7 +109,7 @@
                         <div class="sidebar-heading">Help Desk</div>
                         <li class="nav-item active">
                             <a class="nav-link" href="{{route('help-desk')}}">
-                                <i class="fas fa-fw fa-cog"></i>
+                                <i class="fas fa-envelope"></i>
                                 <span>Help Desk</span>
                             </a>
                         </li>
@@ -119,7 +122,7 @@
                         </li>
                         <li class="nav-item active">
                             <a class="nav-link" href="{{route('parent.reset.password.page')}}">
-                                <i class="fas fa-fw fa-cog"></i>
+                                <i class="fas fa-key"></i>
                                 <span>Change Password</span>
                             </a>
                         </li>
@@ -128,7 +131,7 @@
                             <form action="{{ route('logout') }}" method="post">
                                 {{ csrf_field() }}
                                 <button class="nav-link collapsed bg-transparent border-0">
-                                    <i class="fas fa-fw fa-cog"></i>
+                                    <i class="fas fa-sign-out-alt"></i>
                                     <span>Logout</span>
                                 </button>
                             </form>

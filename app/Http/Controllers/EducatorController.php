@@ -27,7 +27,7 @@ use App\CourseCategory;
 class EducatorController extends Controller
 {
     public function dashboard(){
-        return view('educator.dashboard');
+        return view('educator.welcome');
     }
 
     public function meetings() {

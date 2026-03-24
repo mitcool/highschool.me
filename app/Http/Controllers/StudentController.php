@@ -54,7 +54,7 @@ use Carbon\Carbon;
 class StudentController extends Controller
 {
     public function dashboard(){
-        return view('student.dashboard');
+        return view('student.welcome');
     }
 
     public function resetPassPage() {

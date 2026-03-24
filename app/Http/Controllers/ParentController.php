@@ -96,7 +96,7 @@ class ParentController extends Controller
         $this->student_module_course_service = $student_module_course_service;
     }
     public function dashboard(){
-        return view('parent.dashboard');
+        return view('parent.welcome');
     }
     public function createStudent(){
         return view('parent.create-student');

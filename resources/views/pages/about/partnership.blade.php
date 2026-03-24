@@ -8,13 +8,23 @@
 		height: 100%;
 		margin:20px 0;
 		border-radius: 15px;
-		background: white!important;
+		background: white !important;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
+
+	.box img{
+		max-width: 100%;
+		max-height: 100%;
+		object-fit: contain;
+	}
+
 	@media(max-width:1200px){
 		.box-wrapper{
 			margin-top:10px;
 		}
-		
 	}
 </style>
 @endsection

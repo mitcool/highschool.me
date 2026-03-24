@@ -35,6 +35,9 @@
         #footer{
             margin-top:0;
         }
+        .nav-item a {
+            width: 100%!important;
+        }
     </style>
 
 </head>
@@ -47,7 +50,7 @@
                 <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion" id="accordionSidebar" style="background:#045397">
                     <li class="nav-item black">
                         <a class="nav-link" href="{{route('student.dashboard')}}">
-                            <i class="fas fa-fw fa-home"></i>
+                            <i class="fas fa-home"></i>
                             <span id="home-link">Dashboard</span>
                         </a>
                     </li>
@@ -56,7 +59,7 @@
                     <div class="sidebar-heading">Meetings</div>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ route('student.meetings') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-users"></i>
                             <span>Meetings</span>
                         </a>
                     </li>
@@ -71,32 +74,32 @@
                     <div class="sidebar-heading">Education</div>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ route('student.my-courses') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-book"></i>
                             <span>My Courses</span>
                         </a>
                     </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ route('student.exams') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-folder"></i>
                             <span>My Exams</span>
                         </a>
                     </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ route('student.diplomas') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-scroll"></i>
                             <span>My Diplomas</span>
                         </a>
                     </li>
                      <li class="nav-item active">
                         <a class="nav-link" href="{{ route('student.study-mentor') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-user-graduate"></i>
                             <span>Study Mentor</span>
                         </a>
                     </li>
                     <div class="sidebar-heading">Rewards</div>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ route('student.ambassador-program') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-award"></i>
                             <span>Ambassador Program</span>
                         </a>
                     </li>
@@ -104,7 +107,7 @@
                     <div class="sidebar-heading">Help Desk</div>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ route('help-desk') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-envelope"></i>
                             <span>Help Desk</span>
                         </a>
                     </li>
@@ -114,7 +117,7 @@
                     </div>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ route('student.reset.password.page') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-key"></i>
                             <span>Password change</span>
                         </a>
                     </li>
@@ -122,7 +125,7 @@
                         <form action="{{ route('logout') }}" method="post">
                             {{ csrf_field() }}
                             <button class="nav-link collapsed bg-transparent border-0">
-                                <i class="fas fa-fw fa-cog"></i>
+                                <i class="fas fa-sign-out-alt"></i>
                                 <span>Logout</span>
                             </button>
                         </form>
@@ -151,15 +154,6 @@
                         {{ $error }}
                     </div>
                 @endforeach
-            @endif
-
-            @if(Route::is('student.dashboard') )
-                <div class="col-md-10 mt-5 -textcenter">
-                    <h2>Your progress</h2>
-                    <div class="progress mt-2">
-                        <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                    </div>
-                </div>
             @endif
 
             @yield('content')

@@ -91,18 +91,18 @@
         </div>
        
         <div class="d-flex justify-content-center my-2">
-            <button class="btn btn-warning">Publish News</button>
+            <button class="btn btn-warning">Publish Press Release</button>
         </div>
     </form>
-    <h1>List of news news:</h1>
+    <h1>List of Press Releases:</h1>
     @foreach($news as $n)
     <hr />
     {!! $n->sections[0]->translated->content !!}
     <div class="text-right d-flex justify-content-end">
-        <a href="{{ route('edit-press-release',$n->id) }}" class="btn btn-warning mr-2">Edit News</a>
+        <a href="{{ route('edit-press-release',$n->id) }}" class="btn btn-warning mr-2">Edit Press Release</a>
         <form action="{{ route('delete-press-release',$n->id) }}" method="POST" class="text-right">
             {{ csrf_field() }}
-            <button class="btn btn-danger">Delete News</button>
+            <button class="btn btn-danger">Delete Press Release</button>
         </form>
     </div>
     @endforeach

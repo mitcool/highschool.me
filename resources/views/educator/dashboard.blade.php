@@ -20,7 +20,6 @@
 
     @yield('css')
     <style>
-     
         .sidebar {
             background-color: #AB0050!important;
         }
@@ -41,6 +40,9 @@
         #footer{
             margin-top:0;
         }
+        .nav-item a {
+            width: 100%!important;
+        }
     </style>
 
 </head>
@@ -53,7 +55,7 @@
                 <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion" id="accordionSidebar" style="background:#045397">
                     <li class="nav-item black">
                         <a class="nav-link" href="{{route('educator.dashboard')}}">
-                            <i class="fas fa-fw fa-home"></i>
+                            <i class="fas fa-home"></i>
                             <span id="home-link">Dashboard</span>
                         </a>
                     </li>
@@ -62,14 +64,14 @@
                     <div class="sidebar-heading">Courses</div>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{route('educator.courses')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-book"></i>
                             <span>Your Courses</span>
                         </a>
                     </li>
                     <div class="sidebar-heading">Meetings</div>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{route('educator.meetings')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-users"></i>
                             <span>Your Meetings</span>
                         </a>
                     </li>
@@ -77,32 +79,32 @@
                     <div class="sidebar-heading">Exams</div>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{route('educator.exams')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-folder"></i>
                             <span>Exams</span>
                         </a>
                     </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{route('educator.add-exam-question')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-question"></i>
                             <span>Exam Questions</span>
                         </a>
                     </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{route('educator.self-assessment')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-question"></i>
                             <span>Self Assesment Questions</span>
                         </a>
                     </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{route('educator.submissions')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-file"></i>
                             <span>Submitted Exams</span>
                         </a>
                     </li>
                     <div class="sidebar-heading">Payments & Invoices</div>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{route('educator.invoices')}}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-file-invoice"></i>
                             <span>Credit Memos</span>
                         </a>
                     </li>
@@ -112,7 +114,7 @@
                     </div>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ route('educator.reset.password.page') }}">
-                            <i class="fas fa-fw fa-cog"></i>
+                            <i class="fas fa-key"></i>
                             <span>Password change</span>
                         </a>
                     </li>
@@ -120,7 +122,7 @@
                         <form action="{{ route('logout') }}" method="post">
                             {{ csrf_field() }}
                             <button class="nav-link collapsed bg-transparent border-0">
-                                <i class="fas fa-fw fa-cog"></i>
+                                <i class="fas fa-sign-out-alt"></i>
                                 <span>Logout</span>
                             </button>
                         </form>

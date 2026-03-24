@@ -191,6 +191,8 @@ Route::get('/college-board', 'AboutController@showCollegeBoard')->name('college-
 
 Route::get('/united-nations', 'AboutController@showUNpage')->name('united-nations');
 
+Route::get('/american-college-test', 'AboutController@showACTpage')->name('american-college-test');
+
 Route::get('/blog','MainController@showBlog')->name('blog');
 
 Route::get('/blog/{slug}','MainController@showSingleBlog')->name('single-article');

@@ -49,4 +49,7 @@ class AboutController extends Controller
   public function showUNpage() {
     return view('pages.about.un-page');
   }
+  public function showACTpage() {
+    return view('pages.about.american-college-test');
+  }
 }
