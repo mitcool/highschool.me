@@ -6,6 +6,11 @@ Route::get('/sitemap-images.xml', 'SitemapController@imageSitemap');
 
 Route::get('/send-newsletter','NewsletterSendController@send');
 
+Route::post('/set-timezone', function (\Illuminate\Http\Request $request) {
+    session(['timezone' => $request->timezone]);
+    return response()->json();
+});
+
 Auth::routes();
 
 Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
@@ -19,6 +24,10 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	Route::get('/student/add','ParentController@createStudent')->name('parent.create.student');
 
 	Route::post('/student/create','ParentController@addStudent')->name('student.add');
+
+	Route::get('/select-track/{student_id}','ParentController@selectTrack')->name('parent.select-track');
+
+	Route::post('/update-track/{student_id}','ParentController@updateTrack')->name('parent.update-student-track');
 
 	Route::get('/student/documents/{student_id}','ParentController@studentDocuments')->name('parent.student.documents');
 

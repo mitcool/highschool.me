@@ -8,6 +8,7 @@
 
 <div class="shadow container wrapper">
     <h2 class="text-center blue-heading h2">Add Exam</h2>
+    <p class="text-danger text-center">Please enter the time in UTC timezone <span class="font-weight-bold">(UTC time now : {{ $utc_time }})</span></p>
     <hr/>
      <form action="{{ route('create-exam') }}" method="POST" >
         {{ csrf_field() }}
@@ -17,7 +18,7 @@
                 <input  class="form-control datepicker" name="date" type="text" required /><br>
             </div>
             <div class="col-md-6">
-                <label class="font-weight-bold mb-0" for="">Time</label>
+                <label class="font-weight-bold mb-0" for="">UTC Time</label>
                 <input class="form-control timepicker" name="time" type="text" required /><br>
             </div>
         </div>
@@ -55,19 +56,21 @@
     <hr>
      <h2 class="text-center blue-heading h2">Exams</h2>
      <table class="table">
-        <tr>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Subject</th>
-            <th>Student</th>
-            <th>Exam Type</th>
-            <th class="text-center">Edit</th>
-            <th class="text-center">Remove</th>
-        </tr>
-        @foreach($exams as $exam)
+        @if(count($exams) > 0)
             <tr>
-                <td>{{ $exam->date->format('d.m.Y') }}</td>
-                <td>{{ $exam->time->format('H:i') }}</td>
+                <th>Date</th>
+                <th>UTC Time</th>
+                <th>Subject</th>
+                <th>Student</th>
+                <th>Exam Type</th>
+                <th class="text-center">Edit</th>
+                <th class="text-center">Remove</th>
+            </tr>
+        @endif
+        @forelse($exams as $exam)
+            <tr>
+                <td>{{ $exam->datetime->format('d.m.Y') }}</td>
+                <td>{{ $exam->datetime->format('H:i') }}</td>
                 <td>{{ $exam->course->course->title }}</td>
                 <td>{{ $exam->student->fullname() }}</td>
                 <td>{{ $exam->type == 1 ? 'Open Exam' : 'Essay' }}</td>
@@ -85,7 +88,11 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Edit Exam</h5>
+                        <div>
+                            <h5 class="modal-title" id="exampleModalLongTitle">Edit Exam</h5><br>
+                            <p class="text-danger text-center mb-0">Please enter the time in UTC timezone <span class="font-weight-bold">(UTC time now : {{ $utc_time }})</span></p>
+                        </div>
+                       
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -93,12 +100,12 @@
                     <div class="modal-body">
                         <form action="{{ route('edit-exam',$exam->id) }}" method="POST" id="edit-hour-{{ $exam->id }}">
                         {{ csrf_field() }}
-                       <label class="font-weight-bold mb-0" for="">Date</label>
-                        <input  class="datepicker form-control" name="date" type="text" value="{{ $exam->date->format('d-m-Y') }}" required/><br>
-                        <label class="font-weight-bold mb-0" for="">Time</label>
-                        <input  class="timepicker form-control" name="time" value="{{ $exam->time->format('H:i') }}" type="text" required /><br>
+                        <label class="font-weight-bold mb-0" for="">Date</label>
+                        <input  class="datepicker form-control" name="date" type="text" value="{{ $exam->datetime->format('d-m-Y') }}" required/><br>
+                        <label class="font-weight-bold mb-0" for="">Time (UTC)</label>
+                        <input  class="timepicker form-control" name="time" value="{{ $exam->datetime->format('H:i') }}" type="text" required /><br>
                         
-                        <label class="font-weight-bold mb-0" for="">Course  <span class="text-danger">(*Note you have to select a student first)</span></label>
+                        <label class="font-weight-bold mb-0" for="">Course</label>
                         <select required class="form-control" name="course_id" required id="course_id">
                             @foreach ($all_courses as $course )
                                 <option value="{{ $course->id }}" {{ $course->id == $exam->course_id ? ' selected ' : '' }}>{{ $course->course->title }}</option>
@@ -128,7 +135,12 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="4" class="text-center">No exams at the moment</td>
+            </tr>
+            
+        @endforelse
       </table>
 </div>
 @endsection

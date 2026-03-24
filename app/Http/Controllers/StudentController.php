@@ -50,6 +50,8 @@ use App\Mail\ExamSubmitted;
 use App\Mail\ExamSubmittedAdmin;
 
 use Carbon\Carbon;
+use DateTime;
+use DateTimeZone;
 
 class StudentController extends Controller
 {
@@ -153,23 +155,24 @@ class StudentController extends Controller
             ->inRandomOrder()
             ->take(10)
             ->get();
-        $time_started = Carbon::parse($exam->date->format('Y-m-d').' '.$exam->time->format('H:i:s'));
+        $time_started = Carbon::parse($exam->datetime);
+        $now = Carbon::now();
         #Essay
         if($exam->type == 2){
-            $one_week_later = $time_started->addWeek(1);
-            $time_left = Carbon::now()->diffInSeconds($one_week_later);
+            $total_exam_seconds = 604800; // 1 week
         }
         #Disabled kid
         elseif($exam->type == 1 && $exam->student->student_details->is_disabled == 1){
-            $five_hours_later = $time_started->addHours(5);
-            $time_left = Carbon::now()->diffInSeconds($five_hours_later);
+            $total_exam_seconds = 18000; // 5 hours
         }
         #Regular exam
         else{
-            $two_hours_later = $time_started->addHours(2);
-            $time_left = Carbon::now()->diffInSeconds($two_hours_later);
+            $total_exam_seconds = 7200; // 2 hours
         }
-       
+
+        $now_and_exam_ends_diff = $now->diffInSeconds($time_started->addHours(2));
+        $time_left = abs($total_exam_seconds - $now_and_exam_ends_diff);
+
         if($exam->type == 2){
             $questions = null;
         }

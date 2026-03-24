@@ -25,7 +25,7 @@
 @endsection
 @section('content')
 <div class="shadow container wrapper h-100">
-    <h1 class="text-center h2" style="color:#045397">Documents</h1>
+    <h1 class="text-center h2" style="color:#045397">Documents </h1>
     <form action="{{ route('parent.student.documents.submit') }}" method="POST" enctype="multipart/form-data" id="document-form">
         {{ csrf_field() }}
         <div  class="mb-3">

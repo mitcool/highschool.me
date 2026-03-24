@@ -133,8 +133,9 @@
     <div class="row">
         <div class="col-md-6">
             <h5>Student Name: <span style="color:#004c99;font-weight:bold">{{ $student->fullname() }}</span></h5>
-            <h5>Born:</h5>
-            <h5>Joined:</h5>
+            <h5>Email: <span style="color:#004c99;font-weight:bold">{{ $student->email }}</span></h5>
+            <h5>Born: {{ $student->date_of_birth->format('d.m.Y') }}</h5>
+            <h5>Joined: {{ $student->created_at->format('d.m.Y') }}</h5>
         </div>
          <div class="col-md-6">
             <h5> Parent Name: <span style="color:#004c99;;font-weight:bold">{{ $student->student_details->parent->fullname() }}</span>
@@ -167,7 +168,7 @@
                     <div class="card-body pt-3">
                         <div class="d-flex flex-wrap badge-wrap">
                             @foreach($completed_courses as $completed_course)
-                                <span class="badge completed-pill">✓ {{ $completed_course->course->title }}</span>
+                                <span class="badge completed-pill">✓ {{ $completed_course->course->course->title }}</span>
                             @endforeach
                         </div>
                     </div>
@@ -186,7 +187,7 @@
                     <div class="card-body pt-3">
                         <div class="d-flex flex-wrap badge-wrap">
                             @foreach($in_progress_courses as $in_progress_course)
-                                <span class="badge progress-pill">□ {{ $in_progress_course->course->title }}</span>
+                                <span class="badge progress-pill">□ {{ $in_progress_course->course->course->title }}</span>
                                 {{-- <span class="badge progress-pill">□ Anatomy &amp; Physiology</span>
                                 <span class="badge progress-pill">□ World History</span>
                                 <span class="badge progress-pill">□ U.S. Government</span> --}}

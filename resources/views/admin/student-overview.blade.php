@@ -2,15 +2,14 @@
 
 @section('content')
 
-<div class="shadow container wrapper">    
+<div class="shadow w-auto mx-auto wrapper">    
     <h2 class="text-center">List of students</h2>
     <hr>
     <table class="table table-striped">
         <tr>
-            
-            <th colspan="7" class="text-left">
+            <th colspan="8" class="text-left">
                 <form action="{{ route('admin-student-overview') }}" class="d-flex">
-                    <input type="text" class="form-control mr-2" name="search" placeholder="Search by name">
+                    <input type="text" class="form-control mr-2" name="search" placeholder="Search by name or email">
                     <div>
                         <button class="btn btn-info">Search</button>
                     </div>
@@ -21,6 +20,7 @@
             <th>Date</th>
             <th class="text-center">Id</th>
             <th class="text-center">Student</th>
+            <th class="text-center">Email</th>
             <th class="text-center">Status</th>
             <th class="text-center">Track</th>
             <th class="text-center">Parent</th>
@@ -31,6 +31,7 @@
                 <td>{{ $student->created_at->format('d.m.Y') }}</td>
                 <td class="text-center">{{ $student->student_id() }}</td> 
                 <td class="text-center">{{ $student->fullname() }}</td>
+                <td class="text-center">{{ $student->email }}</td>
                 <td class="text-center">{{ $student->student_details->status_name() }}</td>
                 <td class="text-center">
                     @if($student->student_details->track != 0)

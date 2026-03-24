@@ -69,6 +69,7 @@
    
      //Timer
     let timeRemaining = @json($time_left);
+    
     function updateTimer() {
         const hours = Math.floor(timeRemaining / 3600);
         const minutes = Math.floor((timeRemaining % 3600) / 60);

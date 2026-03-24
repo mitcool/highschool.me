@@ -149,13 +149,24 @@
 @section('content')
 
 <div class="container shadow wrapper h-100">
-    <div class=" page-content">
+    <div class="page-content">
         {{-- Student Details --}}
-        <h4 style="color:#045397">{{ $student->fullname() }} </h4>
-        @if($student->date_of_birth) <p class="mb-0">Born: {{ $student->date_of_birth->format('d.m.Y')}}</p> @endif
-        @if($student->student_details->track == 1 || $student->student_details->track == 2) 
-            <p class="mb-0">Grade: {{ $student->student_details->grade }}</p>
-        @endif
+        <div class="d-flex justify-content-between">
+            <div>
+                <h4 style="color:#045397">{{ $student->fullname() }} </h4>
+                @if($student->date_of_birth) <p class="mb-0">Born: {{ $student->date_of_birth->format('d.m.Y')}}</p> @endif
+                @if($student->student_details->track == 1 || $student->student_details->track == 2) 
+                    <p class="mb-0">Grade: {{ $student->student_details->grade }}</p>
+                @endif
+            </div>
+            <div>
+                @if($student->student_details->track == 4 || $student->student_details->track == 5) 
+                    <a class="orange-button" href="{{ route('parent.select-track',$student->id) }}">Start Now </a>
+                @endif
+            </div>
+        </div>
+        
+        
         <hr>
         @if(($student->student_details->track == 1 || $student->student_details->track == 2) && $status == 3)
             <div class="card graduation-card p-4">
@@ -305,7 +316,7 @@
                         <button class="btn  btn-outline-secondary">Pending Exam Date</button>
                     {{-- STATUS_EXAM_APPOINTED -> 3 --}}
                     @elseif($enrolled_course->status == 3) 
-                        <button class="btn  btn-warning">Exam on {{ $enrolled_course->exam->date->format('d.m.Y') }}</button>
+                        <button class="btn  btn-warning">Exam on {{ $enrolled_course->exam->localdate() }} </button>
                         {{-- STATUS_EXAM_SUBMITED->4  --}}
                     @elseif($enrolled_course->status == 4) 
                         <button class="btn  btn-secondary">Pending Exam Results</button>

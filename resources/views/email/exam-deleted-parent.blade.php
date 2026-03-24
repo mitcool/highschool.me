@@ -96,7 +96,7 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                                     </h1>
                                                     <p style="{{ $style['paragraph-black'] }}">
                                                         We would like to inform you that the exam for <strong>{{ $exam->student->fullname() }} {{ $exam->course->course->title }}</strong>
-                                                         on {{ $exam->date->format('d.m.Y') }} at {{ $exam->time->format('H:i') }} has been cancelled
+                                                         on {{ $exam->datetime->format('d.m.Y H:i') }} (UTC) has been cancelled
                                                             
                                                     </p>
                                                     <p style="{{ $style['paragraph-black'] }}">

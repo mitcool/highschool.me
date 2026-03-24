@@ -50,14 +50,15 @@ class StudentModuleCourseService{
         foreach($courses_types as $courses_type){
              if(Cookie::has('course-type-count-'.$courses_type->id)){
                  $booked_courses = Cookie::get('course-type-count-'.$courses_type->id);
+                
                  for ($i=0; $i < $booked_courses; $i++) { 
-                     AdditionalCourse::insert([
+                    AdditionalCourse::insert([
                         'student_id' => $student_id,
                         'course_type' => $courses_type->id,
                         'status' => 0
-                     ]);
+                    ]);
                     # 2 Personal mentoring sessions for every course
-                    for ($i=0; $i <  2; $i++) { 
+                    for ($j=0; $j < 2; $j++) { 
                         AdditionalCourse::insert([
                             'student_id' => $student_id,
                             'course_type' => 12, // mentoring session id

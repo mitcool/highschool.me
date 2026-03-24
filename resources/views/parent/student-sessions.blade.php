@@ -6,10 +6,22 @@
         <h1 class="h2 text-center"  style="color:#045397">Premier Learning Services</h1>
          <p class="text-center">Access high-quality learning and mentoring options to elevate your educational experience.</p>
          <hr>
-        <h4 class="h4" style="color:#045397">{{ $student->name }} {{ $student->surname }}</h4>
-             @if($student->date_of_birth) 
-             <p class="mb-0">Born: {{ $student->date_of_birth->format('d.m.Y')}}</p> 
-              @endif
+        <div class="d-flex justify-content-between">
+            <div>
+                <h4 style="color:#045397">{{ $student->fullname() }} </h4>
+                @if($student->date_of_birth) <p class="mb-0">Born: {{ $student->date_of_birth->format('d.m.Y')}}</p> @endif
+                @if($student->student_details->track == 1 || $student->student_details->track == 2) 
+                    <p class="mb-0">Grade: {{ $student->student_details->grade }}</p>
+                @endif
+            </div>
+            <div>
+             
+            </div>
+        </div>
+           @if($student->student_details->track == 4 || $student->student_details->track == 5) 
+             <p class="small">*If you want to start with our track programs please click <a  href="{{ route('parent.select-track',$student->id) }}">here </a>. If you want ot select a single course please <a  href="{{ route('parent.select-track',$student->id) }}">here </a> 
+             </p>
+            @endif
         <hr>
 
         <div class="row">

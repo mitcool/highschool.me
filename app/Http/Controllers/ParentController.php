@@ -739,7 +739,7 @@ class ParentController extends Controller
     }
 
     public function invoices(){
-        $invoices = Invoice::where('user_email',auth()->user()->email)->paginate(10);
+        $invoices = Invoice::where('user_email',auth()->user()->email)->latest()->paginate(10);
         return view('parent.invoices')
             ->with('invoices',$invoices);
     }
@@ -794,7 +794,7 @@ class ParentController extends Controller
             'street' => 'required',
             'street_number' => 'required',
             'zip' => 'required',
-            "phone" => "required|regex:/^[1-9]\d{7,14}$/",
+            "phone" => "required|regex:/^[0-9]\d{7,14}$/",
         ]);
         $user = $request->email;
         if(auth()->user()->email != $request->email){
@@ -929,6 +929,7 @@ class ParentController extends Controller
         #Check if they enroll NOT Core or elective courses (1 and 2) or it is TRANSFER PROGRAM (11)
         if($curriculum_course->curriculum_type_id != 1 && $curriculum_course->curriculum_type_id != 2 && $curriculum_course->curriculum_type_id != 11 ){
            $additional_course = AdditionalCourse::where('course_type',$curriculum_course->curriculum_type_id)
+            ->where('status',0)
             ->where('student_id',$student->id)
             ->first();
             if($additional_course){
@@ -994,6 +995,39 @@ class ParentController extends Controller
             
         }
         return redirect()->back()->with('success_message',$message);
+    }
+
+    public function selectTrack($student_id){
+        $status = ParentStudent::where('student_id',$student_id)->first()->status;
+        if($status == ParentStudent::CREATED){
+            return redirect()->route('parent.student.documents',$student_id);
+        }
+        $student = User::find($student_id);
+        $plans = Plan::all();
+        $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
+        $active_plan = StudentPlan::where('student_id',$student_id)->first();
+        $in_progress_courses =  $student->enrolled_courses
+                        ->whereIn('status',[StudentEnrolledCourse::STATUS_START_STUDY,
+                                            StudentEnrolledCourse::STATUS_READY_FOR_EXAM,
+                                            StudentEnrolledCourse::STATUS_EXAM_APPOINTED,
+                                            StudentEnrolledCourse::STATUS_EXAM_SUBMITED]);
+        $completed_courses =  $student->enrolled_courses->where('status',StudentEnrolledCourse::STATUS_COMPLETED);
+        return view('parent.select-track')
+            ->with('credits',$credits)
+            ->with('active_plan',$active_plan)
+            ->with('student',$student)
+            ->with('completed_courses',$completed_courses)
+            ->with('in_progress_courses',$in_progress_courses)
+            ->with('plans',$plans)
+            ->with('status',$status);
+    }
+
+    public function updateTrack(Request $request,$student_id){
+        $request->validate([
+            'education_option' => 'required'
+        ]);
+        ParentStudent::where('student_id',$student_id)->update(['track' => $request->education_option,'status' => ParentStudent::CREATED]);
+        return redirect()->route('parent.student.documents',$student_id);
     }
 
     public function transferProgramPay(Request $request, $student_id){

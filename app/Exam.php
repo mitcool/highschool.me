@@ -6,16 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use DateTime;
+use DateTimeZone;
 
 class Exam extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['date','time','course_id','student_id','educator_id','type','status','grade','comment','pre_exam','passed_at'];
+    protected $fillable = ['datetime','course_id','student_id','educator_id','type','status','grade','comment','pre_exam','passed_at'];
 
      protected $casts = [
-        'date' => 'datetime',
-        'time' => 'datetime',
+        'datetime' => 'datetime',
         'passed_at'=> 'datetime'
     ];
 
@@ -42,6 +43,13 @@ class Exam extends Model
         return $this->hasMany('App\User','id','educator_id');
     }
 
+    public function localdate(){
+        $dt = new DateTime($this->datetime, new DateTimeZone('UTC'));
+        $dt->setTimezone(new DateTimeZone(session('timezone')));
+        $response = $dt->format('d.m.Y H:i');
+        return $response;
+    }
+
     public function grade(){
         if($this->grade < 1){
             return 'Fail (' .number_format($this->grade,2,'.',',').')';
@@ -61,20 +69,22 @@ class Exam extends Model
     }
 
     public function is_active(){
-        $date = Carbon::parse($this->date)->format('Y-m-d').' '.Carbon::parse($this->time)->format('H:i');
-        $now = Carbon::now();
-        $date = Carbon::parse($date);
-        $diff = $date->diffInHours($now);
+        $date = Carbon::parse($this->datetime);
+        $now = Carbon::now('UTC');
+        
         if($this->type == 2){
-            $allowed_time = 168;
+            $exam_time = 168;
         }
         elseif($this->type == 1 && $this->student->student_details->is_disabled == 1){
-            $allowed_time = 5;
+            $exam_time = 5;
         }
         else{
-            $allowed_time = 2;
+            $exam_time = 2;
         }
-        return  $diff < $allowed_time;
+
+        #dd($date.' '.$date->addHours($exam_time).' '.$now);
+        
+        return $date->addHours($exam_time) > $now;
     }
 
     public function frauds(){

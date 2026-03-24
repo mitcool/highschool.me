@@ -71,7 +71,7 @@ class AdminStudentController extends Controller
     }
 
     public function overview(Request $request){
-        $search = $request->search;
+    $search = $request->search;
         $students = User::where('role_id',4)->orderBy('created_at', 'desc')->paginate(10);
         if($search){
             $students = User::where('role_id',4)

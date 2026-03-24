@@ -96,7 +96,7 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                                     </h1>
                                                     <p style="{{ $style['paragraph-black'] }}">
                                                         We would like to inform you that you have a date for an exam for <strong>{{ $exam->student->fullname() }} {{ $exam->course->course->title }}</strong>
-                                                        The exam will take place on {{ $exam->date->format('d.m.Y') }} at {{ $exam->time->format('H:i') }}
+                                                        The exam will take place on {{ $exam->datetime->format('d.m.Y H:i') }} (UTC)
                                                             
                                                     </p>
                                                     <p style="{{ $style['paragraph-black'] }}">

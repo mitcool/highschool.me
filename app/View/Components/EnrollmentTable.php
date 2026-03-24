@@ -30,14 +30,27 @@ class EnrollmentTable extends Component
         ])->orderBy('id')->get();
 
         foreach($this->curriculumTypes as $type){
+            
             if($type->id == 1 || $type->id == 2){
-                $type->permission = true;
+                if($student->student_details->track == 4 || $student->student_details->track == 5){
+                    $additional_courses_count = AdditionalCourse::where('student_id',$student->id)
+                    ->where('course_type',$type->id)
+                    ->where('status',0)
+                    ->count();
+                    $type->permission = $additional_courses_count > 0 ? true : false;
+                   
+                }
+                else{
+                    $type->permission = true;
+                }
+                
             }
             else{
                 $additional_courses_count = AdditionalCourse::where('student_id',$student->id)
                     ->where('course_type',$type->id)
                     ->where('status',0)
                     ->count();
+                
                 $type->permission = $additional_courses_count > 0 ? true : false;
             }
         }

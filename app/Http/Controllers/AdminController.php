@@ -108,7 +108,7 @@ class AdminController extends Controller
         $file->move(base_path().$path, $filename);
         return $filename;
     }
-   private function createImage($nickname,$path){
+    private function createImage($nickname,$path){
         Image::insert([
             'nickname' => $nickname,
             'src' => $path,
@@ -116,9 +116,9 @@ class AdminController extends Controller
             'title'=> '-',
 
         ]);
-   }
+    }
 
-   private function deleteImage($nickname){
+    private function deleteImage($nickname){
         $image = Image::where('nickname', $nickname)->first();
 
         try{
@@ -128,7 +128,7 @@ class AdminController extends Controller
             info($e->getMessage());
         }
         
-   }
+    }
             
     public function cleanSlug($string) {
         $string = str_replace('&', '', $string);
@@ -157,7 +157,6 @@ class AdminController extends Controller
                 ->with('texts',$texts);
     }
 
-   
     public function getAdminAcademics(){
         $academics = Academic::all();
         return view('admin.academics')
@@ -314,7 +313,6 @@ class AdminController extends Controller
         return redirect()->route('admin-tutorials')->with('success_message','Tutorial deleted successfully!');
 
     }
-
    
     public function faq(){
         $faq_categories = FaqCategory::all();
@@ -511,7 +509,6 @@ class AdminController extends Controller
         return view('admin.newsletter');
     }
 
-    
     public function saveNewsletter(Request $request){
         $contents = $request->contents;
         $contents_de = $request->contents_de;
@@ -584,7 +581,6 @@ class AdminController extends Controller
             ->with('subscribers_count',$subscribers_count);
     }
     
-
     public function updateSubscribtion ($id){
         $subscriber = Subscriber::find($id);
         $is_active = $subscriber->is_active == 1 ? 0 : 1;
@@ -630,7 +626,7 @@ class AdminController extends Controller
             ->with('subscribers_count',$subscribers_count);
     }
 
-     public function plans(){
+    public function plans(){
         $plans = Plan::all();
         $features = Feature::all();
         return view('admin.plans')
@@ -659,11 +655,13 @@ class AdminController extends Controller
             ->with('categories',$categories)
             ->with('feature',$feature);
      }
+
      public function updateFeature(Request $request,$feature_id){
         $feature = $request->except('_token');
         Feature::find($feature_id)->update($feature);
         return redirect()->back()->with('success_message','Feature updated successfully');
      }
+
      public function deleteFeature($feature_id){
         Feature::find($feature_id)->delete();
         return redirect()->back()->with('success_message','Feature deleted successfully');
@@ -709,7 +707,8 @@ class AdminController extends Controller
             ->with('courses',$courses);
      }
 
-    public function editCourseType($type_id){
+    
+     public function editCourseType($type_id){
         $course = CourseType::find($type_id);
         $courses = CourseType::all();
         return view('admin.edit-single-course-type')
@@ -746,7 +745,7 @@ class AdminController extends Controller
 
     
     public function showInvoices() {
-        $invoices = Invoice::all();
+        $invoices = Invoice::latest()->paginate(10);
 
         return view('admin.invoices')->with('invoices', $invoices);
     }
@@ -1334,6 +1333,7 @@ class AdminController extends Controller
         }catch(\Exception $e){
             info($e->getMessage());
         }
+        Notification::add($educator->id,'Welcome to HIGHSCHOOL.ME');
         return redirect()->back()->with('success_message','Educator created successfully');
     }
 
@@ -1375,12 +1375,14 @@ class AdminController extends Controller
     }
     
     public function exams(){
+        $utc_time = Carbon::now('UTC')->format('d.m.Y H:i');
         $students = StudentEnrolledCourse::where('status',StudentEnrolledCourse::STATUS_READY_FOR_EXAM)->select('user_id')->distinct()->get();
         $courses = CurriculumCourse::all();
         $exams = Exam::orderBy('created_at','desc')->get();
         $educators = User::where('role_id',5)->get();
         $all_courses = CurriculumCourse::all();
         return view('admin.exams')
+            ->with('utc_time',$utc_time)
             ->with('exams',$exams)
             ->with('all_courses',$all_courses)
             ->with('students',$students)
@@ -1389,11 +1391,13 @@ class AdminController extends Controller
     }
     public function createExam(Request $request){
         $exam = $request->only('date','time','course_id','student_id','educator_id','type','pre_exam');
+        $exam['datetime'] = $request->date.' '.$request->time;
         $exam['status']=0;
         $new_exam = Exam::create($exam);
         StudentEnrolledCourse::where('catalog_course_id',$exam['course_id'])->where('user_id',$exam['student_id'])->update([
             'status' => StudentEnrolledCourse::STATUS_EXAM_APPOINTED
         ]);
+        Notification::add($new_exam->student_id,'You have a new exam');
         try{
             Mail::to($new_exam->student->email)->send(new ExamDate($new_exam));
         }catch(\Exception $e){  
@@ -1482,7 +1486,7 @@ class AdminController extends Controller
         else{
             $course->update(['status' => StudentEnrolledCourse::STATUS_READY_FOR_EXAM]);
         }
-
+         Notification::add($exam->student_id,'You have a new exam results');
         try{
 
         }catch(\Exception $e){
@@ -1647,6 +1651,8 @@ class AdminController extends Controller
             'status' => StudentEnrolledCourse::STATUS_COMPLETED
         ]);
 
+        Notification::add($student_id,'Course transferred');
+
         return 1;
     }
     public function transferBack(Request $request){
@@ -1678,12 +1684,13 @@ class AdminController extends Controller
         $statusText = $leave->status_text;
 
         $admin = User::where('role_id', 1)->first();
+        
         try{
             Mail::to($admin->email)->send(new LeaveRequestAnswer($statusText));
         }catch(\Exception $e){
             info($e->getMessage());
         }
-
+        Notification::add($leave->student_id,'Your leave request has been approved');
         Notification::add(
             auth()->id(),
             'You successfully approve a leave request.'
@@ -1749,6 +1756,7 @@ class AdminController extends Controller
     public function editExam(Request $request,$exam_id){
         $exam_request = $request->except('_token');
         $exam = Exam::find($exam_id);
+        $exam['datetime'] = $request->date.' '.$request->time;
         $exam->update($exam_request);
         $parent = ParentStudent::where('student_id',$exam->student_id)->first()->parent;
        
@@ -1759,7 +1767,7 @@ class AdminController extends Controller
         }
         try{
             
-            Mail::to($exam->student->email)->send(new ExamUpdatedParent($parent,$exam));    
+            Mail::to($parent->email)->send(new ExamUpdatedParent($parent,$exam));    
         }catch(\Exception $e){
             info($e->getMessage());
         }
@@ -1769,7 +1777,6 @@ class AdminController extends Controller
         $exam = Exam::find($exam_id);
         $exam->delete();
         $parent = ParentStudent::where('student_id',$exam->student->id)->first()->parent;
-        
         try{
            Mail::to($exam->student->email)->send(new ExamDeleted($exam));
         }catch(\Exception $e){

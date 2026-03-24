@@ -79,7 +79,6 @@ class EducatorController extends Controller
         $educators = User::where('role_id',5)->get();
         $courses = CurriculumCourse::all();
         $exams = Exam::orderBy('created_at','desc')->where('educator_id',auth()->id())->where('status',Exam::STATUS_APPOINTED)->get();
-       # dd($exams);
         return view('educator.exams')
             ->with('all_students',$all_students)
             ->with('all_courses',$all_courses)
@@ -130,7 +129,7 @@ class EducatorController extends Controller
     }
 
     public function invoices(){
-        $invoices = Invoice::where('user_email',auth()->user()->email)->get();    
+        $invoices = Invoice::where('user_email',auth()->user()->email)->latest()->paginate(10);    
         return view('educator.invoices')
             ->with('invoices',$invoices);
     }

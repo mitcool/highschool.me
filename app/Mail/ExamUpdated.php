@@ -24,6 +24,7 @@ class ExamUpdated extends Mailable
      */
     public function build()
     {
+        info(session()->get('timezone'));
         return $this->view('email.exam-updated')->with('exam',$this->exam);
     }
 }

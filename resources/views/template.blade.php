@@ -37,6 +37,16 @@
 		        $('#menu .collapse.show').not(this).collapse('hide');
 		    });
 		});
-	</script>
+	
+    	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+		fetch('/set-timezone', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRF-TOKEN': '{{ csrf_token() }}'
+			},
+			body: JSON.stringify({ timezone })
+		});
+</script>
 	</body>
 </html>

@@ -41,4 +41,19 @@ class CronjobController extends Controller
         }
         return;
     }
+
+    public function updateStudyMentorQuestions(){
+        #student without those who book single mentoring sessions only
+        $students = ParentStudent::where('track','!=',5)->get();
+        if(Carbon::now()->isStartOfMonth()){
+            foreach($students as $student){
+                if($student->$student->active_plan){
+                    #NOTE tokens == questions 
+                    $tokens = $student->student->active_plan->plan_id == 3 ? 1200 : 500;
+                    $student->update(['tokens' => $tokens]);
+                    Notification::add($student->student_id,"Congratulations you have received new  ".$tokens. "questions for AI Study Mentor");
+                }
+            }
+        }
+    }
 }
