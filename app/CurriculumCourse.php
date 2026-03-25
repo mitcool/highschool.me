@@ -17,6 +17,8 @@ class CurriculumCourse extends Model
         'curriculum_type_id',
         'course_id',
         'category_id',
+        'program_id',
+        'job_id',
         'required_flag',
         'requirement_text',
         'notes',
@@ -54,5 +56,15 @@ class CurriculumCourse extends Model
     public function category()
     {
         return $this->belongsTo(CourseCategory::class, 'category_id');
+    }
+
+    public function program()
+    {
+        return $this->belongsTo(CteProgram::class, 'program_id');
+    }
+
+    public function job()
+    {
+        return $this->belongsTo(CteJob::class, 'job_id');
     }
 }

@@ -47,4 +47,10 @@ class CourseCategory extends Model
     {
         return $this->hasMany(CurriculumCourse::class, 'category_id');
     }
+
+    public function programs()
+    {
+        return $this->hasMany(CteProgram::class, 'category_id');
+    }
+
 }

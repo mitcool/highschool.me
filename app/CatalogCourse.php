@@ -20,6 +20,7 @@ class CatalogCourse extends Model
         'course_number',
         'title',
         'default_credits',
+        'source_cte_course_id',
     ];
 
     protected $casts = [

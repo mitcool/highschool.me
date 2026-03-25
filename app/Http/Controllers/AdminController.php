@@ -90,6 +90,8 @@ use App\LeaveRequest;
 use App\DiplomaPrintingRequest;
 use App\StudentEnrolledCourse;
 use App\Notification;
+use App\CteProgram;
+use App\CteJob;
 
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
@@ -767,8 +769,16 @@ class AdminController extends Controller
     public function showAddEnrollmentCourse() {
         $curriculumTypes = CurriculumType::get();
         $categories = CourseCategory::get();
+        $cteCategories = CourseCategory::where('curriculum_type_id', 4)->get();
+        $ctePrograms = CteProgram::orderBy('program_title')->get();
+        $cteJobs = CteJob::orderBy('name')->get();
 
-        return view('admin.enrollment-courses')->with('curriculumTypes', $curriculumTypes)->with('categories', $categories);
+        return view('admin.enrollment-courses')
+            ->with('curriculumTypes', $curriculumTypes)
+            ->with('categories', $categories)
+            ->with('cteCategories', $cteCategories)
+            ->with('ctePrograms', $ctePrograms)
+            ->with('cteJobs', $cteJobs);
     }
 
     public function AddEnrollmentCourse(Request $request) {
@@ -778,14 +788,16 @@ class AdminController extends Controller
         // Base validation rules (common for all types)
         $rules = [
             'curriculum_type_id' => ['required', 'exists:curriculum_types,id'],
-            'title'              => ['required', 'string', 'max:255'],
-            'fldoe_course_code'  => ['nullable', 'string', 'max:20'],
-            'course_number'      => ['nullable', 'string', 'max:20'],
-            'default_credits'    => ['nullable', 'numeric', 'min:0'],
-            'category_id'        => ['nullable', 'exists:course_categories,id'],
-            'required_flag'      => ['nullable', 'boolean'],
-            'requirement_text'   => ['nullable', 'string', 'max:255'],
-            'notes'              => ['nullable', 'string'],
+            'title' => ['required', 'string', 'max:255'],
+            'fldoe_course_code' => ['nullable', 'string', 'max:20'],
+            'course_number' => ['nullable', 'string', 'max:20'],
+            'default_credits' => ['nullable', 'numeric', 'min:0'],
+            'category_id' => ['nullable', 'exists:course_categories,id'],
+            'program_id' => ['nullable', 'exists:cte_programs,id'],
+            'job_id' => ['nullable', 'exists:cte_jobs,id'],
+            'required_flag' => ['nullable', 'boolean'],
+            'requirement_text' => ['nullable', 'string', 'max:255'],
+            'notes' => ['nullable', 'string'],
 
             //files
             'resource_files_labels'    => ['nullable', 'array'],
@@ -797,6 +809,13 @@ class AdminController extends Controller
             'video_urls'               => ['nullable', 'array'],
             'video_urls.*'             => ['nullable', 'url', 'max:2048'],
         ];
+
+        //CTE-specific requirement
+        if ($curriculumType->code === 'CTE') {
+            $rules['category_id'] = ['required', 'exists:course_categories,id'];
+            $rules['program_id'] = ['required', 'exists:cte_programs,id'];
+            $rules['job_id'] = ['required', 'exists:cte_jobs,id'];
+        }
 
         // Add type-specific validation rules
         switch ($curriculumType->code) {
@@ -841,11 +860,13 @@ class AdminController extends Controller
             // 2) Link into curriculum (curriculum_courses)
             $curriculumCourse = CurriculumCourse::create([
                 'curriculum_type_id' => $curriculumType->id,
-                'course_id'          => $course->id,
-                'category_id'        => $data['category_id'] ?? null,
-                'required_flag'      => $requiredFlag,
-                'requirement_text'   => $data['requirement_text'] ?? null,
-                'notes'              => $data['notes'] ?? null,
+                'course_id' => $course->id,
+                'category_id' => $data['category_id'] ?? null,
+                'program_id' => $curriculumType->code === 'CTE' ? ($data['program_id'] ?? null) : null,
+                'job_id' => $curriculumType->code === 'CTE' ? ($data['job_id'] ?? null) : null,
+                'required_flag' => $requiredFlag,
+                'requirement_text' => $data['requirement_text'] ?? null,
+                'notes' => $data['notes'] ?? null,
             ]);
 
             // 3) Type-specific tables
@@ -926,29 +947,32 @@ class AdminController extends Controller
     }
 
     public function editEnrollmentCoursePage(Request $request, $course_id) {
-        $course = CatalogCourse::where('id', $course_id)->first();
+        $course = CatalogCourse::with('curriculumTypes')->where('id', $course_id)->first();
         $curriculumTypes = CurriculumType::get();
         $categories = CourseCategory::get();
+        $cteCategories = CourseCategory::where('curriculum_type_id', 4)->get();
+        $ctePrograms = CteProgram::orderBy('program_title')->get();
+        $cteJobs = CteJob::orderBy('name')->get();
 
-        $currentCurriculumTypeId = $course->curriculumTypes->first()->pivot->curriculum_type_id;
-        $currentCategoryId = $course->curriculumTypes->first()->pivot->category_id;
-        $currentRequiredFlag = $course->curriculumTypes->first()->pivot->required_flag;
-        $currentRequirementText = $course->curriculumTypes->first()->pivot->requirement_text;
-
-        $courseFiles = $course->files;
-        $courseVideos = $course->videos;
+        $pivot = $course->curriculumTypes->first()->pivot;
 
         return view('admin.edit-enrollment-course')
             ->with('course', $course)
             ->with('curriculumTypes', $curriculumTypes)
             ->with('categories', $categories)
-            ->with('currentCurriculumTypeId', $currentCurriculumTypeId)
-            ->with('currentCategoryId', $currentCategoryId)
-            ->with('currentRequiredFlag', $currentRequiredFlag)
-            ->with('currentRequirementText', $currentRequirementText)
-            ->with('courseFiles', $courseFiles)
-            ->with('courseVideos', $courseVideos);
+            ->with('cteCategories', $cteCategories)
+            ->with('ctePrograms', $ctePrograms)
+            ->with('cteJobs', $cteJobs)
+            ->with('currentCurriculumTypeId', $pivot->curriculum_type_id)
+            ->with('currentCategoryId', $pivot->category_id)
+            ->with('currentProgramId', $pivot->program_id)
+            ->with('currentJobId', $pivot->job_id)
+            ->with('currentRequiredFlag', $pivot->required_flag)
+            ->with('currentRequirementText', $pivot->requirement_text)
+            ->with('courseFiles', $course->files)
+            ->with('courseVideos', $course->videos);
     }
+
 
     public function updateEnrollmentCourse(Request $request, $course_id) {
         $course = CatalogCourse::with('curriculumTypes')->findOrFail($course_id);
@@ -959,14 +983,16 @@ class AdminController extends Controller
         // Base validation rules
         $rules = [
             'curriculum_type_id' => ['required', 'exists:curriculum_types,id'],
-            'title'              => ['required', 'string', 'max:255'],
-            'fldoe_course_code'  => ['nullable', 'string', 'max:20'],
-            'course_number'      => ['nullable', 'string', 'max:20'],
-            'default_credits'    => ['nullable', 'numeric', 'min:0'],
-            'category_id'        => ['nullable', 'exists:course_categories,id'],
-            'required_flag'      => ['nullable', 'boolean'],
-            'requirement_text'   => ['nullable', 'string', 'max:255'],
-            'notes'              => ['nullable', 'string'],
+            'title' => ['required', 'string', 'max:255'],
+            'fldoe_course_code' => ['nullable', 'string', 'max:20'],
+            'course_number' => ['nullable', 'string', 'max:20'],
+            'default_credits' => ['nullable', 'numeric', 'min:0'],
+            'category_id' => ['nullable', 'exists:course_categories,id'],
+            'program_id' => ['nullable', 'exists:cte_programs,id'],
+            'job_id' => ['nullable', 'exists:cte_jobs,id'],
+            'required_flag' => ['nullable', 'boolean'],
+            'requirement_text' => ['nullable', 'string', 'max:255'],
+            'notes' => ['nullable', 'string'],
 
             // files (links)
             'resource_files'          => ['nullable', 'array'],
@@ -980,6 +1006,13 @@ class AdminController extends Controller
             'video_urls'         => ['nullable', 'array'],
             'video_urls.*'       => ['nullable', 'url', 'max:2048'],
         ];
+
+        //CTE-specific requirement
+        if ($curriculumType->code === 'CTE') {
+            $rules['category_id'] = ['required', 'exists:course_categories,id'];
+            $rules['program_id'] = ['required', 'exists:cte_programs,id'];
+            $rules['job_id'] = ['required', 'exists:cte_jobs,id'];
+        }
 
         // Type-specific validation
         switch ($curriculumType->code) {
@@ -1030,12 +1063,15 @@ class AdminController extends Controller
                     'curriculum_type_id' => $curriculumType->id,
                 ],
                 [
-                    'category_id'      => $data['category_id'] ?? null,
-                    'required_flag'    => $requiredFlag,
+                    'category_id' => $data['category_id'] ?? null,
+                    'program_id' => $curriculumType->code === 'CTE' ? ($data['program_id'] ?? null) : null,
+                    'job_id' => $curriculumType->code === 'CTE' ? ($data['job_id'] ?? null) : null,
+                    'required_flag' => $requiredFlag,
                     'requirement_text' => $data['requirement_text'] ?? null,
-                    'notes'            => $data['notes'] ?? null,
+                    'notes' => $data['notes'] ?? null,
                 ]
             );
+
 
             /**
              * OPTIONAL cleanup:

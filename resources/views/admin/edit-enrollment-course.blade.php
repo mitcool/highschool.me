@@ -50,6 +50,14 @@
                         </div>
                     @endif
 
+                    @php
+                        $cteCategories = collect($cteCategories ?? []);
+                        $ctePrograms = collect($ctePrograms ?? []);
+                        $cteJobs = collect($cteJobs ?? []);
+                        $currentProgramId = $currentProgramId ?? null;
+                        $currentJobId = $currentJobId ?? null;
+                    @endphp
+
                     <form action="{{ route('admin.update-enrollment-course', $course->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
@@ -152,13 +160,12 @@
                         <h6 class="text-uppercase text-muted mb-3">Curriculum Placement</h6>
 
                         <div class="row g-3 mb-3">
-                            <div class="col-md-6">
-                                <label for="category_id" class="form-label">
+                            <div class="col-md-6" id="standard-category-col">
+                                <label for="category_id_standard" class="form-label">
                                     Course Category
                                 </label>
                                 <select
-                                    id="category_id"
-                                    name="category_id"
+                                    id="category_id_standard"
                                     class="form-control"
                                 >
                                     <option value="">-- Optional category --</option>
@@ -172,6 +179,7 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                <input type="hidden" name="category_id" id="category_id_hidden" value="{{ old('category_id', $currentCategoryId) }}">
                                 <div class="form-text">
                                     List is not auto-filtered here, but you can optionally filter client-side later.
                                 </div>
@@ -201,6 +209,57 @@
                                         Yes (Required)
                                     </option>
                                 </select>
+                            </div>
+                        </div>
+
+                        <div id="cte-fields" class="type-section card border-0 mb-3 d-none">
+                            <div class="card-body bg-light rounded">
+                                <h6 class="fw-semibold mb-3">
+                                    CTE Details
+                                    <span class="badge bg-primary ms-2">CTE</span>
+                                </h6>
+
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label for="cte_category_id" class="form-label">Cluster</label>
+                                        <select id="cte_category_id" class="form-control">
+                                            <option value="">-- Select cluster --</option>
+                                            @foreach($cteCategories as $cteCategory)
+                                                <option value="{{ $cteCategory->id }}" {{ (string) old('category_id', $currentCategoryId) === (string) $cteCategory->id ? 'selected' : '' }}>
+                                                    {{ $cteCategory->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="program_id" class="form-label">Program</label>
+                                        <select id="program_id" name="program_id" class="form-control">
+                                            <option value="">-- Select program --</option>
+                                            @foreach($ctePrograms as $program)
+                                                <option
+                                                    value="{{ $program->id }}"
+                                                    data-category-id="{{ $program->category_id }}"
+                                                    {{ (string) old('program_id', $currentProgramId) === (string) $program->id ? 'selected' : '' }}
+                                                >
+                                                    {{ $program->program_title }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="job_id" class="form-label">Job</label>
+                                        <select id="job_id" name="job_id" class="form-control">
+                                            <option value="">-- Select job --</option>
+                                            @foreach($cteJobs as $job)
+                                                <option value="{{ $job->id }}" {{ (string) old('job_id', $currentJobId) === (string) $job->id ? 'selected' : '' }}>
+                                                    {{ $job->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -494,22 +553,64 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const typeSelect = document.getElementById('curriculum_type_id');
+        const standardCategoryCol = document.getElementById('standard-category-col');
+        const standardCategorySelect = document.getElementById('category_id_standard');
+        const categoryHidden = document.getElementById('category_id_hidden');
 
         const apSection    = document.getElementById('ap-fields');
         const esolSection  = document.getElementById('esol-fields');
         const clepSection  = document.getElementById('clep-fields');
+        const cteSection   = document.getElementById('cte-fields');
         const genericSection = document.getElementById('generic-fields');
+        const cteCategorySelect = document.getElementById('cte_category_id');
+        const programSelect = document.getElementById('program_id');
+
+        function getSelectedCode() {
+            const option = typeSelect.options[typeSelect.selectedIndex];
+            return option ? option.getAttribute('data-code') : null;
+        }
+
+        function filterPrograms() {
+            if (!programSelect || !cteCategorySelect) {
+                return;
+            }
+
+            const selectedCategory = cteCategorySelect.value;
+
+            Array.from(programSelect.options).forEach(function (option) {
+                if (!option.value) {
+                    option.hidden = false;
+                    return;
+                }
+
+                option.hidden = selectedCategory !== '' && option.dataset.categoryId !== selectedCategory;
+            });
+        }
+
+        function syncCategoryValue() {
+            if (!categoryHidden) {
+                return;
+            }
+
+            if (getSelectedCode() === 'CTE') {
+                categoryHidden.value = cteCategorySelect ? cteCategorySelect.value : '';
+                return;
+            }
+
+            categoryHidden.value = standardCategorySelect ? standardCategorySelect.value : '';
+        }
 
         function updateSections() {
-            const option = typeSelect.options[typeSelect.selectedIndex];
-            if (!option) return;
-
-            const code = option.getAttribute('data-code');
+            const code = getSelectedCode();
 
             // hide all
-            [apSection, esolSection, clepSection, genericSection].forEach(function (el) {
+            [apSection, esolSection, clepSection, cteSection, genericSection].forEach(function (el) {
                 if (el) el.classList.add('d-none');
             });
+
+            if (standardCategoryCol) {
+                standardCategoryCol.classList.remove('d-none');
+            }
 
             switch (code) {
                 case 'AP':
@@ -521,18 +622,36 @@
                 case 'CLEP':
                     clepSection.classList.remove('d-none');
                     break;
+                case 'CTE':
+                    if (cteSection) cteSection.classList.remove('d-none');
+                    if (standardCategoryCol) standardCategoryCol.classList.add('d-none');
+                    break;
                 default:
                     if (code) {
                         genericSection.classList.remove('d-none');
                     }
             }
+
+            filterPrograms();
+            syncCategoryValue();
         }
 
         typeSelect.addEventListener('change', updateSections);
+        if (standardCategorySelect) {
+            standardCategorySelect.addEventListener('change', syncCategoryValue);
+        }
+        if (cteCategorySelect) {
+            cteCategorySelect.addEventListener('change', function () {
+                filterPrograms();
+                syncCategoryValue();
+            });
+        }
 
         // Run on load if there is an old selected value
         if (typeSelect.value) {
             updateSections();
+        } else {
+            syncCategoryValue();
         }
 
         // ------- dynamic FILE rows -------
