@@ -199,7 +199,7 @@ class StudentController extends Controller
             ]));
         }
                
-        if($exam->type== EXAM::TYPE_ESSAY){
+        if($exam->type== EXAM::TYPE_OPEN_EXAM){
             $answers = $request->answers;
             foreach($answers as $question_id => $answer){
                 StudentAnswer::insert([
@@ -209,7 +209,7 @@ class StudentController extends Controller
                 ]);
             }
         }
-        elseif($exam->type==2){
+        elseif($exam->type==EXAM::TYPE_ESSAY){
             $essay = $request->essay;
             $path = base_path()."/public/exams/".$exam_id;
             $filename = $this->upload_file($essay,$path);

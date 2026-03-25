@@ -81,10 +81,8 @@ class Exam extends Model
         else{
             $exam_time = 2;
         }
-
-        #dd($date.' '.$date->addHours($exam_time).' '.$now);
         
-        return $date->addHours($exam_time) > $now;
+        return $date->subHours($exam_time) < $now;
     }
 
     public function frauds(){

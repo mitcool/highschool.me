@@ -78,13 +78,15 @@ class EducatorController extends Controller
         $all_courses = CurriculumCourse::all();
         $educators = User::where('role_id',5)->get();
         $courses = CurriculumCourse::all();
-        $exams = Exam::orderBy('created_at','desc')->where('educator_id',auth()->id())->where('status',Exam::STATUS_APPOINTED)->get();
+        $exams = Exam::orderBy('datetime','desc')->where('educator_id',auth()->id())->where('status',Exam::STATUS_APPOINTED)->get();
+        $utc_time = Carbon::now('utc')->format('d.m.Y H:i');
         return view('educator.exams')
             ->with('all_students',$all_students)
             ->with('all_courses',$all_courses)
             ->with('exams',$exams)
             ->with('students',$students)
             ->with('educators',$educators)
+            ->with('utc_time',$utc_time)
             ->with('courses',$courses);
     }
     public function examQuestions(Request $request){
@@ -227,7 +229,11 @@ class EducatorController extends Controller
 
     public function createExam(Request $request){
         $exam = $request->only('date','time','course_id','student_id','educator_id','type','pre_exam');
+        if(Exam::where('student_id',$exam['student_id'])->where('course_id',$exam['course_id'])->where('datetime','>',Carbon::now())->count()>0){
+            return redirect()->back()->with('error','The has already upcoming exam for this subject');
+        }
         $exam['status']= Exam::STATUS_APPOINTED;
+        $exam['datetime'] = $exam['date'].' '.$exam['time'];
         Exam::create($exam);
         return redirect()->back()->with('success_message','Exam created successfully');
     }

@@ -216,6 +216,16 @@
        }
 
        $('#message_modal').modal('show');
+
+       const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+		fetch('/set-timezone', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRF-TOKEN': '{{ csrf_token() }}'
+			},
+			body: JSON.stringify({ timezone })
+		});
     </script>
 </body>
 

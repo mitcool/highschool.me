@@ -31,6 +31,7 @@
                             <td>
                                
                                 @if($exam->status == 0 && $exam->is_active())
+                                   
                                     <a href="{{ route('student.single-exam',$exam->id) }}" class="view-link">Link&#187;</a>
                                 @elseif($exam->status == 0 && !$exam->is_active())                                
                                     Exam starts on {{ $exam->localdate() }} ({{ session('timezone') }})

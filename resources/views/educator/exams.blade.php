@@ -8,6 +8,8 @@
 
 <div class="shadow container wrapper">
     <h2 class="text-center blue-heading h2">Add Exam</h2>
+    <p class="text-danger text-center">Please enter the time in UTC timezone <span class="font-weight-bold">(UTC time now : {{ $utc_time }})</span></p>
+    <hr/>
     <hr/>
      <form action="{{ route('educator.create-exam') }}" method="POST" >
         {{ csrf_field() }}
@@ -17,7 +19,7 @@
                 <input  class="form-control datepicker" name="date" type="text" required /><br>
             </div>
             <div class="col-md-6">
-                <label class="font-weight-bold mb-0" for="">Time</label>
+                <label class="font-weight-bold mb-0" for="">Time (UTC)</label>
                 <input class="form-control timepicker" name="time" type="text" required /><br>
             </div>
         </div>
@@ -53,7 +55,7 @@
      <table class="table">
         <tr>
             <th>Date</th>
-            <th>Time</th>
+            <th>Time (UTC)</th>
             <th>Subject</th>
             <th>Student</th>
             <th class="text-center">Edit</th>
@@ -61,8 +63,8 @@
         </tr>
         @foreach($exams as $exam)
             <tr>
-                <td>{{ $exam->date->format('d.m.Y') }}</td>
-                <td>{{ $exam->time->format('H:i') }}</td>
+                <td>{{ $exam->datetime->format('d.m.Y') }}</td>
+                <td>{{ $exam->datetime->format('H:i') }}</td>
                 <td>{{ $exam->course->course->title }}</td>
                 <td>{{ $exam->student->fullname() }}</td>
                 <td class="text-center">
@@ -88,9 +90,9 @@
                         <form action="{{ route('edit-exam',$exam->id) }}" method="POST" id="edit-hour-{{ $exam->id }}">
                         {{ csrf_field() }}
                        <label class="font-weight-bold mb-0" for="">Date</label>
-                        <input  class="datepicker form-control" name="date" type="text" value="{{ $exam->date->format('d-m-Y') }}" required/><br>
+                        <input  class="datepicker form-control" name="date" type="text" value="{{ $exam->datetime->format('d-m-Y') }}" required/><br>
                         <label class="font-weight-bold mb-0" for="">Time</label>
-                        <input  class="timepicker form-control" name="time" value="{{ $exam->time->format('H:i') }}" type="text" required /><br>
+                        <input  class="timepicker form-control" name="time" value="{{ $exam->datetime->format('H:i') }}" type="text" required /><br>
                         <label class="font-weight-bold mb-0" for="">Student <span class="text-danger">(*Note only students that have status Ready for exam)</span></label>
                         <select required class="form-control" name="student_id" required id="student_id">
                             <option value="" selected disabled>Please select a student</option>
