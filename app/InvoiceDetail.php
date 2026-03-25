@@ -9,7 +9,7 @@ class InvoiceDetail extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['city','street','street_number','zip','user_id','country_id','phone'];
+    protected $fillable = ['city','street','street_number','zip','user_id','country_id','phone','phone_code'];
 
     public $timestamps = false;
 

@@ -54,8 +54,8 @@
     <x-header/>
     <div class="container-fluid px-0">
         <div class="row">
-           
-                <div id="wrapper" style="padding:0 0px;">
+                
+                     <div id="wrapper" style="padding:0 0px;">
                     <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion" id="accordionSidebar" style="background:#045397">
                         <li class="nav-item black">
                             <a class="nav-link" href="{{route('parent.dashboard')}}">
@@ -137,7 +137,9 @@
                             </form>
                         </li>
                     </ul>
+             
                 </div>
+               
 
                     @if(Session::has('success_message'))
                         <div class="modal fade" id="message_modal">
@@ -187,9 +189,9 @@
                 
    
  
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+            </a>
     <x-footer/>
     @yield('scripts')
 

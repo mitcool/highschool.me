@@ -32,23 +32,40 @@
             </div>
             <div>
                 <label for="">City:</label>
-                <input name="city" required type="text" class="form-control" value="{{ auth()->user()->invoice_details ? auth()->user()->invoice_details->city : '' }}">
+                <input name="city" required type="text" class="form-control" value="{{ auth()->user()->invoice_details ? auth()->user()->invoice_details->city : old('city') }}">
             </div>
             <div>
                 <label for="">Street:</label>
-                <input name="street" required type="text" class="form-control" value="{{ auth()->user()->invoice_details ? auth()->user()->invoice_details->street : '' }}">
+                <input name="street" required type="text" class="form-control" value="{{ auth()->user()->invoice_details ? auth()->user()->invoice_details->street : old('street') }}">
             </div>
             <div>
                 <label for="">Street number:</label>
-                <input name="street_number" required type="text" class="form-control" value="{{ auth()->user()->invoice_details ? auth()->user()->invoice_details->street_number : '' }}">
+                <input name="street_number" required type="text" class="form-control" value="{{ auth()->user()->invoice_details ? auth()->user()->invoice_details->street_number : old('street_number') }}">
             </div>
              <div>
                 <label for="">Zip code:</label>
-                <input name="zip" required type="text" class="form-control" value="{{ auth()->user()->invoice_details ? auth()->user()->invoice_details->zip : '' }}">
+                <input name="zip" required type="text" class="form-control" value="{{ auth()->user()->invoice_details ? auth()->user()->invoice_details->zip : old('zip') }}">
             </div>
              <div>
-                <label for="">Phone:</label>
-                <input name="phone" required type="text" class="form-control" value="{{ auth()->user()->invoice_details ? auth()->user()->invoice_details->phone : '' }}">
+                <label for="" class="d-block">Phone number:</label>
+                <div class="row">
+                    <div class="col-md-3">
+                        <select name="phone_code" id="" class="form-control">
+                            <option value="" selected disabled>Please select a phone code</option>
+                            @foreach ($countries as $country )
+                                <option
+                                    @if(auth()->user()->invoice_details)
+                                        {{ '+'.$country->phonecode == auth()->user()->invoice_details->phone_code ? ' selected ' : ''}}
+                                    @endif
+                                    value="+{{ $country->phonecode }}">{{ $country->nicename }} +{{ $country->phonecode }} 
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-9">
+                        <input name="phone" required type="text" class="form-control" value="{{ auth()->user()->invoice_details ? auth()->user()->invoice_details->phone : old('phone') }}">
+                    </div>
+                </div>
             </div>
             <div class="text-center">
                 <hr>

@@ -110,6 +110,10 @@ class ParentController extends Controller
             ->with('students',$students);
     }
     public function meetings_student($student_id){
+
+        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+            abort(403);
+        }
         $now = Carbon::now();
       
          $group_sessions = GroupSession::where(function ($query) use ($now) {
@@ -219,6 +223,7 @@ class ParentController extends Controller
         }catch(\Exception $e){
             info($e->getMessage());
         }
+        Notification::add(auth()->id(),'Congratulations student created successfully');
         if($education_option == 1 || $education_option == 2 || $education_option == 3){
             return redirect()->route('parent.student.documents',$student->id);
         }
@@ -235,6 +240,9 @@ class ParentController extends Controller
     }
 
     public function studentDocuments($student_id){
+        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+            abort(403);
+        }
         $student = User::find($student_id);
         return view('parent.student-documents')
                 ->with('student',$student);
@@ -310,11 +318,14 @@ class ParentController extends Controller
             $iep_name =  $this->upload_file($request->file('iep'),$path); 
             StudentDocument::insert(['file'=>$iep_name,'type'=> 8,'student_id'=>$student->id,'is_approved' => 0]);
         }
-
+        Notification::add(auth()->id(),'Congratulations documents submitted successfully');
         return redirect()->route('application-fee',$student->id);
     }
 
     public function studentModuleCourses($student_id){
+        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+            abort(403);
+        }
         $student = User::find($student_id);
         $course_types = $this->student_module_course_service->get_courses();
         $total = $this->student_module_course_service->calculate_total();
@@ -334,6 +345,9 @@ class ParentController extends Controller
     }
 
     public function studentCourseTypeCheckout($student_id){
+        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+            abort(403);
+        }
         $student = User::find($student_id);
         $course_types = $this->student_module_course_service->get_courses();
         $total = $this->student_module_course_service->calculate_total();
@@ -348,6 +362,9 @@ class ParentController extends Controller
     }
 
     public function studentSessions($student_id){
+        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+            abort(403);
+        }
         $student = User::find($student_id);
         $sessions = $this->student_sessions_service->get_sessions();
         $total = $this->student_sessions_service->calculate_total();
@@ -366,6 +383,9 @@ class ParentController extends Controller
     }
 
     public function studentSessionsCheckout($student_id){
+        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+            abort(403);
+        }
         $student = User::find($student_id);
         $sessions = $this->student_sessions_service->get_sessions();
         $total = $this->student_sessions_service->calculate_total();
@@ -378,6 +398,9 @@ class ParentController extends Controller
             ->with('student',$student);
     }
      public function applicationFee($student_id){
+        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+            abort(403);
+        }
 
         $application_fee = 150;
 
@@ -403,6 +426,9 @@ class ParentController extends Controller
         return redirect()->away($session->url);
     }
     public function applicationFeeSuccess($student_id){
+        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+            abort(403);
+        }
         $application_fee = 150;
         
         ParentStudent::where('student_id',$student_id)->update(['status' => ParentStudent::PAID_APPLICATION_FEE]);
@@ -418,11 +444,7 @@ class ParentController extends Controller
         }catch(\Exception $e){
             info($e->getMessage());
         }
-        // try{
-        //     Mail::to($user->email)
-        // }catch(\Exception $e){
-
-        // }
+        Notification::add(auth()->id(),'Application fee paid successfully');
         session()->forget('student_data');
         return redirect()->route('parent.student.profile',$student_id);
     }
@@ -506,6 +528,8 @@ class ParentController extends Controller
         }catch(\Exception $e){
             info($e->getMessage());
         }
+
+        Notification::add(auth()->id(),'Enrollment fee paid successfully');
 
         return redirect()->route('parent.student.profile',$student_data['student_id']);
     }
@@ -608,6 +632,9 @@ class ParentController extends Controller
     }
 
     public function extendPlan(Request $request,$student_id){
+        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+            abort(403);
+        }
         $plan_id = $request->plan;
         $payment_type = $request->payment_type;
         $plan = Plan::find($plan_id);
@@ -653,6 +680,9 @@ class ParentController extends Controller
     } 
 
     public function studentSessionsPay($student_id){
+        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+            abort(403);
+        }
 
         $student = User::find($student_id);
         $sessions = CourseType::where('type',3)->get();
@@ -682,6 +712,9 @@ class ParentController extends Controller
     }
 
      public function studentCourseTypePay($student_id){
+        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+            abort(403);
+        }
 
         $student = User::find($student_id);
         $courses = CourseType::where('type',2)->get();
@@ -745,11 +778,15 @@ class ParentController extends Controller
     }
 
     public function singleInvoice($id) {
-        $invoice = Invoice::where('id', $id)->first();
+        //TODO:: add column user_id to invoices to avaid issues if user change his email
+        $invoice = Invoice::where('id', $id)->where('user_email',auth()->user()->email)->first() ?? abort(404);
         return view('parent.single-invoice')->with('invoice', $invoice);
     }
     
     public function studentProfile($student_id){
+        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+            abort(403);
+        }
         $status = ParentStudent::where('student_id',$student_id)->first()->status;
         if($status == ParentStudent::CREATED){
             return redirect()->route('parent.student.documents',$student_id);
@@ -775,6 +812,9 @@ class ParentController extends Controller
     }
 
     public function parentPayPlan(Request $request, $student_id){
+        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+            abort(403);
+        }
          $payment_type = $request->payment_type; # 0 => monthly 1 => yearly
          $plan_id = $request->plan;
          return redirect()->route('enrollment-fee',[$student_id,$plan_id,$payment_type]);
@@ -787,6 +827,7 @@ class ParentController extends Controller
     }
 
     public function updateInfo(Request $request){
+        
         $request->validate([
             "email" => 'required',
             'country_id'=> 'required',
@@ -794,7 +835,8 @@ class ParentController extends Controller
             'street' => 'required',
             'street_number' => 'required',
             'zip' => 'required',
-            "phone" => "required|regex:/^[0-9]\d{7,14}$/",
+            "phone" => "required|regex:/^[0-9]\d{6,15}$/",
+            "phone_code" => ['required', 'regex:/^\+[1-9]\d{0,3}$/']
         ]);
         $user = $request->email;
         if(auth()->user()->email != $request->email){
@@ -802,13 +844,15 @@ class ParentController extends Controller
                 return redirect()->back()->with('error','Email has already been taken');
             }
         }
-        $details = $request->only('city','street','street_number','zip','country_id','phone');
+        $details = $request->only('city','street','street_number','zip','country_id','phone','phone_code');
         $details['user_id'] = auth()->id();
         InvoiceDetail::updateOrCreate(['user_id'=>auth()->user()->id],$details);
+        Notification::add(auth()->id(),'Congratulations your details have been update successfully');
         return redirect()->back()->with('success_message','User info updated successfully');
     }
 
     public function reuploadDocuments(Request $request,$student_id){
+        
         $student = User::find($student_id);
         $documents = $request->documents;
         $types = $request->types;
@@ -960,6 +1004,8 @@ class ParentController extends Controller
             info($e->getMessage());
         }
 
+        Notification::add(auth()->id(),'Course enrolled successfully');
+
 
         return redirect()->back()->with('success_message','The course has been enrolled successfully');
     }
@@ -981,6 +1027,8 @@ class ParentController extends Controller
             }catch(\Exception $e){
                 info($e->getMessage());
             }
+            Notification::add(auth()->id(),'Congratulations student is ready to study');
+            Notification::add($enrolled_course->user_id,'Congratulations you can start study now');
 
         }
         #Ready For Exam
@@ -992,7 +1040,8 @@ class ParentController extends Controller
             }catch(\Exception $e){
                 info($e->getMessage());
             }
-            
+            Notification::add(auth()->id(),'Congratulations student is ready for an exam');
+            Notification::add($enrolled_course->user_id,'Congratulations you are ready for exam now');
         }
         return redirect()->back()->with('success_message',$message);
     }
@@ -1081,6 +1130,8 @@ class ParentController extends Controller
             'student_id' => $student_id,
             'expires_at' => $expires_at
         ]);
+
+         Notification::add(auth()->id(),'Enrollment fee paid successfully');
 
         return redirect()->route('parent.student.profile',$student_id);
     }

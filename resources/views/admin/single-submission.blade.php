@@ -1,6 +1,8 @@
 @extends('admin_template')
 
 @section('content')
+
+
     <div class="shadow container wrapper">    
         <h1 class="text-center page-headings">{{ $exam->course->course->title }}</h1>
         <h2 class="text-center">{{ $exam->student->fullname() }}</h2>
@@ -48,13 +50,13 @@
                             <h5 class="font-weight-bold mb-0" style="color: #045397">Answer {{ $key + 1 }}</h5>
                             <p class="font-italic">{{ $answer->answer }}</p>
                             <p class="mb-0 text-danger">Add Comment:</p>
-                            <textarea required name="answer_comment[{{ $answer->id }}]" id=""  class="form-control"></textarea>
+                            <textarea required name="answer_comment[{{ $answer->id }}]"  id=""  class="form-control">{{ old('answer_comment.' . $answer->id) }}</textarea>
                         </div>
                     @endforeach
                         <label for=""class="text-danger mb-0 mt-2">Grade</label>
-                        <input type="number" name="grade" class="form-control" step="0.1" required>
+                        <input type="number" value="{{ old('grade') }}" name="grade" class="form-control" step="0.1" required>
                         <label for=""class="text-danger mb-0 mt-2">Add overall comment</label>
-                        <input type="text" name="exam_comment" class="form-control" required>
+                        <input type="text" name="exam_comment"  value="{{ old('exam_comment') }}" class="form-control" required>
                         <div class="mt-2 d-flex justify-content-center">
                             <button class="orange-button">SUBMIT</button>
                         </div>
@@ -65,9 +67,9 @@
 
                     <form method="POST" action="{{ route('evaluate-exam',$exam->id) }}">
                             <label for=""class="text-danger mb-0 mt-2">Grade</label>
-                            <input type="number" name="grade" class="form-control" step="0.1" required>
+                            <input type="number" value="{{ old('grade') }}" name="grade" class="form-control" step="0.1" required>
                             <label for=""class="text-danger mb-0 mt-2">Add overall comment</label>
-                            <input type="text" name="exam_comment" class="form-control" required>
+                            <input type="text" name="exam_comment" value="{{ old('exam_comment') }}" class="form-control" required>
                             <div class="mt-2 d-flex justify-content-center">
                                 <button class="orange-button">SUBMIT</button>
                             </div>

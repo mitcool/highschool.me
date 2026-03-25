@@ -875,12 +875,12 @@ a:hover {
     justify-content: center;
 }
 .alert-fixed {
-    position: fixed;
-    width: 50%;
+    position: absolute;
+    width: 100%;
     right: 0;
     left: 0;
     margin: auto;
-    top: 15%;
+    top: 120px;
     transform: translate3d(0, -50%, 0);
     text-align: center;
     z-index: 9999;

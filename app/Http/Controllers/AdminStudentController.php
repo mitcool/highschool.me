@@ -11,6 +11,7 @@ use App\ParentStudent;
 use App\StudentDocument;
 use App\CurriculumCourse;
 use App\StudentEnrolledCourse;
+use App\Notification;
 
 use App\Mail\WrongDocument;
 
@@ -29,10 +30,12 @@ class AdminStudentController extends Controller
     public function approveDocuments(Request $request,$student_id){
         $approved_status = 2;
         $is_disabled = $request->is_disabled ? 1 : 0;
-        ParentStudent::where('student_id',$student_id)->update([
+        $parent_student = ParentStudent::where('student_id',$student_id)->first();
+        $parent_student->update([
             'status'=> $approved_status,
             'is_disabled' =>  $is_disabled 
         ]);
+        Notification::add($parent_student->parent_id,'Congratulations your documents have been approved');
         return redirect()->route('admin-student-documents')->with('success_message','Documentation has been approved');
 
     }

@@ -99,6 +99,8 @@ use App\Mail\ExamUpdatedParent;
 use App\Mail\ExamDeleted;
 use App\Mail\ExamDeletedParent;
 use App\Mail\EducatorCategoryApproved;
+use App\Mail\ExamResultParent;
+use App\Mail\ExamResult;
 
 class AdminController extends Controller
 {
@@ -1447,6 +1449,7 @@ class AdminController extends Controller
     
     public function showSubmissions(){
         $exams = Exam::where('status',Exam::STATUS_SUBMITTED)->get();
+        
         return view('admin.submissions')
             ->with('exams',$exams);
     }
@@ -1465,6 +1468,8 @@ class AdminController extends Controller
             'exam_comment' => 'required'
         ]);
         $exam = Exam::find($exam_id);
+        $student = $exam->student;
+        $parent = $student->student_details->parent;
         $grade = $request->grade;
         $exam_comment = $request->exam_comment;
         $course = StudentEnrolledCourse::where('user_id',$exam->student_id)->where('catalog_course_id',$exam->course_id)->first();
@@ -1486,13 +1491,18 @@ class AdminController extends Controller
         else{
             $course->update(['status' => StudentEnrolledCourse::STATUS_READY_FOR_EXAM]);
         }
-         Notification::add($exam->student_id,'You have a new exam results');
+        Notification::add($exam->student_id,'You have a new exam results');
+        Notification::add($parent->id,'You have a new exam results');
         try{
-
+            Mail::to($student->email)->send(new ExamResult($exam));
         }catch(\Exception $e){
-            //TODO::email
+            info($e->getMessage());
         }
-
+        try{
+            Mail::to($parent->email)->send(new ExamResultParent($exam,$parent));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
         return redirect()->back()->with('success_message','Exam evaluated successfully');
         
     }

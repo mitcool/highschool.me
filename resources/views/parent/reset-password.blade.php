@@ -19,7 +19,7 @@
                         </div>
                     @endif
 
-                    {{-- Error Summary --}}
+                    {{-- Error Summary
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul class="mb-0">
@@ -28,7 +28,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                    @endif
+                    @endif --}}
 
                     <form method="POST" action="{{ route('user.password.update') }}">
                         @csrf
