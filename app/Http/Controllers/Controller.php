@@ -13,6 +13,7 @@ use App\RelatedCourse;
 use App\CurriculumCourse;
 use App\Notification;
 use App\StudentEnrolledCourse;
+use Carbon\Carbon;
 
 use DB;
 
@@ -32,12 +33,13 @@ class Controller extends BaseController
         return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
     }
 
-     public function setHelpDeskNumber(){
+     public function setHelpDeskNumber($role_id){
+        $role_symbol = $role_id == 2 ? 'F' : 'S';
         $next_help_desk = HelpDesk::count() == 0 ? 1 : HelpDesk::count() + 1;
         $numlength = strlen((string)$next_help_desk);
-        $help_desk_number = '00';
-       
-        for ($i = 3; $i <= (6 - $numlength); $i++) {
+        $help_desk_number = $role_symbol.Carbon::now()->format('y').'-';
+        
+        for ($i = 3; $i <= (8 - $numlength); $i++) {
             $help_desk_number .= '0';
         }
         $help_desk_number .= $next_help_desk;

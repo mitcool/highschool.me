@@ -102,6 +102,7 @@
 	</div>
 </header>
 
+@auth
 <script>
 	function loadUnreadCount() {
         $.ajax({
@@ -123,3 +124,4 @@
     loadUnreadCount();
     setInterval(loadUnreadCount, 5000);
 </script>
+@endauth

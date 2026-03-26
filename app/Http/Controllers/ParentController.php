@@ -440,7 +440,7 @@ class ParentController extends Controller
             info($e->getMessage());
         }
         try{
-             Mail::to('mathias.kunze@onsites.com')->send(new StudentCreatedAdmin);
+             Mail::to(self::MATHIAS_EMAIL)->send(new StudentCreatedAdmin);
         }catch(\Exception $e){
             info($e->getMessage());
         }
@@ -835,8 +835,8 @@ class ParentController extends Controller
             'street' => 'required',
             'street_number' => 'required',
             'zip' => 'required',
-            "phone" => "required|regex:/^[0-9]\d{6,15}$/",
-            "phone_code" => ['required', 'regex:/^\+[1-9]\d{0,3}$/']
+            "phone" => "required|regex:/^[0-9]\d{6,15}$/|min:6|max:15",
+            "phone_code" => 'required|regex:/^\+[0-9]\d{0,3}$/'
         ]);
         $user = $request->email;
         if(auth()->user()->email != $request->email){
@@ -876,7 +876,7 @@ class ParentController extends Controller
             ParentStudent::where('student_id',$student_id)->first()->update(['status' => ParentStudent::PAID_APPLICATION_FEE]);
         }
         try{
-            Mail::to('mathias.kunze@onsites.com')->send(new ParentReuploadDocument);
+            Mail::to(self::MATHIAS_EMAIL)->send(new ParentReuploadDocument);
         }catch(\Excetpion $e){
                 info($e->getMessage());
         }
@@ -896,7 +896,7 @@ class ParentController extends Controller
         }
 
          try{
-            Mail::to('mathias.kunze@onsites.com')->send(new FamilyConsultationRequestAdmin($parent));
+            Mail::to(self::MATHIAS_EMAIL)->send(new FamilyConsultationRequestAdmin($parent));
         }catch(\Exception $e){
             info($e->getMessage());
         }
@@ -1036,7 +1036,7 @@ class ParentController extends Controller
             $enrolled_course->update(['status' => StudentEnrolledCourse::STATUS_READY_FOR_EXAM]);
             $message = 'Student is ready for exam';
             try{
-                Mail::to('mathias.kunze@onsites.com')->send(new StudentReadyForExam($enrolled_course));
+                Mail::to(self::MATHIAS_EMAIL)->send(new StudentReadyForExam($enrolled_course));
             }catch(\Exception $e){
                 info($e->getMessage());
             }

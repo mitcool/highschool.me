@@ -23,10 +23,18 @@
             </div>
               <div>
                 <label for="">Country:</label>
-                <select name="country_id" required type="text" class="form-control" value="{{ auth()->user()->invoice_details ? auth()->user()->invoice_details->city : '' }}">
+                <select name="country_id" required type="text" class="form-control">
                     <option value="" selected disabled>Please select</option>
                     @foreach ($countries as $country )
-                        <option value="{{ $country->id }}" {{ auth()->user()->invoice_details ? auth()->user()->invoice_details->country_id == $country->id ?' selected ' : '' : '' }}>{{ $country->nicename }}</option>
+                        <option value="{{ $country->id }}" 
+                            @if(auth()->user()->invoice_details)
+                                {{  auth()->user()->invoice_details->country_id == $country->id ?' selected ' : ''  }}
+                            @else
+                                {{  old('country_id') == $country->id ? ' selected ' : '' }}   
+                            @endif
+                        >
+                            {{ $country->nicename }}
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -56,6 +64,8 @@
                                 <option
                                     @if(auth()->user()->invoice_details)
                                         {{ '+'.$country->phonecode == auth()->user()->invoice_details->phone_code ? ' selected ' : ''}}
+                                    @else
+                                        {{ '+'.$country->phonecode == old('phone_code') ? ' selected ' : ''}}
                                     @endif
                                     value="+{{ $country->phonecode }}">{{ $country->nicename }} +{{ $country->phonecode }} 
                                 </option>

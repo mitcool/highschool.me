@@ -730,9 +730,8 @@ class StudentController extends Controller
 
     public function requestDiplomaCopySuccess(){
         $diploma_request = DiplomaPrintingRequest::create(['student_id' => auth()->id(),'status' => 0]);
-        $admin = User::where('role_id',1)->first();
         try{
-            Mail::to($admin->email)->send(new NewDiplomaPrintingRequest($diploma_request));
+            Mail::to(self::MATHIAS_EMAIL)->send(new NewDiplomaPrintingRequest($diploma_request));
         }catch(\Exception $e){
             info($e->getMessage());
         }

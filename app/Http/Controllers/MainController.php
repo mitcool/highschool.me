@@ -81,6 +81,7 @@ use App\FeatureCategory;
 use App\Feature;
 use App\ContactPage;
 use App\HelpDesk;
+use App\Notification;
 
 use App\Http\Requests\ContactRequest;
 use App\Http\Requests\AdvisoryRequest;
@@ -95,11 +96,6 @@ class MainController extends Controller
 {
 
 
-  public $mathias_email;
-
-  function __construct(){
-    $this->mathias_email = 'mathias.kunze@onsites.com';
-  }
 	public function notFound(){
 
 		return response()->view('errors.404')->setStatusCode(404);
@@ -125,7 +121,7 @@ class MainController extends Controller
     $data = $request->validated();
   
     try {
-      Mail::to($this->mathias_email)->send(new ContactEmail($data));
+      Mail::to(self::MATHIAS_EMAIL)->send(new ContactEmail($data));
     }catch(\Exception $e) {
       Log::info($e);
     }
@@ -333,7 +329,7 @@ class MainController extends Controller
 public function sendHelpDeskQustion(Request $request){
   $user = auth()->user();
   $is_admin = $user->role_id == 1 ? 1 : 0; 
-  $slug = $request->slug ? $request->slug : $this->setHelpDeskNumber();
+  $slug = $request->slug ? $request->slug : $this->setHelpDeskNumber($user->role_id);
   $prev_message = HelpDesk::where('slug',$slug)->first();
   if($user->role_id == 2){
     $is_parent = 1;
@@ -367,11 +363,15 @@ public function sendHelpDeskQustion(Request $request){
   }catch(\Exception $e){
     info($e->getMessage());
   }
+  Notification::add($user->id,'New message in Help Desk section');
   return redirect()->route('single-help-desk',$slug)->with('success_message','Your question submitted successfully');
 }
 
 public function singleHelpDesk($slug){
   $help_desk_messages = HelpDesk::where('slug',$slug)->get();
+  if(count($help_desk_messages) == 0){
+     abort(404);
+  }
   $template = 'admin_template';
   if(auth()->user()->role_id == 2){
     $template = 'parent.dashboard';
