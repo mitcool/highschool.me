@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Notification extends Model
 {
@@ -53,5 +54,9 @@ class Notification extends Model
         })->toArray();
 
         self::insert($data);
+    }
+
+    public function local_time(){
+        return Carbon::parse($this->created_at)->setTimezone(session('timezone'));
     }
 }

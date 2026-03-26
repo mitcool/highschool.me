@@ -135,8 +135,8 @@
             <tbody>
                 @forelse($notifications as $n)
                     <tr>
-                        <td class="col-date">{{ optional($n->created_at)->format('d.m.Y') }}</td>
-                        <td class="col-time">{{ optional($n->created_at)->format('H:i') }}</td>
+                        <td class="col-date">{{ optional($n->local_time())->format('d.m.Y') }}</td>
+                        <td class="col-time">{{ optional($n->local_time())->format('H:i') }}</td>
                         <td>{{ $n->message }}</td>
                         <td class="col-remove">
                             <form method="POST" action="{{ route('admin.delete-single-notification', $n->id) }}">
