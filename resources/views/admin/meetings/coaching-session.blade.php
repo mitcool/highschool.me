@@ -5,7 +5,7 @@
 
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     <h2 class="text-center">Coaching Session for Students</h2>
-    <table class="table table-striped">
+    <table class="table">
         <tr>
             <th>Date</th>
             <th>Start Time</th>
@@ -23,6 +23,9 @@
         </tr>
         @endforeach
     </table>
+    <div class="d-flex justify-content-center">
+        {{ $coaching_sessions->links() }}
+    </div>
     <div class="text-right mt-5">
         <a href="{{ route('add-coaching-session') }}" class="orange-button">Add Coaching Session</a>
     </div>

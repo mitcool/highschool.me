@@ -22,6 +22,9 @@
         </tr>
         @endforeach
     </table>
+    <div class="d-flex justify-content-center">
+        {{ $mentoring_sessions->links() }}
+    </div>
     <div class="text-right mt-5">
         <a href="{{ route('add-mentoring-session') }}" class="orange-button">Add Mentoring Session</a>
     </div>

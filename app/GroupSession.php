@@ -33,4 +33,8 @@ class GroupSession extends Model
     public function educator(){
         return $this->hasOne('App\User','id','educator_id');
     }
+
+    public function students(){
+        return $this->hasMany('App\UserGroupSession','session_id','id');
+    }
 }

@@ -34,4 +34,8 @@ class MentoringSession extends Model
         return 'Personal Mentoring Session';
     }
 
+     public function students(){
+        return $this->hasMany('App\UserMentoringSession','session_id','id');
+    }
+
 }

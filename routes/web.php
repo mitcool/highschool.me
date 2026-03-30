@@ -294,6 +294,7 @@ Route::post('/parent/reupload/document/{student_id}','ParentController@reuploadD
 Route::get('/check-subscriptions','CronjobController@checkSubscribtions')->name('check-subscriptions');
 Route::get('/check-exams','CronjobController@failExamsWhereStudentDoesntShowTo')->name('check-exams');
 Route::get('/update-questions','CronjobController@updateStudyMentorQuestions')->name('update-questions');
+Route::get('/sessions-reminder','CronjobController@sessionsReminder')->name('session-reminder');
 
 #sitemaps
 Route::get('/sitemap','SitemapController@showSitemapHTML')->name('sitemap');

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Mail;
+
+use Carbon\Carbon;
 
 use App\GroupSession;
 use App\MentoringSession;
@@ -10,12 +13,14 @@ use App\CoachingSession;
 use App\FamilyConsultation;
 use App\FamilyConsultationRequest;
 use App\User;
+use App\Notification;
 
+use App\Mail\DatesForStudentSession;
 
 class AdminMeetingController extends Controller
 {
     public function groupSessions(){
-        $group_sessions = GroupSession::all();
+        $group_sessions = GroupSession::where('date','>',Carbon::now())->orderBy('date','desc')->orderBy('start','desc')->paginate(10);
         
         return view('admin.meetings.group-sessions')
                 
@@ -39,29 +44,37 @@ class AdminMeetingController extends Controller
         $start = $request->start;
         $end = $request->end;
         $link = $request->link;
-        $educator_id = $request->educator_id;
+        $educator = User::find($request->educator_id);
+        $data = [];
         foreach($dates as $key => $date){
             $group_session = [];
             $group_session['date'] = $dates[$key];
             $group_session['start'] = $start[$key];
             $group_session['end'] = $end[$key];
             $group_session['link'] = $link[$key];
-            $group_session['educator_id'] = $educator_id;
-            GroupSession::create($group_session);
+            $group_session['educator_id'] = $educator->id;
+            $group_session = GroupSession::create($group_session);
+            $data[] = $group_session;
         }
-        
+
+        try{
+            Mail::to($educator->email)->send(new DatesForStudentSession($educator,$data));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+        Notification::add($educator->id,'New session dates added from admin');
         return redirect()->route('admin-group-sessions')
             ->with('success_message','Group session created successfully');
     }
 
     public function mentoringSessions(){
-        $mentoring_sessions = MentoringSession::all();
+        $mentoring_sessions = MentoringSession::where('date','>',Carbon::now())->orderBy('date','desc')->orderBy('start','desc')->paginate(10);
         return view('admin.meetings.mentoring-session')
             ->with('mentoring_sessions',$mentoring_sessions);
     }
 
     public function createMentoringSession(Request $request){
-        $request->validate([
+         $request->validate([
             'date' => 'required',
             'start' => 'required',
             'end' => 'required',
@@ -72,18 +85,27 @@ class AdminMeetingController extends Controller
         $start = $request->start;
         $end = $request->end;
         $link = $request->link;
-        $educator_id = $request->educator_id;
+        $educator = User::find($request->educator_id);
+        $data = [];
         foreach($dates as $key => $date){
             $mentoring_session = [];
             $mentoring_session['date'] = $dates[$key];
             $mentoring_session['start'] = $start[$key];
             $mentoring_session['end'] = $end[$key];
             $mentoring_session['link'] = $link[$key];
-            $mentoring_session['educator_id'] = $educator_id;
-            MentoringSession::create($mentoring_session);
+            $mentoring_session['educator_id'] = $educator->id;
+            $mentoring_session = MentoringSession::create($mentoring_session);
+            $data[] = $mentoring_session;
         }
 
-        return redirect()->route('admin-mentoring-sessions')->with('success_message','Mentoring session created successfully');
+        try{
+            Mail::to($educator->email)->send(new DatesForStudentSession($educator,$data));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+        Notification::add($educator->id,'New session dates added from admin');
+        return redirect()->route('admin-mentoring-sessions')
+            ->with('success_message','Mentoring session created successfully');
     }
 
     public function addMentoringSession (){
@@ -138,31 +160,47 @@ class AdminMeetingController extends Controller
     }
 
     public function coachingSessions (){
-        $coaching_sessions = CoachingSession::all();
+        $coaching_sessions = CoachingSession::where('date','>',Carbon::now())->orderBy('date','desc')->orderBy('start','desc')->paginate(10);
         return view('admin.meetings.coaching-session')
             ->with('coaching_sessions',$coaching_sessions);
     }
 
     public function createCoachingSession(Request $request){
+       $request->validate([
+            'date' => 'required',
+            'start' => 'required',
+            'end' => 'required',
+            'link' => 'required',
+            'educator_id' => 'required'
+        ]);
         $dates = $request->date;
         $start = $request->start;
         $end = $request->end;
         $link = $request->link;
-        $educator_id = $request->educator_id;
+        $educator = User::find($request->educator_id);
+        $data = [];
         foreach($dates as $key => $date){
-            $coaching_session = [];
-            $coaching_session['date'] = $dates[$key];
-            $coaching_session['start'] = $start[$key];
-            $coaching_session['end'] = $end[$key];
-            $coaching_session['link'] = $link[$key];
-            $coaching_session['educator_id'] = $educator_id;
-            CoachingSession::create($coaching_session);
+            $mentoring_session = [];
+            $mentoring_session['date'] = $dates[$key];
+            $mentoring_session['start'] = $start[$key];
+            $mentoring_session['end'] = $end[$key];
+            $mentoring_session['link'] = $link[$key];
+            $mentoring_session['educator_id'] = $educator->id;
+            $mentoring_session = CoachingSession::create($mentoring_session);
+            $data[] = $mentoring_session;
         }
-       
-        return redirect()->route('admin-coaching-sessions')->with('success_message','Coaching session created successfully');
+
+        try{
+            Mail::to($educator->email)->send(new DatesForStudentSession($educator,$data));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+        Notification::add($educator->id,'New session dates added from admin');
+        return redirect()->route('admin-coaching-sessions')
+            ->with('success_message','Coaching session created successfully');
     }
     public function addCoachingSession(){
-        $educators = User::where('role_id',5)->get();
+    $educators = User::where('role_id',5)->get();
         return view('admin.meetings.add-coaching-sessions')
                 ->with('educators',$educators);
     }

@@ -29,6 +29,9 @@
         </tr>
         @endforeach
     </table>
+    <div class="d-flex justify-content-center">
+        {{ $group_sessions->links() }}
+    </div>
     <div class="text-right mt-5">
         <a href="{{ route('add-group-session') }}" class="orange-button">Add Group Session</a>
     </div>

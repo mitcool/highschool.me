@@ -19,10 +19,12 @@
             </tr>
             @forelse ($group_sessions as $session)
                 <tr>
-                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->local_start()->format('g:iA') }}</td>
+                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->local_start()->format('g:iA') }} </td>
                      <td></td>
                     <td class="text-right">
                         @if(in_array($session->id,$user_group_sessions))
+                            <button class="btn-enrolled">Already Booked</button>
+                        @elseif(count($session->students) > 19)
                             <button class="btn-enrolled">Already Booked</button>
                         @else
                             @if($permissions['group'])
@@ -58,7 +60,9 @@
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->local_start()->format('g:iA') }}</td>
                     <td></td>
                     <td class="text-right">
-                        @if(in_array($session->id,$user_mentoring_sessions))
+                        @if(in_array($session->id,$user_mentoring_sessions) && count($session->students) > 1)
+                            <button class="btn-enrolled">Already Booked</button>
+                        @elseif(count($session->students) > 1)
                             <button class="btn-enrolled">Already Booked</button>
                         @else
                             @if($permissions['mentoring'])
@@ -92,6 +96,8 @@
                     <td></td>
                     <td class="text-right">
                         @if(in_array($session->id,$user_coaching_sessions))
+                            <button class="btn-enrolled">Already Booked</button>
+                        @elseif(count($session->students) > 1)
                             <button class="btn-enrolled">Already Booked</button>
                         @else
                             @if($permissions['coaching'])

@@ -10,12 +10,14 @@ use Mail;
 use App\ParentStudent;
 use App\Exam;
 use App\Notification;
+use App\GroupSession;
 
 use App\Mail\SubscribtionExpired;
 use App\Mail\SubscribtionExpirationReminder;
 use App\Mail\ExamReminder;
 use App\Mail\ExamNoAttended;
 use App\Mail\ExamNoAttendedParent;
+use App\Mail\SessionReminder;
  
 class CronjobController extends Controller
 {
@@ -112,6 +114,24 @@ class CronjobController extends Controller
                 $exam->update(['reminder' => 1]);
             }
 
+        }
+    }
+
+    public function sessionsReminder(){
+
+        $group_sessions = GroupSession::where('date','>',Carbon::now())->get();
+
+        foreach($group_sessions as $group_session){
+            if($group_session->date->isTomorrow()){
+                foreach($group_session->students as $student){
+                    try{
+                        Mail::to($student->user->email)->send(new SessionReminder($group_session,$student->user));
+                    }catch(\Exception $e){
+                        info($e->getMessage());
+                    }
+                }
+            }
+            
         }
     }
 }

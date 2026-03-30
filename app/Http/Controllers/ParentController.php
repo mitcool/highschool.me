@@ -36,6 +36,7 @@ use App\HelpDesk;
 use App\LeaveRequest;
 use App\AdditionalCourse;
 use App\Notification;
+use App\Exam;
 
 use App\Mail\StudentCreated;
 use App\Mail\StudentCredentials;
@@ -97,6 +98,8 @@ class ParentController extends Controller
         $this->student_module_course_service = $student_module_course_service;
     }
     public function dashboard(){
+        $students = ParentStudent::where('parent_id',auth()->id())->get();
+        $student_ids = $students->pluck('student_id')->toArray();
         $exams = Exam::where('status',Exam::STATUS_APPOINTED)->whereIn('student_id',$student_ids)->get();
         foreach($exams as $exam){
             $hours_for_exam = 0;
