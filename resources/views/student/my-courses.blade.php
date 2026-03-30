@@ -185,11 +185,11 @@
 
     <div class="table-container mx-auto mt-5">
         <h2 class="text-center mb-4">My Courses</h2>
-        @if(auth()->user()->student_details->track == 1 || auth()->user()->student_details->track == 2)
+        {{-- @if(auth()->user()->student_details->track == 1 || auth()->user()->student_details->track == 2)
             @foreach ($needed_mandatory_courses as $message)
                 <p class="text-danger mb-0">{{ $message }}</p>
             @endforeach
-        @endif
+        @endif --}}
         <div class="table-responsive">
             <table class="table course-table">
                 <thead>

@@ -638,7 +638,7 @@ class AdminController extends Controller
         ->with('plans',$plans);
      }
      public function features(){
-        $features = Feature::all();
+        $features = Feature::paginate(10);
         $categories = FeatureCategory::all();
         return view('admin.features')
             ->with('categories', $categories)

@@ -26,7 +26,7 @@ use App\MentoringSession;
 use App\UserGroupSession;
 use App\CoachingSession;
 use App\UserMentoringSession;
-use App\UserCoachingSessions;
+use App\UserCoachingSession;
 use App\PaidGroupSession;
 use App\PaidMentoringSession;
 use App\PaidCoachingSession;
@@ -49,6 +49,7 @@ use App\Mail\CourseEnrolledStudent;
 use App\Mail\StudentReadyForExam;
 use App\Mail\StudentStartStudy;
 use App\Mail\StudentStartStudyParent;
+use App\Mail\SessionBookingConfirmation;
 
 use App\Services\StudentSessionsService;
 use App\Services\StudentModuleCourseService;
@@ -104,9 +105,24 @@ class ParentController extends Controller
     public function meetings_all(){
         $students = ParentStudent::where('parent_id',auth()->id())->get();
         $student_ids = $students->pluck('student_id')->toArray();
-        $additional_courses = AdditionalCourse::whereIn('student_id',$student_ids)->whereIn('course_type',[12,13,14])->get()->groupBy('course_type');
+       
+        $paid_group_sessions = AdditionalCourse::whereIn('student_id',$student_ids)->where('course_type',12)->count();
+        $paid_mentoring_sessions = AdditionalCourse::whereIn('student_id',$student_ids)->where('course_type',13)->count();
+        $paid_coaching_sessions = AdditionalCourse::whereIn('student_id',$student_ids)->where('course_type',14)->count();
+
+        $booked_group_sessions = UserGroupSession::whereIn('user_id',$student_ids)->count();
+        $booked_mentoring_sessions = UserGroupSession::whereIn('user_id',$student_ids)->count();
+        $booked_coaching_sessions = UserGroupSession::whereIn('user_id',$student_ids)->count();
+
+        $group_sessions_left = $paid_group_sessions - $booked_group_sessions;
+        $mentoring_sessions_left = $paid_mentoring_sessions - $booked_mentoring_sessions;
+        $coaching_sessions_left = $paid_coaching_sessions - $booked_coaching_sessions;
+
+
         return view('parent.meetings_all')
-            ->with('additional_courses',$additional_courses)
+            ->with('group_sessions_left',$group_sessions_left)
+            ->with('mentoring_sessions_left',$mentoring_sessions_left)
+            ->with('coaching_sessions_left',$coaching_sessions_left)
             ->with('students',$students);
     }
     public function meetings_student($student_id){
@@ -142,7 +158,7 @@ class ParentController extends Controller
 
         $user_group_sessions = UserGroupSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
         $user_mentoring_sessions = UserMentoringSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
-        $user_coaching_sessions = UserCoachingSessions::where('user_id',auth()->id())->pluck('session_id')->toArray();
+        $user_coaching_sessions = UserCoachingSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
         
         $permissions = $this->checkPermissionForSessionBooking($student_id);
       
@@ -935,26 +951,54 @@ class ParentController extends Controller
 
     public function  bookGroupSession($session_id){
        $user_id = auth()->user()->id;
+       $session = GroupSession::find($session_id);
        UserGroupSession::insert([
             'user_id' => $user_id,
             'session_id' => $session_id
        ]);
-       //TODO:: mails
+      try{
+         Mail::to(auth()->user()->email)->send(new SessionBookingConfirmation($session,auth()->user()));
+      }catch(\Exception $e){
+        info($e->getMessage());
+      }
 
        return redirect()->route('book-session-success')->with('success_message','The group session booked successfully');
     }
 
     public function  bookMentoringSession($session_id){
        $user_id = auth()->user()->id;
+       $session = MentoringSession::find($session_id);
        UserMentoringSession::insert([
             'user_id' => $user_id,
             'session_id' => $session_id
        ]);
 
-       //TODO:: mails
+       try{
+         Mail::to(auth()->user()->email)->send(new SessionBookingConfirmation($session,auth()->user()));
+      }catch(\Exception $e){
+        info($e->getMessage());
+      }
 
        return redirect()->route('book-session-success')->with('success_message','The group session booked successfully');
     }
+
+     public function  bookCoachingSession($session_id){
+       $user_id = auth()->user()->id;
+       $session = CoachingSession::find($session_id);
+       UserCoachingSession::insert([
+            'user_id' => $user_id,
+            'session_id' => $session_id
+       ]);
+
+       try{
+         Mail::to(auth()->user()->email)->send(new SessionBookingConfirmation($session,auth()->user()));
+      }catch(\Exception $e){
+        info($e->getMessage());
+      }
+
+       return redirect()->route('book-session-success')->with('success_message','The group session booked successfully');
+    }
+
 
     public function bookSessionSuccess(){
         return view('parent.book-session-success');

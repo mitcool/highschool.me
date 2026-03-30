@@ -10,6 +10,9 @@ use App\PaidCoachingSession;
 use App\CurriculumType;
 use App\AdditionalCourse;
 
+use Mail;
+use App\Mail\CourseBooked;
+
 class StudentModuleCourseService{
 
     public function get_courses(){
@@ -47,6 +50,7 @@ class StudentModuleCourseService{
 
     public function recordCourses($student_id){
         $courses_types = CurriculumType::where('id','!=',11)->get();
+        $courses = $this->get_courses();
         foreach($courses_types as $courses_type){
              if(Cookie::has('course-type-count-'.$courses_type->id)){
                  $booked_courses = Cookie::get('course-type-count-'.$courses_type->id);
@@ -71,5 +75,12 @@ class StudentModuleCourseService{
              }
              Cookie::queue(Cookie::forget('course-type-count-'.$courses_type->id));
         }
+        try{
+            Mail::to(auth()->user()->email)->send(new CourseBooked($courses,auth()->user()));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+
+        Notification::add(auth()->id(),'Congratulations your student can enroll new module course');
     }
 }

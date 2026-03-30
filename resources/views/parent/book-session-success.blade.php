@@ -1,4 +1,4 @@
-@extends('parent.dashboard')
+@extends('student.dashboard')
 
 @section('content')
     <div class="mx-auto jumbotron bg-white">
@@ -7,7 +7,7 @@
             <h1 class="font-weight-bold text-center" style="margin:20px 0;">Your Appointments Are Confirmed</h1>
             <p>You will receive all session details via email.</p>
             <hr>
-            <a class="orange-button" href="{{ route('parent.meetings') }}" style="margin:20px 0;">Check your meetings</a>
+            <a class="orange-button" href="{{ route('student.meetings') }}" style="margin:20px 0;">Check your meetings</a>
         </div>
     </div>
 @endsection

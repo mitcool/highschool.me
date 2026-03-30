@@ -15,6 +15,7 @@
     <div class="row text-left" id="info">
         <div class="col-md-6">
             <p class=" text-primary"> <span class="font-weight-bold text-dark">Student name:</span> <span class="font-italic">"{{ $student->student->fullname() }}"</span> </p>
+            <p><span class="font-weight-bold">Email:</span> {{ $student->student->email }}</p>
             <p><span class="font-weight-bold">Born:</span> {{ $student->student->date_of_birth() }}</p>
             <p><span class="font-weight-bold">Track:</span> {{ $student->track_name() }}</p>
             <p><span class="font-weight-bold">Date of Submitions:</span> {{ $student->student->created_at->format('d.m.Y') }}</p>
@@ -50,6 +51,15 @@
                         @endif
                 </tr>
             @endforeach
+
+                <tr>
+                    <td colspan="2"></td>
+                    <td colspan="2" class="text-right">
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#reject-modal">
+                            DELETE STUDENT FROM THE SYSTEM
+                        </button>
+                    </td>
+                </tr>
         </table>
       
         <hr>
@@ -73,7 +83,32 @@
             </div>
             <button style="background:#045397;color:white;" class="btn mt-2">Send Feedback</button>
         </form>
+</div>
 
+{{-- Reject modal --}}
+<div class="modal fade" id="reject-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <div>
+                <h5 class="modal-title" id="exampleModalLongTitle">Write feedback to the parent</h5><br>
+            </div>
+            
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form action="{{ route('delete-student',$student->id) }}" method="POST" class="confirm-first" id="reject-form">
+            {{ csrf_field() }}
+            <textarea name="feedback" required class="form-control" id="" cols="30" rows="10"></textarea>
+                </form>
+        </div>
+        <div class="modal-footer">
+            <button  class="btn btn-danger" form="reject-form">DELETE STUDENT FROM THE SYSTEM</button>
+        </div>
+        </div>
+    </div>
 </div>
 @endsection
 

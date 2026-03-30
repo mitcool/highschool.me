@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class GroupSession extends Model
 {
@@ -17,4 +18,15 @@ class GroupSession extends Model
         'start' => 'datetime',
         'end' => 'datetime',
     ];
+
+    public function local_start(){
+        return Carbon::parse($this->start)->setTimezone(session('timezone'));
+    }
+    public function local_end(){
+        return Carbon::parse($this->end)->setTimezone(session('timezone'));
+    }
+
+    public function type(){
+        return 'Group Session';
+    }
 }

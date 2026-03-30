@@ -70,7 +70,6 @@ class Exam extends Model
 
     public function is_active(){
         $date = Carbon::parse($this->datetime);
-        $now = Carbon::now('UTC');
         
         if($this->type == 2){
             $exam_time = 168;
@@ -81,8 +80,10 @@ class Exam extends Model
         else{
             $exam_time = 2;
         }
-        
-        return $date->subHours($exam_time) < $now;
+        $start = $date;
+        $end = $date->copy()->addHours($exam_time);
+        $isBetween = Carbon::now()->between($start, $end);
+        return $isBetween;
     }
 
     public function frauds(){

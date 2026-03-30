@@ -136,7 +136,9 @@
             </div>
         </div>
         <div style="margin:50px 0;">
+			@if(auth()->user()->student_details->status == 3)
 			<a href="{{ route('student.single-study-mentor-chat',$mentor->slug) }}" class="orange-button mt-4" style="text-decoration: none;">Start now</a>
+			@endif
 		</div>
 	</div>
 @endsection

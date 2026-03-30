@@ -9,6 +9,7 @@
             <th>Date</th>
             <th>Start Time</th>
             <th>End Time</th>
+            <th>Educator</th>
             <th>Link</th>
         </tr>
         @foreach ($mentoring_sessions as $session )
@@ -16,6 +17,7 @@
             <th>{{ $session->date->format('d.m.Y') }}</th>
             <th>{{ $session->start->format('H:i') }}</th>
             <th>{{ $session->end->format('H:i') }}</th>
+            <th>{{ $session->educator->fullname() }}</th>
             <th>{{ $session->link }}</th>
         </tr>
         @endforeach

@@ -19,22 +19,23 @@
             </tr>
             @forelse ($group_sessions as $session)
                 <tr>
-                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
+                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->local_start()->format('g:iA') }}</td>
                      <td></td>
                     <td class="text-right">
-                        @if(in_array($session->session_id,$user_group_sessions))
+                        @if(in_array($session->id,$user_group_sessions))
                             <button class="btn-enrolled">Already Booked</button>
                         @else
                             @if($permissions['group'])
+                            
                                 <form action="{{ route('book-group-session',$session->id) }}" method="POST" id="session-form-{{ $session->id }}">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="student_id" value="{{ $student_id }}">
-                                    <button class="btn-enroll">Confirm Appointments</button>
+                                    <button class="btn-enroll" >Confirm Appointments</button>
                                 </form>
-                            @else
+                            {{-- @else
                                 <a href="{{ route('parent.student.sessions',$student_id) }}">
                                     <button class="btn-enroll">Buy now</button>
-                                </a>
+                                </a> --}}
                             @endif
                         @endif
                     </td>
@@ -54,7 +55,7 @@
             </tr>
             @forelse ($mentoring_sessions as $session)
                 <tr>
-                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
+                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->local_start()->format('g:iA') }}</td>
                     <td></td>
                     <td class="text-right">
                         @if(in_array($session->id,$user_mentoring_sessions))
@@ -66,8 +67,8 @@
                                     <input type="hidden" name="student_id" value="{{ $student_id }}">
                                     <button class="btn-enroll">Confirm Appointments</button>
                                 </form>
-                            @else
-                                <a href="{{ route('parent.student.sessions',$student_id) }}" class="btn-enroll">Buy now</a>
+                            {{-- @else
+                                <a href="{{ route('parent.student.sessions',$student_id) }}" class="btn-enroll">Buy now</a> --}}
                             @endif
                         @endif
                     </td>
@@ -87,7 +88,7 @@
             </tr>
             @forelse ($coaching_sessions as $session)
                 <tr>
-                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
+                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->local_start()->format('g:iA') }}</td>
                     <td></td>
                     <td class="text-right">
                         @if(in_array($session->id,$user_coaching_sessions))
@@ -99,8 +100,8 @@
                                     <input type="hidden" name="student_id" value="{{ $student_id }}">
                                     <button class="btn-enroll">Confirm Appointments</button>
                                 </form>
-                            @else
-                                <a href="{{ route('parent.student.sessions',$student_id) }}" class="btn-enroll">Buy now</a>
+                            {{-- @else
+                                <a href="{{ route('parent.student.sessions',$student_id) }}" class="btn-enroll">Buy now</a> --}}
                             @endif
                         @endif
                     </td>

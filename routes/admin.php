@@ -183,6 +183,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/students/documents/{student_id}','AdminStudentController@approveDocuments')->name('approve.student');
 	Route::post('/approve/document/{action}','AdminStudentController@approveSingleDocument')->name('approve-document');
 	Route::post('/approve/document','AdminStudentController@wrongDocument')->name('wrong-document');
+	Route::post('/delete-student/{student_id}','AdminStudentController@deleteStudent')->name('delete-student');
 
 	//Student Overview
 	Route::get('/admin-student-overview','AdminStudentController@overview')->name('admin-student-overview');

@@ -38,6 +38,14 @@
         .nav-item a {
             width: 100%!important;
         }
+        .modal-content {
+            border-radius: 30px !important;
+            border: 5px solid #025297 !important;
+        }
+        .error-msg {
+            border-radius: 30px !important;
+            border: 5px solid rgb(141, 37, 37) !important;
+        }
     </style>
 
 </head>
@@ -133,28 +141,63 @@
                 </ul>
             </div>
 
-            @if(Session::has('success_message'))
-                <div class="alert alert-success text-center alert-fixed shadow" role="alert">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {{ Session::get('success_message') }}
-                </div>
-            @endif
+           @if(Session::has('success_message'))
+                        <div class="modal fade" id="message_modal">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body text-center">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <div></div>
+                                        {!! Session::get('success_message') !!}
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 50px; color:black; margin-bottom: 15px;">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div> 
+                    @endif
 
-            @if(Session::has('error'))
-                <div class="alert alert-danger text-center alert-fixed shadow" role="alert">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {{ Session::get('error') }}
-                </div>
-            @endif
+                    @if(Session::has('error'))
+                        <div class="modal fade" id="message_modal">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content error-msg">
+                                <div class="modal-body text-center">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <div></div>
+                                        {{ Session::get('error') }}
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 50px; color:black; margin-bottom: 15px;">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div> 
+                    @endif
 
-            @if(count($errors) > 0)
-                @foreach($errors->all() as $error)
-                    <div class="alert alert-danger text-center alert-fixed shadow" role="alert">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        {{ $error }}
-                    </div>
-                @endforeach
-            @endif
+                    @if(count($errors) > 0)
+                        <div class="modal fade" id="message_modal">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content error-msg">
+                                <div class="modal-body text-center">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <div>
+                                            @foreach($errors->all() as $error)
+                                             <p class="text-left"> {{ $error }} </p>  
+                                            @endforeach
+                                        </div>
+                                        
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 50px; color:black; margin-bottom: 15px;">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        @endif
 
             @yield('content')
                 
@@ -194,6 +237,8 @@
 			},
 			body: JSON.stringify({ timezone })
 		});
+
+        $('#message_modal').modal('show');
     </script>
 </body>
 

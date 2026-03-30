@@ -38,7 +38,7 @@ use App\MentoringSession;
 use App\CoachingSession;
 use App\UserGroupSession;
 use App\UserMentoringSession;
-use App\UserCoachingSessions;
+use App\UserCoachingSession;
 use App\AdditionalCourse;
 use App\ParentStudent;
 use App\StudyMentor;
@@ -170,9 +170,11 @@ class StudentController extends Controller
             $total_exam_seconds = 7200; // 2 hours
         }
 
-        $now_and_exam_ends_diff = $now->diffInSeconds($time_started->addHours(2));
-        $time_left = abs($total_exam_seconds - $now_and_exam_ends_diff);
+        $now_copy = $now->copy();
+        $time_started_copy = $time_started->copy();
+        $time_left  = $total_exam_seconds - ($now_copy->timestamp - $time_started->timestamp);
 
+        
         if($exam->type == 2){
             $questions = null;
         }
@@ -377,6 +379,7 @@ class StudentController extends Controller
 
 
     public function studyMentor(){
+        
         if(auth()->user()->student_details->track == 4){
             $categories_ids = [];
             foreach(auth()->user()->enrolled_courses as $enrolled_course){
@@ -394,6 +397,9 @@ class StudentController extends Controller
     }
 
     public function singleStudyMentor($slug){
+        if(auth()->user()->student_details->status < 3){
+            return redirect()->route('student.dashboard')->with('error','Please complete your registration process to have access to STUDY MENTOR');
+        }
         $mentor = StudyMentor::where('slug',$slug)->first();
         return view('student.single-study-mentor')
             ->with('mentor',$mentor);
@@ -803,10 +809,9 @@ class StudentController extends Controller
 
         $user_group_sessions = UserGroupSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
         $user_mentoring_sessions = UserMentoringSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
-        $user_coaching_sessions = UserCoachingSessions::where('user_id',auth()->id())->pluck('session_id')->toArray();
+        $user_coaching_sessions = UserCoachingSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
         $student_id = auth()->id();
         $permissions = $this->checkPermissionForSessionBooking($student_id);
-      
         return view('student.meetings')
             ->with('group_sessions',$group_sessions)
             ->with('user_group_sessions',$user_group_sessions)

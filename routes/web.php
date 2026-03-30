@@ -80,12 +80,6 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::get('/session-pay-success/{student_id}','ParentController@studentSessionsSuccess')->name('session-pay-success');
 
-	Route::post('/book-group-session/{session_id}','ParentController@bookGroupSession')->name('book-group-session');
-
-	Route::post('/book-mentoring-session/{session_id}','ParentController@bookMentoringSession')->name('book-mentoring-session');
-
-	Route::get('/book-session-success','ParentController@bookSessionSuccess')->name('book-session-success');
-
 	Route::post('/enroll/{course_id}','ParentController@enroll')->name('enroll');
 
 	Route::post('/update-enrolled-course-status/{enrolled_course_id}','ParentController@updateEnrolledCourseStatus')->name('update-enrolled-course-status');
@@ -137,6 +131,10 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
     Route::get('/digital-transcript/{student_id}','StudentController@digitalTransript')->name('student.generate-pdf-transcript');
  	Route::post('/record-fraud','StudentController@recordFraud')->name('record-fraud');
 	Route::get('/meetings','StudentController@meetings')->name('student.meetings');
+	Route::post('/book-group-session/{session_id}','ParentController@bookGroupSession')->name('book-group-session');
+	Route::post('/book-mentoring-session/{session_id}','ParentController@bookMentoringSession')->name('book-mentoring-session');
+	Route::post('/book-coaching-session/{session_id}','ParentController@bookCoachingSession')->name('book-coaching-session');
+	Route::get('/book-session-success','ParentController@bookSessionSuccess')->name('book-session-success');
 	#notifications
 	Route::get('/all-notifications', 'StudentController@showNotifications')->name('student.notifications');
 });

@@ -365,7 +365,7 @@
                                                 </div>
                                                     
                                                     @if(in_array($cc->id,$enrolled_courses_ids))
-                                                         <button class="btn btn-disabled">Enrolled</button>
+                                                         <button class="btn btn-disabled"></button>
                                                     @else
                                                         @if($curriculumTypes[$cc->curriculum_type_id-1]->permission)
                                                             <form class="confirm-first enroll-form" action="{{ route('enroll',$cc->id) }}" method="POST">

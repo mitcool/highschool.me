@@ -62,14 +62,14 @@
 
         @php
             $documentTypes = [
-                1 => 'Parents IDs (Passports or Government IDs)',
-                2 => 'Custody Document (if applicable)',
-                3 => 'Proof of Residence',
-                4 => 'Student ID (Passport or Government ID)',
-                5 => 'Student Birth Certificate',
-                6 => 'Latest School Transcript / Report Card',
-                7 => 'Withdrawal Confirmation from Previous School (optional)',
-                8 => 'IEP / 504 Plan with Medical Documentation (optional)',
+                0 => 'Parents IDs (Passports or Government IDs)',
+                1 => 'Custody Document (if applicable)',
+                2 => 'Proof of Residence',
+                3 => 'Student ID (Passport or Government ID)',
+                4 => 'Student Birth Certificate',
+                5 => 'Latest School Transcript / Report Card',
+                6 => 'Withdrawal Confirmation from Previous School (optional)',
+                7 => 'IEP / 504 Plan with Medical Documentation (optional)',
             ];
         @endphp
 

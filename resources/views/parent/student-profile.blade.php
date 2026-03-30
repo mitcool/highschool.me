@@ -246,7 +246,7 @@
                 <input type="radio" checked name="type" value="1" class="radio"> Per Year  <span style="color:#E9580C">($1900.00)</span><br>
                 <input type="radio" name="type"  value="2" class="radio"> Per Month  <span style="color:#E9580C">($190.00)</span>
                 <p>Mandatory International Transfer Program Fee:</p>
-                <p class="mb-0 font-weight-bold mt-3">You can find more information about the Payment Plans <a href="{{ route('tuition') }}">HERE.</a></p>
+                <p class="mb-0 font-weight-bold mt-3">You can find more information about the Payment Plans <a target="_blank" href="{{ route('standard-high-school') }}">HERE.</a></p>
                 <hr>
                 <div class="d-flex justify-content-between">
                     <div class="total">
@@ -274,7 +274,7 @@
                 <div>
                     <input type="radio" name="payment_type" class="payment-type" value="1"> Yearly Fee 
                 </div>
-                <p class="mb-0 font-weight-bold mt-3">You can find more information about the Payment Plans <a href="{{ route('standard-high-school') }}">HERE.</a></p>
+                <p class="mb-0 font-weight-bold mt-3">You can find more information about the Payment Plans <a target="_blank" href="{{ route('standard-high-school') }}">HERE.</a></p>
                 <hr>
                 <div class="d-flex justify-content-between">
                     <div class="total">

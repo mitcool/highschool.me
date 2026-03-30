@@ -51,6 +51,8 @@
                 </div>
             </li>
         @endforeach
+
+        <div class="d-flex justify-content-center">{{ $features->links() }}</div>
        
     </ul>
 </div>

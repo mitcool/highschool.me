@@ -14,11 +14,13 @@ use App\StudentEnrolledCourse;
 use App\Notification;
 
 use App\Mail\WrongDocument;
+use App\Mail\ApplicationRejection;
 
 class AdminStudentController extends Controller
 {
     public function studentDocuments(){
-        $students = ParentStudent::orderBy('id','desc')->whereIn('status',[1,4])->get();   //pending approval or check reupload documents
+        $students = ParentStudent::orderBy('id','desc')->whereIn('status',[1,4])->get();
+       //pending approval or check reupload documents
         return view('admin.student-documents')
             ->with('students',$students);
     }
@@ -36,6 +38,7 @@ class AdminStudentController extends Controller
             'is_disabled' =>  $is_disabled 
         ]);
         Notification::add($parent_student->parent_id,'Congratulations your documents have been approved');
+        //TODO::email
         return redirect()->route('admin-student-documents')->with('success_message','Documentation has been approved');
 
     }
@@ -108,6 +111,29 @@ class AdminStudentController extends Controller
         $uploaded_documents = StudentDocument::where('student_id', $student_id)->get();
 
         return view('admin.student-uploaded-documents')->with('uploaded_documents', $uploaded_documents);
+    }
+
+    public function deleteStudent(Request $request,$student_id){
+        $parent_student = ParentStudent::find($student_id);
+        $feedback = $request->feedback;
+
+        $student = $parent_student->student;
+        $parent = $parent_student->parent;
+
+        $student->delete();
+        $parent_student->delete();
+
+        try {
+            Mail::to($parent->email)->send(new ApplicationRejection($parent,$student,$feedback));
+        } catch (\Exception $e) {
+            info($e->getMessage());
+        }
+
+        Notification::add($parent->id,'A student application has been rejected');
+        Notification::add(auth()->id(),'Congratulations you rejected a student application successfully');
+
+        return redirect()->route('admin-student-documents')->with('success_message','Student has been removed from the system');
+
     }
    
 }
