@@ -29,4 +29,8 @@ class CoachingSession extends Model
     public function type(){
         return 'Carreer Coaching Session';
     }
+
+    public function educator(){
+        return $this->hasOne('App\User','id','educator_id');
+    }
 }

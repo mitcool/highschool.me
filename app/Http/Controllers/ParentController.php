@@ -97,6 +97,33 @@ class ParentController extends Controller
         $this->student_module_course_service = $student_module_course_service;
     }
     public function dashboard(){
+        $exams = Exam::where('status',Exam::STATUS_APPOINTED)->whereIn('student_id',$student_ids)->get();
+        foreach($exams as $exam){
+            $hours_for_exam = 0;
+            if($exam->type == 1 && $exam->student->student_details->is_disabled == 1){
+                $hours_for_exam = Exam::TIME_DISABLED_STUDENT;
+            }
+            elseif($exam->type == 1){
+                $hours_for_exam = Exam::TIME_REGULAR;
+            }
+            else{
+                $hours_for_exam = Exam::TIME_ESSAY;
+            }
+            if($exam->datetime->copy()->addHours($hours_for_exam) < Carbon::now()){
+               
+                 $exam->update([
+                    'status' => Exam::STATUS_EVALUATED,
+                    'grade' => 0
+                ]);
+
+                try{
+                    Mail::to($exam->student->email)->send(new ExamNoAttended($exam));
+                }catch(\Exception $e){
+                    info($e->getMessage());
+                }
+            }
+            Notification::add($exam->student_id,'You have been marked as failed for the '.$exam->course->course->title.' examination due to non-attendance.');
+        }
         return view('parent.welcome');
     }
     public function createStudent(){

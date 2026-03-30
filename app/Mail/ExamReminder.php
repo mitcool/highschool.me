@@ -7,18 +7,18 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class AIUserMail extends Mailable
+class ExamReminder extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
-    public function __construct($user)
+    public $exam;
+    public function __construct($exam)
     {
-        $this->user = $user;
+        $this->exam = $exam;
     }
 
     public function build()
     {
-        return $this->view('email.ai-user-email')->with('user',$this->user);
+        return $this->view('email.exam-reminder')->with('exam',$this->exam);
     }
 }

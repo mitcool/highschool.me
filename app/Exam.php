@@ -13,7 +13,7 @@ class Exam extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['datetime','course_id','student_id','educator_id','type','status','grade','comment','pre_exam','passed_at'];
+    protected $fillable = ['datetime','course_id','student_id','educator_id','type','status','grade','comment','pre_exam','passed_at','reminder'];
 
      protected $casts = [
         'datetime' => 'datetime',
@@ -26,6 +26,11 @@ class Exam extends Model
 
     const TYPE_OPEN_EXAM  = 1;
     const TYPE_ESSAY = 2;
+
+    //in hours
+    const TIME_REGULAR = 2;
+    const TIME_DISABLED_STUDENT = 5;
+    const TIME_ESSAY = 168;
 
     public function student(){
         return $this->hasOne('App\User','id','student_id');
