@@ -20,7 +20,7 @@
             @else
                 @if(count($answers) > 0)
                 <div class="text-right">
-                    <a class="text-decoration-none btn btn-secondary" href="{{ asset('exams') }}/{{ $exam->id }}/{{ $answers[0]->answer }}" target="_blank" download"><i class="fas fa-download"></i> Download here</a>
+                    <a class="text-decoration-none btn btn-secondary" href="{{ asset('exams') }}/{{ $exam->id }}/{{ $answers[0]->answer }}" target="_blank" download><i class="fas fa-download"></i> Download here</a>
                 </div>
                 @else
                 <p>You didn't submit anything</p>

@@ -34,9 +34,23 @@
             <select type="email" required name="grade" class="form-control" readonly>
                 <option value="0" selected disabled>International Transfer Program</option>
             </select>
+            @elseif($student->student_details->track == 4)
+                @if(session()->has('upgrade_option') && session()->get('upgrade_option') == 3)
+                 <select type="email" required name="grade" class="form-control" readonly>
+                    <option value="0" selected disabled>International Transfer Program</option>
+                </select>
+                @else
+                 <select  required name="grade" class="form-control">
+                    <option value="" selected disabled>Please select</option>
+                    <option {{ old('grade') == 9 ? ' selected ' : '' }} value="9">9th Grade</option>
+                    <option {{ old('grade') == 10 ? ' selected ' : '' }} value="10">10th Grade</option>
+                    <option {{ old('grade') == 11 ? ' selected ' : '' }} value="11">11th Grade</option>
+                    <option {{ old('grade') == 12 ? ' selected ' : '' }} value="12">12th Grade</option>
+                </select>
+                @endif
             @else
           
-            <select type="email" required name="grade" class="form-control">
+            <select  required name="grade" class="form-control">
                 <option value="" selected disabled>Please select</option>
                 <option {{ old('grade') == 9 ? ' selected ' : '' }} value="9">9th Grade</option>
                 <option {{ old('grade') == 10 ? ' selected ' : '' }} value="10">10th Grade</option>

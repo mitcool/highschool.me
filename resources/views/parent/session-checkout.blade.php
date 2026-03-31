@@ -20,11 +20,13 @@
         <p class="h3  mt-2" style="color:#045397;">Service Summary</p>
         <hr>
         @foreach ($sessions as $session )
-            <div style="font-size:1rem;display:flex;justify-content:space-between;margin-top:4px;">
-                <span>{{ $session->name }}  ({{ $session->session_count }} x ${{ $session->price() }})</span>
-                <span class="font-weight-bold">${{ $session->formatted_total }}</span>
-            </div>
-            <hr/>
+            @if($session->session_count > 0)
+                <div style="font-size:1rem;display:flex;justify-content:space-between;margin-top:4px;">
+                    <span>{{ $session->name }}  ({{ $session->session_count }} x ${{ $session->price() }})</span>
+                    <span class="font-weight-bold">${{ $session->formatted_total }}</span>
+                </div>
+                <hr/>
+            @endif
         @endforeach
         <div style="font-size:1.1rem;display:flex;justify-content:space-between;margin-top:4px;">
             <span class="font-weight-bold">Total amount:</span>

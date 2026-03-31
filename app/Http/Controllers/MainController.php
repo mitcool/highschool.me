@@ -82,6 +82,7 @@ use App\Feature;
 use App\ContactPage;
 use App\HelpDesk;
 use App\Notification;
+use App\EarlyRegistration;
 
 use App\Http\Requests\ContactRequest;
 use App\Http\Requests\AdvisoryRequest;
@@ -91,6 +92,8 @@ use App\Http\Requests\SendContactRequest;
 use App\Http\Requests\ContactModalRequest;
 use App\Http\Requests\PhoneContactRequest;
 use App\Http\Requests\ProgramContactRequest;
+
+use App\Mail\EarlyRegistrationEmail;
 
 class MainController extends Controller
 {
@@ -105,13 +108,30 @@ class MainController extends Controller
     return view('pages.welcome');
   }
 
+  public function earlyRegistration(){
+    return view('pages.about.early-registration');
+  }
 
-  public function showStudiesPages(Request $request,$slug){
-    $translation = StudyTranslation::where('locale',app()->currentLocale())->where('slug',$slug)->first() ?? abort(404);
-    $study = Study::find($translation->study_id);
-    $hreflang_en = StudyTranslation::where('study_id',$study->id)->where('locale','en')->first()->slug;
-    $hreflang_de = StudyTranslation::where('study_id',$study->id)->where('locale','de')->first()->slug;
-    return view('pages.programs.studies',compact('study','hreflang_de','hreflang_en'));
+  public function earlyRegistrationSubmit(Request $request){
+     $request->validate([
+        'name'=> 'required|max:20',
+        'middlename'=> 'max:20',
+        'surname'=> 'required|max:20',
+        'email'=> 'required|email',
+        'education_option'=> 'required',
+        'message'=> 'max:2000',
+        'agree'=> 'required',
+        'g-recaptcha-response'=> 'required|recaptcha',
+     ]);
+     $application = $request->only('name','middlename','surname','email','education_option','message');
+     $registration = EarlyRegistration::create($application);
+     try{
+        Mail::to(self::MATHIAS_EMAIL)->send(new EarlyRegistrationEmail($registration));
+     }catch(\Exception $e){
+        info($e->getMessage());
+     }
+
+     return redirect()->back()->with('success_message','Your apprlication has been sent successfully');
   }
 
   public function sendEmail(AdvisoryRequest $request){

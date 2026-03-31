@@ -176,6 +176,10 @@ Route::post('/parent/pay/plan/{student_id}','ParentController@parentPayPlan')->n
 //Public routes
 Route::get('/','MainController@showWelcome')->name('welcome');
 
+Route::get('/early-registration','MainController@earlyRegistration')->name('early-registration');
+
+Route::post('/early-registration','MainController@earlyRegistrationSubmit')->name('early-registration-submit');
+
 Route::get('/school-overview','AboutController@showhighschoolOverview')->name('school-overview');
 
 Route::get('/mission-statement','AboutController@showMissionStatement')->name('mission-statement');

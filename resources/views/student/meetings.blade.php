@@ -62,7 +62,7 @@
                     <td class="text-right">
                         @if(in_array($session->id,$user_mentoring_sessions) && count($session->students) > 1)
                             <button class="btn-enrolled">Already Booked</button>
-                        @elseif(count($session->students) > 1)
+                        @elseif(count($session->students) >= 1)
                             <button class="btn-enrolled">Already Booked</button>
                         @else
                             @if($permissions['mentoring'])
