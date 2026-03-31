@@ -51,6 +51,7 @@ use App\Mail\StudentReadyForExam;
 use App\Mail\StudentStartStudy;
 use App\Mail\StudentStartStudyParent;
 use App\Mail\SessionBookingConfirmation;
+use App\Mail\ExamNoAttended;
 
 use App\Services\StudentSessionsService;
 use App\Services\StudentModuleCourseService;
