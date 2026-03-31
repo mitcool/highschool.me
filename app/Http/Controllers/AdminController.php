@@ -1336,12 +1336,14 @@ class AdminController extends Controller
     }
 
     public function createEducator(Request $request){
-         $request->validate([
+        $request->validate([
             'firstname' => 'required',
             'middlename' => 'nullable',
             'surname' => 'required',
             'email' => 'required|email:rfc,dns|unique:users,email',
-            'categories' => 'required'
+            'categories' => 'required',
+            'employment_type' => 'required|in:0,1',
+            'is_counsellor' => 'required|in:0,1',
         ]);
         $educator_role_id = 5;
         $categories = $request->categories;
@@ -1353,6 +1355,8 @@ class AdminController extends Controller
             'surname' => $request->surname,
             'middlename' => $request->middlename,
             'email' => $request->email,
+            'employment_type' => (int) $request->employment_type,
+            'is_counsellor' => (int) $request->is_counsellor,
             'role_id' => $educator_role_id,
             'password' => Hash::make($password),
             'confirmation_code' => $confirmation_code,
@@ -1376,15 +1380,35 @@ class AdminController extends Controller
     }
 
     public function editEducator(Request $request){
-        $educator = $request->except('_token','id');
+        $request->validate([
+            'id' => 'required|exists:users,id',
+            'firstname' => 'required',
+            'middlename' => 'nullable',
+            'surname' => 'required',
+            'email' => 'required|email:rfc,dns|unique:users,email,'.$request->id,
+            'categories' => 'required',
+            'employment_type' => 'required|in:0,1',
+            'is_counsellor' => 'required|in:0,1',
+        ]);
+
         $id = $request->id;
         $categories = $request->categories;
+        $educator = [
+            'name' => $request->firstname,
+            'middlename' => $request->middlename,
+            'surname' => $request->surname,
+            'email' => $request->email,
+            'employment_type' => (int) $request->employment_type,
+            'is_counsellor' => (int) $request->is_counsellor,
+        ];
+
         User::find($id)->update($educator);
         EducatorCategory::where('educator_id',$id)->delete();
         foreach($categories as $category_id){
             EducatorCategory::insert([
                 'educator_id' => $id,
-                'category_id' => $category_id
+                'category_id' => $category_id,
+                'status' => 1
             ]);
         }
         return redirect()->back()->with('success_message','Educator updated successfully');

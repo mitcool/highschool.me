@@ -87,7 +87,7 @@
                       <hr class="m-0">
                       <a href="{{ route('esol') }}" style="text-transform: uppercase;">English Courses (ESOL)</a>
                       <hr class="m-0">
-                      <a href="{{ route('learning-mentoring') }}" style="text-transform: uppercase;">Learning/Mentoring/Coaching</a>
+                      <a href="{{ route('learning-mentoring') }}" style="text-transform: uppercase;">Live Sessions & Coaching</a>
                       <hr class="m-0">
                   </div>
               </div>

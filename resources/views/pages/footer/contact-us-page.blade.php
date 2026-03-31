@@ -102,7 +102,7 @@
 	.contact-categories {
 		background-color: #EF6024;
 		color: white;
-		padding: 20px;
+		padding: 24px 20px;
 		margin: 20px 0;
 		border-radius: 15px;
 		height: 100%;
@@ -119,6 +119,21 @@
 	}
 	.category-description {
 		font-size: 14px;
+		margin-bottom: 0;
+	}
+	.category-icon-frame {
+		width: 115px;
+		height: 115px;
+		margin: 0 auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.category-icon {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		display: block;
 	}
 	@media(max-width:800px){
 		#phone{
@@ -166,7 +181,9 @@
 			@foreach($categories as $cat)
 			<div class="col-md-4 category-container">
 				<div class="contact-categories">
-					<img src="{{ asset('/images/contact-page') }}/{{ $cat->icon }}" style="width: 115px; height: 110px;" class="pt-2">
+					<div class="category-icon-frame mt-3">
+						<img src="{{ asset('/images/contact-page') }}/{{ $cat->icon }}" class="category-icon" alt="{{ $cat->topic }}">
+					</div>
 					<p class="mt-3 category-topic">{{ $cat->topic }}</p>
 					<p class="category-description">{{ $cat->description }}</p>
 				</div>
@@ -178,7 +195,7 @@
 <div class="col-md-10">
 	
 </div>
-<div class="row col-md-10 mx-auto mb-0 pt-5 pb-5">
+<div class="row col-md-8 mx-auto mb-0 pt-5 pb-5">
 	<div class="col-md-6">
 		<form action="/send-email-modal" method="POST"  id="contact-form">
   		{{csrf_field()}}

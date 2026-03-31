@@ -689,6 +689,7 @@ class StudentController extends Controller
         AmbassadorActivity::insert([
             'link' => 'Points from Self Assessment Test',
             'user_id'=> auth()->id(),
+            'status' => 'Approved',
             'redeem_points'=> $score,
             'created_at' => Carbon::now()
         ]);

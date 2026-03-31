@@ -15,6 +15,7 @@ use App\Notification;
 
 use App\Mail\WrongDocument;
 use App\Mail\ApplicationRejection;
+use App\Mail\AcceptedDocuments;
 
 class AdminStudentController extends Controller
 {
@@ -37,8 +38,15 @@ class AdminStudentController extends Controller
             'status'=> $approved_status,
             'is_disabled' =>  $is_disabled 
         ]);
+
         Notification::add($parent_student->parent_id,'Congratulations your documents have been approved');
-        //TODO::email
+
+        try{
+            Mail::to($parent_student->parent->email)->send(new AcceptedDocuments);
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+
         return redirect()->route('admin-student-documents')->with('success_message','Documentation has been approved');
 
     }
@@ -61,6 +69,9 @@ class AdminStudentController extends Controller
             'document_id' => $document_id,
             'count' => $count_approved_documents
         ];
+
+        //maybe here would be good to place notification 
+
         return $response;
     }
 

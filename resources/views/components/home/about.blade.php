@@ -1,4 +1,4 @@
-<section  class="row space white-section">
+<section  class="row space">
   <div class="col-md-12">
     <h2 class="text-center blue-color section-headings">ONSITES High School Florida: Absolutely Exclusive & Radically Open</h2>
     <hr class="blue-hr">

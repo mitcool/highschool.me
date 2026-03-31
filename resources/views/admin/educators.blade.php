@@ -9,7 +9,7 @@
 <div class="container my-3 shadow bg-white p-3">
     <h1 class="text-center">Add New Educator</h1>
     <hr/>
-     <form action="{{ route('create-educator') }}" method="POST" >
+     <form action="{{ route('create-educator') }}" method="POST" class="educator-form">
         {{ csrf_field() }}
         <label class="font-weight-bold mb-0" for="">First Name</label>
         <input required class="form-control" name="firstname" value=""/><br>
@@ -19,11 +19,27 @@
         <input required class="form-control" name="surname" value=""/><br>
         <label class="font-weight-bold mb-0" for="">Email</label>
         <input required class="form-control" type="email" name="email" /><br>
+        <label class="font-weight-bold mb-0 d-block" for="">Employment Type</label>
+        <div class="mt-2 mb-3">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="employment_type" id="employment-type-freelancer" value="0" {{ old('employment_type') == '0' ? 'checked' : '' }} required>
+                <label class="form-check-label" for="employment-type-freelancer">Freelancer</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="employment_type" id="employment-type-employee" value="1" {{ old('employment_type') == '1' ? 'checked' : '' }} required>
+                <label class="form-check-label" for="employment-type-employee">Employee</label>
+            </div>
+        </div>
+        <div class="form-check mb-3">
+            <input type="hidden" name="is_counsellor" value="0">
+            <input class="form-check-input" type="checkbox" name="is_counsellor" id="is-counsellor" value="1" {{ old('is_counsellor') == '1' ? 'checked' : '' }}>
+            <label class="form-check-label font-weight-bold" for="is-counsellor">Counsellor</label>
+        </div>
         <label class="font-weight-bold mb-0" for="">Categories</label>  
         <div class="text-left row mt-2"> 
             @foreach ($categories as $key => $category)
                 <div class="col-md-6">
-                    <input type="checkbox" required name="categories[]" value="{{ $category->id }}"> {{ $category->name }} <br>
+                    <input type="checkbox" class="educator-category-checkbox" name="categories[]" value="{{ $category->id }}"> {{ $category->name }} <br>
                 </div>
             @endforeach
         </div>
@@ -66,7 +82,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                     <form action="{{ route('edit-educator') }}" method="POST" >
+                     <form action="{{ route('edit-educator') }}" method="POST" class="educator-form">
                         {{ csrf_field() }}
                         <label class="font-weight-bold mb-0" for="">First Name</label>
                         <input required class="form-control" name="firstname"  value="{{ $educator->name }}"/><br>
@@ -76,11 +92,27 @@
                         <input required class="form-control" name="surname"  value="{{ $educator->surname }}"/><br>
                         <label class="font-weight-bold mb-0" for="">Email</label>
                         <input required class="form-control" type="email" name="email" value="{{ $educator->email }}" /><br>
+                        <label class="font-weight-bold mb-0 d-block" for="">Employment Type</label>
+                        <div class="mt-2 mb-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="employment_type" id="employment-type-freelancer-{{ $educator->id }}" value="0" {{ (string) $educator->employment_type === '0' ? 'checked' : '' }} required>
+                                <label class="form-check-label" for="employment-type-freelancer-{{ $educator->id }}">Freelancer</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="employment_type" id="employment-type-employee-{{ $educator->id }}" value="1" {{ (string) $educator->employment_type === '1' ? 'checked' : '' }} required>
+                                <label class="form-check-label" for="employment-type-employee-{{ $educator->id }}">Employee</label>
+                            </div>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input type="hidden" name="is_counsellor" value="0">
+                            <input class="form-check-input" type="checkbox" name="is_counsellor" id="is-counsellor-{{ $educator->id }}" value="1" {{ (string) $educator->is_counsellor === '1' ? 'checked' : '' }}>
+                            <label class="form-check-label font-weight-bold" for="is-counsellor-{{ $educator->id }}">Counsellor</label>
+                        </div>
                         <label class="font-weight-bold mb-0" for="">Categories</label>  
                         <div class="text-left row mt-2"> 
                             @foreach ($categories as $key => $category)
                                 <div class="col-md-6">
-                                    <input type="checkbox" {{ $educator->array_educator_categories && in_array($category->id,$educator->array_educator_categories) ? ' checked ' : '' }} required name="categories[]" value="{{ $category->id }}"> {{ $category->name }} <br>
+                                    <input type="checkbox" class="educator-category-checkbox" {{ $educator->array_educator_categories && in_array($category->id,$educator->array_educator_categories) ? ' checked ' : '' }} name="categories[]" value="{{ $category->id }}"> {{ $category->name }} <br>
                                 </div>
                             @endforeach
                         </div>
@@ -143,17 +175,30 @@
     if(Object.entries(new_category_requests).length > 0){
         $('#request-category-modal').modal('show')
     }
-    var requiredCheckboxes = $(':checkbox[required]');
+    $('.educator-form').each(function(){
+        const form = $(this);
+        const categoryCheckboxes = form.find('.educator-category-checkbox');
 
-    requiredCheckboxes.change(function(){
-
-        if(requiredCheckboxes.is(':checked')) {
-            requiredCheckboxes.removeAttr('required');
+        if (!categoryCheckboxes.length) {
+            return;
         }
 
-        else {
-            requiredCheckboxes.attr('required', 'required');
-        }
+        const validateCategories = function() {
+            const hasCheckedCategory = categoryCheckboxes.is(':checked');
+            categoryCheckboxes.first()[0].setCustomValidity(hasCheckedCategory ? '' : 'Please select at least one category.');
+            return hasCheckedCategory;
+        };
+
+        categoryCheckboxes.on('change', validateCategories);
+
+        form.on('submit', function(e){
+            if (!validateCategories()) {
+                categoryCheckboxes.first()[0].reportValidity();
+                e.preventDefault();
+            }
+        });
+
+        validateCategories();
     });
 
 });

@@ -46,7 +46,7 @@
             <li><a class="dropdown-item" href="{{ route('cte') }}">CTE Prep-Courses</a></li> 
             <li><a class="dropdown-item" href="{{ route('clep') }}">CLEP Prep-Courses</a></li>
             <li><a class="dropdown-item" href="{{ route('esol') }}">English Courses (ESOL)</a></li>
-            <li><a class="dropdown-item" href="{{ route('learning-mentoring') }}">Learning/Mentoring/Coaching</a></li> 
+            <li><a class="dropdown-item" href="{{ route('learning-mentoring') }}">Live Sessions & Coaching</a></li> 
          </ul>
       </li>
       <li class="nav-item dropdown">

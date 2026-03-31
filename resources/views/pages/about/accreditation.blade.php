@@ -53,7 +53,7 @@
 	<x-image-component nickname="accreditation-cover" id="cover" class="main-pictures-pages " loading="eager" />
 --}}
 
-<div class="container-fluid main_page_container ">
+<div class="container-fluid">
 	<div class="row justify-content-center">
 		<div class="col-md-10 col-lg-8 mb-4 bg-white">
 			<h1 class="page-headings" id="start">Recognition & Quality Standards</h1>

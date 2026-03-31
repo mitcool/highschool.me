@@ -114,7 +114,7 @@
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
 							<a href="{{ route('learning-mentoring')}}">
-							Learning/Mentoring/Coaching
+							Live Sessions & Coaching
 						</a></li>
 					</ul>
 				</div> 

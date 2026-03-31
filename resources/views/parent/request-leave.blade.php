@@ -42,7 +42,10 @@
 @endsection
 
 @section('content')
-<div class="container jumbotron bg-white">
+<div class="container bg-white mt-5">
+    <div class="text-center m-3">
+        <h1>Request leave for a child</h1>
+    </div>
     <form action="{{ route('parent.store-leave') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="shadow page-content" style="padding:20px;">

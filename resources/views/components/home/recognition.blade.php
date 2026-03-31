@@ -1,4 +1,4 @@
-<section style="background-image:url('images/BG_WORMHOLE.png')" class="space">
+<section class="space">
     <div class="col-md-12">
         <h2 class="text-center section-headings blue-color" >Officially Recognized & Globally Trusted</h2>
         <hr class="blue-hr" >

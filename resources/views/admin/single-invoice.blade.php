@@ -259,7 +259,7 @@
 
     <div class="text-end mt-4">
       <button class="btn btn-print me-2" onclick="window.print()">Print</button>
-      <button class="btn btn-close" onclick="window.location.href='index.html'">Close</button>
+      <button type="button" class="btn btn-close" onclick="window.history.length > 1 ? window.history.back() : window.location.href='{{ url()->previous() }}'">Close</button>
     </div>
 
   </div>

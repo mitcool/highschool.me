@@ -96,10 +96,10 @@ class MainController extends Controller
 {
 
 
-	public function notFound(){
+  public function notFound(){
 
-		return response()->view('errors.404')->setStatusCode(404);
-	}
+    return response()->view('errors.404')->setStatusCode(404);
+  }
   
   public function showWelcome(Request $request) {
     return view('pages.welcome');
@@ -201,12 +201,12 @@ class MainController extends Controller
                         ->get()
                         ->take(3);
  
-   	$next =  DynamicNews::where('id','>',$article->id)->with('sections')->first() ?? DynamicNews::first();
+    $next =  DynamicNews::where('id','>',$article->id)->with('sections')->first() ?? DynamicNews::first();
     $prev =  DynamicNews::where('id','<',$article->id)->with('sections')->first() ?? DynamicNews::orderBy('id','desc')->first();
 
 
     return view('pages.news-explorer.single',compact('article','last_three_articles','next','prev'));
-	
+  
   }
   public function showFactsHub(Request $request){
     $news = FactHub::orderBy('id','desc')->paginate(6);
@@ -231,7 +231,7 @@ class MainController extends Controller
                         ->get()
                         ->take(3);
  
-   	$next =  FactHub::where('id','>',$article->id)->with('sections')->first() ?? FactHub::first();
+    $next =  FactHub::where('id','>',$article->id)->with('sections')->first() ?? FactHub::first();
     $prev =  FactHub::where('id','<',$article->id)->with('sections')->first() ?? FactHub::orderBy('id','desc')->first();
     return view('pages.facts-hub.single')
           ->with('last_three_articles',$last_three_articles)
@@ -254,13 +254,13 @@ class MainController extends Controller
 
     $hreflang_en = PressReleaseTranslation::where('locale','en')->where('news_id',$article->id)->first()->slug;
     $hreflang_de = PressReleaseTranslation::where('locale','de')->where('news_id',$article->id)->first()->slug;
-	  
+    
     $last_three_articles = PressRelease::where('id','!=',$article->id)
                         ->orderBy('id','desc')
                         ->get()
                         ->take(3);
  
-   	$next =  PressRelease::where('id','>',$article->id)->with('sections')->first() ?? PressRelease::first();
+    $next =  PressRelease::where('id','>',$article->id)->with('sections')->first() ?? PressRelease::first();
     $prev =  PressRelease::where('id','<',$article->id)->with('sections')->first() ?? PressRelease::orderBy('id','desc')->first();
     return view('pages.press-release.single',compact('news','article','prev','next','hreflang_en','hreflang_de','last_three_articles'));
   }
@@ -278,21 +278,18 @@ class MainController extends Controller
   }
 
   public function verifyAccount($confcode) {
-    $user = User::where('confirmation_code', '=', $confcode)->first();
-    $confirmed = User::where('is_verified', '=', 0)->where('confirmation_code', '=', $confcode)->count();
+    $user = User::where('confirmation_code', '=', $confcode)->firstOrFail();
 
-    $success_auth_message_content = 'Your account has been successfully confirmed. Welcome!';
-    $denied_auth_message_content = 'Your account has already been confirmed.';
-    if ($confirmed > 0) {
-        User::where('is_verified', '=', 0)->where('confirmation_code', '=', $confcode)->update(['is_verified' => 1]);
+    $success_auth_message_content = 'Your account has been successfully confirmed.<br> You can now log in.';
+    $denied_auth_message_content = 'Your account has already been confirmed.<br> You can log in.';
+    if ((int) $user->is_verified === 0) {
+        $user->update(['is_verified' => 1]);
         Session::flash('success_message', $success_auth_message_content);
     } else {
         Session::flash('success_message', $denied_auth_message_content);
     }
 
-    Auth::login($user);
-
-    return redirect('/');
+    return redirect()->route('login');
   }
 
   public function updatePassword(Request $request){
