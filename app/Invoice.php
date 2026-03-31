@@ -13,6 +13,7 @@ class Invoice extends Model
     	'company_name',
     	'invoice_number',
     	'user_email',
+    	'user_id',
     	'VAT_number',
     	'name',
     	'surname',

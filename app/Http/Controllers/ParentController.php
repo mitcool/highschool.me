@@ -75,6 +75,7 @@ class ParentController extends Controller
         Invoice::insert([
             'invoice_number' => $this->setInvoiceNumber(),
             'user_email' => auth()->user()->email,
+            'user_id' => auth()->user()->id,
             'price' => $amount,
             'name' => auth()->user()->name ,
             'created_at' => Carbon::now() ,
