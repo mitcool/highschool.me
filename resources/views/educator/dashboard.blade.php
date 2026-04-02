@@ -20,6 +20,11 @@
 
     @yield('css')
     <style>
+        :root {
+            --educator-sidebar-bg: #045397;
+            --educator-sidebar-item-bg: #AB0050;
+            --educator-sidebar-heading-bg: #7B0039;
+        }
         .sidebar {
             background-color: #AB0050!important;
         }
@@ -43,6 +48,123 @@
         .nav-item a {
             width: 100%!important;
         }
+        .educator-mobile-panel {
+            display: none;
+            background: var(--educator-sidebar-item-bg);
+            color: #fff;
+        }
+        .educator-mobile-panel-toggle {
+            width: 100%;
+            background: var(--educator-sidebar-item-bg);
+            border: 0;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: left;
+        }
+        .educator-mobile-panel-toggle:focus {
+            outline: none;
+        }
+        .educator-mobile-panel-icon {
+            font-size: 26px;
+            line-height: 1;
+            font-weight: 400;
+        }
+        .educator-mobile-menu {
+            background: var(--educator-sidebar-bg);
+        }
+        .educator-mobile-menu-section {
+            padding: 12px 12px 6px;
+            background: var(--educator-sidebar-heading-bg);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .educator-mobile-menu-link,
+        .educator-mobile-menu-button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            color: #fff;
+            background: var(--educator-sidebar-item-bg);
+            border: 0;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            text-decoration: none !important;
+            font-size: 14px;
+        }
+        .educator-mobile-menu-link:hover,
+        .educator-mobile-menu-button:hover,
+        .educator-mobile-menu-link:focus,
+        .educator-mobile-menu-button:focus {
+            color: #fff;
+            background: var(--educator-sidebar-heading-bg);
+            outline: none;
+        }
+        .educator-mobile-menu-button {
+            text-align: left;
+        }
+        .educator-mobile-menu-link i,
+        .educator-mobile-menu-button i {
+            width: 18px;
+            text-align: center;
+        }
+        body.educator-mobile-nav-active .educator-desktop-sidebar {
+            display: none !important;
+        }
+        body.educator-mobile-nav-active .educator-mobile-panel {
+            display: block !important;
+        }
+        body.educator-desktop-nav-active .educator-mobile-panel {
+            display: none !important;
+        }
+        body.educator-desktop-nav-active .educator-desktop-sidebar {
+            display: block !important;
+        }
+        @media (max-width: 1460px) {
+            .educator-mobile-panel {
+                display: block !important;
+            }
+            .educator-desktop-sidebar {
+                display: none !important;
+            }
+            .navigation .row {
+                align-items: center;
+            }
+            .navigation .menuDesktop,
+            .navigation .twoButtons {
+                display: none !important;
+            }
+            .navigation .menuButton {
+                display: flex !important;
+                align-items: center;
+                justify-content: flex-end;
+                min-height: 64px;
+            }
+            .navigation .logoMainPage {
+                width: 100% !important;
+                max-width: 185px;
+            }
+        }
+        @media (min-width: 992px) and (max-width: 1460px) {
+            .navigation #menuToggle {
+                top: 50%;
+                right: 24px;
+                transform: translateY(-50%);
+            }
+            .navigation #mobileHeaderNotif {
+                top: 50%;
+                right: 86px;
+                transform: translateY(-50%);
+            }
+        }
     </style>
 
 </head>
@@ -50,9 +172,77 @@
 <body id="page-top">
     <x-header />
     <div class="container-fluid px-0">
-        <div class="row">
-            <div id="wrapper" style="padding:0 0px;">
-                <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion" id="accordionSidebar" style="background:#045397">
+        <div class="educator-mobile-panel d-lg-none">
+            <button
+                type="button"
+                class="educator-mobile-panel-toggle collapsed"
+                data-toggle="collapse"
+                data-target="#educatorMobileMenu"
+                aria-expanded="false"
+                aria-controls="educatorMobileMenu"
+            >
+                <span>Panel</span>
+                <span class="educator-mobile-panel-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="collapse educator-mobile-menu" id="educatorMobileMenu">
+                <a class="educator-mobile-menu-link" href="{{ route('educator.dashboard') }}">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <div class="educator-mobile-menu-section">Courses</div>
+                <a class="educator-mobile-menu-link" href="{{ route('educator.courses') }}">
+                    <i class="fas fa-book"></i>
+                    <span>Your Courses</span>
+                </a>
+
+                <div class="educator-mobile-menu-section">Meetings</div>
+                <a class="educator-mobile-menu-link" href="{{ route('educator.meetings') }}">
+                    <i class="fas fa-users"></i>
+                    <span>Your Meetings</span>
+                </a>
+
+                <div class="educator-mobile-menu-section">Exams</div>
+                <a class="educator-mobile-menu-link" href="{{ route('educator.exams') }}">
+                    <i class="fas fa-folder"></i>
+                    <span>Exams</span>
+                </a>
+                <a class="educator-mobile-menu-link" href="{{ route('educator.add-exam-question') }}">
+                    <i class="fas fa-question"></i>
+                    <span>Exam Questions</span>
+                </a>
+                <a class="educator-mobile-menu-link" href="{{ route('educator.self-assessment') }}">
+                    <i class="fas fa-question"></i>
+                    <span>Self Assesment Questions</span>
+                </a>
+                <a class="educator-mobile-menu-link" href="{{ route('educator.submissions') }}">
+                    <i class="fas fa-file"></i>
+                    <span>Submitted Exams</span>
+                </a>
+
+                <div class="educator-mobile-menu-section">Payments &amp; Invoices</div>
+                <a class="educator-mobile-menu-link" href="{{ route('educator.invoices') }}">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Credit Memos</span>
+                </a>
+
+                <div class="educator-mobile-menu-section">Profile Settings</div>
+                <a class="educator-mobile-menu-link" href="{{ route('educator.reset.password.page') }}">
+                    <i class="fas fa-key"></i>
+                    <span>Password change</span>
+                </a>
+                <form action="{{ route('logout') }}" method="post">
+                    {{ csrf_field() }}
+                    <button type="submit" class="educator-mobile-menu-button">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="row px-3">
+            <div id="wrapper" class="educator-desktop-sidebar" style="padding:0 0px;">
+                <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion educator-desktop-sidebar" id="accordionSidebar" style="background:#045397">
                     <li class="nav-item black">
                         <a class="nav-link" href="{{route('educator.dashboard')}}">
                             <i class="fas fa-home"></i>
@@ -182,6 +372,39 @@
             }    
         });
        }
+
+       const educatorMobileMenu = document.getElementById('educatorMobileMenu');
+       const educatorMobileMenuToggle = document.querySelector('.educator-mobile-panel-toggle');
+       const educatorMobileMenuIcon = document.querySelector('.educator-mobile-panel-icon');
+       const body = document.body;
+
+       if (educatorMobileMenu && educatorMobileMenuToggle && educatorMobileMenuIcon) {
+            $('#educatorMobileMenu').on('show.bs.collapse', function () {
+                educatorMobileMenuToggle.classList.remove('collapsed');
+                educatorMobileMenuToggle.setAttribute('aria-expanded', 'true');
+                educatorMobileMenuIcon.textContent = '−';
+            });
+
+            $('#educatorMobileMenu').on('hide.bs.collapse', function () {
+                educatorMobileMenuToggle.classList.add('collapsed');
+                educatorMobileMenuToggle.setAttribute('aria-expanded', 'false');
+                educatorMobileMenuIcon.textContent = '+';
+            });
+       }
+
+       function syncEducatorNavigation() {
+            const isMobileView = window.innerWidth <= 1460;
+
+            body.classList.toggle('educator-mobile-nav-active', isMobileView);
+            body.classList.toggle('educator-desktop-nav-active', !isMobileView);
+
+            if (!isMobileView && educatorMobileMenu && $(educatorMobileMenu).hasClass('show')) {
+                $(educatorMobileMenu).collapse('hide');
+            }
+       }
+
+       syncEducatorNavigation();
+       window.addEventListener('resize', syncEducatorNavigation);
     </script>
 </body>
 

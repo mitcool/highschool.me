@@ -23,6 +23,11 @@
 
     @yield('css')
     <style>
+        :root {
+            --parent-sidebar-bg: #4E28B9;
+            --parent-sidebar-item-bg: #4E28B9;
+            --parent-sidebar-heading-bg: #26088D;
+        }
         .modal-content {
             border-radius: 30px !important;
             border: 5px solid #025297 !important;
@@ -32,22 +37,145 @@
             border: 5px solid rgb(141, 37, 37) !important;
         }
         .sidebar {
-            background-color: #4E28B9!important;
+            background-color: var(--parent-sidebar-item-bg)!important;
         }
         .sidebar-heading {
-            background-color: #26088D!important;
+            background-color: var(--parent-sidebar-heading-bg)!important;
         }
         .navbar-nav nav-item {
-            background-color: #4E28B9!important;
+            background-color: var(--parent-sidebar-item-bg)!important;
         }
         .sidebar-divider {
-            background-color: #4E28B9!important;
+            background-color: var(--parent-sidebar-item-bg)!important;
         }
         #footer{
             margin-top:0;
         }
         .nav-item a {
             width: 100%!important;
+        }
+        .parent-mobile-panel {
+            display: none;
+            background: var(--parent-sidebar-item-bg);
+            color: #fff;
+        }
+        .parent-mobile-panel-toggle {
+            width: 100%;
+            background: var(--parent-sidebar-item-bg);
+            border: 0;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: left;
+        }
+        .parent-mobile-panel-toggle:focus {
+            outline: none;
+        }
+        .parent-mobile-panel-icon {
+            font-size: 26px;
+            line-height: 1;
+            font-weight: 400;
+        }
+        .parent-mobile-menu {
+            background: var(--parent-sidebar-bg);
+        }
+        .parent-mobile-menu-section {
+            padding: 12px 12px 6px;
+            background: var(--parent-sidebar-heading-bg);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .parent-mobile-menu-link,
+        .parent-mobile-menu-button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            color: #fff;
+            background: var(--parent-sidebar-item-bg);
+            border: 0;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            text-decoration: none !important;
+            font-size: 14px;
+        }
+        .parent-mobile-menu-link:hover,
+        .parent-mobile-menu-button:hover,
+        .parent-mobile-menu-link:focus,
+        .parent-mobile-menu-button:focus {
+            color: #fff;
+            background: var(--parent-sidebar-heading-bg);
+            outline: none;
+        }
+        .parent-mobile-menu-button {
+            text-align: left;
+        }
+        .parent-mobile-menu-link i,
+        .parent-mobile-menu-button i {
+            width: 18px;
+            text-align: center;
+        }
+        body.parent-mobile-nav-active .parent-desktop-sidebar {
+            display: none !important;
+        }
+        body.parent-mobile-nav-active .parent-mobile-panel {
+            display: block !important;
+        }
+        body.parent-desktop-nav-active .parent-mobile-panel {
+            display: none !important;
+        }
+        body.parent-desktop-nav-active .parent-desktop-sidebar {
+            display: block !important;
+        }
+        @media (max-width: 1460px) {
+            .parent-mobile-panel {
+                display: block !important;
+            }
+            .parent-desktop-sidebar {
+                display: none !important;
+            }
+            .navigation .row {
+                align-items: center;
+            }
+            .navigation .menuDesktop,
+            .navigation .twoButtons {
+                display: none !important;
+            }
+            .navigation .menuButton {
+                display: flex !important;
+                align-items: center;
+                justify-content: flex-end;
+                min-height: 64px;
+            }
+            .navigation .logoMainPage {
+                width: 100% !important;
+                max-width: 185px;
+            }
+        }
+        @media (min-width: 992px) and (max-width: 1460px) {
+            .navigation #menuToggle {
+                top: 50%;
+                right: 24px;
+                transform: translateY(-50%);
+            }
+            .navigation #mobileHeaderNotif {
+                top: 50%;
+                right: 86px;
+                transform: translateY(-50%);
+            }
+        }
+        @media (max-width: 600px) {
+            .parent-page-content {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
         }
     </style>
 
@@ -56,10 +184,81 @@
 <body id="page-top">
     <x-header/>
     <div class="container-fluid px-0">
-        <div class="row">
-                
-                     <div id="wrapper" style="padding:0 0px;">
-                    <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion" id="accordionSidebar" style="background:#045397">
+        <div class="parent-mobile-panel d-lg-none">
+            <button
+                type="button"
+                class="parent-mobile-panel-toggle collapsed"
+                data-toggle="collapse"
+                data-target="#parentMobileMenu"
+                aria-expanded="false"
+                aria-controls="parentMobileMenu"
+            >
+                <span>Panel</span>
+                <span class="parent-mobile-panel-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="collapse parent-mobile-menu" id="parentMobileMenu">
+                <a class="parent-mobile-menu-link" href="{{ route('parent.dashboard') }}">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <div class="parent-mobile-menu-section">Meetings</div>
+                <a class="parent-mobile-menu-link" href="{{ route('parent.meetings') }}">
+                    <i class="fas fa-users"></i>
+                    <span>Meetings</span>
+                </a>
+
+                <div class="parent-mobile-menu-section">Child Information</div>
+                <a class="parent-mobile-menu-link" href="{{ route('parent.create.student') }}">
+                    <i class="fas fa-user-edit"></i>
+                    <span>Add Child</span>
+                </a>
+                @if(auth()->user()->students)
+                    @foreach (auth()->user()->students as $student)
+                        <a class="parent-mobile-menu-link" href="{{ route('parent.student.profile', $student->student->id) }}">
+                            <i class="fas fa-user-tie"></i>
+                            <span>{{ $student->student->name }} {{ $student->student->surname }}</span>
+                        </a>
+                    @endforeach
+                @endif
+                <a class="parent-mobile-menu-link" href="{{ route('parent.request-leave') }}">
+                    <i class="fas fa-scroll"></i>
+                    <span>Request Leave</span>
+                </a>
+
+                <div class="parent-mobile-menu-section">Payments and invoices</div>
+                <a class="parent-mobile-menu-link" href="{{ route('parent.invoices') }}">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Payments and invoices</span>
+                </a>
+
+                <div class="parent-mobile-menu-section">Help Desk</div>
+                <a class="parent-mobile-menu-link" href="{{ route('help-desk') }}">
+                    <i class="fas fa-envelope"></i>
+                    <span>Help Desk</span>
+                </a>
+
+                <div class="parent-mobile-menu-section">Profile</div>
+                <a class="parent-mobile-menu-link" href="{{ route('parent.profile') }}">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Profile</span>
+                </a>
+                <a class="parent-mobile-menu-link" href="{{ route('parent.reset.password.page') }}">
+                    <i class="fas fa-key"></i>
+                    <span>Change Password</span>
+                </a>
+                <form action="{{ route('logout') }}" method="post">
+                    {{ csrf_field() }}
+                    <button type="submit" class="parent-mobile-menu-button">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="row px-3">
+                <div id="wrapper" class="parent-desktop-sidebar" style="padding:0 0px;">
+                    <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion parent-desktop-sidebar" id="accordionSidebar" style="background:var(--parent-sidebar-bg)">
                         <li class="nav-item black">
                             <a class="nav-link" href="{{route('parent.dashboard')}}">
                                 <i class="fas fa-home"></i>
@@ -140,7 +339,6 @@
                             </form>
                         </li>
                     </ul>
-             
                 </div>
                
 
@@ -199,16 +397,15 @@
                                 </div>
                             </div>
                             </div>
-                        </div> 
-                        
+                        </div>  
                     @endif
+                    
                     @yield('content')
-                
-   
- 
             <a class="scroll-to-top rounded" href="#page-top">
                 <i class="fas fa-angle-up"></i>
             </a>
+        </div>
+    </div>
     <x-footer/>
     @yield('scripts')
 
@@ -233,6 +430,39 @@
        }
 
        $('#message_modal').modal('show');
+
+       const parentMobileMenu = document.getElementById('parentMobileMenu');
+       const parentMobileMenuToggle = document.querySelector('.parent-mobile-panel-toggle');
+       const parentMobileMenuIcon = document.querySelector('.parent-mobile-panel-icon');
+       const body = document.body;
+
+       if (parentMobileMenu && parentMobileMenuToggle && parentMobileMenuIcon) {
+            $('#parentMobileMenu').on('show.bs.collapse', function () {
+                parentMobileMenuToggle.classList.remove('collapsed');
+                parentMobileMenuToggle.setAttribute('aria-expanded', 'true');
+                parentMobileMenuIcon.textContent = '−';
+            });
+
+            $('#parentMobileMenu').on('hide.bs.collapse', function () {
+                parentMobileMenuToggle.classList.add('collapsed');
+                parentMobileMenuToggle.setAttribute('aria-expanded', 'false');
+                parentMobileMenuIcon.textContent = '+';
+            });
+       }
+
+       function syncParentNavigation() {
+            const isMobileView = window.innerWidth <= 1460;
+
+            body.classList.toggle('parent-mobile-nav-active', isMobileView);
+            body.classList.toggle('parent-desktop-nav-active', !isMobileView);
+
+            if (!isMobileView && parentMobileMenu && $(parentMobileMenu).hasClass('show')) {
+                $(parentMobileMenu).collapse('hide');
+            }
+       }
+
+       syncParentNavigation();
+       window.addEventListener('resize', syncParentNavigation);
 
        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 		fetch('/set-timezone', {
