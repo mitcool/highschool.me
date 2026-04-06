@@ -63,8 +63,7 @@
                 <th>Subject</th>
                 <th>Student</th>
                 <th>Exam Type</th>
-                <th class="text-center">Edit</th>
-                <th class="text-center">Remove</th>
+                <th class="text-center" colspan="2">Action</th>
             </tr>
         @endif
         @forelse($exams as $exam)
@@ -74,6 +73,7 @@
                 <td>{{ $exam->course->course->title }}</td>
                 <td>{{ $exam->student->fullname() }}</td>
                 <td>{{ $exam->type == 1 ? 'Open Exam' : 'Essay' }}</td>
+                @if($exam->status == 0)
                 <td class="text-center">
                     <button class="btn btn-link text-underline" style="text-decoration: underline" data-toggle="modal" data-target="#edit-modal-{{ $exam->id }}">Edit</button>
                 </td>
@@ -83,6 +83,21 @@
                         <button class="btn btn-link text-underline" style="text-decoration: underline">Remove</button>
                     </form>
                 </td>
+                @elseif($exam->status==1)
+                    <td class="text-center">
+                        Exam submitted 
+                    </td>
+                    <td class="text-center">
+                        <a href="{{ route('single-submission',$exam->id) }}" target="blank">Details...</a>
+                    </td>
+                @else
+                    <td class="text-center">
+                        Exam evaluated 
+                    </td>
+                    <td class="text-center">
+                        <a href="{{ route('single-submission',$exam->id) }}" target="blank">Details...</a>
+                    </td>
+                @endif
             </tr>
             <div class="modal fade" id="edit-modal-{{ $exam->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">

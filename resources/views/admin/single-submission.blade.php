@@ -57,7 +57,7 @@
                         <select name="grade" class="form-control" id="">
                             <option value="" selected disabled>Please select</option>
                             <option value="0">< 1.0</option>
-                            @for($i = 1; $i <= 5; $i+= 0.1)
+                            @for($i = 1; $i < 4.1; $i+= 0.1)
                                 <option value="{{ $i }}">{{ $i }}</option>
                             @endfor
                         </select>
@@ -75,7 +75,7 @@
                             <select name="grade" class="form-control" id="">
                                 <option value="" selected disabled>Please select</option>
                                 <option value="0">< 1.0</option>
-                                @for($i = 1; $i <= 5; $i+= 0.1)
+                                @for($i = 1; $i < 4.1; $i+= 0.1)
                                     <option value="{{ $i }}">{{ $i }}</option>
                                 @endfor
                             </select>

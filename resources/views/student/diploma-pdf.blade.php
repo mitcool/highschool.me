@@ -25,7 +25,7 @@
         <div style="margin-top:50px;">
             
             <div style="text-align:center">
-                <img src="{{ asset('images/signature.jpg') }}" alt="" style="width:30%;">
+                <img src="{{ public_path('images/signature.jpg') }}" alt="" style="width:30%;">
                 <hr style="margin:0 auto;width:33%">
                 <p>High School Principal</p>
             </div>

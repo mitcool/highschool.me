@@ -784,7 +784,7 @@ class StudentController extends Controller
             ->where('grade','>',1)
             ->get()
             ->groupBy(function ($item) {
-                return $item->date->format('Y'); // group by month
+                return $item->datetime->format('Y'); // group by month
             });
         $now = Carbon::now()->format('d.m.Y');
         $pdf = Pdf::loadView('student.transcript-pdf',[ 

@@ -225,7 +225,7 @@
             }
             if ($('#school_transcript').get(0).files.length === 0) {
                 e.preventDefault();
-                $('#school_transcript_error').html('Please upload school transript');
+                $('#school_transcript_error').html('Please upload school transcript');
             }
         })
      

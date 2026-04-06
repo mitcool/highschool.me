@@ -78,7 +78,7 @@
                 <td style="text-align:right;width:50%;">
                     <div style="margin-bottom:65px;">
                         <div style="text-align:center">
-                            <img src="{{ asset('images/signature.jpg') }}" alt="" style="width:28%;">
+                            <img src="{{ public_path('images/signature.jpg') }}" alt="" style="width:28%;">
                             <hr style="margin:0 auto;width:50%">
                             <p>Signature</p>
                         </div>
