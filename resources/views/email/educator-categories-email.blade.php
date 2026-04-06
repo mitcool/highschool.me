@@ -92,36 +92,23 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear admin,
+                                                        Dear {{ $educator->fullname() }},
                                                     </h1>
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        We would have an early registration email with following details:
+                                                           You are allowed to teach following categories:
+                                                        <br/>
+                                                    </p>
+                                                    @foreach($educator->educator_categories as $category)
+                                                         <p style="{{ $style['paragraph-black'] }}">
+                                                            {{ $category->category->name }} 
+                                                            <br/>
+                                                        </p>
+                                                    @endforeach
+                                                    <p style="{{ $style['paragraph-black'] }}">
+                                                        We are sending you this email to inform you that we have a new message in GRADUATE.ME portal has been successfully received.
                                                         <br/>
                                                     </p>
                                                     
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        <span style="{{$style['bold']}}">Name: </span> {{ $registration->fullname() }}
-                                                        <br/>
-                                                    </p>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        <span style="{{$style['bold']}}">Email: </span> {{ $registration->email }}
-                                                        <br/>
-                                                    </p>
-
-                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        <span style="{{$style['bold']}}">Country: </span> {{ $registration->country->nicename }}
-                                                        <br/>
-                                                    </p>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        <span style="{{$style['bold']}}">Interested in: </span> {{ $registration->education_option() }}
-                                                        <br/>
-                                                    </p>
-                                                    @if($registration->message)
-                                                        <p style="{{ $style['paragraph-black'] }}">
-                                                            <span style="{{$style['bold']}}">Message: </span> {{ $registration->message }}
-                                                            <br/>
-                                                        </p>
-                                                    @endif
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
                                                         Kind regards,<br>Your GRADUATE.ME support team

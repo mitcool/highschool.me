@@ -487,11 +487,9 @@ class ParentController extends Controller
         }catch(\Exception $e){
             info($e->getMessage());
         }
-        try{
-             Mail::to(self::MATHIAS_EMAIL)->send(new StudentCreatedAdmin);
-        }catch(\Exception $e){
-            info($e->getMessage());
-        }
+       
+        $this->notifyAdmins(new StudentCreatedAdmin);
+        
         Notification::add(auth()->id(),'Application fee paid successfully');
         session()->forget('student_data');
         return redirect()->route('parent.student.profile',$student_id);
@@ -923,12 +921,10 @@ class ParentController extends Controller
             ]);
             ParentStudent::where('student_id',$student_id)->first()->update(['status' => ParentStudent::PAID_APPLICATION_FEE]);
         }
-        try{
-            Mail::to(self::MATHIAS_EMAIL)->send(new ParentReuploadDocument);
-        }catch(\Excetpion $e){
-                info($e->getMessage());
-        }
-         return redirect()->back();
+        
+        $this->notifyAdmins(new ParentReuploadDocument);
+        
+        return redirect()->back();
     }
 
     public function requestFamilyConsultation(Request $request){
@@ -943,11 +939,7 @@ class ParentController extends Controller
             info($e->getMessage());
         }
 
-         try{
-            Mail::to(self::MATHIAS_EMAIL)->send(new FamilyConsultationRequestAdmin($parent));
-        }catch(\Exception $e){
-            info($e->getMessage());
-        }
+        $this->notifyAdmins(new FamilyConsultationRequestAdmin($parent));
 
         return redirect()->back()->with('success_message','Your request has been placed successfully');
     }
@@ -1111,13 +1103,14 @@ class ParentController extends Controller
         elseif($enrolled_course->status == 1){
             $enrolled_course->update(['status' => StudentEnrolledCourse::STATUS_READY_FOR_EXAM]);
             $message = 'Student is ready for exam';
-            try{
-                Mail::to(self::MATHIAS_EMAIL)->send(new StudentReadyForExam($enrolled_course));
-            }catch(\Exception $e){
-                info($e->getMessage());
-            }
+
+            $this->notifyAdmins(new StudentReadyForExam($enrolled_course));
+           
             Notification::add(auth()->id(),'Congratulations student is ready for an exam');
             Notification::add($enrolled_course->user_id,'Congratulations you are ready for exam now');
+        }
+        else{
+            abort(403);
         }
         return redirect()->back()->with('success_message',$message);
     }

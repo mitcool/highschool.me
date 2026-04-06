@@ -14,9 +14,16 @@ use App\PressReleaseSectionTranslation;
 use App\PressReleaseSectionDetailTranslation;
 use App\PressReleaseCategory;
 use App\PressReleaseImageAttribute;
+use App\Image;
 
 class PressReleaseController extends Controller
 {
+
+    public $path;
+
+    public function __construct(){
+        $this->path  = base_path()."/public/images/press_relese";
+    }
     public function index(){
         $authors = DynamicNewsAuthor::all();
         $news = PressRelease::paginate(5);
@@ -26,50 +33,37 @@ class PressReleaseController extends Controller
     }
 
     public function store(Request $request){
-       $types = $request->type;
-       $contents = $request->content;
-       $contents_de = $request->content_de;
-       $details = $request->details;
-       $details_de = $request->details_de;
-       $slug = $request->slug;
-       $slug_de = $request->slug_de;
-
-       if(PressReleaseTranslation::where('slug',$slug)->count() > 0){
-          return redirect()->back()->with('error','The English slug you selected has already exists');
-       }
-      
-
-       $request->validate([
-        'slug' => 'required|unique:dynamic_news_translations,slug',
-    ]);
-
-       $news_id = PressRelease::insertGetId([
-            'author_id' => $request->author_id,
-            'category_id' => 0,
-            'minutes' => $request->minutes
+        $request->validate([
+            'slug' => 'required|unique:press_releases,slug',
         ]);
+        $types = $request->type;
+        $contents = $request->content;
+        $data = $request->only('author_id','slug','key_facts','meta_title','meta_description','minutes','heading','teaser');
 
-        PressReleaseTranslation::insert([
-            'locale' => 'en',
-            'slug' => $slug,
-            'news_id' => $news_id,
-            'meta_title' => $request->meta_title_en,
-            'key_facts' => $request->key_facts_en,
-            'meta_description' => $request->meta_description_en
+        $file = $request->file('pdf');
+        $file_name = $file->getClientOriginalName();
+        $file->move($this->path,$file_name);
+        $data['pdf'] = $file->getClientOriginalName();
+       
+        $press_release = PressRelease::create($data);
+
+        $picture = $request->file('picture');
+        $picture_name = $file->getClientOriginalName();
+        $picture->move($this->path,$picture_name);
+        
+        Image::create([
+            'nickname' => 'press-release-'.$press_release->id,
+            'src' => $this->path.'/'.$picture_name,
+            'alt' => '',
+            'title'=>''
         ]);
-
-      
-
-       foreach($contents as $key => $content){
+       
+        foreach($contents as $key => $content){
             if($types[$key] == 1){
                 $section_id = PressReleaseSection::insertGetId([
-                    'news_id' => $news_id,
-                    'type' => $types[$key]
-                ]);
-                PressReleaseSectionTranslation::insert([
+                    'news_id' => $press_release->id,
+                    'type' => $types[$key],
                     'content' => $content,
-                    'locale' => 'en',
-                    'section_id'=> $section_id,
                 ]);
                 
             }
@@ -80,68 +74,48 @@ class PressReleaseController extends Controller
                 $file->move(public_path('news_images'),$file_name);
 
                 $section_id = PressReleaseSection::insertGetId([
-                    'news_id' => $news_id,
-                    'type' => $types[$key]
-                ]);
-                PressReleaseSectionTranslation::insert([
+                    'news_id' => $press_release->id,
+                    'type' => $types[$key],
                     'content' => $file_name,
-                    'locale' => 'en',
-                    'section_id'=> $section_id,
                 ]);
+        
             }
             else if($types[$key] == 3){
 
                 $section_id =PressReleaseSection::insertGetId([
-                    'news_id' => $news_id,
-                    'type' => $types[$key]
-                ]);
-                PressReleaseSectionTranslation::insert([
+                    'news_id' => $press_release->id,
+                    'type' => $types[$key],
                     'content' => $content,
-                    'locale' => 'en',
-                    'section_id'=> $section_id,
                 ]);
+                
                 
                 foreach($details[$key+1] as $index => $content ){
 
                     $detail_id =PressReleaseSectionDetail::insertGetId([
                         'section_id' => $section_id,
-                    ]);
-                   PressReleaseSectionDetailTranslation::insert([
                         'content' => $content,
-                        'locale' => 'en',
-                        'detail_id'=> $detail_id,
-                    ]);
-                   
+                    ]);           
                 }
             }
             else if($types[$key] == 4){
                 $section_id = PressReleaseSection::insertGetId([
-                    'news_id' => $news_id,
+                    'news_id' => $press_release->id,
+                    'content' => $content,
                     'type' => $types[$key]
                 ]);
-                PressReleaseSectionTranslation::insert([
-                    'content' => $content,
-                    'locale' => 'en',
-                    'section_id'=> $section_id,
-                ]);
+                
                 
                 foreach($details[$key+1] as $index => $content ){
 
                     $detail_id = PressReleaseSectionDetail::insertGetId([
                         'section_id' => $section_id,
-                    ]);
-                    PressReleaseSectionDetailTranslation::insert([
                         'content' => $content,
-                        'locale' => 'en',
-                        'detail_id'=> $detail_id,
                     ]);
-                   
                 }
             }
-           
        }
 
-       return redirect()->back()->with('success_message'," Facts Hub article created successfully");
+       return redirect()->back()->with('success_message'," Press release article created successfully");
     }
 
     public function show($news_id){
@@ -153,61 +127,9 @@ class PressReleaseController extends Controller
     }
 
      public function update(Request $request,$news_id){
-        $input = $request->all();
-        $section_translations = $input['section_translations'];
-        $details = $request->details;
-    
-        PressRelease::where('id',$news_id)->update([
-            'author_id' => $request->author_id,
-            'minutes' => $request->minutes
-        ]);
 
-        foreach(Config::get('languages') as $lang => $language){
-            PressReleaseTranslation::where('news_id',$news_id)->where('locale',$lang)->update([
-                'slug' => $input['slug_'.$lang],
-                'key_facts' => $input['key_facts_'.$lang],
-            ]);
-        }
-
-        foreach(Config::get('languages') as $lang => $language){
-            PressReleaseTranslation::where('news_id',$news_id)->where('locale',$lang)->update([
-                'meta_title' => $input['meta_title_'.$lang], 'meta_description' => $input['meta_description_'.$lang]
-            ]);
-        }
-
-        foreach($section_translations as $id => $content){
-            PressReleaseSectionTranslation::where('id',$id)->update([
-                'content' => $content
-            ]);
-        }
-        if($details){
-            foreach($details as $id => $content){
-                PressReleaseSectionDetailTranslation::where('id',$id)->update([
-                    'content' => $content
-                ]);
-            }
-        }
-        if($request->hasFile('files')){
-            foreach($request->file('files') as $id => $file){
-
-                $file_name = $file->getClientOriginalName();
-                $file->move(public_path('news_images'),$file_name);
-                $old_image = FactHubSectionTranslation::where('section_id',$id)->first()->content;
-    
-                PressReleaseSectionTranslation::where('section_id',$id)->update([
-                    'content' => $file_name,
-                ]);
-    
-                $old_path = base_path().'/public/news_images/'.$old_image;
-    
-                try{
-                    unlink($old_path);
-                }catch(\Exception $e){
-                    info($e->getMessage());
-                }
-            }
-        }
-       
+        $press_release = $request->only('author_id','minutes','heading','teaser','key_facts','meta_title','meta_description');
+        PressRelease::where('id',$news_id)->update($press_release);        
        
         return redirect()->back()->with('success_message','Facts hub article updated successfully');
     }   

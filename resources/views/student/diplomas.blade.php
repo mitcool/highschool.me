@@ -135,11 +135,10 @@
         <h2 class="text-center mb-4">Degree Transcripts</h2>
         
         <div class="table-responsive">
-            @if(array_key_exists('diploma',$credits) && $credits['diploma'] == 1)
             <table class="table course-table">
                 <thead>
                     <tr class="text-center">
-                        <th class="text-left">Date</th>
+                        <th >Date</th>
                         <th>Digital Degree</th>
                         <th>Transcript</th>
                         <th>Diploma</th>
@@ -147,23 +146,25 @@
                     </tr>
                 </thead>
                 <tbody class="text-center">
-                    <td class="text-left">
+                    <td >
                         @if(array_key_exists('diploma',$credits) && $credits['diploma'] == 1)
-                            {{ $credits['graduation_date'] }}   
+                            {{ $credits['graduation_date'] }} 
+                        @else
+                            - 
                         @endif
                     </td>
                     <td>
                         {{ $student->student_details->track_name() }}
                     </td>
                     <td>
-                          @if(array_key_exists('diploma',$credits) && $credits['diploma'] == 1)
-                            <a href="{{ route('student.generate-pdf-transcript',auth()->id()) }}">Link</a>
-                         @endif
+                        <a href="{{ route('student.generate-pdf-transcript',auth()->id()) }}">Link</a>
                     </td>
                    
                     <td>
                         @if(array_key_exists('diploma',$credits) && $credits['diploma'] == 1)
                             <a href="{{ route('student.generate-pdf-diploma',auth()->id()) }}">Link</a>
+                        @else
+                            -
                         @endif
                     </td>
                     <td>
@@ -181,14 +182,16 @@
                                     {{ csrf_field() }}
                                     <button class="orange-button">Request copy</button>
                                 </form>
+                            @else
+                                -
                             @endif
                          @endif   
                     </td>
                 </tbody>
             </table>
-            @else
-                <p class="text-center">Your diploma cannot be issued at this time because some required courses remain incomplete.</p>
-            @endif
+            
+                {{-- <p class="text-center">Your diploma cannot be issued at this time because some required courses remain incomplete.</p> --}}
+            {{-- @endif --}}
              @if(array_key_exists('diploma',$credits) && $credits['diploma'] == 1)
                 <p>* Charges may apply for receiving a physical copy</p>
             @endif

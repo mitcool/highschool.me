@@ -273,18 +273,18 @@
                             <span>Exams</span>
                         </a>
                     </li>
-                    <li class="nav-item active">
+                    {{-- <li class="nav-item active">
                         <a class="nav-link" href="{{route('educator.add-exam-question')}}">
                             <i class="fas fa-question"></i>
                             <span>Exam Questions</span>
                         </a>
-                    </li>
-                    <li class="nav-item active">
+                    </li> --}}
+                    {{-- <li class="nav-item active">
                         <a class="nav-link" href="{{route('educator.self-assessment')}}">
                             <i class="fas fa-question"></i>
                             <span>Self Assesment Questions</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item active">
                         <a class="nav-link" href="{{route('educator.submissions')}}">
                             <i class="fas fa-file"></i>

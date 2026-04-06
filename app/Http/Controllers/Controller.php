@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
+use App\User;
 use App\HelpDesk;
 use App\RelatedCourse;
 use App\CurriculumCourse;
@@ -16,6 +17,9 @@ use App\StudentEnrolledCourse;
 use Carbon\Carbon;
 
 use DB;
+
+use Illuminate\Mail\Mailable;
+use Mail;
 
 class Controller extends BaseController
 {
@@ -231,4 +235,17 @@ class Controller extends BaseController
 
         return response()->json(['count' => $count]);
     }
+    public function notifyAdmins(Mailable $mail): void
+{
+    $admins = User::where('role_id', 1)->pluck('email');
+
+    foreach ($admins as $email) {
+        try{
+             Mail::to($email)->send(clone $mail);
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+       
+    }
+}
 }

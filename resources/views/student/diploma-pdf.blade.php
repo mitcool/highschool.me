@@ -22,9 +22,10 @@
              <p style="color:#14213D">Given on {{ $credits['graduation_date'] }} </p>
         </div>
         
-        <div style="margin-top:150px;">
+        <div style="margin-top:50px;">
             
             <div style="text-align:center">
+                <img src="{{ asset('images/signature.jpg') }}" alt="" style="width:30%;">
                 <hr style="margin:0 auto;width:33%">
                 <p>High School Principal</p>
             </div>

@@ -156,6 +156,10 @@
         body.admin-desktop-nav-active .admin-desktop-sidebar {
             display: block !important;
         }
+	.error-msg {
+            border-radius: 30px !important;
+            border: 5px solid rgb(141, 37, 37) !important;
+        }
         @media (min-width: 1461px) {
             .admin-dashboard-row {
                 display: flex;
@@ -632,6 +636,10 @@
                             <i class="fas fa-scroll"></i>
                             <span>Diploma Requests</span>
                         </a>
+                        <a class="nav-link collapsed" href="{{route('admin.restricted-countries')}}">
+                            <i class="fas fa-globe"></i>
+                            <span>Restricted countries</span>
+                        </a>
                     </li>
 
                     <hr class="sidebar-divider">
@@ -789,6 +797,7 @@
 
        syncAdminNavigation();
        window.addEventListener('resize', syncAdminNavigation);
+       $('#message_modal').modal('show');
     </script>
 </body>
 

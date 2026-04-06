@@ -16,6 +16,8 @@ class EnrollmentTable extends Component
     public $curriculumTypes;
     public $enrolled_courses;
     public $enrolled_courses_ids;
+    public $in_progress_courses_ids;
+    public $completed_courses_ids;
     public $track;
     public $transfer_program_courses;
 
@@ -57,6 +59,8 @@ class EnrollmentTable extends Component
 
         $this->enrolled_courses = StudentEnrolledCourse::where('user_id',$student->id)->get();
         $this->enrolled_courses_ids = $this->enrolled_courses->pluck('catalog_course_id')->toArray();
+        $this->completed_courses_ids = $this->enrolled_courses->where('status',StudentEnrolledCourse::STATUS_COMPLETED)->pluck('catalog_course_id')->toArray();
+        $this->in_progress_courses_ids = $this->enrolled_courses->where('status','<',StudentEnrolledCourse::STATUS_COMPLETED)->pluck('catalog_course_id')->toArray();
         $this->student = $student;
         $this->track = $this->student->student_details->track;
         $this->transfer_program_courses = CurriculumCourse::where('curriculum_type_id',11)->get();

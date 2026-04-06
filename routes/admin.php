@@ -240,4 +240,9 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 
 	//Notifications
 	Route::get('/notifications', 'AdminController@showNotifications')->name('admin.notifications');
+
+	//Restricted Countries
+	Route::get('/restricted-countries', 'AdminController@restrictedCountries')->name('admin.restricted-countries');
+	Route::post('/update-country','AdminController@updateRestrictedCountry')->name('update-country');
+
 });

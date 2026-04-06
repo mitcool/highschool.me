@@ -292,12 +292,14 @@
         <p>The student have </p>
         @else
             <x-enrollment-table :student="$student"></x-enrollment-table>
+            <div class="tab-content">
             @if(count($student->enrolled_courses) > 0)
                 <h2 class="text-center" style="margin-top:50px;">Enrolled courses</h2>
             @endif
             @foreach ($student->enrolled_courses as $enrolled_course)
-                <div class="d-flex justify-content-between w-100 my-2">
-                    <p>{{ $enrolled_course->course->course->title }}</p>
+            
+                <div class="course-row d-flex justify-content-between align-items-center" style="padding:10px 30px;">
+                    <p class="mb-0">{{ $enrolled_course->course->course->title }}</p>
 
                     {{-- Status Enrolled -> 0 --}}
                     @if($enrolled_course->status == 0)
@@ -326,6 +328,7 @@
                     @endif     
                 </div> 
             @endforeach 
+            </div>
         @endif
     {{-- Reupload documents --}}
     @elseif($status == 4)

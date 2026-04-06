@@ -10,19 +10,22 @@
     .selected-image{
         border:3px solid rgb(85, 146, 215) !important;
     }
+    label{
+        margin-top:15px;
+        margin-bottom:3px;
+    }
 </style>
 @endsection
 
 @section('content')
-<div class="jumbotron container">
-    @if(!Cookie::has('watched'))
-        <h2>Please watch the tutorial before you start!</h2>
-    @endif
-    <h2>Edit News a news</h2>
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">
+    <h2 class="text-center">Edit press release article</h2>
+    <hr>
     <form action="{{ route('press-release-update',$news->id) }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div class="row mt-2">
-            <div class="col-md-6"><label for="" class="font-weight-bold">News Author:</label>
+            <div class="col-md-6">
+                <label for="" class="font-weight-bold">News Author:</label>
                 <select name="author_id" id=""  required class="form-control">
                     <option value="" disabled selected>Please select an author</option>
                     @foreach ($authors as $author) 
@@ -32,38 +35,38 @@
             </div>
            
             <div class="col-md-6">
-                <label for="" class="font-weight-bold mb-0">Min to read</label>
+                <label for="" class="font-weight-bold ">Min to read</label>
                 <input type="number" name="minutes" value="{{ $news->minutes }}" class="form-control" required />
             </div>
 
-       
-            @foreach($news->all_translations as $translation)
-                <div class="col-md-12">
-                    <label for="" class="font-weight-bold mb-0">Slug({{ $translation->locale }})</label>
-                    <input type="text" name="slug_{{ $translation->locale }}" class="form-control" required value="{{ $translation->slug }}"/>
-                </div>
-            @endforeach
-
-            @foreach($news->all_translations as $translation)
             <div class="col-md-12">
-                <label for="" class="font-weight-bold mb-0">Meta title({{ $translation->locale }})</label>
-                <input type="text" name="meta_title_{{ $translation->locale }}" value="{!! $translation->meta_title !!}" class="form-control" required />
+                <label for="" class="font-weight-bold ">Heading</label>
+                <textarea class="form-control" name="heading">{{ $news->heading }}</textarea>
             </div>
-            @endforeach
 
-            @foreach($news->all_translations as $translation)
             <div class="col-md-12">
-                <label for="" class="font-weight-bold mb-0">Meta description({{ $translation->locale }})</label>
-                <input type="text" name="meta_description_{{ $translation->locale }}" value="{!! $translation->meta_description !!}" class="form-control" required />
+                <label for="" class="font-weight-bold ">Teaser</label>
+                <textarea class="ckeditor" id="teaser" name="teaser">{{ $news->teaser }}</textarea>
             </div>
-            @endforeach
 
-            @foreach($news->all_translations as $translation)
             <div class="col-md-12">
-                <label for="" class="font-weight-bold mb-0">Key facts({{ $translation->locale }})</label>
-                <textarea required class="form-control ckeditor" name="key_facts_{{ $translation->locale }}">{!! $translation->key_facts !!}</textarea>
+                <label for="" class="font-weight-bold ">Key Facts</label>
+                <textarea class="ckeditor" name="key_facts" id="key_facts">{{ $news->key_facts }}</textarea>
             </div>
-            @endforeach
+            <div class="col-md-12">
+                <label for="" class="font-weight-bold ">PDF</label>
+                <input type="file" name="pdf">
+            </div>
+
+            <div class="col-md-12">
+                <label for="" class="font-weight-bold ">Meta title</label>
+                <textarea class="form-control" name="meta_title">{{ $news->meta_title }}</textarea>
+            </div>
+
+            <div class="col-md-12">
+                <label for="" class="font-weight-bold ">Meta description</label>
+                <textarea class="form-control" name="meta_description">{{ $news->meta_description }}</textarea>
+            </div>
         </div>
 
         <hr>
@@ -74,12 +77,12 @@
                     <div class="col-md-12">
                         <h4>Text section:</h4>
                     </div>
-                    @foreach ($section->all_translations as $section_translation)
-                        <div class="col-md-12">
-                            <label class="m-0 font-weight-bold">Content({{ $section_translation->locale }})</label>
-                            <textarea required class="{{$key == 0 ? 'form-control' : 'ckeditor'}}" id="text-en-${section}" name="section_translations[{{ $section_translation->id }}]">{{ $section_translation->content }}</textarea>
-                        </div>
-                    @endforeach
+                   
+                    <div class="col-md-12">
+                        <label class="m-0 font-weight-bold">Content</label>
+                        <textarea required class="ckeditor" id="text-en-${section}" name="section[{{ $section->id }}]">{{ $section->content }}</textarea>
+                    </div>
+                   
                     <input type="hidden" name="type[]" value="1" />
                 </div>
 
@@ -89,7 +92,7 @@
                     <h4>Picture section:</h4>
                   
                     <div class="w-100 d-flex justify-content-center align-items-center  flex-column">
-                        <img src="{{ asset('news_images') }}/{{ $section->all_translations[0]->content }}" alt="" class="w-50 d-block mb-2">
+                        <img src="{{ asset('news_images') }}/{{ $section->content }}" alt="" class="w-50 d-block mb-2">
                         <input type="file" name="files[{{ $section->id }}]">
                     </div>
                 </div>

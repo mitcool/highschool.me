@@ -54,7 +54,13 @@
                         </div>
                     @endforeach
                         <label for=""class="text-danger mb-0 mt-2">Grade</label>
-                        <input type="number" value="{{ old('grade') }}" name="grade" class="form-control" step="0.1" required>
+                        <select name="grade" class="form-control" id="">
+                            <option value="" selected disabled>Please select</option>
+                            <option value="0">< 1.0</option>
+                            @for($i = 1; $i <= 5; $i+= 0.1)
+                                <option value="{{ $i }}">{{ $i }}</option>
+                            @endfor
+                        </select>
                         <label for=""class="text-danger mb-0 mt-2">Add overall comment</label>
                         <input type="text" name="exam_comment"  value="{{ old('exam_comment') }}" class="form-control" required>
                         <div class="mt-2 d-flex justify-content-center">
@@ -64,10 +70,15 @@
             @else
                 @foreach ($answers as $answer )
                     <a class="text-decoration-none btn btn-secondary" href="{{ asset('exams') }}/{{ $exam->id }}/{{ $answer->answer }}" target="_blank" download><i class="fas fa-download"></i> Download here</a>
-
                     <form method="POST" action="{{ route('evaluate-exam',$exam->id) }}">
                             <label for=""class="text-danger mb-0 mt-2">Grade</label>
-                            <input type="number" value="{{ old('grade') }}" name="grade" class="form-control" step="0.1" required>
+                            <select name="grade" class="form-control" id="">
+                                <option value="" selected disabled>Please select</option>
+                                <option value="0">< 1.0</option>
+                                @for($i = 1; $i <= 5; $i+= 0.1)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
                             <label for=""class="text-danger mb-0 mt-2">Add overall comment</label>
                             <input type="text" name="exam_comment" value="{{ old('exam_comment') }}" class="form-control" required>
                             <div class="mt-2 d-flex justify-content-center">

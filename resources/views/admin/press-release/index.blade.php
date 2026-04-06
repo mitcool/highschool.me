@@ -10,12 +10,15 @@
     .selected-image{
         border:3px solid rgb(85, 146, 215) !important;
     }
+    label{
+        margin-top:15px;
+        margin-bottom:3px;
+    }
 </style>
 @endsection
 
 @section('content')
-<div class="jumbotron container">
-
+<div class=" container border bg-white" style="margin-top:50px;padding:20px;">
     <h2 class="text-center">Create a "Press Release" article</h2>
     <hr>
     <form action="{{ route('press-release-create') }}" method="POST" enctype="multipart/form-data" id="create_news_form">
@@ -39,44 +42,61 @@
            
             <div class="col-md-12">
                 <label for="" class="font-weight-bold mb-0">Key Facts(EN)</label>
-                <textarea  name="key_facts_en" class="form-control ckeditor"></textarea>
+                <textarea  name="key_facts" class="form-control ckeditor"></textarea>
             </div>
          
 			<div class="col-md-12">
                 <label for="" class="font-weight-bold mb-0">Meta title(EN)</label>
-				<textarea  name="meta_title_en" class="form-control" required ></textarea>
+				<textarea  name="meta_title" class="form-control" required ></textarea>
             </div>
           
 			<div class="col-md-12">
                 <label for="" class="font-weight-bold mb-0">Meta description (EN)</label>
-                <textarea  name="meta_description_en" class="form-control" required ></textarea>
+                <textarea  name="meta_description" class="form-control" required ></textarea>
             </div>
           
             <div class="col-md-12">
                 <label for="" class="font-weight-bold mb-0">Min to read</label>
                 <input type="number" name="minutes" class="form-control" required />
             </div>
+
+            <div class="col-md-12">
+                <label for="" class="font-weight-bold mb-0">PDF</label>
+                <input type="file" name="pdf" class="form-control" required />
+            </div>
         </div>
         <hr>
+        <label for="" class="font-weight-bold mb-0 d-block">Main picture:</label>
+        <div class="section row">
+            <div class="col-md-12">
+                <h4>Main Picture section*</h4>
+            </div>
+            <div class="col-md-12">
+                <label class="m-0 font-weight-bold">Picture</label>
+                <input type="file" name="picture" required>
+            </div>
+           
+            <input type="hidden" name="type[]" value="1" />
+        </div>
         <label for="" class="font-weight-bold mb-0 d-block">Content:</label>
         <div class="section row">
             <div class="col-md-12">
                 <h4>Main Heading section*</h4>
             </div>
             <div class="col-md-12">
-                <label class="m-0 font-weight-bold">Content(EN)</label>
-                <textarea class="form-control" name="content[]"></textarea>
+                <label class="m-0 font-weight-bold">Heading</label>
+                <textarea class="form-control" name="heading"></textarea>
             </div>
            
             <input type="hidden" name="type[]" value="1" />
         </div>
         <div class="section row">
             <div class="col-md-12">
-                <h4>Main Description section*</h4>
+                <h4>Teaser*</h4>
             </div>
             <div class="col-md-12">
-                <label class="m-0 font-weight-bold">Content(EN)</label>
-                <textarea class="form-control ckeditor" name="content[]"></textarea>
+                <label class="m-0 font-weight-bold">Teaser</label>
+                <textarea class="form-control ckeditor" name="teaser"></textarea>
             </div>
           
             <input type="hidden" name="type[]" value="1" />
@@ -86,7 +106,7 @@
 
         </div>
         <hr>
-        <div class="text-center">
+        <div class="text-right">
             <button class="btn btn-info" data-toggle="modal" data-target="#type_modal"type="button">+ Add new section</button>
         </div>
        
@@ -97,15 +117,16 @@
     <h1>List of Press Releases:</h1>
     @foreach($news as $n)
     <hr />
-    {!! $n->sections[0]->translated->content !!}
+    {!! $n->heading !!}
     <div class="text-right d-flex justify-content-end">
         <a href="{{ route('edit-press-release',$n->id) }}" class="btn btn-warning mr-2">Edit Press Release</a>
         <form action="{{ route('delete-press-release',$n->id) }}" method="POST" class="text-right">
             {{ csrf_field() }}
             <button class="btn btn-danger">Delete Press Release</button>
         </form>
-    </div>
+</div>
     @endforeach
+</div>
 </div>
 <div class="col-md-6" style="margin:0 auto; justify-items: center;">{{$news->links()}}</div>
 
@@ -146,22 +167,15 @@
 
 <script>
    
-     $(document).on('click','.close-section', function(){
+    $(document).on('click','.close-section', function(){
         $(this).closest('.section').remove();
     });
-
-    
 
     $(document).ready(function(){
 
         $('#create_news_form').on('submit', function(e){
 
-            if($('.image-section').length < 1){
-                alert('Please add at least one image section');
-                e.preventDefault();
-                return;
-            }
-            else if($('.text-section').length < 1){
+           if($('.text-section').length < 1){
                 alert('Please add at least one text section');
                 e.preventDefault();
                 return;
@@ -169,9 +183,8 @@
             else{
                 return confirm('Are you sure?');
             }
-            
-           
         });
+      
         $('.options').on('click', function(){
             $('.options').removeClass('selected-image');
             $(this).addClass('selected-image');

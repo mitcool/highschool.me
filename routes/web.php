@@ -146,7 +146,7 @@ Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 	Route::get('/courses','EducatorController@courses')->name('educator.courses');
 	Route::get('/meetings','EducatorController@meetings')->name('educator.meetings');
 	Route::get('/exams','EducatorController@exams')->name('educator.exams');
-	Route::get('/self-assesment','EducatorController@selfAssessment')->name('educator.self-assessment');
+	// Route::get('/self-assesment','EducatorController@selfAssessment')->name('educator.self-assessment');
 	Route::get('/submissions','EducatorController@submissions')->name('educator.submissions');
 	Route::get('/invoices','EducatorController@invoices')->name('educator.invoices');
 	Route::get('/reset-password', 'EducatorController@resetPassPage')->name('educator.reset.password.page');
@@ -155,10 +155,10 @@ Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 	Route::post('/edit-single-self-assessment-question/{question_id}', 'EducatorController@editSelfAssessmentQuestion')->name('educator.self-assessment-update');
 	Route::post('/delete-single-self-assessment-question/{question_id}', 'EducatorController@deleteSelfAssessmentQuestion')->name('educator.delete-self-asses-question');
 	Route::post('/exams/add','EducatorController@createExam')->name('educator.create-exam');
-	Route::get('/add-exam-questions', 'EducatorController@addExamQuestionsPage')->name('educator.add-exam-question');
-	Route::post('/add-exam-question', 'EducatorController@addExamQuestion')->name('educator.exam-question-add');
-	Route::get('/edit-exam-question/{question_id}', 'EducatorController@editQuestionPage')->name('educator.update-exam-question');
-	Route::post('/edit-exam-single-question/{question_id}', 'EducatorController@editExamQuestion')->name('educator.update-question-exam');
+	// Route::get('/add-exam-questions', 'EducatorController@addExamQuestionsPage')->name('educator.add-exam-question');
+	// Route::post('/add-exam-question', 'EducatorController@addExamQuestion')->name('educator.exam-question-add');
+	// Route::get('/edit-exam-question/{question_id}', 'EducatorController@editQuestionPage')->name('educator.update-exam-question');
+	// Route::post('/edit-exam-single-question/{question_id}', 'EducatorController@editExamQuestion')->name('educator.update-question-exam');
 	Route::post('/delete-exam-question', 'EducatorController@deleteExamQuestion')->name('educator.delete-exam-question');
 	Route::get('/materials-by-course/{course}', 'EducatorController@materialsByCourse')->name('educator.materials-by-course');
 	Route::get('/submissions/{submition_id}','EducatorController@showSingleSubmission')->name('educator.single-submission');

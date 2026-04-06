@@ -1,4 +1,4 @@
-    @if(Session::has('success_message'))
+    {{-- @if(Session::has('success_message'))
         <div class="alert alert-success text-center alert-fixed shadow" role="alert">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             {{ Session::get('success_message') }}
@@ -19,4 +19,4 @@
                 {{ $error }}
             </div>
         @endforeach
-    @endif
+    @endif --}}

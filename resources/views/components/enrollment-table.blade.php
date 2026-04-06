@@ -149,6 +149,22 @@
             padding: 5px 20px;
             border-radius: 6px;
         }
+        .btn-in-progress{
+             background-color: #f3f3f3;
+             color: grey;
+            border: none;
+            font-weight: 600;
+            padding: 5px 20px;
+            border-radius: 6px;
+        }
+        .btn-completed{
+            background-color: #19a319;
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 5px 20px;
+            border-radius: 6px;
+        }
         .btn-enroll:hover {
             background-color: #b33b00;
             color: white;
@@ -176,11 +192,16 @@
                 {{ $tpc->course->title }}
             </div>
             @if(!in_array($tpc->id,$enrolled_courses_ids))
+                
                 <form action="{{ route('enroll',$tpc->id) }}" method="POST" class="confirm-first enroll-form">
                     {{ csrf_field() }}
                     <input type="hidden" name="student_id" value="{{ $student->id }}">
                     <button class="btn btn-enroll">Enroll</button>
                 </form>
+            @elseif(in_array($tpc->id,$in_progress_courses_ids))
+                <span class="btn btn-in-progress">In progress</span>
+            @elseif(in_array($tpc->id,$completed_courses_ids))
+                <span class="btn btn-in-completed">✓ Completed</span>
             @endif
         </div>   
         @endforeach
@@ -307,6 +328,10 @@
                                                                     <button class="btn btn-enroll"> Buy now</button>
                                                                 </a>
                                                             @endif
+                                                        @elseif(in_array($cc->id,$in_progress_courses_ids))
+                                                            <span class="btn btn-in-progress">In progress</span>
+                                                        @elseif(in_array($cc->id,$completed_courses_ids))
+                                                            <span class="btn btn-in-completed">✓ Completed</span>
                                                         @endif
                                                     </div>
                                                 @endif
@@ -364,8 +389,10 @@
                                                     @endif
                                                 </div>
                                                     
-                                                    @if(in_array($cc->id,$enrolled_courses_ids))
-                                                         <button class="btn btn-disabled"></button>
+                                                    @if(in_array($cc->id,$in_progress_courses_ids))
+                                                        <span class="btn btn-in-progress">In progress</span>
+                                                    @elseif(in_array($cc->id,$completed_courses_ids))
+                                                        <span class="btn btn-completed">✓ Completed</span>
                                                     @else
                                                         @if($curriculumTypes[$cc->curriculum_type_id-1]->permission)
                                                             <form class="confirm-first enroll-form" action="{{ route('enroll',$cc->id) }}" method="POST">

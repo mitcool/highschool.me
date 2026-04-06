@@ -4,13 +4,13 @@
 <div class="container my-5">
     <div class="table-container mx-auto mt-5">
         <h2 class="text-center mb-4">My Exams</h2>
+        <p class="text-danger">You can make a pre-exam only once</p>
         <div class="table-responsive">
             <table class="table course-table">
                 <thead>
                     @if(count($exams) > 0)
                     <tr class="text-center">
                         <th>Date</th>
-                        
                         <th>Subject</th>
                         <th>Pre-Exam Link</th>
                         <th>Exam Link</th>
@@ -29,9 +29,7 @@
                                 @endif
                             </td>
                             <td>
-                               
                                 @if($exam->status == 0 && $exam->is_active())
-                                   
                                     <a href="{{ route('student.single-exam',$exam->id) }}" class="view-link">Link&#187;</a>
                                 @elseif($exam->status == 0 && !$exam->is_active())                                
                                     Exam starts on {{ $exam->localdate() }} ({{ session('timezone') }})

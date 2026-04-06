@@ -24,7 +24,6 @@
     <form action="{{ route('dynamic-news-create') }}" method="POST" enctype="multipart/form-data" id="create_news_form">
         {{ csrf_field() }}
         <div class="row mt-1">
-             <div class="col-md-6"></div>
             <div class="col-md-12">
                 <label for="" class="font-weight-bold">Author:</label>
                 <select name="author_id" id=""  required class="form-control">

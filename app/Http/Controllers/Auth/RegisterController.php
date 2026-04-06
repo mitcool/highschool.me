@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\UserRole;
+use App\Country;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
@@ -16,6 +17,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationProfile;
 use Session;
+use App\InvoiceDetail;
 
 class RegisterController extends Controller
 {
@@ -74,13 +76,19 @@ class RegisterController extends Controller
                     'regex:/[@$!%*#?&]/'
             ],
             'g-recaptcha-response' => 'required|recaptcha',
-            'terms' => 'required|accepted'
+            'terms' => 'required|accepted',
+            'country_id'=>'required'
         ]);
     }
     public function showRegistrationForm()
     {
         $user_roles = UserRole::where('order', '!=', 0)->orderBy('order', 'asc')->get();
+        $countries = Country::all();
+        $restricted_countries = $countries->where('is_restricted',1);
+        $allowed_countries = $countries->where('is_restricted',0);
         return view('auth.register')
+            ->with('allowed_countries',$allowed_countries)
+            ->with('restricted_countries',$restricted_countries)
             ->with('user_roles',$user_roles);
     }
 
@@ -95,6 +103,8 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));
+
+        InvoiceDetail::create(['user_id' => $user->id,'country_id' => $request->country_id]);
 
         if ($response = $this->registered($request, $user)) {
             return $response;

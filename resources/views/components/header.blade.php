@@ -18,6 +18,46 @@
 			</div> 
 		@endif
 
+		@if(Session::has('error'))
+                        <div class="modal fade" id="message_modal">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content error-msg">
+                                <div class="modal-body text-center">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <div></div>
+                                        {{ Session::get('error') }}
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 50px; color:black; margin-bottom: 15px;">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div> 
+                    @endif
+
+                    @if(count($errors) > 0)
+					<div class="modal fade" id="message_modal">
+						<div class="modal-dialog" role="document">
+						<div class="modal-content error-msg">
+							<div class="modal-body text-center">
+								<div class="d-flex w-100 justify-content-between align-items-center">
+									<div>
+										@foreach($errors->all() as $error)
+											<p class="text-left"> {{ $error }} </p>  
+										@endforeach
+									</div>
+									
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 50px; color:black; margin-bottom: 15px;">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+							</div>
+						</div>
+						</div>
+					</div>
+					@endif
+
 		<div class="col-lg-2 col-md-2 col-4" style="padding-left:40px;">
 			<a href="{{ route('welcome') }}">
 				<x-image-component rel="preload" fetchpriority="high" decoding="async" nickname="logo-header" class="logo-header-images logoMainPage" />

@@ -9,7 +9,7 @@ class EarlyRegistration extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','middlename','surname','email','education_option','message'];
+    protected $fillable = ['name','middlename','surname','email','education_option','message','country_id'];
 
     public function fullname(){
         return $this->name.' '.$this->middlename.' '.$this->surname;
@@ -31,5 +31,10 @@ class EarlyRegistration extends Model
         elseif($this->education_option == 5){
             return 'Learning, Mentoring & Coaching Sessions';
         }
+    }
+
+    public function country(){
+        return $this->hasOne('App\Country','id','country_id');
+        
     }
 }

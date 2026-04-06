@@ -12,6 +12,8 @@ class Image extends Model
     protected $table = 'images';
     public $timestamps = false;
 
+    protected $fillable = ['nickname','src','alt','title'];
+
     public function translated(){
         return $this->hasOne('App\ImageAttribute','image_id','id')->where('locale',app()->currentLocale());
     }

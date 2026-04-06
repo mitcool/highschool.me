@@ -41,7 +41,7 @@
 		<div class="col-md-12">
             <h1 class="page-headings">Early Registration</h1>
 			<p class="text-center">
-You can register as a guardian, who is responsible for the student and then to create profile for the student from the dashboard.</p>
+            You can register as a guardian, who is responsible for the student and then to create profile for the student from the dashboard.</p>
         </div>
 		<div class="col-md-9 col-lg-7 mb-4 text-center bg-white">
 			<form action="{{ route('early-registration-submit') }}" method="POST" id="reg-form" class="confirm-first shadow">
@@ -62,10 +62,19 @@ You can register as a guardian, who is responsible for the student and then to c
                 <label for="">E-mail address:</label>
                 <input type="email" name="email" class="form-control" required value="{{ old('email') }}">
                 @error('email') <div class="text-left"><span class="validation-error">{{ $errors->first('email') }}</span> </div> @enderror
+                
+                <label for="country_id">Country</label>
+                <select name="country_id" class="form-control" id="country_id" required>
+                    <option value="" selected disabled>-- Please select --</option>
+                    @foreach ($allowed_countries as $country)
+                        <option {{ $country->id == old('country_id') ? ' selected ' : '' }} value="{{ $country->id }}">{{ $country->nicename }}</option>
+                    @endforeach
+                </select>
+                 @error('country_id') <div class="text-left"><span class="validation-error">{{ $errors->first('country_id') }}</span> </div> @enderror
 
                 <label for="">I am interested in:</label>
                 <select name="education_option" class="form-control" required>
-                    <option value="">Please select edication</option>
+                    <option value="" selected disabled>-- Please select --</option>
                     <option {{ old('education_option') == 1 ? ' selected ' : '' }} value="1">24-Credit-Standard/Honors Graduation Track</option>
                     <option {{ old('education_option') == 2 ? ' selected ' : '' }} value="2">18-Credit-ACCEL Graduation Track</option>
                     <option  {{ old('education_option') == 3 ? ' selected ' : '' }} value="3">International Transfer Program</option>
@@ -81,7 +90,7 @@ You can register as a guardian, who is responsible for the student and then to c
                 <div class="text-left">
                     <input type="checkbox" name="agree" required> Lorem ipsum dolor sit amet.
                 </div>
-                <p class="text-danger text-left">Be aware that we cannot sign students from the following countries: North Korea, China</p>
+                <p class="text-danger text-left">Be aware that we cannot sign students from the following countries: @foreach($restricted_countries as $country) {{ $country->nicename }}@endforeach</p>
                 {{-- reCAPTCHA --}}
                     <div class="form-group text-center mt-4 mb-4">
                         <div class="g-recaptcha d-inline-block"

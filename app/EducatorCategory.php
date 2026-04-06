@@ -18,6 +18,6 @@ class EducatorCategory extends Model
     }
 
     public function category(){
-        return $this->hasOne('App\CourseCategory','id','category_id');
+        return $this->hasOne('App\SubjectArea','id','category_id');
     }
 }

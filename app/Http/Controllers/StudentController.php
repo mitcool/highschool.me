@@ -277,13 +277,8 @@ class StudentController extends Controller
             info($e->getMessage());
         }
         
-        try{
-            Mail::to(self::MATHIAS_EMAIL)->send(new ExamSubmittedAdmin($exam));
-        }catch(\Exception $e){
-            info($e->getMessage());
-        }
-
-        
+        $this->notifyAdmins(new ExamSubmittedAdmin($exam));
+    
         return redirect()->route('student.exams')
             ->with('success_message','You successfully submitted your exam');
     }
@@ -778,11 +773,7 @@ class StudentController extends Controller
 
     public function requestDiplomaCopySuccess(){
         $diploma_request = DiplomaPrintingRequest::create(['student_id' => auth()->id(),'status' => 0]);
-        try{
-            Mail::to(self::MATHIAS_EMAIL)->send(new NewDiplomaPrintingRequest($diploma_request));
-        }catch(\Exception $e){
-            info($e->getMessage());
-        }
+        $this->notifyAdmins(send(new NewDiplomaPrintingRequest($diploma_request)));
         return redirect()->route('student.diplomas')
             ->with('success_message','Diploma copy requested successfully');
     }
@@ -795,8 +786,12 @@ class StudentController extends Controller
             ->groupBy(function ($item) {
                 return $item->date->format('Y'); // group by month
             });
-
-        $pdf = Pdf::loadView('student.transcript-pdf',[ 'student'=> $student,'exams' => $exams ])->set_option('isRemoteEnabled',true)->setPaper('a4');
+        $now = Carbon::now()->format('d.m.Y');
+        $pdf = Pdf::loadView('student.transcript-pdf',[ 
+                'student'=> $student,
+                'exams' => $exams,
+                'now' => $now ])
+                ->set_option('isRemoteEnabled',true)->setPaper('a4');
         return $pdf->stream();
     }
 

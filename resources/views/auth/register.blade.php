@@ -145,16 +145,7 @@
                                 </span>
                             @endif
                         </div>
-
-                        {{-- Role
-                        <div class="form-group">
-                            <label for="role_id">I'm a</label>
-                            <select name="role_id" class="form-control" id="role_id">
-                                @foreach ($user_roles as $role)
-                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                @endforeach
-                            </select>
-                        </div> --}}
+                       
 
                         {{-- Password --}}
                         <div class="form-group">
@@ -178,7 +169,17 @@
                             <input id="password-confirm" type="password"
                                    class="form-control" name="password_confirmation" required>
                         </div>
-
+                        
+                         {{-- Country --}}
+                        <div class="form-group">
+                            <label for="country_id">Country</label>
+                            <select name="country_id" class="form-control" id="country_id" required>
+                                <option value="" selected disabled>-- Please select --</option>
+                                @foreach ($allowed_countries as $country)
+                                    <option value="{{ $country->id }}">{{ $country->nicename }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         {{-- Terms / Checkbox --}}
                         <div class="form-group mt-3">
                             <div class="form-check">
@@ -194,7 +195,9 @@
                                 </label>
                             </div>
                             <span class="checkbox-details">
-                                Be aware that we cannot sign students from the following countries: ........
+                                Be aware that we cannot sign students from the following countries: @foreach($restricted_countries as $country)
+                                    {{ $country->nicename }}
+                                @endforeach
                             </span>
                         </div>
 

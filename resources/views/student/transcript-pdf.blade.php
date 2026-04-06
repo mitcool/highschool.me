@@ -64,19 +64,21 @@
                 @endforeach
             @endforeach
         </table>
-        <table style="width:100%;margin-top:30px;position:fixed;top:90%;z-index:2;">
+        <table style="width:100%;margin-top:30px;position:fixed;top:88%;z-index:2;">
             <tr>
                 <td style="text-align: left;width:50%;">
-                    <div>
+                    <div style="margin-bottom:40px">
                         <div style="text-align:center">
+                            {{ $now }}
                             <hr style="margin:0 auto;width:50%">
                             <p>Date</p>
                         </div>
                     </div>
                 </td>
                 <td style="text-align:right;width:50%;">
-                    <div>
+                    <div style="margin-bottom:65px;">
                         <div style="text-align:center">
+                            <img src="{{ asset('images/signature.jpg') }}" alt="" style="width:28%;">
                             <hr style="margin:0 auto;width:50%">
                             <p>Signature</p>
                         </div>
@@ -84,5 +86,6 @@
                 </td>
             </tr>
         </table>
+        <br>
     </body>
 </html>

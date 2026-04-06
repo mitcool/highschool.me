@@ -77,21 +77,21 @@
 				<span style="opacity: 0;">{{(session()->get('locale')=='en' ? 'Page ' : 'Seite ')}} {{request()->page}}</span>
 				@endif
 			</h1>
-			
-			
+
 			<div class="row bg-white" id="blog">
 				
-				{{-- @foreach($news as $n)
+				@foreach($news as $n)
 					<div class="news-body my-2">
-						<a href="{{ route('single-press-release',$n->translated->slug) }}">
+						<x-image-component nickname="press-release-{{ $n->id }}" />
+						<a href="{{ route('single-press-release',$n->slug) }}">
 							<div>
-								<h2>{{ $n->title }}</h2>
+								<h2>{{ $n->heading }}</h2>
 								<p class="mb-0">{{ $n->teaser }}</p>
 							</div>
 						</a>
 						<p class="mb-0">{{ $n->created_at->format('d.m.Y') }}</p>
 					</div>
-				@endforeach --}}
+				@endforeach
 			</div>
 			<div class="d-flex justify-content-center mt-3">{{$news->links()}}</div>
 			

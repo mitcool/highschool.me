@@ -109,7 +109,12 @@ class MainController extends Controller
   }
 
   public function earlyRegistration(){
-    return view('pages.about.early-registration');
+    $country = Country::all();
+    $restricted_countries = $country ->where('is_restricted',1);
+    $allowed_countries = $country ->where('is_restricted',0);
+    return view('pages.about.early-registration')
+      ->with('restricted_countries',$restricted_countries)
+      ->with('allowed_countries',$allowed_countries);
   }
 
   public function earlyRegistrationSubmit(Request $request){
@@ -122,15 +127,13 @@ class MainController extends Controller
         'message'=> 'max:2000',
         'agree'=> 'required',
         'g-recaptcha-response'=> 'required|recaptcha',
+        'country_id' => 'required'
      ]);
-     $application = $request->only('name','middlename','surname','email','education_option','message');
-     $registration = EarlyRegistration::create($application);
-     try{
-        Mail::to(self::MATHIAS_EMAIL)->send(new EarlyRegistrationEmail($registration));
-     }catch(\Exception $e){
-        info($e->getMessage());
-     }
+     
+     $application = $request->only('name','middlename','surname','email','education_option','message','country_id');
 
+     $registration = EarlyRegistration::create($application);
+     $this->notifyAdmins(new EarlyRegistrationEmail($registration));
      return redirect()->back()->with('success_message','Your apprlication has been sent successfully');
   }
 
@@ -140,11 +143,8 @@ class MainController extends Controller
     }
     $data = $request->validated();
   
-    try {
-      Mail::to(self::MATHIAS_EMAIL)->send(new ContactEmail($data));
-    }catch(\Exception $e) {
-      Log::info($e);
-    }
+    $this->notifyAdmins(new ContactEmail($data));
+  
     return redirect()->back()->with('success_message','Email successfully sent');
   }
 

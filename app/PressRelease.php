@@ -9,6 +9,7 @@ class PressRelease extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['author_id','slug','key_facts','meta_title','meta_description','minutes','heading','teaser','pdf'];
      public function sections(){
         return $this->hasMany('App\PressReleaseSection','news_id','id');
     }

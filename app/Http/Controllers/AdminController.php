@@ -92,6 +92,7 @@ use App\StudentEnrolledCourse;
 use App\Notification;
 use App\CteProgram;
 use App\CteJob;
+use App\Country;
 
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
@@ -103,6 +104,7 @@ use App\Mail\ExamDeletedParent;
 use App\Mail\EducatorCategoryApproved;
 use App\Mail\ExamResultParent;
 use App\Mail\ExamResult;
+use App\Mail\EducatorCategoriesEmail;
 
 class AdminController extends Controller
 {
@@ -1375,7 +1377,16 @@ class AdminController extends Controller
         }catch(\Exception $e){
             info($e->getMessage());
         }
+
+        try{
+            Mail::to($educator->email)->send(new EducatorCategoriesEmail($educator));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+
         Notification::add($educator->id,'Welcome to HIGHSCHOOL.ME');
+        Notification::add(auth()->id(),'Educator created successfully');
+
         return redirect()->back()->with('success_message','Educator created successfully');
     }
 
@@ -1393,7 +1404,7 @@ class AdminController extends Controller
 
         $id = $request->id;
         $categories = $request->categories;
-        $educator = [
+        $educator_data = [
             'name' => $request->firstname,
             'middlename' => $request->middlename,
             'surname' => $request->surname,
@@ -1401,8 +1412,8 @@ class AdminController extends Controller
             'employment_type' => (int) $request->employment_type,
             'is_counsellor' => (int) $request->is_counsellor,
         ];
-
-        User::find($id)->update($educator);
+        $educator = User::find($id);
+        $educator->update($educator_data);
         EducatorCategory::where('educator_id',$id)->delete();
         foreach($categories as $category_id){
             EducatorCategory::insert([
@@ -1411,20 +1422,29 @@ class AdminController extends Controller
                 'status' => 1
             ]);
         }
+        try{
+          Mail::to($educator)->send(new EducatorCategoriesEmail($educator));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+
+        Notification::add(auth()->id(),'Educator categories changed');
+        Notification::add($educator->id,'Your teaching categories has been updated');
+
         return redirect()->back()->with('success_message','Educator updated successfully');
     }
 
     #Using the same view for both help desks
     public function parentHelpDesk(){
         $template = 'admin_template';
-        $help_desk = HelpDesk::where('is_parent',1)->get()->groupBy('slug');
+        $help_desk = HelpDesk::orderBy('id','desc')->where('is_parent',1)->get()->groupBy('slug');
         return view('help-desk.inbox')
             ->with('template',$template)
             ->with('help_desk',$help_desk);
     }
     public function studentHelpDesk(){
         $template = 'admin_template';
-        $help_desk = HelpDesk::where('is_parent',0)->get()->groupBy('slug');
+        $help_desk = HelpDesk::orderBy('id','desc')->where('is_parent',0)->get()->groupBy('slug');
         return view('help-desk.inbox')
             ->with('template',$template)
             ->with('help_desk',$help_desk);
@@ -1881,5 +1901,29 @@ class AdminController extends Controller
             abort(404);
         }
         return redirect()->back()->with('success_message','Educator category approved successfully');
+    }
+
+    public function restrictedCountries(){
+        $countries = Country::where('is_restricted',0)->get();
+        $restricted_countries   = Country::where('is_restricted',1)->get();
+        return view('admin.restricted-countries')
+            ->with('restricted_countries',$restricted_countries  )
+            ->with('countries',$countries);
+
+    }
+
+    public function updateRestrictedCountry(Request $request){
+        $request->validate([
+            'country_id' => 'required'
+        ]);
+        $country = Country::find($request->country_id);
+        if($country->is_restricted == 0){
+            $country->update(['is_restricted' => 1]);
+        }
+        else{
+            $country->update(['is_restricted' => 0]);
+        }
+
+        return redirect()->back()->with('success_message', 'Country updated successfully');
     }
 }
