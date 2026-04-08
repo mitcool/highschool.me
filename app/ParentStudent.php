@@ -13,7 +13,7 @@ class ParentStudent extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['status','expired_at','is_disabled','grade','parent_id','student_id','track','feedback','tokens'];
+    protected $fillable = ['status','expired_at','is_disabled','grade','parent_id','student_id','track','feedback','tokens','gender','student_location_id','ethnicity_id'];
 
     //STATUSES
     const CREATED = 0;
@@ -44,6 +44,16 @@ class ParentStudent extends Model
 
     public function parent(){
         return $this->hasOne('App\User','id','parent_id');
+    }
+
+    public function student_location()
+    {
+        return $this->belongsTo('App\StudentLocation', 'student_location_id', 'id');
+    }
+
+    public function ethnicity()
+    {
+        return $this->belongsTo('App\Ethnicity', 'ethnicity_id', 'id');
     }
 
     public function approved_documents_count(){

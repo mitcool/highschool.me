@@ -80,21 +80,21 @@
                 </div>
                  <div class="col-md-4 mt-4">
                     <b>Tracking & Marketing Cookies</b>
-                    <div class="wrapper">
+                    <div class="wrapper" style="height: auto;">
                         <span>Google Ads</span>
                         <label class="switch mt-3">
                             <input name="google_ads" type="checkbox" checked> 
                             <span class="slider round"></span>
                         </label>
                     </div>
-                    <div class="wrapper">
+                    <div class="wrapper" style="height: auto;">
                         <span>Facebook</span>
                         <label class="switch mt-3">
                             <input name="facebook" type="checkbox" checked> 
                             <span class="slider round"></span>
                         </label>
                     </div>
-                    <div class="wrapper">
+                    <div class="wrapper" style="height: auto;">
                         <span>Google Analytics</span>
                         <label class="switch mt-3">
                             <input name="google_analytics" type="checkbox" checked> 

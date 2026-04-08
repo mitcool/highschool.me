@@ -131,9 +131,22 @@ class EducatorController extends Controller
     }
 
     public function invoices(){
-        $invoices = Invoice::where('user_email',auth()->user()->email)->latest()->paginate(10);    
+        $invoices = Invoice::where('user_email',auth()->user()->email)
+            ->where('is_memo', 1)
+            ->latest()
+            ->paginate(10);
+
         return view('educator.invoices')
             ->with('invoices',$invoices);
+    }
+
+    public function singleInvoice($id) {
+        $invoice = Invoice::where('id', $id)
+            ->where('user_email', auth()->user()->email)
+            ->where('is_memo', 1)
+            ->first() ?? abort(404);
+
+        return view('educator.single-invoice')->with('invoice', $invoice);
     }
 
     public function resetPassPage() {

@@ -149,6 +149,7 @@ Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 	// Route::get('/self-assesment','EducatorController@selfAssessment')->name('educator.self-assessment');
 	Route::get('/submissions','EducatorController@submissions')->name('educator.submissions');
 	Route::get('/invoices','EducatorController@invoices')->name('educator.invoices');
+	Route::get('/invoices/{invoice_id}', 'EducatorController@singleInvoice')->name('educator.single-invoice');
 	Route::get('/reset-password', 'EducatorController@resetPassPage')->name('educator.reset.password.page');
 	Route::post('/add-asses-question', 'EducatorController@storeSelfAssessQuestion')->name('educator.add-asses-question');
 	Route::get('/edit-self-assessment-question/{question_id}', 'EducatorController@editSelfAssessmentQuestionPage')->name('educator.edit-single-self-assessment-question');

@@ -45,7 +45,7 @@
                       <hr class="m-0">
                       <a href="{{ route('students-in-spotlight') }}" style="text-transform: uppercase;">Students in Spotlight</a>
                       <hr class="m-0">
-                      <a href="{{ route('partnership') }}" style="text-transform: uppercase;">Partnership</a>
+                      <a href="{{ route('partnership') }}" style="text-transform: uppercase;">Partners and Providers</a>
                       <hr class="m-0">
                     </div>
                   </div>

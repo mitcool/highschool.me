@@ -5,10 +5,12 @@
 				<div class="col-md logo-address-container">
 					<x-image-component loading="lazy"  nickname="logo-header" class="logo-header-images logoFooter w-50"/>
 					<ul class="footer-ul px-0 company-details">
-						<li>Onsites High School</li>
-						<li>100 Southeast 2nd Street, Suite 2000-1005</li>
-						<li>Miami Tower Miami, Florida 33131, USA</li>
-						<li>Phone: +1 (305) 404-5125</li>
+						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; cursor: context-menu;">ONSITES High School - Main Campus</li>
+						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; margin-top: 0px!important; cursor: context-menu;">100 Southeast 2nd Street</li>
+						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; margin-top: 0px!important; cursor: context-menu;">Miami Tower, Suite 2000-1005</li>
+						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; margin-top: 0px!important; cursor: context-menu;">Miami, Florida 33131</li>
+						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; margin-top: 0px!important; cursor: context-menu;">USA</li>
+						<li class="footer-company-address-detail" style="cursor: context-menu;">Phone: +1 (305) 404-5125</li>
 					</ul>
 					<div class="d-flex align-items-center" style="gap:10px;margin-top:8px;">
 						<a href="/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" style="color:#045397;">
@@ -35,7 +37,7 @@
 							Mission Statement
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('accreditation') }}">
-							Accreditation
+							Recognition & Quality Standards
 						</a></li>
 							<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('leadership') }}">
 							Leadership
@@ -43,11 +45,11 @@
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('academics') }}">
 							Faculty & Mentors
 						</a></li>
-						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('academics') }}">
-							Students in spotlight
+						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('students-in-spotlight') }}">
+							Students in Spotlight
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('partnership') }}">
-							Partnerships
+							Partners and Providers
 						</a></li>
 					</ul>
 				</div>
@@ -55,8 +57,9 @@
 				<div class="col-md">
 					<ul class="footer-ul">
 						<h6 class="text-uppercase">Academics</h6>
-						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('highschool-programs')}}">
-							High School Programs
+						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('highschool-programs'
+						)}}">
+							High School Diploma Tracks
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('graduation-requirements')}}">
 							Graduation Requirements
@@ -82,9 +85,8 @@
 				<div class="col-md">  
 					<ul class="footer-ul px-0">
 						<h6 class="text-uppercase">Curriculum</h6>
-						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('standard-high-school'
-						)}}">
-							High School Diploma Tracks
+						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('standard-high-school')}}">
+							High School Programs
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('transfer-program')}}">
 							High School International Transfer Program
@@ -99,7 +101,7 @@
 							PreACT/ACT Prep-Courses
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('advanced-placement')}}">
-							Advances Placement Courses
+							Advanced Placement Courses
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('cte')}}">
 							CTE Prep-Courses
@@ -131,10 +133,10 @@
 							Enrollment options
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('tuition') }}">
-							Tuitition
+							Tuition
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('tuition-assistance') }}">
-							Tuitition Assistance (PEP)
+							Tuition Assistance (PEP)
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('ambassador-program') }}">
 							Ambassador Program
@@ -144,13 +146,13 @@
 				</div> 
 				<div class="col-md">
 					<ul class="footer-ul">
-						<h6 class="text-uppercase">Resourses</h6>
+						<h6 class="text-uppercase">Resources</h6>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('faq'
 						)}}">
 							FAQ
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('code-of-ethics')}}">
-							Code of Ethics
+							Code of Conduct
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('accessibility')}}">
 							Accessibility
@@ -170,6 +172,14 @@
 							<a href="{{ route('press-release')}}">
 							Press Release
 						</a></li>
+						<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
+							<a href="#" data-toggle="modal" data-target="#cookie_modal">
+							Cookies
+						</a></li>
+						<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
+							<a href="/">
+							Sitemap
+						</a></li>
 					</ul>
 				</div>
 			</div>		
@@ -178,5 +188,5 @@
 </footer>
 
 <div style="background:#045397;color:white;text-align:center;padding:10px;width:100%">
-	ONSITES High School <?php echo date("Y");?> All Right Reserved
+	&#169; <?php echo date("Y");?> ONSITES High School. All Rights Reserved.
 </div>

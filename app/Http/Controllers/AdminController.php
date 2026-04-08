@@ -61,6 +61,7 @@ use App\FeatureCategory;
 use App\Plan;
 use App\Feature;
 use App\Invoice;
+use App\InvoiceDetail;
 use App\StudentDocument;
 use App\ParentStudent;
 use App\ApDetail;
@@ -1327,6 +1328,7 @@ class AdminController extends Controller
     public function educators(){
         $new_category_requests = EducatorCategory::where('status',0)->get()->groupBy('educator_id');
         $categories = SubjectArea::all();
+        $countries = Country::orderBy('nicename')->get();
         $educators = User::where('role_id',5)->get();
         foreach($educators as $educator){
             $educator->array_educator_categories  = $educator->educator_categories->pluck('category_id')->toArray();
@@ -1334,6 +1336,7 @@ class AdminController extends Controller
         return view('admin.educators')
             ->with('new_category_requests',$new_category_requests)
             ->with('educators',$educators)
+            ->with('countries',$countries)
             ->with('categories',$categories);
     }
 
@@ -1346,32 +1349,55 @@ class AdminController extends Controller
             'categories' => 'required',
             'employment_type' => 'required|in:0,1',
             'is_counsellor' => 'required|in:0,1',
+            'country_id'=> 'required|exists:countries,id',
+            'city' => 'required',
+            'street' => 'required',
+            'street_number' => 'required',
+            'zip' => 'required',
+            'phone' => 'required|regex:/^[0-9]\d{6,15}$/|min:6|max:15',
+            'phone_code' => 'required|regex:/^\+[0-9]\d{0,3}$/',
         ]);
         $educator_role_id = 5;
         $categories = $request->categories;
     
         $password  = Str::random(10);
         $confirmation_code = Str::random(30);
-        $educator = User::create([
-            'name' => $request->firstname,
-            'surname' => $request->surname,
-            'middlename' => $request->middlename,
-            'email' => $request->email,
-            'employment_type' => (int) $request->employment_type,
-            'is_counsellor' => (int) $request->is_counsellor,
-            'role_id' => $educator_role_id,
-            'password' => Hash::make($password),
-            'confirmation_code' => $confirmation_code,
-            'is_verified' => 1,
-        ]);
-
-        foreach($categories as $category_id){
-            EducatorCategory::insert([
-                'educator_id' => $educator->id,
-                'category_id' => $category_id,
-                'status' => 1
+        $educator = DB::transaction(function () use ($request, $educator_role_id, $password, $confirmation_code, $categories) {
+            $educator = User::create([
+                'name' => $request->firstname,
+                'surname' => $request->surname,
+                'middlename' => $request->middlename,
+                'email' => $request->email,
+                'employment_type' => (int) $request->employment_type,
+                'is_counsellor' => (int) $request->is_counsellor,
+                'role_id' => $educator_role_id,
+                'password' => Hash::make($password),
+                'confirmation_code' => $confirmation_code,
+                'is_verified' => 1,
             ]);
-        }
+
+            InvoiceDetail::create([
+                'user_id' => $educator->id,
+                'country_id' => $request->country_id,
+                'city' => $request->city,
+                'street' => $request->street,
+                'street_number' => $request->street_number,
+                'zip' => $request->zip,
+                'phone' => $request->phone,
+                'phone_code' => $request->phone_code,
+            ]);
+
+            foreach($categories as $category_id){
+                EducatorCategory::insert([
+                    'educator_id' => $educator->id,
+                    'category_id' => $category_id,
+                    'status' => 1
+                ]);
+            }
+
+            return $educator;
+        });
+
         try{
             Mail::to($educator->email)->send(new StudentCredentials($educator,$password));
         }catch(\Exception $e){
@@ -1400,6 +1426,13 @@ class AdminController extends Controller
             'categories' => 'required',
             'employment_type' => 'required|in:0,1',
             'is_counsellor' => 'required|in:0,1',
+            'country_id'=> 'required|exists:countries,id',
+            'city' => 'required',
+            'street' => 'required',
+            'street_number' => 'required',
+            'zip' => 'required',
+            'phone' => 'required|regex:/^[0-9]\d{6,15}$/|min:6|max:15',
+            'phone_code' => 'required|regex:/^\+[0-9]\d{0,3}$/',
         ]);
 
         $id = $request->id;
@@ -1413,25 +1446,104 @@ class AdminController extends Controller
             'is_counsellor' => (int) $request->is_counsellor,
         ];
         $educator = User::find($id);
-        $educator->update($educator_data);
-        EducatorCategory::where('educator_id',$id)->delete();
-        foreach($categories as $category_id){
-            EducatorCategory::insert([
-                'educator_id' => $id,
-                'category_id' => $category_id,
-                'status' => 1
-            ]);
-        }
+
+        DB::transaction(function () use ($educator, $educator_data, $id, $request, $categories) {
+            $educator->update($educator_data);
+
+            InvoiceDetail::updateOrCreate(
+                ['user_id' => $id],
+                [
+                    'country_id' => $request->country_id,
+                    'city' => $request->city,
+                    'street' => $request->street,
+                    'street_number' => $request->street_number,
+                    'zip' => $request->zip,
+                    'phone' => $request->phone,
+                    'phone_code' => $request->phone_code,
+                ]
+            );
+
+            EducatorCategory::where('educator_id',$id)->delete();
+            foreach($categories as $category_id){
+                EducatorCategory::insert([
+                    'educator_id' => $id,
+                    'category_id' => $category_id,
+                    'status' => 1
+                ]);
+            }
+        });
         try{
-          Mail::to($educator)->send(new EducatorCategoriesEmail($educator));
+            Mail::to($educator)->send(new EducatorCategoriesEmail($educator));
         }catch(\Exception $e){
             info($e->getMessage());
         }
-
+            
         Notification::add(auth()->id(),'Educator categories changed');
         Notification::add($educator->id,'Your teaching categories has been updated');
 
         return redirect()->back()->with('success_message','Educator updated successfully');
+    }
+
+    private function setInvoiceNumber(){
+        $next_invoice = Invoice::count() == 0 ? 1 : Invoice::count() + 1;
+        $numlength = strlen((string)$next_invoice);
+        $invoice_number = '01';
+
+        for ($i = 3; $i <= (10 - $numlength); $i++) {
+            $invoice_number .= '0';
+        }
+
+        $invoice_number .= $next_invoice;
+
+        return $invoice_number;
+    }
+
+    public function payToEducatorPage($educator_id) {
+        $educator = User::where('role_id',5)->where('id',$educator_id)->firstOrFail();
+
+        return view('admin.pay-to-educator')->with('educator', $educator);
+    }
+
+    public function payToEducator(Request $request, $educator_id) {
+        $educator = User::where('role_id',5)->where('id',$educator_id)->firstOrFail();
+
+        $request->validate([
+            'issue_date' => 'required|date',
+            'due_date' => 'required|date|after_or_equal:issue_date',
+            'description' => 'required|string',
+            'amount' => 'required|numeric|min:0.01',
+        ]);
+
+        if (!$educator->invoice_details) {
+            return redirect()->back()->withInput()->withErrors([
+                'educator' => 'This educator does not have invoice details yet.',
+            ]);
+        }
+
+        $invoice_data = [
+            'invoice_number' => $this->setInvoiceNumber(),
+            'user_email' => $educator->email,
+            'user_id' => $educator->id,
+            'price' => $request->amount,
+            'name' => $educator->name,
+            'surname' => $educator->surname,
+            'created_at' => Carbon::parse($request->issue_date)->startOfDay(),
+            'street' => $educator->invoice_details->street,
+            'street_number' => $educator->invoice_details->street_number,
+            'city' => $educator->invoice_details->city,
+            'ZIPcode' => $educator->invoice_details->zip,
+            'country_id' => $educator->invoice_details->country_id,
+            'description' => $request->description,
+            'is_memo' => 1,
+        ];
+
+        if (DB::getSchemaBuilder()->hasColumn('invoices', 'due_date')) {
+            $invoice_data['due_date'] = Carbon::parse($request->due_date)->startOfDay();
+        }
+
+        Invoice::insert($invoice_data);
+
+        return redirect()->route('pay-to-educator', $educator->id)->with('success_message','Credit memo created successfully');
     }
 
     #Using the same view for both help desks

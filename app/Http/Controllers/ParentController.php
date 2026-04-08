@@ -37,6 +37,8 @@ use App\LeaveRequest;
 use App\AdditionalCourse;
 use App\Notification;
 use App\Exam;
+use App\StudentLocation;
+use App\Ethnicity;
 
 use App\Mail\StudentCreated;
 use App\Mail\StudentCredentials;
@@ -132,7 +134,9 @@ class ParentController extends Controller
         return view('parent.welcome');
     }
     public function createStudent(){
-        return view('parent.create-student');
+        return view('parent.create-student')
+            ->with('student_locations', StudentLocation::orderBy('id')->get())
+            ->with('ethnicities', Ethnicity::orderBy('id')->get());
     }
     public function meetings_all(){
         $students = ParentStudent::where('parent_id',auth()->id())->get();
@@ -232,7 +236,10 @@ class ParentController extends Controller
             'surname' => 'required',
             'email' => 'required|email:rfc,dns|unique:users,email',
             'date_of_birth' => 'required',
-            'education_option' => 'required'
+            'education_option' => 'required',
+            'gender' => 'required|in:male,female',
+            'student_location_id' => 'required|exists:student_locations,id',
+            'ethnicity_id' => 'required|exists:ethnicities,id',
         ]);
 
         $education_option = $request->education_option;
@@ -264,6 +271,9 @@ class ParentController extends Controller
             'status' => $status,
             'is_disabled' => 0,
             'track' => $education_option,
+            'gender' => $request->gender,
+            'student_location_id' => $request->student_location_id,
+            'ethnicity_id' => $request->ethnicity_id,
             'tokens' => 500  // Defined by marketing team (TOKENS == QUESTIONS) //After selection of plan update in case they have Pro or Elite
         ]);
         try{

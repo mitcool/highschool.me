@@ -28,8 +28,9 @@
             <li><a class="dropdown-item" href="{{ route('graduation-requirements') }}"> Graduation Requirements </a></li>
             <li><a class="dropdown-item" href="{{ route('credit-recovery') }}"> Credit Recovery</a></li> 
             <li><a class="dropdown-item" href="{{ route('credit-transfer') }}"> Credit Transfer</a></li> 
-             <li><a class="dropdown-item" href="{{ route('awards') }}"> Awards</a></li> 
-              <li><a class="dropdown-item" href="{{ route('international-students') }}"> International Students</a></li> 
+            <li><a class="dropdown-item" href="{{ route('awards') }}"> Awards</a></li> 
+            <li><a class="dropdown-item" href="{{ route('international-students') }}"> International Students</a></li>
+            <li><a class="dropdown-item" href="{{ route('starter-kit') }}">Freshman Kit</a>
          </ul>
       </li>
         <li class="nav-item dropdown">
@@ -42,7 +43,7 @@
             <li><a class="dropdown-item" href="{{ route('honors-high-school') }}">Module & Honors Courses</a></li>
             <li><a class="dropdown-item" href="{{ route('psat') }}">PSAT/SAT Prep-Courses</a></li>
             <li><a class="dropdown-item" href="{{ route('act') }}">PreACT/ACT Prep-Courses</a></li>
-            <li><a class="dropdown-item" href="{{ route('advanced-placement') }}">Advances Placement Courses</a></li>
+            <li><a class="dropdown-item" href="{{ route('advanced-placement') }}">Advanced Placement Courses</a></li>
             <li><a class="dropdown-item" href="{{ route('cte') }}">CTE Prep-Courses</a></li> 
             <li><a class="dropdown-item" href="{{ route('clep') }}">CLEP Prep-Courses</a></li>
             <li><a class="dropdown-item" href="{{ route('esol') }}">English Courses (ESOL)</a></li>

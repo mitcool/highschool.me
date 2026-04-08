@@ -134,6 +134,8 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/educator/delete/{educator_id}','AdminController@deleteEducator')->name('delete-educator');
 	Route::post('/educator/edit','AdminController@editEducator')->name('edit-educator');
 	Route::post('change-educator-category-status/{action}/{id}','AdminController@changeEducatorCategoryStatus')->name('change-educator-category-status');
+	Route::get('/pay-to-educator/{educator_id}', 'AdminController@payToEducatorPage')->name('pay-to-educator');
+	Route::post('/pay-to-educator-action/{educator_id}', 'AdminController@payToEducator')->name('store-pay-to-educator');
 
 	//Exams
 	Route::get('/exams','AdminController@exams')->name('admin-exams');

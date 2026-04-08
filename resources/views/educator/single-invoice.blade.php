@@ -1,4 +1,4 @@
-@extends('admin_template')
+@extends('educator.dashboard')
 
 @section('css')
 <style>
@@ -7,14 +7,14 @@
       font-family: 'Poppins', sans-serif;
     }
     .invoice-container {
+      min-width: 800px;
       max-width: 1100px;
+      max-height: 1000px;
       background: #fff;
       margin: 50px auto;
       border-radius: 8px;
       box-shadow: 0 3px 12px rgba(0,0,0,0.08);
       padding: 50px 70px;
-      width: 800px;
-      max-height: 1000px;
     }
     .invoice-header {
       border-bottom: 3px solid #ff5a00;
@@ -35,36 +35,17 @@
       color: #444;
       margin-bottom: 4px;
     }
-    .invoice-info strong {
-      color: #000;
-    }
-    .company-logo img {
-      max-height: 70px;
-    }
     .section-title {
       font-weight: 600;
       color: #000;
       font-size: 15px;
       margin-bottom: 8px;
     }
-    .company-info, .bill-info {
-      font-size: 14px;
-      color: #444;
-      line-height: 1.6;
-    }
     .amount-due {
       color: #0a2458;
       font-weight: 700;
       font-size: 18px;
       margin-top: 20px;
-    }
-    .pay-online {
-      color: #ff5a00;
-      font-size: 13px;
-      text-decoration: none;
-    }
-    .pay-online:hover {
-      text-decoration: underline;
     }
     table {
       font-size: 14px;
@@ -78,18 +59,6 @@
     td {
       color: #333;
       vertical-align: top;
-    }
-    .totals {
-      text-align: right;
-      font-size: 14px;
-      margin-top: 20px;
-    }
-    .totals strong {
-      font-weight: 600;
-    }
-    .bottom-buttons {
-      text-align: right;
-      margin-top: 50px;
     }
     .btn-print {
       background: #fff;
@@ -115,10 +84,10 @@
     .btn-close:hover {
       background-color: #e24e00;
     }
+
     @page { margin: 10mm; }
 
     @media print {
-
       html, body {
         margin: 0 !important;
         padding: 0 !important;
@@ -127,7 +96,6 @@
         overflow: visible !important;
       }
 
-      /* Remove admin layout */
       header,
       #wrapper,
       footer,
@@ -137,37 +105,29 @@
         display: none !important;
       }
 
-      /* Hide everything */
       body * {
         visibility: hidden !important;
       }
 
-      /* Show only invoice */
       .invoice-container,
       .invoice-container * {
         visibility: visible !important;
       }
 
-      /* Position invoice correctly for printing */
       .invoice-container {
         position: fixed !important;
         left: 0 !important;
         top: 0 !important;
-
         width: 100% !important;
         max-width: 100% !important;
-
         margin: 0 !important;
         padding: 15mm !important;
-
         box-shadow: none !important;
         border-radius: 0 !important;
-
         height: auto !important;
         max-height: none !important;
       }
 
-      /* Keep From / Bill To in two columns */
       .invoice-container .row {
         display: flex !important;
         flex-wrap: nowrap !important;
@@ -178,7 +138,6 @@
         max-width: 50% !important;
       }
 
-      /* Hide buttons */
       .btn-print,
       .btn-close {
         display: none !important;
@@ -189,14 +148,13 @@
 
 @section('content')
 <div class="invoice-container">
-
     <div class="invoice-header">
       <div>
-        <h4 class="invoice-title">Invoice</h4>
+        <h4 class="invoice-title">{{ !empty($invoice->is_memo) ? 'Credit Memo' : 'Invoice' }}</h4>
         <div class="invoice-info mt-3">
-          <span><strong>Invoice number:</strong> {{$invoice->invoice_number}}</span>
-          <span><strong>Date of issue:</strong> {{$invoice->created_at}}</span>
-          <span><strong>Due date:</strong> {{$invoice->created_at}}</span>
+          <span><strong>Invoice number:</strong> {{ $invoice->invoice_number }}</span>
+          <span><strong>Date of issue:</strong> {{ $invoice->created_at->format('d.m.Y') }}</span>
+          <span><strong>Due date:</strong> {{ !empty($invoice->due_date) ? \Carbon\Carbon::parse($invoice->due_date)->format('d.m.Y') : $invoice->created_at->format('d.m.Y') }}</span>
         </div>
       </div>
       <div class="company-logo">
@@ -205,7 +163,7 @@
     </div>
 
     <div class="row mt-4">
-      <div class="col-md-8">
+      <div class="col-md-6">
         <h6 class="section-title">From</h6>
         <p>
           ONSITES HIGH SCHOOL LLC<br>
@@ -217,52 +175,51 @@
           Tax ID (EIN): 37-2186116
         </p>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <h6 class="section-title">Bill To</h6>
         <p>
-          {{$invoice->name}} {{$invoice->surname}}<br>
-          {{$invoice->street}}, {{$invoice->street_number}}<br>
-          {{$invoice->city}}, {{$invoice->ZIPcode}}<br>
-          {{$invoice->country->name}}<br>
-          {{$invoice->user_email}}<br>
+          {{ $invoice->name }} {{ $invoice->surname }}<br>
+          {{ $invoice->street }}, {{ $invoice->street_number }}<br>
+          {{ $invoice->city }}, {{ $invoice->ZIPcode }}<br>
+          {{ optional($invoice->country)->name }}<br>
+          {{ $invoice->user_email }}<br>
         </p>
       </div>
     </div>
 
-    <h5 class="amount-due mt-3">$458.60 due October 14, 2025</h5>
+    <h5 class="amount-due mt-3">${{ $invoice->formatted_price() }}</h5>
 
     <table class="table table-bordered mt-4">
       <thead>
         <tr>
           <th>Description</th>
-          <th>Qty</th>
-          <th>Unit Price</th>
-          <th>Tax</th>
-          <th>Amount</th>
+          <th class="text-center">Qty</th>
+          <th class="text-center">Unit Price</th>
+          <th class="text-center">Tax</th>
+          <th class="text-center">Amount</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Product name Subscription<br><small>October 14 – Nov 14, 2025</small></td>
-          <td>1</td>
-          <td>$458.60</td>
-          <td>0%</td>
-          <td>$458.60</td>
+          <td>{{ $invoice->description }}</td>
+          <td class="text-center">1</td>
+          <td class="text-center">${{ $invoice->formatted_price() }}</td>
+          <td class="text-center">0%</td>
+          <td class="text-center">${{ $invoice->formatted_price() }}</td>
         </tr>
       </tbody>
     </table>
 
     <div class="text-end mt-3">
-      <p><strong>TOTAL</strong> &nbsp;&nbsp; $458.60</p>
-      <p><strong>Amount Due</strong> &nbsp;&nbsp; $458.60</p>
+      <p><strong>TOTAL</strong> &nbsp;&nbsp; ${{ $invoice->formatted_price() }}</p>
+      <p><strong>Amount Due</strong> &nbsp;&nbsp; ${{ $invoice->formatted_price() }}</p>
     </div>
 
     <div class="text-end mt-4">
       <button class="btn btn-print me-2" onclick="window.print()">Print</button>
-      <button type="button" class="btn btn-close" onclick="window.history.length > 1 ? window.history.back() : window.location.href='{{ url()->previous() }}'">Close</button>
+      <a class="btn btn-close" href="{{ route('educator.invoices') }}">Close</a>
     </div>
-
-  </div>
+</div>
 @endsection
 
 @section('footerScripts')

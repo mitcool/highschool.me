@@ -207,6 +207,7 @@
                     <i class="fas fa-folder"></i>
                     <span>Exams</span>
                 </a>
+                {{--
                 <a class="educator-mobile-menu-link" href="{{ route('educator.add-exam-question') }}">
                     <i class="fas fa-question"></i>
                     <span>Exam Questions</span>
@@ -215,6 +216,7 @@
                     <i class="fas fa-question"></i>
                     <span>Self Assesment Questions</span>
                 </a>
+                --}}
                 <a class="educator-mobile-menu-link" href="{{ route('educator.submissions') }}">
                     <i class="fas fa-file"></i>
                     <span>Submitted Exams</span>

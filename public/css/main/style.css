@@ -1706,3 +1706,7 @@ blockquote p::after {
     -webkit-box-shadow: 0px 0px 9px 1px rgba(0,0,0,0.5); 
     box-shadow: 0px 0px 9px 1px rgba(0,0,0,0.5);
 }
+
+.footer-company-address-detail:hover {
+    color: black!important;
+}

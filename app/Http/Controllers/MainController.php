@@ -302,7 +302,11 @@ class MainController extends Controller
 
     $success_auth_message_content = 'Your account has been successfully confirmed.<br> You can now log in.';
     $denied_auth_message_content = 'Your account has already been confirmed.<br> You can log in.';
-    if ((int) $user->is_verified === 0) {
+    $expired_auth_message_content = 'This verification link has expired after 24 hours. <br> Please register again or contact support.';
+
+    if ((int) $user->is_verified === 0 && Carbon::parse($user->created_at)->addHours(24)->isPast()) {
+        Session::flash('success_message', $expired_auth_message_content);
+    } elseif ((int) $user->is_verified === 0) {
         $user->update(['is_verified' => 1]);
         Session::flash('success_message', $success_auth_message_content);
     } else {

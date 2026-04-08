@@ -258,7 +258,7 @@
         </div>
         <div class="row px-3">
                 <div id="wrapper" class="parent-desktop-sidebar" style="padding:0 0px;">
-                    <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion parent-desktop-sidebar" id="accordionSidebar" style="background:var(--parent-sidebar-bg)">
+                    <ul class="navbar-nav pl-0 sidebar sidebar-dark accordion parent-desktop-sidebar" id="accordionSidebar" style="background:var(--parent-sidebar-bg)">
                         <li class="nav-item black">
                             <a class="nav-link" href="{{route('parent.dashboard')}}">
                                 <i class="fas fa-home"></i>
