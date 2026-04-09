@@ -355,7 +355,8 @@ Route::post('/subscribe','MainController@subscribe')->name('subscribe');
 
 Route::post('/unsubscribe-user/{id}','MainController@unsubscribeUser')->name('unsubscribe-user');
 
-Route::get('/verify/mail/{confcode}', 'MainController@verifyAccount');
+Route::get('/verify/mail/{confcode}', 'MainController@verifyAccount')->name('verify.mail');
+Route::get('/verify/mail/resend/{confcode}', 'MainController@resendVerificationLink')->name('verify.mail.resend');
 
 Route::post('/get-courses','AdminController@getCourses')->name('get-courses');
 

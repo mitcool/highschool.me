@@ -25,7 +25,7 @@
                                 <div class="modal-body text-center">
                                     <div class="d-flex w-100 justify-content-between align-items-center">
                                         <div></div>
-                                        {{ Session::get('error') }}
+                                        {!! Session::get('error') !!}
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 50px; color:black; margin-bottom: 15px;">
                                             <span aria-hidden="true">&times;</span>
                                         </button>

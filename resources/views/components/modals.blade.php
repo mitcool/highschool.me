@@ -4,7 +4,7 @@
 		<div class="modal-content">
 			<div class="modal-body">
 				<div class="text-justify">
-					By clicking on the button, you agree to the use of cookies described here by the platform universitaet.com. At this point you can also object to the use of cookies or revoke your consent. Cookies are used to analyze your use of our websites and to personalize our services. Web cookies from third-party providers also give you personalized advertising, even if you no longer access our website. The storage period for cookies is 90 days.
+					By clicking on the button, you agree to the use of cookies described here by the platform highschool.me. At this point you can also object to the use of cookies or revoke your consent. Cookies are used to analyze your use of our websites and to personalize our services. Web cookies from third-party providers also give you personalized advertising, even if you no longer access our website. The storage period for cookies is 90 days.
 				</div>
 			</div>
 			<div class="modal-footer d-flex justify-content-center">

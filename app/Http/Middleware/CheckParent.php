@@ -22,12 +22,7 @@ class CheckParent
         if(auth()->user()->role_id != 2){
             abort(403);
         }
-        if(auth()->user()->invoice_details->city == null 
-                || auth()->user()->invoice_details->street ==null
-                || auth()->user()->invoice_details->zip ==null
-                || auth()->user()->invoice_details->phone==null 
-                || auth()->user()->invoice_details->phone_code==null 
-                || auth()->user()->invoice_details->street_number==null){
+        if(!auth()->user()->invoice_details){
             if(request()->route()->getName() != 'parent.profile'){
                 return redirect()->route('parent.profile')->with('error','Please fill your details to continue');
             }

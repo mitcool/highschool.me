@@ -62,6 +62,66 @@
     .form-check-label {
         font-size: .9rem;
     }
+
+    .login-pin-group {
+        display: none;
+    }
+
+    .login-response {
+        display: none;
+        border-radius: 8px;
+        padding: .75rem 1rem;
+        font-size: .95rem;
+        margin-bottom: 1rem;
+    }
+
+    .login-response.is-error {
+        display: block;
+        background: #fce8e6;
+        color: #b42318;
+    }
+
+    .login-response.is-success {
+        display: block;
+        background: #e8f5e9;
+        color: #1b5e20;
+    }
+
+    .login-loading {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        gap: .65rem;
+        color: #045397;
+        font-size: .95rem;
+        font-weight: 500;
+        margin: 1rem 0 0.5rem;
+    }
+
+    .login-loading-spinner {
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(4, 83, 151, 0.18);
+        border-top-color: #045397;
+        border-radius: 50%;
+        animation: login-spin .7s linear infinite;
+    }
+
+    @keyframes login-spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .login-pin-hint {
+        display: none;
+        margin-top: -.35rem;
+        margin-bottom: 1rem;
+        text-align: center;
+        color: #045397;
+        font-size: .92rem;
+        font-weight: 500;
+    }
 </style>
 @endsection
 
@@ -73,10 +133,11 @@
 
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5">
-            <div class="card login-card">
+                <div class="card login-card">
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('login') }}" id="ajax-login-form">
                         @csrf
+                        <div id="login-response" class="login-response"></div>
 
                         {{-- Email --}}
                         <div class="form-group">
@@ -130,6 +191,29 @@
                             </div>
                         </div>
 
+                        <div class="form-group login-pin-group" id="login-pin-group">
+                            <label for="login_pin" class="mb-0">PIN Code</label>
+                            <input
+                                id="login_pin"
+                                type="text"
+                                class="form-control{{ $errors->has('login_pin') ? ' is-invalid' : '' }}"
+                                name="login_pin"
+                                value="{{ old('login_pin') }}"
+                                inputmode="numeric"
+                                pattern="[0-9]*"
+                                maxlength="6"
+                            >
+                            <input type="hidden" name="verification_token" id="verification_token" value="{{ old('verification_token') }}">
+                            @if ($errors->has('login_pin'))
+                                <span class="invalid-feedback d-block">
+                                    <strong>{{ $errors->first('login_pin') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        <div id="login-pin-hint" class="login-pin-hint">
+                            Check your email for the PIN code.
+                        </div>
+
                         {{-- reCAPTCHA --}}
                         <div class="form-group text-center mt-4 mb-1">
                             <div class="g-recaptcha d-inline-block"
@@ -141,6 +225,11 @@
                                     <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
                                 </p>
                             @endif
+
+                        <div id="login-loading" class="login-loading">
+                            <span class="login-loading-spinner"></span>
+                            <span id="login-loading-text">Checking your login details...</span>
+                        </div>
 
                         {{-- Actions --}}
                         <div class="form-group text-center mb-0">
@@ -163,4 +252,115 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('footerScripts')
+<script>
+    $(function () {
+        const loginForm = $('#ajax-login-form');
+        const loginResponse = $('#login-response');
+        const loginPinGroup = $('#login-pin-group');
+        const verificationTokenInput = $('#verification_token');
+        const loginPinInput = $('#login_pin');
+        const submitButton = loginForm.find('button[type="submit"]');
+        const loginLoading = $('#login-loading');
+        const loginLoadingText = $('#login-loading-text');
+        const loginPinHint = $('#login-pin-hint');
+
+        function showMessage(message, type) {
+            loginResponse
+                .removeClass('is-error is-success')
+                .addClass(type === 'success' ? 'is-success' : 'is-error')
+                .html(message);
+        }
+
+        function showLoading(text) {
+            loginLoadingText.text(text || 'Checking your login details...');
+            loginLoading.css('display', 'flex');
+        }
+
+        function hideLoading() {
+            loginLoading.hide();
+        }
+
+        function clearFieldErrors() {
+            loginForm.find('.is-invalid').removeClass('is-invalid');
+            loginForm.find('.ajax-field-error').remove();
+        }
+
+        function showFieldErrors(errors) {
+            $.each(errors, function (field, messages) {
+                const input = loginForm.find('[name="' + field + '"]');
+                if (!input.length) {
+                    return;
+                }
+
+                input.addClass('is-invalid');
+                $('<span class="invalid-feedback d-block ajax-field-error"><strong>' + messages[0] + '</strong></span>')
+                    .insertAfter(input.last());
+            });
+        }
+
+        function showPinField(token, message) {
+            loginPinGroup.slideDown(150);
+            loginPinHint.slideDown(150);
+            verificationTokenInput.val(token || '');
+            if (message) {
+                showMessage(message, 'success');
+            }
+            submitButton.text('Verify & Login');
+            loginPinInput.trigger('focus');
+        }
+
+        loginForm.on('submit', function (e) {
+            e.preventDefault();
+
+            clearFieldErrors();
+            loginResponse.hide().removeClass('is-error is-success').text('');
+            submitButton.prop('disabled', true);
+            showLoading(loginPinGroup.is(':visible') ? 'Verifying your PIN...' : 'Checking your login details...');
+
+            $.ajax({
+                url: loginForm.attr('action'),
+                method: 'POST',
+                data: loginForm.serialize(),
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                success: function (response) {
+                    if (response.status === 'pin_required') {
+                        hideLoading();
+                        showPinField(response.verification_token, response.message);
+                        return;
+                    }
+
+                    if (response.status === 'success' && response.redirect) {
+                        showLoading('Login successful. Redirecting...');
+                        window.location.href = response.redirect;
+                    }
+                },
+                error: function (xhr) {
+                    hideLoading();
+                    const response = xhr.responseJSON || {};
+                    const errors = response.errors || {
+                        email: ['Unable to complete login. Please try again.']
+                    };
+
+                    if (response.pin_required) {
+                        showPinField(response.verification_token, '');
+                    }
+
+                    showFieldErrors(errors);
+                },
+                complete: function () {
+                    if (!window.location.href || !document.hidden) {
+                        hideLoading();
+                    }
+                    submitButton.prop('disabled', false);
+                }
+            });
+        });
+    });
+</script>
 @endsection

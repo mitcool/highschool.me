@@ -27,6 +27,7 @@ use App\Mail\PhoneContact;
 use App\Mail\Contact;
 use App\Mail\ContactModal;
 use App\Mail\NewHelpDesk;
+use App\Mail\VerificationProfile;
 
 use App\Text;
 use App\User;
@@ -297,15 +298,23 @@ class MainController extends Controller
       ->with('feature',$feature);
   }
 
-  public function verifyAccount($confcode) {
+  public function verifyAccount(Request $request, $confcode) {
     $user = User::where('confirmation_code', '=', $confcode)->firstOrFail();
 
     $success_auth_message_content = 'Your account has been successfully confirmed.<br> You can now log in.';
     $denied_auth_message_content = 'Your account has already been confirmed.<br> You can log in.';
-    $expired_auth_message_content = 'This verification link has expired after 24 hours. <br> Please register again or contact support.';
+    $expired_auth_message_content = '<div style="text-align:center;">'
+        . '<div>This verification link has expired.</div>'
+        . '<div style="margin-top:16px;">'
+        . '<a href="' . route('verify.mail.resend', $user->confirmation_code) . '" '
+        . 'style="display:inline-block;padding:10px 18px;background:#045397;color:#ffffff;text-decoration:none;border-radius:8px;font-weight:600;">'
+        . 'Request New Verification Link'
+        . '</a>'
+        . '</div>'
+        . '</div>';
 
-    if ((int) $user->is_verified === 0 && Carbon::parse($user->created_at)->addHours(24)->isPast()) {
-        Session::flash('success_message', $expired_auth_message_content);
+    if ((int) $user->is_verified === 0 && !$request->hasValidSignature()) {
+        Session::flash('error', $expired_auth_message_content);
     } elseif ((int) $user->is_verified === 0) {
         $user->update(['is_verified' => 1]);
         Session::flash('success_message', $success_auth_message_content);
@@ -314,6 +323,23 @@ class MainController extends Controller
     }
 
     return redirect()->route('login');
+  }
+
+  public function resendVerificationLink($confcode) {
+    $user = User::where('confirmation_code', '=', $confcode)->firstOrFail();
+
+    if ((int) $user->is_verified === 1) {
+      return redirect()->route('login')->with('success_message', 'Your account is already verified. You can log in.');
+    }
+
+    try {
+      Mail::to($user->email)->send(new VerificationProfile($user));
+    } catch (\Exception $e) {
+      info($e->getMessage());
+      return redirect()->route('login')->with('error', 'We could not send a new verification email right now. Please try again later.');
+    }
+
+    return redirect()->route('login')->with('success_message', 'A new verification email has been sent to your inbox.');
   }
 
   public function updatePassword(Request $request){

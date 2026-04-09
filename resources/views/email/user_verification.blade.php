@@ -99,7 +99,7 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                                         <br/>
                                                     </p>
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        <a style="{{$style['button']}};margin-bottom: 15px;" href="{{config('app.url')}}/verify/mail/{!! $mailObject['confirmation_code'] !!}">Verify profile</a>
+                                                        <a style="{{$style['button']}};margin-bottom: 15px;" href="{{ $verification_url }}">Verify profile</a>
                                                     </p>
                                                     <p style="{{ $style['paragraph-gray'] }}">
                                                         This verification link expires in 24 hours.
