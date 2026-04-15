@@ -1,22 +1,15 @@
 @extends('template')
 
 @section('seo')
-<title>{{ trans('academics.meta-title') }}</title>
-<meta itemprop="description" name="description" content="{{ trans('academics.meta-description') }}" />
+<title>{{ $texts['meta-title'] }}</title>
+<meta itemprop="description" name="description" content="{{ $texts['meta-description'] }}" />
 
-<meta itemprop="name" property="og:title" content="{{ trans('academics.meta-title') }}"/>
+<meta itemprop="name" property="og:title" content="{{ $texts['meta-title'] }}"/>
 <meta property="og:type" content="website"/>
-@if(Session::get('applocale') == 'de')
-	<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/de/dozenten"/>
-@else
-	<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/en/lecturers"/>
-@endif
-<meta property="og:description" content="{{ trans('academics.meta-description') }}"/>
+<meta itemprop="url" property="og:url" content="{{ route('academics') }}"/>
+<meta property="og:description" content="{{ $texts['meta-description'] }}"/>
 <x-meta-image itemprop="image" nickname="academics-cover"/>
 
-<link rel="alternate" href="{{ config('app.url') }}/en/lecturers" hreflang="en" />
-<link rel="alternate" href="{{ config('app.url') }}/de/dozenten" hreflang="de" />
-<link rel="alternate" href="{{ config('app.url') }}/en/lecturers" hreflang="x-default" />
 @endsection
 
 @section('headCSS')
@@ -66,14 +59,12 @@
 @endsection
 
 @section('content')
-@php
-    $breadcrumb_title = strtok(trans('academics.meta-title'), '|');
-@endphp
+
 
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">Faculty and Educators</li>
+		<li class="breadcrumb-item active" aria-current="page">{{  $texts['heading'] }}</li>
 	</ol>
 </div>
 
@@ -82,8 +73,8 @@
 <div class="container-fluid main_page_container" style="background:#F3F3F3;">	
 	<div class="row justify-content-center">
 		<div class="col-md-12 col-lg-10" style="padding:30px;">
-			<h1 class="page-headings">{{ trans('academics.heading') }}</h1>
-			<div class="page-content">{!! trans('academics.content') !!}</div>
+			<h1 class="page-headings">{{ $texts['heading'] }}</h1>
+			<div class="page-content">{!! $texts['content'] !!}</div>
 			<div class="row">
 				@foreach($academics as $key => $academic)	
 					<div class="col-md-6 gap-2 my-2 px-3 w-100"  data-id="{{$academic->id}}" data-key="{{ $key }}" data-name="{{$academic->name }}"data-description="{{ $academic->description }}">

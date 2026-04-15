@@ -24,7 +24,9 @@ class WrongDocument extends Mailable
     public function build()
     {
         return $this->view('email.wrong-document')
+            ->with('parent_student',$this->parent_student)
             ->with('feedback',$this->feedback)
-            ->with('documents',$this->documents);
+            ->with('documents',$this->documents)
+            ->subject('Action Required: '.$this->documents[0]->document_type->name.' Could Not Be Accepted — Please Resubmit');
     }
 }

@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="shadow container wrapper">    
-    <h2 class="text-center">Plans</h2>
+    <h2 class="text-center page-headings">Plans</h2>
     <hr>
     <p class="text-danger">* Only developers can add a new plan</p>
     <div class="row">

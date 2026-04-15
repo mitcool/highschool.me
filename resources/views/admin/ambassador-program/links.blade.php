@@ -9,7 +9,7 @@
 @section('content')
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     <div class="text-center mb-5 mt-4">
-        <h2>Ambassador Program Links</h2>
+        <h2 class="page-headings">Ambassador Program Links</h2>
     </div>
     <div id="status-message"></div>
     <table class="table table-bordered align-middle">

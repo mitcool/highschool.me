@@ -55,6 +55,9 @@ use App\Mail\StudentStartStudy;
 use App\Mail\StudentStartStudyParent;
 use App\Mail\SessionBookingConfirmation;
 use App\Mail\ExamNoAttended;
+use App\Mail\ApplicationFeePaid;
+use App\Mail\PaymentSuccessfullAdmin;
+use App\Mail\NewLeaveRequest;
 
 use App\Services\StudentSessionsService;
 use App\Services\StudentModuleCourseService;
@@ -277,6 +280,12 @@ class ParentController extends Controller
             'ethnicity_id' => $request->ethnicity_id,
             'tokens' => 500  // Defined by marketing team (TOKENS == QUESTIONS) //After selection of plan update in case they have Pro or Elite
         ]);
+
+        try{
+            Mail::to(auth()->user()->email)->send(new StudentCreated(auth()->user(),$student,$password));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
         try{
             Mail::to($student->email)->send(new StudentCredentials($student,$password));
         }catch(\Exception $e){
@@ -493,13 +502,14 @@ class ParentController extends Controller
         ParentStudent::where('student_id',$student_id)->update(['status' => ParentStudent::PAID_APPLICATION_FEE]);
         $this->createInvoice($application_fee,'Application Fee');
 
+        $student = User::find($student_id);
+        $this->notifyAdmins(new StudentCreatedAdmin(auth()->user(),$student));
+
         try{
-            Mail::to(auth()->user()->email)->send(new StudentCreated);
+            Mail::to(auth()->user()->email)->send(new ApplicationFeePaid(auth()->user(),$student));
         }catch(\Exception $e){
             info($e->getMessage());
-        }
-       
-        $this->notifyAdmins(new StudentCreatedAdmin);
+        }  
         
         Notification::add(auth()->id(),'Application fee paid successfully');
         session()->forget('student_data');
@@ -566,11 +576,10 @@ class ParentController extends Controller
        $exprires_at = $student_data['payment_type'] == 0  
                 ? Carbon::now()->addMonths(1)->subDays(1) 
                 : Carbon::now()->addYears(1)->subDays(1); // monthly or yearly
-        StudentPlan::insert([
+        $plan = StudentPlan::create([
             'plan_id' => $student_data['plan_id'],
             'student_id' => $student_data['student_id'],
             'expires_at' => $exprires_at,
-            'created_at' => Carbon::now()
         ]);
 
         $this->insertAdditionalCourses($student_data['plan_id'],$student_data['student_id']);
@@ -580,12 +589,13 @@ class ParentController extends Controller
         ParentStudent::where('student_id',$student_data['student_id'])
             ->update(['status' => ParentStudent::ACTIVE,'tokens' => $tokens]);
 
-         try{
-            Mail::to(auth()->user()->email)->send(new PaymentSuccessfull);
+        $student = User::find($student_data['student_id']);
+        try{
+            Mail::to(auth()->user()->email)->send(new PaymentSuccessfull(auth()->user(),$student,$plan,$invoice_data['amount']));
         }catch(\Exception $e){
             info($e->getMessage());
         }
-
+        $this->notifyAdmins(new PaymentSuccessfullAdmin(auth()->user(),$student,$plan,$invoice_data['amount']));
         Notification::add(auth()->id(),'Enrollment fee paid successfully');
 
         return redirect()->route('parent.student.profile',$student_data['student_id']);
@@ -1222,11 +1232,11 @@ class ParentController extends Controller
     }
 
     public function transferProgramPay(Request $request, $student_id){
-       
         $student = User::find($student_id);
         $enrollement_fee = 300;
-        $type = $request->type;
-        $program_fee = $type == 1 ? 1900 : 190;
+        $plan = Plan::find($request->plan);
+        $type = $request->payment_type;
+        $program_fee = $type == 1 ? $plan->price_per_year :  $plan->price_per_month;
         $total = $enrollement_fee + $program_fee;
         
          \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -1245,18 +1255,18 @@ class ParentController extends Controller
                 ],
             ],
             'mode'        => 'payment',
-            'success_url' => route('parent.transfer-pay-success',[$student_id,$type]),
+            'success_url' => route('parent.transfer-pay-success',[$student_id,$type,$plan->id]),
             'cancel_url'  => route('parent.student.profile',$student_id),
         ]);
-
+        
          return redirect()->away($session->url);
     }
 
-    public function transferProgramPaySuccess($student_id,$type){
-
+    public function transferProgramPaySuccess($student_id,$type,$plan_id){
+        $plan = Plan::find($plan_id);
         $student = User::find($student_id);
         $enrollement_fee = 300;
-        $program_fee = $type == 1 ? 1900 : 190;
+        $program_fee = $type == 1 ? $plan->price_per_year :  $plan->price_per_month;
         $total = $enrollement_fee + $program_fee;
         
         $this->createInvoice($total,'Transfer program enrollment');
@@ -1268,12 +1278,12 @@ class ParentController extends Controller
             ->update(['status' => ParentStudent::ACTIVE]);
 
         StudentPlan::insert([
-            'plan_id' => 4,
+            'plan_id' => $plan->id,
             'student_id' => $student_id,
             'expires_at' => $expires_at
         ]);
 
-         Notification::add(auth()->id(),'Enrollment fee paid successfully');
+        Notification::add(auth()->id(),'Enrollment fee paid successfully');
 
         return redirect()->route('parent.student.profile',$student_id);
     }
@@ -1301,7 +1311,7 @@ class ParentController extends Controller
         $path = base_path()."/public/documents/leave_requests/";
         $file = $this->upload_file($request->file('file'), $path);
 
-        LeaveRequest::create([
+        $leave_request = LeaveRequest::create([
             'student_id' => $request->student_id,
             'type'       => $request->leave_type,
             'file'       => $file,
@@ -1316,6 +1326,8 @@ class ParentController extends Controller
             'Leave request submitted successfully!'
         );
         Notification::addForAdmins('New leave request submitted.');
+
+        $this->notifyAdmins(new NewLeaveRequest($leave_request));
 
         return redirect()->back()->with('success_message', 'Leave request submitted successfully!');
     }

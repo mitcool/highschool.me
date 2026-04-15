@@ -92,27 +92,38 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear,
+                                                        Dear {{ $parent->name }},
                                                     </h1>
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Your credentials for Highschool.me are:
-                                                        <br/>
-                                                    </p>
-                                                     
-                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        <span style="{{$style['bold']}}">Email:
-                                                        <br/>
+                                                      
+                                                        We are pleased to inform you that a student account has been successfully created for {{$student->name}} {{$student->surname}}. Everything is in place and  {{$student->name}}is now registered within the ONSITES High School system. </br>
                                                     </p>
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        <span style="{{$style['bold']}}">Password: 
-                                                        <br/>
+                                                        Below you will find their login credentials. Please take a moment to share these details with  {{$student->name}} directly, and ask them to log in and update their password as soon as possible. </br>
+                                                    </p>
+                                                    <p style="{{ $style['paragraph-black'] }}">
+                                                        Login email:  {{$student->email}} </br>
+                                                        Password: {{$password}} </br>
+                                                    </p>
+                                                    <p style="{{ $style['paragraph-black'] }}">
+                                                        Please also let {{$student->name}} know that each time they log in — including the very first time — they will be asked to enter a PIN code sent to their registered phone number. This is a required security step at every login, so their phone should be nearby when they access the portal. </br>
+                                                    </p>
+                                                    <p style="{{ $style['paragraph-black'] }}">
+                                                        For security reasons, we ask that you do not forward this email. The password shown here is temporary and {{$student->name}} will be prompted to create a new one on first login. </br>
+                                                    </p>
+                                                    <p style="{{ $style['paragraph-black'] }}">
+                                                        Once {{$student->name}} is inside the student portal, they will have access to their course materials, the AI-StudyMentor, the exam calendar, and everything else they need to stay on track. If any difficulty comes up during the login process, our Help Desk team is ready to assist. </br>
+                                                    </p> 
+                                                    <p style="{{ $style['paragraph-black'] }}">
+                                                        We are genuinely excited to have {{$student->name}} join the ONSITES High School community. This is the beginning of something meaningful, and we look forward to supporting every step of the journey ahead. </br>
+
                                                     </p>
                                                     
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
+                                                        Kind regards,<br>ONSITES High School
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
+
                                                 </td>
                                             </tr>
                                         </table>

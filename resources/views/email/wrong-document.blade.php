@@ -92,29 +92,33 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear {{$parent_student['parent']['name'] .' '. $parent_student['parent']['surname']}},
+                                                        Dear {{$parent_student->parent->name}},
                                                     </h1>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        {{ $feedback }}
-                                                        <br/>
-                                                    </p>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        Please reupload following documents:
-                                                    </p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}"> Thank you for submitting documentation for {{$parent_student->student->name}}'s enrollment at ONSITES High School. We have reviewed the document provided and, unfortunately, the document(s) "   
                                                     @foreach ($documents as $document )
-                                                        @if($document->is_approved == 2)
-                                                            <p style="{{ $style['paragraph-black'] }} {{ $style['bold'] }}">
-                                                                {{ $document->document_type->name }}
-                                                            </p> 
+                                                        @if($document->is_approved == 2)       
+                                                                {{ $document->document_type->name }} @if(!$loop->last) , @endif
                                                         @endif
-                                                    @endforeach
+                                                    @endforeach " could not be accepted at this time.</p>
                                                     
+                                                    <p style="{{ $style['paragraph-black'] }}">The reason for this decision is outlined below:</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">Reason: {{ $feedback }}</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}"> We understand that managing documentation can take time and effort, and we want to make the resubmission process as smooth as possible for you. Please review the reason above carefully before preparing your updated submission. Corrected documents can be uploaded directly through the parent portal, and our Help Desk team is available to clarify exactly what is required if anything is uncertain.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">Once the updated document has been submitted, our team will review it promptly and notify you of the outcome. We want to ensure that {{$parent_student->student->name}}'s enrollment moves forward without unnecessary delays.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">→ Resubmit Documents: <a href={{ route('login') }}>{{ route('login') }}</a>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">Thank you for your patience and cooperation. We appreciate your commitment to completing this step and look forward to moving the process forward together.</p>
+
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
+                                                        Kind regards,<br>ONSITES High School
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
-                                                </td>
+                                                  </td>
                                             </tr>
                                         </table>
                                     </td>

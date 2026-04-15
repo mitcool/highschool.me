@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 use Carbon\Carbon;
 
@@ -98,6 +100,7 @@ use App\Country;
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
 use App\Mail\ExamDate;
+use App\Mail\ExamDateParent;
 use App\Mail\ExamUpdated;
 use App\Mail\ExamUpdatedParent;
 use App\Mail\ExamDeleted;
@@ -106,6 +109,7 @@ use App\Mail\EducatorCategoryApproved;
 use App\Mail\ExamResultParent;
 use App\Mail\ExamResult;
 use App\Mail\EducatorCategoriesEmail;
+use App\Mail\EducatorCredentials;
 
 class AdminController extends Controller
 {
@@ -153,15 +157,43 @@ class AdminController extends Controller
     }
 
     public function showTexts(){
-        $pages = Text::distinct('slug')->pluck('slug');
+        $perPage = 10;
+        $currentPage = request()->get('page', 1);
+        $routes = collect(Route::getRoutes())->filter(function ($route) {
+            $middleware_check =  in_array('text', $route->middleware());
+            $param_check = !str_contains($route->uri(), '{'); 
+            return $middleware_check && $param_check;
+        });
+
+    
+        $items = $routes->forPage($currentPage, $perPage);
+
+        $pages = new LengthAwarePaginator(
+        $items,
+        $routes->count(),
+        $perPage,
+        $currentPage,
+        [
+            'path' => request()->url(),
+            'query' => request()->query(),
+        ]
+    );
         return view('admin.texts')
                 ->with('pages',$pages);
     }
 
     public function showSingleTexts($slug){
         $texts = Text::where('slug',$slug)->get();
+        if(count($texts) == 0){
+            return redirect()->back();
+        }
         return view('admin.single-text')
                 ->with('texts',$texts);
+    }
+    public function addText(Request $request){
+        $text = $request->only('text_en','title','slug','editor');
+        Text::create($text);
+        return redirect()->back()->with('success_message','Text added successfully');
     }
 
     public function getAdminAcademics(){
@@ -402,44 +434,38 @@ class AdminController extends Controller
     }
 
     public function images(){
-        $images = Image::all();
-        return view('admin.images')->with('images', $images);
+        $images = Image::paginate(5);
+        return view('admin.images')
+            ->with('images', $images);
     }
 
     public function addImage(Request $request){
-        $validator = Validator::make($request->all(),[
+        $request->validate([
             'nickname' => 'required|unique:images',
             'picture' => 'max:300'
         ]);
-        if($validator->fails()){
-            return redirect()->back()->with('error',$validator->errors()->first());
-        }
-        $input = $request->all();
+       
+        $input = $request->except('');
         $file_name = $input['name'].'.'.$request->file('picture')->getClientOriginalExtension();
         $request->file('picture')->move(public_path('images'),$file_name);
         $image_id = Image::insertGetId([
             'nickname' => $input['nickname'],   
-            'src' => '/images/' . $file_name
+            'src' => '/images/' . $file_name,
+            'alt' => $input['alt'],
+            'title' => $input['title'],
         ]);
-        foreach(Config('languages') as $lang => $language){
-            ImageAttribute::insert([
-                'image_id' => $image_id,
-                'alt' => $input['alt_'.$lang],
-                'title' => $input['title_'.$lang],
-                'locale' => $lang
-            ]);
-        }
-
+       
         return redirect()->back()->with('success_message', 'Image Added Successfully');
     }
 
     public function editImage(Request $request,$image_id){
-        $request->validate([
-            'picture' => 'max:300'
-        ]);
-      $input = $request->all();
+      $request->validate([
+           'picture' => 'max:300'
+      ]);
+     
+      $input = $request->only('alt','title');
 
-      if($input['name'] && $request->file('picture')){
+      if($request->has('name') && $request->file('picture')){
 
         $old_image_path = Image::find($image_id)->src;
             
@@ -450,19 +476,13 @@ class AdminController extends Controller
             info($e->getMessage());
         }
 
-        $file_name = $input['name'].'.'.$request->file('picture')->getClientOriginalExtension();
+        $file_name = $request->name.'.'.$request->file('picture')->getClientOriginalExtension();
         $request->file('picture')->move(public_path('images'),$file_name);
-
-        Image::where('id',$image_id)->update([
-            'src' => '/images/' . $file_name
-        ]);
+        $input['src'] = '/images/'.$file_name;
+       
       }
-      foreach(Config('languages') as $lang => $language){
-        ImageAttribute::where('image_id',$image_id)->where('locale',$lang)->update([
-            'alt' => $input['alt_'.$lang],
-            'title' => $input['title_'.$lang],
-        ]);
-      }
+      Image::where('id',$image_id)->update($input);
+    
       return redirect()->back()->with('success_message', 'Image Editted Successfully');
     }
     
@@ -1399,7 +1419,7 @@ class AdminController extends Controller
         });
 
         try{
-            Mail::to($educator->email)->send(new StudentCredentials($educator,$password));
+            Mail::to($educator->email)->send(new EducatorCredentials($educator,$password));
         }catch(\Exception $e){
             info($e->getMessage());
         }
@@ -1588,6 +1608,7 @@ class AdminController extends Controller
         $exam['datetime'] = $request->date.' '.$request->time;
         $exam['status']=0;
         $new_exam = Exam::create($exam);
+        $parent=  $new_exam->student->student_details->parent;
         StudentEnrolledCourse::where('catalog_course_id',$exam['course_id'])->where('user_id',$exam['student_id'])->update([
             'status' => StudentEnrolledCourse::STATUS_EXAM_APPOINTED
         ]);
@@ -1597,7 +1618,11 @@ class AdminController extends Controller
         }catch(\Exception $e){  
             info($e->getMessage());
         }
-        
+        try{
+            Mail::to($new_exam->student->email)->send(new ExamDateParent($parent,$new_exam));
+        }catch(\Exception $e){  
+            info($e->getMessage());
+        }
         return redirect()->back()->with('success_message','Exam created successfully');
     }
     

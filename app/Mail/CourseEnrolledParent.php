@@ -29,6 +29,6 @@ class CourseEnrolledParent extends Mailable
             ->with('parent',$this->parent)
             ->with('student',$this->student)
             ->with('course',$this->course)
-            ->subject('Course enrolled successfully');
+            ->subject($this->student->name.' Is Now Enrolled in '. $this->course->course->title.' — A Great Step Forward');
     }
 }

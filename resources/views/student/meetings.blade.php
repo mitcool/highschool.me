@@ -24,7 +24,7 @@
                     <td class="text-right">
                         @if(in_array($session->id,$user_group_sessions))
                             <button class="btn-enrolled">Already Booked</button>
-                        @elseif(count($session->students) > 19)
+                        @elseif(count($session->students) > 9)
                             <button class="btn-enrolled">Already Booked</button>
                         @else
                             @if($permissions['group'])

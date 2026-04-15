@@ -13,6 +13,8 @@ class Text extends Model
     public $timestamps = false;
 
     public function translated(){
-		return $this->hasOne('App\Text', 'id')->where('locale',app()->currentLocale());
+		  return $this->hasOne('App\Text', 'id')->where('locale',app()->currentLocale());
     }
+
+    protected $fillable = ['text_en','slug','title','editor'];
 }

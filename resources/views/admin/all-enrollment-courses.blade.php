@@ -11,7 +11,7 @@
 @section('content')
 <div class="shadow container wrapper">    
     <div class="text-center mb-5 mt-4">
-        <h2>All Courses</h2>
+        <h2 class="page-headings">All Courses</h2>
     </div>
     <div id="status-message"></div>
     <table class="table table-bordered align-middle">

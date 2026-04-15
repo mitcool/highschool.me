@@ -11,14 +11,16 @@ class PaymentSuccessfull extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $parent;
+    public $student;
+    public $plan;
+    public $amount;
+    public function __construct($parent,$student,$plan,$amount)
     {
-        //
+        $this->parent = $parent;
+        $this->student = $student;
+        $this->plan = $plan;
+        $this->amount = $amount;
     }
 
     /**
@@ -28,6 +30,11 @@ class PaymentSuccessfull extends Mailable
      */
     public function build()
     {
-        return $this->view('email.payment-successfull');
+        return $this->view('email.payment-successfull')
+            ->with('parent',$this->parent)
+            ->with('student',$this->student)
+            ->with('plan',$this->plan)
+            ->with('amount',$this->amount)
+            ->subject('Payment Confirmed — '. $this->plan->plan->name .' Package — Thank You');
     }
 }

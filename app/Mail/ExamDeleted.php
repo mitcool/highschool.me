@@ -19,6 +19,8 @@ class ExamDeleted extends Mailable
 
     public function build()
     {
-        return $this->view('email.exam-deleted')->with('exam',$this->exam);
+        return $this->view('email.exam-deleted')
+            ->subject('Your '.$this->exam->course->course->title .' Has Been Rescheduled — A New Date Is On Its Way')
+            ->with('exam',$this->exam);
     }
 }

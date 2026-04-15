@@ -20,6 +20,7 @@ class ExamResult extends Mailable
     public function build()
     {
         return $this->view('email.exam-result')
+            ->subject('Your '.$this->exam.' Results Are In — See How You Did')
             ->with('exam',$this->exam);
     }
 }

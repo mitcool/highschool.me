@@ -19,6 +19,8 @@ class ExamReminder extends Mailable
 
     public function build()
     {
-        return $this->view('email.exam-reminder')->with('exam',$this->exam);
+        return $this->view('email.exam-reminder')
+            ->with('exam',$this->exam)
+            ->subject('Your '.$this->exam->course->course->title .' Is Scheduled for '.$this->exam->datetime->format('d.m.Y').' — You Are Ready for This');
     }
 }

@@ -362,14 +362,23 @@
                 <p>The documentation for this student is approved. You must pay the following fees:</p>
                 <input type="radio" checked readonly class="radio"> Enrolment Fee <span style="color:#E9580C">($300.00)</span> 
                 <p>Mandatory International Transfer Program Fee:</p>
-                <input type="radio" checked name="type" value="1" class="radio"> Per Year  <span style="color:#E9580C">($1900.00)</span><br>
-                <input type="radio" name="type"  value="2" class="radio"> Per Month  <span style="color:#E9580C">($190.00)</span>
-                <p>Mandatory International Transfer Program Fee:</p>
+                 @foreach($plans as $key => $plan)
+                    <div>
+                        <input class="plans" value="{{ $plan->id }}" type="radio" {{ $key == 0 ? ' checked ' : '' }} name="plan" data-price-per-year="{{ $plan->price_per_year }}" data-price-per-month="{{ $plan->price_per_month }}"> {{ $plan->name }} Package (${{ $plan->price_per_year() }})
+                    </div> 
+                @endforeach
+                <p class="mb-0 font-weight-bold mt-3">Please select Monthly or Yearly Plan:</p>
+                <div>
+                    <input type="radio" checked name="payment_type" class="payment-type" value="0"> Monthly Fee 
+                </div>
+                <div>
+                    <input type="radio" name="payment_type" class="payment-type" value="1"> Yearly Fee 
+                </div>
                 <p class="mb-0 font-weight-bold mt-3">You can find more information about the Payment Plans <a target="_blank" href="{{ route('standard-high-school') }}">HERE.</a></p>
                 <hr>
                 <div class="d-flex justify-content-between">
                     <div class="total">
-                        Total Fee:  <span>$2249.90</span>
+                        Total Fee:  <span id="total-transfer-program">$2200.00</span>
                     </div>
                     <button class="orange-button">Proceed to Payment</button>
                 </div>
@@ -527,6 +536,31 @@
 @endsection
 
 @section('scripts')
+
+@if($student->student_details->track == 3)
+<script>
+    let plan  = $('input[class=plans]:checked').attr('data-price-per-year');
+    let total = Number(plan) + 300;
+    $('#total-transfer-program').html('$' + total.toFixed(2));
+
+    $('.plans').on('click',function(){
+        let type_of_payment = $('.payment-type:checked')
+        let plan = type_of_payment.val() == 0 
+            ? $('input[class=plans]:checked').attr('data-price-per-month') 
+            : $('input[class=plans]:checked').attr('data-price-per-year');
+         let total = Number(plan) + 300;
+        $('#total-transfer-program').html('$' + total.toFixed(2));
+    });
+    $('.payment-type').on('click',function(){
+         let type_of_payment = $('.payment-type:checked')
+         let plan = type_of_payment.val() == 0 
+            ? $('input[class=plans]:checked').attr('data-price-per-month') 
+            : $('input[class=plans]:checked').attr('data-price-per-year');
+        let total = Number(plan) + 300;
+       $('#total-transfer-program').html('$' + total.toFixed(2));
+    })
+</script>
+@endif
 <script>
     $(document).ready(function(){
         let payment_type = $('input[name=payment_type]:checked').val();

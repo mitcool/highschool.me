@@ -134,4 +134,19 @@ class CronjobController extends Controller
             
         }
     }
+
+    public function graduationReminder(){
+        $parent_students = ParentStudent::where('status','!=',ParentStudent::GRADUATED)->get();
+        foreach($parent_students as $student){
+            if(Carbon::parse($student->created_at)->addWeeks(42) > Carbon::now()){
+                foreach($group_session->students as $student){
+                    try{
+                        Mail::to($student->user->email)->send(new SessionReminder($group_session,$student->user));
+                    }catch(\Exception $e){
+                        info($e->getMessage());
+                    }
+                }
+            }
+        }
+    }
 }

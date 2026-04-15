@@ -13,7 +13,7 @@
 
 
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
-    <h2 class="text-center">Mentoring Session for Students</h2>
+    <h2 class="text-center page-headings">Mentoring Session for Students</h2>
      <p class="text-center text-danger">Please use UTC time</p>
     <form action="{{ route('create-mentoring-session') }}" method="POST">
         {{ csrf_field() }}

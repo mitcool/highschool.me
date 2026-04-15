@@ -20,7 +20,7 @@
 @section('content')
 <div class="container py-4">
     <div class="text-center mb-5 mt-4">
-        <h2>Ambassador Activities</h2>
+        <h2 class="page-headings">Ambassador Activities</h2>
     </div>
 
     <div class="card form-card shadow mx-auto mt-5">

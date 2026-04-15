@@ -43,6 +43,7 @@
 	}
 	.news-heading{
 		min-height: 100px;
+		color:black;
 	}
 	.news-description{
 		min-height: 180px;
@@ -52,6 +53,12 @@
 	.article-date{
 		font-size:13px;
 		color: #EE6123;
+	}
+	.news_heading:hover{
+		text-decoration: none;
+	}
+	p{
+		margin-bottom: 0 !important;
 	}
 </style>
 @endsection
@@ -79,19 +86,22 @@
 			</h1>
 
 			<div class="row bg-white" id="blog">
-				
 				@foreach($news as $n)
-					<div class="news-body my-2">
-						<x-image-component nickname="press-release-{{ $n->id }}" />
-						<a href="{{ route('single-press-release',$n->slug) }}">
-							<div>
-								<h2>{{ $n->heading }}</h2>
-								<p class="mb-0">{{ $n->teaser }}</p>
-							</div>
-						</a>
-						<p class="mb-0">{{ $n->created_at->format('d.m.Y') }}</p>
-					</div>
-				@endforeach
+                <div class="col-lg-12 my-3">
+                    <div class="bg-white h-100 d-flex align-items-stretch flex-column "> 
+         
+                        <br>
+                        <div class="news-info">
+                            <a href="{{ route('single-press-release',$n->slug) }}">
+								<h3 class="news_heading text-dark bold my-2 h3 mb-0">{{$n->heading}}</h3>
+							</a>
+                            <div>{!! $n->teaser !!}</div>
+							<p style="color:#E9580C;margin-bottom:0;">{{ $n->created_at->format('d.m.Y') }}</p>
+                        </div>
+                    </div>
+                </div>  
+            @endforeach
+
 			</div>
 			<div class="d-flex justify-content-center mt-3">{{$news->links()}}</div>
 			

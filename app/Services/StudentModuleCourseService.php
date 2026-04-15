@@ -9,7 +9,7 @@ use App\PaidMentoringSession;
 use App\PaidCoachingSession;
 use App\CurriculumType;
 use App\AdditionalCourse;
-
+use App\Notification;
 use Mail;
 use App\Mail\CourseBooked;
 

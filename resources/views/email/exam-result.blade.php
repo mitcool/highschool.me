@@ -92,24 +92,35 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear {{ $exam->student->fullname() }},
+                                                        Dear {{ $exam->student->name }},
                                                     </h1>
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        We would like to inform you that the exam for <strong>  {{ $exam->course->course->title }}</strong> has results
-
-                                                        <br/>
+                                                        Your results for {{$exam->course->course->title}} are now available. We know that waiting for exam results can feel like a long time, and we are glad to have them ready for you.
+                                                       
                                                     </p>
                                                     <p style="{{ $style['paragraph-black'] }}">
                                                         <strong>Grade </strong>{{ $exam->grade() }}
 
                                                         <br/>
                                                     </p>
+                                                    <p style="{{ $style['paragraph-black'] }}">
+                                                       The full results — including your performance breakdown and written feedback from the board of examiners — are available in the student portal. We strongly encourage you to read through the feedback carefully, not just the grade. The observations the board has shared are designed to give you a genuine understanding of where you performed well and where focused effort in the next phase of your studies will pay off.
+                                                    </p>
+                                                    <p style="{{ $style['paragraph-black'] }}">
+                                                        Every result is a step in the learning process, not just a final verdict. Use this one to focus, adjust where needed, and move forward with purpose.
+                                                        
+                                                    </p>
+                                                    <p style="{{ $style['paragraph-black'] }}">
+                                                        → View My Results: <a href="{{route('login')}}">{{route('login')}}</a> 
+                                                    </p>
+                                                     <p style="{{ $style['paragraph-black'] }}">
+                                                        If you have questions about your results or would like to discuss your performance with the board of examiners, please reach out through the student portal. We are here to support you, regardless of the outcome.
+                                                    </p>
                                                     
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
+                                                        Kind regards,<br>ONSITES High School
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
                                                 </td>
                                             </tr>
                                         </table>

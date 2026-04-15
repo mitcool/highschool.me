@@ -92,18 +92,28 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear,
+                                                        Dear {{ $parent->name }},
                                                     </h1>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        Your payment was successfull
-                                                        <br/>
-                                                    </p>
-                                                     
-                                                    <!-- Salutation -->
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
-                                                    </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">We are pleased to confirm that your recent payment has been successfully received and processed. Thank you for your trust in ONSITES High School and for taking this important step in {{$student->name}}'s educational journey.
+
+                                                    <p style="{{ $style['paragraph-black'] }}">Here are the details of the transaction for your records:</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">Amount: ${{number_format($amount,2,'.',',')}}</p>
+                                                    <p style="{{ $style['paragraph-black'] }}">Date: {{$plan->created_at->format('d.m.Y')}}</p>
+                                                    <p style="{{ $style['paragraph-black'] }}">Payment method: Credit Card</p>
+                                                    <p style="{{ $style['paragraph-black'] }}">Enrollment package: {{$plan->plan->name}}</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">No further action is required on your part at this time. A full receipt is available to view and download from the parent portal whenever you need it.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">With your payment confirmed, our team will proceed with the next steps in activating {{$student->name}}'s access and course setup. You will receive a notification as soon as there is progress to report.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">If you have any questions about this payment or your enrollment package, please do not hesitate to reach out through the Help Desk. We are always happy to help.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">→ View Receipt: <a href="{{route('login')}}">{{route('login')}}</a></p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">Kind regards, ONSITES High School</p>
+
                                                 </td>
                                             </tr>
                                         </table>

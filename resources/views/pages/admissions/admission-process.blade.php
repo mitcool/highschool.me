@@ -1,4 +1,13 @@
 @extends('template')
+@section('seo')
+	<title>{{ $texts['meta-title'] }}</title>
+	<meta itemprop="description" name="description" content="{{ $texts['meta-description']}}" />
+	<meta itemprop="title" property="og:title" content="{{ $texts['meta-title'] }}"/>
+	<meta property="og:type" content="website"/>
+	<meta itemprop="url" property="og:url" content="{{ route('admission-process') }}"/>
+	<meta property="og:description" content="{{ $texts['meta-description']}}"/>
+	<x-meta-image itemprop="image" nickname="study_registration"/>
+@endsection
 
 @section('headCSS')
 <style>
@@ -128,7 +137,7 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
     <ol class="bg-white breadcrumb mb-0 p-0">
         <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Admission Process</li>
+        <li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
     </ol>
 </div>
 
@@ -137,12 +146,9 @@
 <div class="container-fluid bg-white box pl-0 pr-0 page-content">
     <div class="container">
         <div class="text-center">
-            <h1 class="page-headings">Admission Process</h1>
+            <h1 class="page-headings">{{ $texts['heading'] }}</h1>
             <div class="page-content">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, dolores vero! Impedit aliquid nesciunt alias labore accusamus, modi incidunt itaque.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, dolores vero! Impedit aliquid nesciunt alias labore accusamus, modi incidunt itaque.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, dolores vero! Impedit aliquid nesciunt alias labore accusamus, modi incidunt itaque.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, dolores vero! Impedit aliquid nesciunt alias labore accusamus, modi incidunt itaque.</p>
+				{!! $texts['intro'] !!}
             </div>
         </div>
     </div>
@@ -155,13 +161,7 @@
 					<span class="n">1.</span>
 				</div>
 				<div class="step-content">
-					<h3 class="step-title">Lorem Ipsum</h3>
-					<p class="step-text">
-					Promovieren sind nicht nur akademische Meilensteine – sie sind Herausforderungen, die von intensiver Forschung,
-					kreativem Denken und strategischer Planung geprägt sind. Um Dir diese Herausforderung so effizient und produktiv
-					wie möglich zu gestalten, stellen wir Dir das kostenfreie Empowerment-Kit zur Verfügung. Dieses Kit umfasst innovative
-					Tools, um Dir den Weg zu einem erfolgreichen Studienabschluss oder zu einer erfolgreichen Promotion erheblich zu
-					</p>
+					{!! $texts['step-1'] !!}
 				</div>
 			</div>
 		</div>
@@ -172,13 +172,7 @@
 					<span class="n">2.</span>
 				</div>
 				<div class="step-content">
-					<h3 class="step-title">Lorem Ipsum</h3>
-					<p class="step-text">
-					Promovieren sind nicht nur akademische Meilensteine – sie sind Herausforderungen, die von intensiver Forschung,
-					kreativem Denken und strategischer Planung geprägt sind. Um Dir diese Herausforderung so effizient und produktiv
-					wie möglich zu gestalten, stellen wir Dir das kostenfreie Empowerment-Kit zur Verfügung. Dieses Kit umfasst innovative
-					Tools, um Dir den Weg zu einem erfolgreichen Studienabschluss oder zu einer erfolgreichen Promotion erheblich zu
-					</p>
+					{!! $texts['step-2'] !!}
 				</div>
 			</div>
 		</div>
@@ -189,13 +183,7 @@
 					<span class="n">3.</span>
 				</div>
 				<div class="step-content">
-					<h3 class="step-title">Lorem Ipsum</h3>
-					<p class="step-text">
-					Promovieren sind nicht nur akademische Meilensteine – sie sind Herausforderungen, die von intensiver Forschung,
-					kreativem Denken und strategischer Planung geprägt sind. Um Dir diese Herausforderung so effizient und produktiv
-					wie möglich zu gestalten, stellen wir Dir das kostenfreie Empowerment-Kit zur Verfügung. Dieses Kit umfasst innovative
-					Tools, um Dir den Weg zu einem erfolgreichen Studienabschluss oder zu einer erfolgreichen Promotion erheblich zu
-					</p>
+					{!! $texts['step-3'] !!}
 				</div>
 			</div>
 		</div>
@@ -206,13 +194,7 @@
 					<span class="n">4.</span>
 				</div>
 				<div class="step-content">
-					<h3 class="step-title">Lorem Ipsum</h3>
-					<p class="step-text">
-					Promovieren sind nicht nur akademische Meilensteine – sie sind Herausforderungen, die von intensiver Forschung,
-					kreativem Denken und strategischer Planung geprägt sind. Um Dir diese Herausforderung so effizient und produktiv
-					wie möglich zu gestalten, stellen wir Dir das kostenfreie Empowerment-Kit zur Verfügung. Dieses Kit umfasst innovative
-					Tools, um Dir den Weg zu einem erfolgreichen Studienabschluss oder zu einer erfolgreichen Promotion erheblich zu
-					</p>
+					{!! $texts['step-4'] !!}
 				</div>
 			</div>
 		</div>

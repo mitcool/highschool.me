@@ -16,7 +16,7 @@
 @section('content')
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">
 
-    <h2 class="text-center">Create a news</h2>
+    <h2 class="text-center page-headings">Create a news</h2>
     <hr>
     <form action="{{ route('facts-hub-create') }}" method="POST" enctype="multipart/form-data" id="create_news_form">
         {{ csrf_field() }}
@@ -98,7 +98,7 @@
         </div>
     </form>
     <hr>
-    <h2 class="text-center">List of news news:</h2>
+    <h2 class="text-center page-headings">List of news news:</h2>
     @foreach($news as $n)
         <div class="text-right d-flex justify-content-between">
             <h3>

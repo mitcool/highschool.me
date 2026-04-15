@@ -96,15 +96,22 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                                     </h1>
                                                   
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        <span style="{{$style['bold']}}">{{ $enrolled_course->student->fullname() }} is ready for exam for subject "{{ $enrolled_course->course->course->title }}". Please select a date for it.
-                                                        <br/>
+                                                        {{$enrolled_course->student->fullname()}} has been marked as ready to take the exam for {{$enrolled_course->course->course->title}}. The student and family have confirmed readiness and are now waiting for an exam date to be assigned.
                                                     </p>
-                                                    
+                                                    <p style="{{ $style['paragraph-black'] }}">
+                                                        Please assign an exam date at your earliest convenience. Once confirmed, both the student and the parent will be notified automatically with the full details. Keeping the gap between readiness confirmation and exam assignment as short as possible is something our students and families greatly appreciate — it keeps momentum going and reduces uncertainty.
+                                                    </p>
+                                                     <p style="{{ $style['paragraph-black'] }}">
+                                                        If any scheduling considerations need to be accounted for before the date can be confirmed, please coordinate as needed and complete the assignment through the admin panel.
+                                                    </p>
+                                                    <p style="{{ $style['paragraph-black'] }}">→ Assign Exam Date: <a href="{{route('login')}}">{{route('login')}}</a> </p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">Thank you for keeping the exam scheduling process moving smoothly.</p>
+                                                  
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
+                                                        Kind regards,<br>ONSITES High School
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
                                                 </td>
                                             </tr>
                                         </table>

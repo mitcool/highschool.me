@@ -94,17 +94,22 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                                     <h1 style="{{ $style['header-1'] }}">
                                                         Dear admin,
                                                     </h1>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                      We have a new student added from a parent. Please check your dashboard
-                                                        <br/>
-                                                    </p>
-                                           
+                                                  
+                                                    <p style="{{ $style['paragraph-black'] }}">A document submission has been received and is ready for your review. The submission was made by {{$parent->fullname()}} on behalf of {{$student->fullname()}}.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">Please log in to the admin panel to access the submitted documents. Once you have completed your review, you can approve the submission to move the enrollment process forward, or reject it with a clearly stated reason so the family can resubmit without unnecessary delay.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">Clear and timely document reviews are an important part of delivering a smooth and professional enrollment experience for our families, and your attention and judgment here are valued. If there are any questions about specific requirements before making a decision, please coordinate with the relevant team member before responding.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">→ Review Documents: <a href="{{ route('login') }}">{{ route('login') }}</a>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">Thank you for your continued diligence in keeping the enrollment process running efficiently.</p>
+
                                                     
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
+                                                        Kind regards,<br>ONSITES High School
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
                                                 </td>
                                             </tr>
                                         </table>

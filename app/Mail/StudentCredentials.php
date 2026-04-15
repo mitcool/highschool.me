@@ -24,6 +24,7 @@ class StudentCredentials extends Mailable
     {
          return $this->view('email.student-credentials')
             ->with('password',$this->password)
+            ->subject('Your ONSITES High School Journey Starts Here — Welcome Aboard')
             ->with('user',$this->user);
     }
 }

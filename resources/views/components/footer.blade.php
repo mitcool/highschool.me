@@ -5,12 +5,12 @@
 				<div class="col-md logo-address-container">
 					<x-image-component loading="lazy"  nickname="logo-header" class="logo-header-images logoFooter w-50"/>
 					<ul class="footer-ul px-0 company-details">
-						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; cursor: context-menu;">ONSITES High School - Main Campus</li>
-						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; margin-top: 0px!important; cursor: context-menu;">100 Southeast 2nd Street</li>
-						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; margin-top: 0px!important; cursor: context-menu;">Miami Tower, Suite 2000-1005</li>
-						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; margin-top: 0px!important; cursor: context-menu;">Miami, Florida 33131</li>
-						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; margin-top: 0px!important; cursor: context-menu;">USA</li>
-						<li class="footer-company-address-detail" style="cursor: context-menu;">Phone: +1 (305) 404-5125</li>
+						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; cursor: context-menu;">{{ $texts['campus'] }}</li>
+						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; margin-top: 0px!important; cursor: context-menu;">{{ $texts['address-1'] }}</li>
+						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; margin-top: 0px!important; cursor: context-menu;">{{ $texts['address-2'] }}</li>
+						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; margin-top: 0px!important; cursor: context-menu;">{{ $texts['address-3'] }}</li>
+						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; margin-top: 0px!important; cursor: context-menu;">{{ $texts['address-4'] }}</li>
+						<li class="footer-company-address-detail" style="cursor: context-menu;">{{ $texts['phone'] }}</li>
 					</ul>
 					<div class="d-flex align-items-center" style="gap:10px;margin-top:8px;">
 						<a href="/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" style="color:#045397;">
@@ -29,156 +29,156 @@
 				</div>
 				<div class="col-md">
 					<ul class="footer-ul">
-						<h6 class="text-uppercase">About</h6>
+						<h6 class="text-uppercase">{{ $texts['about'] }}</h6>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('school-overview') }}">
-							School Overview
+							{{ $texts['school-overview'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('mission-statement')}}">
-							Mission Statement
+							{{ $texts['mission-statement'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('accreditation') }}">
-							Recognition & Quality Standards
+							{{ $texts['accreditation'] }}
 						</a></li>
 							<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('leadership') }}">
-							Leadership
+							{{ $texts['leadership'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('academics') }}">
-							Faculty & Mentors
+							{{ $texts['academics'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('students-in-spotlight') }}">
-							Students in Spotlight
+							{{ $texts['students-in-spotlight'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('partnership') }}">
-							Partners and Providers
+							{{ $texts['partnership'] }}
 						</a></li>
 					</ul>
 				</div>
 			 
 				<div class="col-md">
 					<ul class="footer-ul">
-						<h6 class="text-uppercase">Academics</h6>
+						<h6 class="text-uppercase">{{ $texts['academics-point'] }}</h6>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('highschool-programs'
 						)}}">
-							High School Diploma Tracks
+							{{ $texts['highschool-programs'] }} 
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('graduation-requirements')}}">
-							Graduation Requirements
+							{{ $texts['graduation-requirements'] }} 
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('credit-recovery')}}">
-							Credit Recovery
+							{{ $texts['credit-recovery'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('credit-transfer')}}">
-							Credit Transfer
+							{{ $texts['credit-transfer'] }} 
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('awards')}}">
-							Awards
+							{{ $texts['awards'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('international-students')}}">
-							International Students
+							{{ $texts['international-students'] }} 
 						</a></li>
 						
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('starter-kit') }}">
-							Freshman Kit
+							{{ $texts['starter-kit'] }}
 						</a></li>
 					</ul>
 				</div>
 				<div class="col-md">  
 					<ul class="footer-ul px-0">
-						<h6 class="text-uppercase">Curriculum</h6>
+						<h6 class="text-uppercase">{{ $texts['curriculum'] }}</h6>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('standard-high-school')}}">
-							High School Programs
+							{{ $texts['standard-high-school'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('transfer-program')}}">
-							High School International Transfer Program
+							{{ $texts['transfer-program'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('honors-high-school')}}">
-							Module & Honors Courses
+							{{ $texts['honors-high-school'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('psat')}}">
-							PSAT/SAT Prep-Courses
+							{{ $texts['psat'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('act')}}">
-							PreACT/ACT Prep-Courses
+							{{ $texts['act'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('advanced-placement')}}">
-							Advanced Placement Courses
+							{{ $texts['advanced-placement'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('cte')}}">
-							CTE Prep-Courses
+							{{ $texts['cte'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
 							<a href="{{ route('clep')}}">
-							CLEP Prep-Courses
+							{{ $texts['clep'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
 							<a href="{{ route('esol')}}">
-							English Courses (ESOL)
+							{{ $texts['esol'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
 							<a href="{{ route('learning-mentoring')}}">
-							Live Sessions & Coaching
+							{{ $texts['learning-mentoring'] }}
 						</a></li>
 					</ul>
 				</div> 
 				<div class="col-md">  
 					<ul class="footer-ul px-0">
-						<h6 class="text-uppercase">Admissions</h6>
+						<h6 class="text-uppercase">{{ $texts['admission'] }}</h6>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('admission-process') }}">
-							Admission process
+							{{ $texts['admission-process'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('enrollment-criteria') }}">
-							Enrollment criteria
+							{{ $texts['enrollment-criteria'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('enrollment-options') }}">
-							Enrollment options
+							{{ $texts['enrollment-options'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('tuition') }}">
-							Tuition
+							{{ $texts['tuition'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('tuition-assistance') }}">
-							Tuition Assistance (PEP)
+							{{ $texts['tuition-assistance'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('ambassador-program') }}">
-							Ambassador Program
+							{{ $texts['ambassador-program'] }}
 						</a></li>
 					</ul>
 					
 				</div> 
 				<div class="col-md">
 					<ul class="footer-ul">
-						<h6 class="text-uppercase">Resources</h6>
+						<h6 class="text-uppercase">{{ $texts['resources'] }}</h6>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('faq'
 						)}}">
-							FAQ
+							{{ $texts['faq'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('code-of-ethics')}}">
-							Code of Conduct
+							{{ $texts['code-of-conduct'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('accessibility')}}">
-							Accessibility
+							{{ $texts['accessibility'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('terms-and-conditions')}}">
-							Terms and Conditions
+							{{ $texts['terms'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
 							<a href="{{ route('blog')}}">
-							News Explorer
+							{{ $texts['news-explorer'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
 							<a href="{{ route('facts-hub')}}">
-							Fact Hub
+							{{ $texts['facts-hub'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
 							<a href="{{ route('press-release')}}">
-							Press Release
+							{{ $texts['press-release'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
 							<a href="#" data-toggle="modal" data-target="#cookie_modal">
-							Cookies
+							Cookies{{ $texts['cookies'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
 							<a href="/">
-							Sitemap
+							{{ $texts['sitemap'] }}
 						</a></li>
 					</ul>
 				</div>
@@ -188,5 +188,5 @@
 </footer>
 
 <div style="background:#045397;color:white;text-align:center;padding:10px;width:100%">
-	&#169; <?php echo date("Y");?> ONSITES High School. All Rights Reserved.
+	&#169; <?php echo date("Y");?> {{ $texts['copyright'] }}
 </div>

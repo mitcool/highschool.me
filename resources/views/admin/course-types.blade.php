@@ -4,7 +4,7 @@
 
 <div class="shadow container wrapper">    
 
-    <h2 class="text-center">Course Types</h2>
+    <h2 class="text-center page-headings">Course Types</h2>
 
     <form action="{{ route('course-types.add') }}" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
@@ -22,7 +22,7 @@
         </div>
     </form>
     <hr>
-    <h2 class="text-center">Course Type list</h2>
+    <h2 class="text-center page-headings">Current types</h2>
     @foreach ($courses as $course )
         <li class="list-group-item d-flex justify-content-between">
             {{ $course->name }}   

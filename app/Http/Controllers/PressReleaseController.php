@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Config;
 use App\PressRelease;
-use App\PressReleaseTranslation;
+use App\PressReleaseCitation;
 use App\PressReleaseSection;
 use App\DynamicNewsAuthor;
 use App\PressReleaseSectionDetail;
@@ -22,11 +22,12 @@ class PressReleaseController extends Controller
     public $path;
 
     public function __construct(){
-        $this->path  = base_path()."/public/images/press_relese";
+        $this->path  = '/images/press_release';
+        $this->pdf_path = '/images/press_release/pdf';
     }
     public function index(){
         $authors = DynamicNewsAuthor::all();
-        $news = PressRelease::paginate(5);
+        $news = PressRelease::paginate(10);
         return view('admin.press-release.index')
             ->with('news', $news)
             ->with('authors', $authors);
@@ -35,20 +36,26 @@ class PressReleaseController extends Controller
     public function store(Request $request){
         $request->validate([
             'slug' => 'required|unique:press_releases,slug',
+            'key_facts' => 'required',
+            'meta_title' => 'required',
+            'meta_description' => 'required',
+            'author_id' => 'required',
+            'minutes' => 'required',
+            'heading'=> 'required',
+            'teaser' => 'required',
+            'media_name' => 'required',
+            'pdf_file' => 'required'
         ]);
         $types = $request->type;
         $contents = $request->content;
         $data = $request->only('author_id','slug','key_facts','meta_title','meta_description','minutes','heading','teaser');
-
-        $file = $request->file('pdf');
-        $file_name = $file->getClientOriginalName();
-        $file->move($this->path,$file_name);
-        $data['pdf'] = $file->getClientOriginalName();
-       
+        $pdf_files = $request->file('pdf_file');
+        $media_name = $request->media_name;
+        $citation_date = $request->citation_date;
         $press_release = PressRelease::create($data);
 
         $picture = $request->file('picture');
-        $picture_name = $file->getClientOriginalName();
+        $picture_name = $picture->getClientOriginalName();
         $picture->move($this->path,$picture_name);
         
         Image::create([
@@ -113,7 +120,20 @@ class PressReleaseController extends Controller
                     ]);
                 }
             }
-       }
+        }
+
+        foreach($pdf_files as $key => $pdf_file){
+             
+             $pdf_file_name = $pdf_file->getClientOriginalName();
+             $pdf_file->move($this->pdf_path,$pdf_file_name);
+
+             PressReleaseCitation::insert([
+                 'news_id' => $press_release->id,
+                 'media_name' => $media_name[$key],
+                 'date' => $citation_date[$key],
+                 'pdf_file' => $pdf_file_name
+             ]);
+         }
 
        return redirect()->back()->with('success_message'," Press release article created successfully");
     }

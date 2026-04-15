@@ -19,6 +19,8 @@ class ExamSubmittedAdmin extends Mailable
     
     public function build()
     {
-        return $this->view('email.exam-submitted-admin');
+        return $this->view('email.exam-submitted-admin')
+            ->with('exam',$this->exam)
+            ->subject('Exam Submitted — '.$this->exam->student->fullname().' — '.$this->exam->course->course->title.' — Ready for Grading');
     }
 }

@@ -7,7 +7,7 @@
 @section('content')
 
 <div class="container text-center my-3 shadow bg-light p-3">
-    <h1>Edit Category</h1>
+    <h1 class="page-headings">Edit Category</h1>
 
     @foreach($faq_categories as $category)
         <h2>Category: <span class="font-italic text-primary">{{ $category->key }}</span></h2>

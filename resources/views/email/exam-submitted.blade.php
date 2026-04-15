@@ -92,21 +92,28 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear {{ $parent->fullname() }},
+                                                        Dear {{ $parent->name}},
                                                     </h1>
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        We would like to inform you that your child has successfully submitted the exam for <strong>{{ $exam->course->course->title }}</strong>. The submission has been received and will be reviewed as part of the evaluation process.
-                                                            
+                                                        We are happy to let you know that {{{{ $exam->student->name }}}} has successfully submitted their {{ $exam->course->course->title }} exam on {{ $exam->datetime->format('d.m.Y') }}. The submission has been received by our system and is now with the board of examiners.
+                                                      
                                                     </p>
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        If you have any questions or need additional information, please feel free to contact me.
+                                                        Completing an exam is always a significant step, and {{$exam->student->name}} should feel good about seeing this one through. The preparation and effort that goes into getting here does not go unnoticed.
                                                     </p>
-                                                    
+
+                                                    <p style="{{ $style['paragraph-black'] }}">The grading process is now underway. Once results have been finalized and published, you will receive a notification and the full results — including a detailed performance breakdown and board of examiners feedback — will be available in the parent portal.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">In the meantime, no action is required from you or {{$exam->student->name}}. We will be in touch as soon as the results are ready.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">Thank you for your continued involvement in {{$exam->student->name}}'s academic progress. It truly makes a difference.</p>
+
+                                                
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
+                                                        Kind regards,<br>ONSITES High School
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
+                                                 
                                                 </td>
                                             </tr>
                                         </table>

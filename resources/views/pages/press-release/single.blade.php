@@ -1,31 +1,26 @@
  @extends('template')
 
 @section('seo')
-	<title>{!!  strip_tags($article->translated->meta_title) !!}</title>
-	<meta itemprop="title" property="og:title" content="{{ strip_tags($article->translated->meta_title)  }}"/>
-	<meta itemprop="description" name="description" content="{{ strip_tags($article->translated->meta_description) }}" />
-	<meta property="og:description" content="{{ strip_tags($article->translated->meta_description) }}"/>
-	@if(Session::get('applocale') == 'de')
-		<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/de/blog/{{ $hreflang_de }}"/>
-	@else
-		<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/en/blog/{{ $hreflang_en }}"/>
-	@endif
-	
-	<meta itemprop="image" property="og:image" content="{{ asset('news_images') }}/{{ $article->main_image->all_translations[0]->content }}"/>
+	<title>{!!  strip_tags($article->meta_title) !!}</title>
+	<meta itemprop="title" property="og:title" content="{{$article->meta_title }}"/>
+	<meta itemprop="description" name="description" content="{{$article->meta_description }}" />
+	<meta property="og:description" content="{{ $article->meta_description }}"/>
+	<meta itemprop="url" property="og:url" content=""/>
+	<meta itemprop="image" property="og:image" content=""/>
 	<meta property="og:type" content="website">
 
-	@if(app()->currentLocale() == 'en')
+
 		<script type="application/ld+json">
             {
               "@context": "https://schema.org",
               "@type": "Article",
               "mainEntityOfPage": {
                 "@type": "WebPage",
-                "@id": "https://graduate.me/en/blog/{{$article->translated->slug}}"
+                "@id": "https://graduate.me/en/blog/{{$article->slug}}"
               },
-              "headline": "{{$article->translated->title}}",
-              "description": "{{$article->translated->description}}",
-              "image": "https://graduate.me/public/images/{{$article->translated->slug}}.webp",  
+              "headline": "{{$article->title}}",
+              "description": "{{$article->description}}",
+              "image": "https://graduate.me/public/images/{{$article->slug}}.webp",  
               "author": {
                 "@type": "Organization",
                 "name": "ONSITES Graduate School"
@@ -42,35 +37,6 @@
               "dateModified": "{{ $article->created_at }}}"
             }
         </script>
-	@else
-		<script type="application/ld+json">
-            {
-              "@context": "https://schema.org",
-              "@type": "Article",
-              "mainEntityOfPage": {
-                "@type": "WebPage",
-                "@id": "https://graduate.me/de/blog/{{$article->translated->slug}}"
-              },
-              "headline": "{{$article->translated->title}}",
-              "description": "{{$article->translated->description}}",
-              "image": "https://graduate.me/public/images/{{$article->translated->slug}}.webp",  
-              "author": {
-                "@type": "Organization",
-                "name": "ONSITES Graduate School"
-              },  
-              "publisher": {
-                "@type": "Organization",
-                "name": "ONSITES Graduate School",
-                "logo": {
-                  "@type": "ImageObject",
-                  "url": ""
-                }
-              },
-              "datePublished": "{{ $article->created_at }}",
-              "dateModified": "{{ $article->created_at }}}"
-            }
-        </script>
-	@endif
 
 @endsection
 
@@ -80,16 +46,13 @@
 @endsection
 
 @section('content')
-@php
-    $breadcrumb_title = strtok(strip_tags($article->translated->meta_title), '|');
-@endphp
 
 
 <div aria-label="breadcrumb" class="col-md-6 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-1">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item"><a href="{{ route('blog') }}">Blog</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb_title }}</li>
+		<li class="breadcrumb-item"><a href="{{ route('blog') }}">Press Release</a></li>
+		<li class="breadcrumb-item active" aria-current="page">{{ $article->heading }}</li>
 	</ol>
 </div>
 
@@ -97,7 +60,7 @@
 	<div itemscope itemtype="https://schema.org/Article" class="row p-2">
 		<div class="col-lg-3">
 			<div id="toc_wrapper" >
-				<p id="toc_wrapper_heading" class="mb-0" style="font-size: 1.75rem;">{{ trans('single-blog.table-of-content') }}</p>
+				<p id="toc_wrapper_heading" class="mb-0" style="font-size: 1.75rem;">Table of content</p>
 				<div id="toc"></div>
 				<div style="margin-top:20px;" id="social-icons" class="d-flex justify-content-around">
 					<a href="https://www.facebook.com/sharer/sharer.php?u={{Request::url()}}&display=popup" rel="nofollow"><i  widthh="17.02px" height="35px" href="" target="_blank" class="text-primary fab fa-facebook-f"></i></a>
@@ -107,73 +70,68 @@
 		</div>
 		
 		<div class="col-lg-6">
-			<img itemprop="image" rel="preload" fetchpriority="high" decoding="async" 
-				src="{{ asset('news_images') }}/{{ $article->main_image->all_translations[0]->content }}" 
-				class="w-100" 
-				alt="{{ $article->main_image->attributes ? $article->main_image->attributes->alt() : '' }}"
-				title="{{ $article->main_image->attributes ? $article->main_image->attributes->title() : '' }}"
-			/>
-			
-			@foreach($article->sections as $key =>  $section)
-			
+			<x-image-component nickname="press-release-{{ $article->id }}" class="w-100"/>
+			<h1 itemprop="headline" class="h1">{{ $article->heading  }}</h1>
 				<div itemprop="articleBody" itemscope itemtype="https://schema.org/Text" style="margin-top:20px;" class="page-content">
-					@if($key == 0)
-					<h1 itemprop="headline" class="h1">{!! $section->translated->content !!}</h1>
-					<span class="font-weight-bold">{{ $article->author->translated->name }}</span> <br/>
-					<span>{{ $article->author->translated->occupation }}</span> <br/>
-					<p class="font-weight-bold"><i class="fas fa-clock"></i> {{ $article->minutes }} min.</p>
-					<p class="font-weight-bold"><i class="fas fa-calendar-alt"></i>
-		            	{{ request()->segment(1) == 'de' ? 'Veröffentlicht am' : 'Published on' }} <?php echo date("d.m.Y", strtotime($article->created_at))?>            	
-						@if($article->updated_at)
-						    {{ request()->segment(1) == 'de' ? 'Aktualisiert am' : 'Updated on' }} 
-							<?php echo date("d.m.Y", strtotime($article->updated_at))?>
-						@endif
-		            </p>
-					@if($article->translated->key_facts)
-						<div class="key-facts">
-							<div class="top left"></div>
-							<div class="bottom right"></div>
-							<h5 style="color:#E16221;">{{ request()->segment(1) == 'de' ? 'Key-Facts' : 'Key Facts' }}</h5>
-							{!!  $article->translated->key_facts !!}
-						</div>
-					@endif
-					@elseif($key==1)
-					<p>{!! $section->translated->content !!}</p>
-					@elseif($section->type == 1)
-						<div id="section_{{$section->id}}">{!! $section->translated->content !!}</div>
-					@elseif($section->type == 2 && $section->id != $article->main_image->id)
+				<span class="font-weight-bold" style="font-size:1rem;">{{ $article->author->name }}</span> <br/>
+				<span>{{ $article->author->occupation }}</span> <br/>
+				<p style="font-size:1rem;" class="font-weight-bold"><i class="fas fa-clock"></i> {{ $article->minutes }} min.</p>
+				<p style="font-size:1rem;" class="font-weight-bold"><i class="fas fa-calendar-alt"></i>
+					Published on {{  $article->created_at->format('d.m.Y') }}           	
+				</p>
+			    @if($article->updated_at != $article->created_at)
+					<p style="font-size:1rem" class="font-weight-bold"><i class="fas fa-calendar-alt"></i> Updated on
+						{{  $article->updated_at->format('d.m.Y') }}
+					</p>
+				@endif
+				
+				@if($article->key_facts)
+					<div class="key-facts">
+						<div class="top left"></div>
+						<div class="bottom right"></div>
+						<h5 style="color:#E16221;">Key Facts</h5>
+						{!!  $article->key_facts !!}
+					</div>
+				@endif
+
+				{!! $article->teaser !!}
+			
+				@foreach ($article->sections as $section )
+	
+					@if($section->type == 1)
+						<div id="section_{{$section->id}}">{!! $section->content !!}</div>
+					@elseif($section->type == 2)
 						<img 
 							src="{{ asset('news_images') }}/{{ $section->image_src->content }}" 
 							class="w-100" 
-							alt="{{ $section->attributes ? $section->attributes->alt() : '' }}"
-							title="{{ $section->attributes ? $section->attributes->title() : '' }}"
+							alt=""
+							title=""
 						/>
 					@elseif($section->type == 3)
 						<div class="blockquote-wrapper">
 							<blockquote>
-								<p>{{ $section->translated->content }}</p>
+								<p>{{ $section->content }}</p>
 							</blockquote>
-							<h5 class="text-right">{{ $section->details[0]->translated->content }}</h5>
+							<h5 class="text-right">{{ $section->details[0]->content }}</h5>
 						</div>
 					@elseif($section->type == 4)
 						<div class="news-box-wrapper">
-							<h4 class="news-box-header">{{ $section->translated->content }}</h4>
+							<h4 class="news-box-header">{{ $section->content }}</h4>
 							<div class="d-flex justify-content-between">
 								@foreach( $section->details as $box )
-									<div class="col news-box">{{ $box->translated->content }}</div>
+									<div class="col news-box">{{ $box->content }}</div>
 								@endforeach
 							</div>
 							
 						</div>
 					@endif
 				</div>
-				
 			@endforeach
 			<table class="table">
 				<tr>
-					<th>Medium</th>
+					<th>Media</th>
 					<th>Date</th>
-					<th class="text-center">Title</th>
+					<th class="text-center">Link</th>
 				</tr>
 				@foreach($article->citations  as $citation )
 				<tr>
@@ -185,7 +143,6 @@
 				</tr>
 			    @endforeach
 			</table>
-			
 		</div>
 	</div>
 </div>

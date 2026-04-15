@@ -34,6 +34,11 @@ ul {
 .page-content h2 span span span {
     font-size: 2rem !important;
 }
+
+.page-content h2,
+.page-content h3{
+    color:#045397;
+}
 .cke_notifications_area {
     display: none;
 }

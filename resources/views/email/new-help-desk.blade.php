@@ -92,22 +92,32 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear {{ $user->fullname() }},
+                                                        Dear {{ $user->name }},
                                                     </h1>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        There are new messages on ticket {{ $slug }}.
-                                                        <br/>
+                                                    <p style="{{ $style['paragraph-black'] }}">We wanted to let you know that your support request #{{$help_desk->slug}} has been reviewed by our team and a response has been posted. We hope the information provided addresses your question clearly and completely.</p>
+                                                    <p style="{{ $style['paragraph-black'] }}">Message: {{ $help_desk->message }}</p>
+                                                    @if($user->role_id == 2)
+                                                        <p style="{{ $style['paragraph-black'] }}">
+                                                        If the response answers your question, no further action is needed. If anything was not fully addressed, or if a follow-up question has come up, please do not hesitate to continue the conversation through the parent portal. Our team is available and happy to assist at any time.</p>
+
+                                                        <p style="{{ $style['paragraph-black'] }}">We understand that questions can arise at any stage of the enrollment and academic process, and we are committed to making sure you always have the clarity and support you need. Your involvement in your student's education matters, and we want to make the experience as transparent and straightforward as possible.</p>
+
                                                     </p>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                         Please check your dashboard
-                                                        <br/>
-                                                    </p>
-                                                    
+                                                    @else
+                                                        <p style="{{ $style['paragraph-black'] }}">
+                                                        If the response answers your question, no further action is needed on your part. If anything was not fully addressed, or if a follow-up question has come up, please do not hesitate to continue the conversation through the student portal. Our team is always ready to help.</p>
+
+                                                        <p style="{{ $style['paragraph-black'] }}">We take every request through the Help Desk seriously, and making sure you feel supported throughout your time at ONSITES High School is something we genuinely care about.</p>
+                                                    @endif
+                                                    <p style="{{ $style['paragraph-black'] }}">→ View Full Thread: <a href="{{route('login')}}">{{route('login')}}</a> </p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">Thank you for reaching out.</p>
+
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
+                                                        Kind regards,<br>ONSITES High School
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
+                            
                                                 </td>
                                             </tr>
                                         </table>

@@ -92,20 +92,22 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear {{ $enrolled_course->student->fullname() }},
+                                                        Dear {{ $enrolled_course->student->name }},
                                                     </h1>
                                                   
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        <span style="{{$style['bold']}}">You can start studying"{{ $enrolled_course->course->course->title }}"
+                                                        <span style="{{$style['bold']}}">The moment has arrived — your course materials for  "{{ $enrolled_course->course->course->title }}" are now live and available in the student portal. Today is the day you start.
                                                         <br/>
                                                     </p>
-                                                    
-                                                    <!-- Salutation -->
+                                                    <p style="{{ $style['paragraph-black'] }}">We recommend beginning with the course introduction, which gives you a full overview of what you will be covering, how assessments work, and what the expectations are. From there, take a look at the suggested study schedule for the first week and map out your plan. A strong start sets the tone for everything that follows.</p>
+                                                    <p style="{{ $style['paragraph-black'] }}">Your AI-StudyMentor is already active and available around the clock. Whether you hit a difficult concept at 2pm or 2am, support is there whenever you need it. Use it — that is exactly what it is there for.</p>
+                                                    <p style="{{ $style['paragraph-black'] }}">If you have questions for your educator or need to contact the Help Desk at any point, the student portal is your hub for everything. Take a few minutes to explore the layout so you know where everything is before you dive in.</p>
+                                                    <p style="{{ $style['paragraph-black'] }}">→ Start Learning: <a href="{{ route('login') }}">{{route('login')}}</a> </p>
+                                                    <p style="{{ $style['paragraph-black'] }}">We are proud of the effort you have put in to get here, and we are genuinely excited to see what you accomplish in this course. Go make it count.</p>
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
+                                                        Kind regards,<br>ONSITES High School
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
-                                                </td>
+                                                    </td>
                                             </tr>
                                         </table>
                                     </td>

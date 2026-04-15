@@ -1,5 +1,16 @@
 @extends('template')
 
+@section('seo')
+	<title>{{ $texts['meta-title'] }}</title>
+	<meta itemprop="description" name="description" content="{{ $texts['meta-description'] }}" />
+	<meta itemprop="title" property="og:title" content="{{ $texts['meta-title'] }}"/>
+	<meta property="og:type" content="website"/>
+	<meta itemprop="url" property="og:url" content="{{ route('highschool-programs')}}"/>
+	<meta property="og:description" content="{{ $texts['meta-description'] }}"/>
+	<x-meta-image itemprop="image" nickname="accreditation-cover"/>
+
+@endsection
+
 @section('headCSS')
 <style>
     .feature{
@@ -127,26 +138,21 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
     <ol class="bg-white breadcrumb mb-0 p-0">
         <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">High School Programs</li>
+        <li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
     </ol>
 </div>
 
 <img src="{{ asset('images/cheerful-teenagers-classroom.png') }}" alt="" class="w-100">
 <div class="container-fluid main-container" >
-        <div class="row text-center mx-auto">
-            <div class="col-md-12">
-                <h1 class="text-center page-headings">High School Programs</h1> <br>
-                <h2 class="text-center font-weight-bold" style="margin-bottom:20px;font-size:1.4rem;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tortor augue, ullamcorper vel dui nec, posuere sodales est.</h2>
-                <div class="page-content">
-                    <p>Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iacul</p>
-                </div>
-            </div>
-       
-        <div class="col-md-12" style="margin:30px 0;">
-            <p class="page-content">Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique.</p>
-           
+    <div class="row text-center mx-auto">
+        <div class="col-md-12">
+            <h1 class="text-center page-headings">{{ $texts['heading'] }}</h1> <br>
+            <h2 class="text-center font-weight-bold" style="margin-bottom:20px;font-size:1.4rem;">{{ $texts['subheading'] }}</h2>
+            <div class="page-content">{!! $texts['intro'] !!}</div>
         </div>
-        
+    
+        <div class="col-md-12" style="margin:30px 0;">{!! $texts['intro-2'] !!}</div>
+    
     </div>
 </div>
 
@@ -156,18 +162,12 @@
         <div class="col-md-3" style="padding:30px;">
             <img src="{{ asset('images/glasses.png') }}" alt="" class="w-100">
         </div>
-        <div class="col-md-5" style="padding:30px;">
-            <h2>24-Credit-Graduation Standard Track</h2>
-            <p>Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem </p>
-        </div>
+        <div class="col-md-5" style="padding:30px;">{!! $texts['track-1'] !!}</div>
         <div class="col-md-2"></div>
     </div>
-   <div class="row text-white reverse" style="background:#045397;opacity:0.9">
-    <div class="col-md-2"></div>
-        <div class="col-md-5" style="padding:30px;">
-            <h2>24-Credit-Graduation Honors Track</h2>
-            <p>Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus </p>
-        </div>
+    <div class="row text-white reverse" style="background:#045397;opacity:0.9">
+        <div class="col-md-2"></div>
+        <div class="col-md-5" style="padding:30px;"> {!! $texts['track-2'] !!}</div>
         <div class="col-md-3" style="padding:30px;">
             <img src="{{ asset('images/glasses.png') }}" alt="" class="w-100">
         </div>
@@ -178,10 +178,7 @@
         <div class="col-md-3" style="padding:30px;">
             <img src="{{ asset('images/glasses.png') }}" alt="" class="w-100">
         </div>
-        <div class="col-md-5" style="padding:30px;">
-            <h2>18-Credit-ACCEL Graduation Track</h2>
-            <p>Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem </p>
-        </div>
+        <div class="col-md-5" style="padding:30px;"> {!! $texts['track-3'] !!}</div>
         <div class="col-md-2"></div>
     </div>
 </div>
@@ -189,7 +186,6 @@
 <div class="mb-3">
     <x-three-buttons />
 </div>
-
 
 @endsection
 

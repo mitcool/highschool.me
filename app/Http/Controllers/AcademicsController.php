@@ -6,28 +6,40 @@ use Illuminate\Http\Request;
 
 class AcademicsController extends Controller
 {
-    public function highSchoolPrograms(){
-        return view('pages.academics.highschool-programs');
+    public function highSchoolPrograms(Request $request){
+        $texts = $request->all()['texts'];
+        return view('pages.academics.highschool-programs')
+        ->with('texts',$texts);
 
     }
-     public function graduationRequirements(){
-        return view('pages.academics.graduation-requirements');
+     public function graduationRequirements(Request $request){
+        $texts = $request->all()['texts'];
+        return view('pages.academics.graduation-requirements')
+        ->with('texts',$texts);
         
     }
-     public function creditRecovery(){
-        return view('pages.academics.credit-recovery');
+     public function creditRecovery(Request $request){
+        $texts = $request->all()['texts'];
+        return view('pages.academics.credit-recovery')
+        ->with('texts',$texts);
         
     }
-     public function creditTransfer(){
-        return view('pages.academics.credit-transfer');
+     public function creditTransfer(Request $request){
+        $texts = $request->all()['texts'];
+        return view('pages.academics.credit-transfer')
+        ->with('texts',$texts);
         
     }
-     public function awards(){
-        return view('pages.academics.awards');
+     public function awards(Request $request){
+        $texts = $request->all()['texts'];
+        return view('pages.academics.awards')
+        ->with('texts',$texts);
         
     }
-     public function internationalStudents(){
-        return view('pages.academics.international-students');
+     public function internationalStudents(Request $request){
+        $texts = $request->all()['texts'];
+        return view('pages.academics.international-students')
+        ->with('texts',$texts);
         
     }
 }

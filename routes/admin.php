@@ -8,6 +8,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/texts','AdminController@showTexts')->name('texts');
 	Route::get('/single-text/{slug}','AdminController@showSingleTexts')->name('single-text');
 	Route::post('/change-text','AdminController@changeText')->name('change-text');
+	Route::post('/add-text','AdminController@addText')->name('admin.add-text');
 
 	// Academics
 	Route::get('/academics','AdminController@getAdminAcademics')->name('admin-academics');

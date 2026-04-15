@@ -1,13 +1,9 @@
 @extends('admin_template')
 
-@section('css')
-<script src="https://cdn.ckeditor.com/4.12.1/full/ckeditor.js"></script>
-@endsection
-
 @section('content')
 
 <div class="shadow container wrapper">    
-    <h2 class="text-center">Add Feature</h2>
+    <h2 class="text-center page-headings">Add Feature</h2>
     <p class="text-danger">* For showing icon in public page please write "Yes" or "No" for plans value</p>
     <form action="{{ route('feature.add') }}" method="POST">
         {{ csrf_field() }}
@@ -20,11 +16,11 @@
         <label for="" class="mb-0 font-weight-bold">Elite Plan</label>
         <input type="text" name="elite" class="form-control my-2" required>
         <label for="" class="mb-0 font-weight-bold">Core Tootltip(optional)</label>
-        <textarea class="ckeditor" name="core_tooltip" id="" cols="30" rows="10"></textarea>
+        <textarea class="form-control" name="core_tooltip" id="" cols="30" rows="10"></textarea>
         <label for="" class="mb-0 font-weight-bold">Pro Tootltip(optional)</label>
-        <textarea class="ckeditor" name="pro_tooltip" id="" cols="30" rows="10"></textarea>
+        <textarea class="form-control" name="pro_tooltip" id="" cols="30" rows="10"></textarea>
         <label for="" class="mb-0 font-weight-bold">Elite Tootltip(optional)</label>
-        <textarea class="ckeditor" name="elite_tooltip" id="" cols="30" rows="10"></textarea>
+        <textarea class="form-control" name="elite_tooltip" id="" cols="30" rows="10"></textarea>
         <label for="" class="mb-0 font-weight-bold">Slug</label>
         <input type="text" name="slug" class="form-control my-2" required>
         <label for="" class="mb-0 font-weight-bold">Category</label>
@@ -40,7 +36,7 @@
     </form>
     <hr>
     <ul class="list-group">
-        <h2 class="text-center">Current Features</h2>
+        <h2 class="text-center page-headings">Current Features</h2>
         @foreach ($features as $feature )
              <li class="list-group-item d-flex w-100 align-center justify-content-between">{{ $feature->feature }}
                 <div class="d-flex">

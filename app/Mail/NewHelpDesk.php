@@ -12,17 +12,19 @@ class NewHelpDesk extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
-    public $slug;
-    public function __construct($user,$slug)
+    public $help_desk;
+    public function __construct($user,$help_desk)
     {
         $this->user = $user;
-        $this->slug = $slug;
+        $this->help_desk = $help_desk;
     }
 
       public function build()
     {
+        
         return $this->view('email.new-help-desk')
+            ->subject('We Have Responded to Your Support Request #'.$this->help_desk->slug)
             ->with('user',$this->user)
-            ->with('slug',$this->slug);
+            ->with('help_desk',$this->help_desk);
     }
 }

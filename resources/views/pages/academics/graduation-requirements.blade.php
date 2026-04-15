@@ -1,10 +1,10 @@
 @extends('template')
 @section('seo')
-<title>{{ trans('study-registration.meta-title') }}</title>
-<meta itemprop="description" name="description" content="{{ trans('study-registration.meta-description')}}" />
-<meta itemprop="title" property="og:title" content="{{ trans('study-registration.meta-title') }}"/>
+<title>{{ $texts['meta-title']}}</title>
+<meta itemprop="description" name="description" content="{{ $texts['meta-description']}}" />
+<meta itemprop="title" property="og:title" content="{{ $texts['meta-title']}}"/>
 <meta property="og:type" content="website"/>
-<meta property="og:description" content="{{ trans('study-registration.meta-description')}}"/>
+<meta property="og:description" content="{{ $texts['meta-description']}}"/>
 <x-meta-image itemprop="image" nickname="study_registration"/>
 
 @endsection
@@ -68,38 +68,28 @@
 	<div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 		<ol class="bg-white breadcrumb mb-0 p-0">
 			<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-			<li class="breadcrumb-item active" aria-current="page">Graduation Requirements</li>
+			<li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
 		</ol>
 	</div>
 	<img src="{{ asset('/images/grad-requirements.png') }}" class="w-100">
 	<div class="container page-content">
-		<h1 class="text-center page-headings">Graduation Requirements</h1>
-    <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tortor augue, ullamcorper vel dui nec, posuere sodales est.</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, accusamus quam quos rerum quas, voluptas, non minus veritatis id labore mollitia ratione possimus quibusdam a ab excepturi repudiandae. Fugit veniam sint temporibus, accusantium porro sunt maiores tempora rerum non ex?</p>
+		<h1 class="text-center page-headings">{{ $texts['heading'] }}</h1>
+    <h2>{{ $texts['subheading'] }}</h2>
+    <p>{{ $texts['intro'] }}</p>
 	</div>
   <div class="container page-content">
       <section class="requirements-section">
-          <h2>Requirement 1</h2>
-          <hr>
-          <p>Promovieren sind nicht nur akademische Meilensteine – sie sind Herausforderungen, die von intensiver Forschung, kreativem Denken und strategischer Planung geprägt sind. Um Dir diese Herausforderung so effizient und produktiv wie möglich zu gestalten, stellen wir Dir das kostenfreie Empowerment-Kit zur Verfügung. Dieses Kit umfasst innovative Tools, um Dir den Weg zu einem erfolgreichen Studienabschluss oder zu einer erfolgreichen Promotion erheblich zu verkürzen und zu erleichtern.
-          </p>
+        {!! $texts['requirement-1'] !!}
 	    </section>
       <section class="requirements-section">
-          <h2>Requirement 2</h2>
-          <hr>
-          <p>Promovieren sind nicht nur akademische Meilensteine – sie sind Herausforderungen, die von intensiver Forschung, kreativem Denken und strategischer Planung geprägt sind. Um Dir diese Herausforderung so effizient und produktiv wie möglich zu gestalten, stellen wir Dir das kostenfreie Empowerment-Kit zur Verfügung. Dieses Kit umfasst innovative Tools, um Dir den Weg zu einem erfolgreichen Studienabschluss oder zu einer erfolgreichen Promotion erheblich zu verkürzen und zu erleichtern.
-          </p>
+         {!! $texts['requirement-2'] !!}
 	    </section>
       <section class="requirements-section">
-          <h2>Requirement 3</h2>
-          <hr>
-          <p>Promovieren sind nicht nur akademische Meilensteine – sie sind Herausforderungen, die von intensiver Forschung, kreativem Denken und strategischer Planung geprägt sind. Um Dir diese Herausforderung so effizient und produktiv wie möglich zu gestalten, stellen wir Dir das kostenfreie Empowerment-Kit zur Verfügung. Dieses Kit umfasst innovative Tools, um Dir den Weg zu einem erfolgreichen Studienabschluss oder zu einer erfolgreichen Promotion erheblich zu verkürzen und zu erleichtern.
-          </p>
+          {!! $texts['requirement-3'] !!}
 	    </section>
   </div>
   <div class="container page-content">
-     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta explicabo quidem odit. Iure laudantium sunt sed odit, dolorem velit quis ea perspiciatis voluptatem provident, at animi labore, delectus magni saepe recusandae blanditiis natus. Quaerat dicta accusantium et ipsum unde, consequuntur quia recusandae sequi architecto sapiente reprehenderit nostrum cupiditate. Beatae, perferendis.</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta explicabo quidem odit. Iure laudantium sunt sed odit, dolorem velit quis ea perspiciatis voluptatem provident, at animi labore, delectus magni saepe recusandae blanditiis natus. Quaerat dicta accusantium et ipsum unde, consequuntur quia recusandae sequi architecto sapiente reprehenderit nostrum cupiditate. Beatae, perferendis.</p>
+    {!! $texts['last-paragraph'] !!}
   </div>
  
   <x-three-buttons />

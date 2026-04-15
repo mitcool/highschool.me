@@ -176,121 +176,127 @@ Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 Route::post('/parent/pay/plan/{student_id}','ParentController@parentPayPlan')->name('parent.pay.plan');
 
 //Public routes
-Route::get('/','MainController@showWelcome')->name('welcome');
 
-Route::get('/early-registration','MainController@earlyRegistration')->name('early-registration');
+Route::group(['middleware' => 'text'],function(){
+	
+	Route::get('/','MainController@showWelcome')->name('welcome');
+
+	Route::get('/early-registration','MainController@earlyRegistration')->name('early-registration');
+
+	Route::get('/faq/{category}','FooterController@getSingleFaqCategory')->name('single-faq-category');
+
+	Route::get('/school-overview','AboutController@showhighschoolOverview')->name('school-overview');
+
+	Route::get('/mission-statement','AboutController@showMissionStatement')->name('mission-statement');
+
+	Route::get('/contact','MainController@contact')->name('student-advisory-service');
+
+	Route::get('/academics','AboutController@showAcademics')->name('academics');
+
+	Route::get('/accreditation','AboutController@showAccreditation')->name('accreditation');
+
+	Route::get('/iso-9001-2015', 'AboutController@showFirstIso')->name('first-iso');
+
+	Route::get('/iso-21001-2018', 'AboutController@showSecondIso')->name('second-iso');
+
+	Route::get('/iso-27001-2022', 'AboutController@showThirdIso')->name('third-iso');
+
+	Route::get('/florida-department-of-education', 'AboutController@showFloridaDepartment')->name('florida-department');
+
+	Route::get('/college-board', 'AboutController@showCollegeBoard')->name('college-board');
+
+	Route::get('/united-nations', 'AboutController@showUNpage')->name('united-nations');
+
+	Route::get('/american-college-test', 'AboutController@showACTpage')->name('american-college-test');
+
+	Route::get('/blog','MainController@showBlog')->name('blog');
+
+	Route::get('/blog/{slug}','MainController@showSingleBlog')->name('single-article');
+
+	Route::get('/faq','FooterController@showFaq')->name('faq');
+
+	Route::get('/students-in-spotlight','AboutController@showStudentsInSpotlight')->name('students-in-spotlight');
+
+	Route::get('/feature/{slug}','MainController@feature')->name('single-feature');
+
+	Route::get('/code-of-ethics','FooterController@showCodeOfEtics')->name('code-of-ethics');
+
+	Route::get('/freshman-kit','FooterController@starterKit')->name('starter-kit');
+
+	Route::get('/newsletter','MainController@showNewsletter')->name('newsletter');
+
+	Route::get('/facts-hub','MainController@showFactsHub')->name('facts-hub');
+
+	Route::get('/facts-hub/{slug}','MainController@showSingleFactsHub')->name('single-facts-hub');
+
+	Route::get('/press-release','MainController@showPressRelease')->name('press-release');
+
+	Route::get('/press-release/{slug}','MainController@showSinglePressRelease')->name('single-press-release');
+
+	Route::get('/accessibility','FooterController@accessibility')->name('accessibility');
+
+	Route::get('/leadership','AboutController@showLeadership')->name('leadership');
+
+	Route::get('/partnership','AboutController@showPartnership')->name('partnership');
+
+	Route::get('/highschool-programs','AcademicsController@highSchoolPrograms')->name('highschool-programs');
+
+	Route::get('/graduation-requirements','AcademicsController@graduationRequirements')->name('graduation-requirements');
+
+	Route::get('/credit-recovery','AcademicsController@creditRecovery')->name('credit-recovery');
+
+	Route::get('/credit-transfer','AcademicsController@creditTransfer')->name('credit-transfer');
+
+	Route::get('/awards','AcademicsController@awards')->name('awards');
+
+	Route::get('/international-students','AcademicsController@internationalStudents')->name('international-students');
+
+	Route::get('/standard-high-school','CurriculumController@standardHighSchool')->name('standard-high-school');
+
+	Route::get('/transfer-program','CurriculumController@transferProgram')->name('transfer-program');
+
+	Route::get('/transfer-program/{slug}','CurriculumController@showSingleTransferProgramCourse')->name('single-tranfer-program-course');
+
+	Route::get('/honors-high-school','CurriculumController@honorsHighSchool')->name('honors-high-school');
+
+	Route::get('/advanced-placement','CurriculumController@advancedPlacement')->name('advanced-placement');
+
+	Route::get('/advanced-placement/{slug}','CurriculumController@showSingleApCourse')->name('single-ap-course');
+
+	Route::get('/psat','CurriculumController@psat')->name('psat');
+
+	Route::get('/act','CurriculumController@act')->name('act');
+
+	Route::get('/cte','CurriculumController@cte')->name('cte');
+
+	Route::get('/clep','CurriculumController@clep')->name('clep');
+
+	Route::get('/clep/{slug}','CurriculumController@showSingleClepCourse')->name('single-clep-course');
+
+	Route::get('/esol','CurriculumController@esol')->name('esol'); #a.k.a english courses
+
+	Route::get('/learning-mentoring','CurriculumController@learningMentoring')->name('learning-mentoring');
+
+	Route::get('/admission-process','AdmissionController@admissionProcess')->name('admission-process');
+
+	Route::get('/enrollment-criteria','AdmissionController@enrolmentCriteria')->name('enrollment-criteria');
+
+	Route::get('/enrollment-options','AdmissionController@enrolmentOptions')->name('enrollment-options');
+
+	Route::get('/tuition','AdmissionController@tuition')->name('tuition');
+
+	Route::get('/tuition-assistance','AdmissionController@tuitionAssistance')->name('tuition-assistance');
+
+	Route::get('/apply','AdmissionController@apply')->name('apply');
+
+	Route::get('/ambassador-program','AdmissionController@ambassadorProgram')->name('ambassador-program');
+
+	Route::get('/terms-and-conditions', 'FooterController@terms')->name('terms-and-conditions');
+
+	Route::get('/sitemap','SitemapController@showSitemapHTML')->name('sitemap');
+});
 
 Route::post('/early-registration','MainController@earlyRegistrationSubmit')->name('early-registration-submit');
-
-Route::get('/school-overview','AboutController@showhighschoolOverview')->name('school-overview');
-
-Route::get('/mission-statement','AboutController@showMissionStatement')->name('mission-statement');
-
-Route::get('/contact','MainController@contact')->name('student-advisory-service');
-
-Route::get('/academics','AboutController@showAcademics')->name('academics');
-
-Route::get('/accreditation','AboutController@showAccreditation')->name('accreditation');
-
-Route::get('/iso-9001-2015', 'AboutController@showFirstIso')->name('first-iso');
-
-Route::get('/iso-21001-2018', 'AboutController@showSecondIso')->name('second-iso');
-
-Route::get('/iso-27001-2022', 'AboutController@showThirdIso')->name('third-iso');
-
-Route::get('/florida-department-of-education', 'AboutController@showFloridaDepartment')->name('florida-department');
-
-Route::get('/college-board', 'AboutController@showCollegeBoard')->name('college-board');
-
-Route::get('/united-nations', 'AboutController@showUNpage')->name('united-nations');
-
-Route::get('/american-college-test', 'AboutController@showACTpage')->name('american-college-test');
-
-Route::get('/blog','MainController@showBlog')->name('blog');
-
-Route::get('/blog/{slug}','MainController@showSingleBlog')->name('single-article');
-
-Route::get('/faq','FooterController@showFaq')->name('faq');
-
-Route::get('/faq/{category}','FooterController@getSingleFaqCategory')->name('single-faq-category');
-
-Route::get('/students-in-spotlight','AboutController@showStudentsInSpotlight')->name('students-in-spotlight');
-
-Route::get('/feature/{slug}','MainController@feature')->name('single-feature');
-
-Route::get('/code-of-ethics','FooterController@showCodeOfEtics')->name('code-of-ethics');
-
-Route::get('/freshman-kit','FooterController@starterKit')->name('starter-kit');
-
-Route::get('/newsletter','MainController@showNewsletter')->name('newsletter');
-
-Route::get('/facts-hub','MainController@showFactsHub')->name('facts-hub');
-
-Route::get('/facts-hub/{slug}','MainController@showSingleFactsHub')->name('single-facts-hub');
-
-Route::get('/press-release','MainController@showPressRelease')->name('press-release');
-
-Route::get('/press-release/{slug}','MainController@showSinglePressRelease')->name('single-press-release');
-
-Route::get('/accessibility','FooterController@accessibility')->name('accessibility');
-
-Route::get('/leadership','AboutController@showLeadership')->name('leadership');
-
-Route::get('/partnership','AboutController@showPartnership')->name('partnership');
-
-Route::get('/highschool-programs','AcademicsController@highSchoolPrograms')->name('highschool-programs');
-
-Route::get('/graduation-requirements','AcademicsController@graduationRequirements')->name('graduation-requirements');
-
-Route::get('/credit-recovery','AcademicsController@creditRecovery')->name('credit-recovery');
-
-Route::get('/credit-transfer','AcademicsController@creditTransfer')->name('credit-transfer');
-
-Route::get('/awards','AcademicsController@awards')->name('awards');
-
-Route::get('/international-students','AcademicsController@internationalStudents')->name('international-students');
-
-Route::get('/standard-high-school','CurriculumController@standardHighSchool')->name('standard-high-school');
-
-Route::get('/transfer-program','CurriculumController@transferProgram')->name('transfer-program');
-
-Route::get('/transfer-program/{slug}','CurriculumController@showSingleTransferProgramCourse')->name('single-tranfer-program-course');
-
-Route::get('/honors-high-school','CurriculumController@honorsHighSchool')->name('honors-high-school');
-
-Route::get('/advanced-placement','CurriculumController@advancedPlacement')->name('advanced-placement');
-
-Route::get('/advanced-placement/{slug}','CurriculumController@showSingleApCourse')->name('single-ap-course');
-
-Route::get('/psat','CurriculumController@psat')->name('psat');
-
-Route::get('/act','CurriculumController@act')->name('act');
-
-Route::get('/cte','CurriculumController@cte')->name('cte');
-
-Route::get('/clep','CurriculumController@clep')->name('clep');
-
-Route::get('/clep/{slug}','CurriculumController@showSingleClepCourse')->name('single-clep-course');
-
-Route::get('/esol','CurriculumController@esol')->name('esol'); #a.k.a english courses
-
-Route::get('/learning-mentoring','CurriculumController@learningMentoring')->name('learning-mentoring');
-
-Route::get('/admission-process','AdmissionController@admissionProcess')->name('admission-process');
-
-Route::get('/enrollment-criteria','AdmissionController@enrolmentCriteria')->name('enrollment-criteria');
-
-Route::get('/enrollment-options','AdmissionController@enrolmentOptions')->name('enrollment-options');
-
-Route::get('/tuition','AdmissionController@tuition')->name('tuition');
-
-Route::get('/tuition-assistance','AdmissionController@tuitionAssistance')->name('tuition-assistance');
-
-Route::get('/apply','AdmissionController@apply')->name('apply');
-
-Route::get('/ambassador-program','AdmissionController@ambassadorProgram')->name('ambassador-program');
-
-Route::get('/terms-and-conditions', 'FooterController@terms')->name('terms-and-conditions');
 
 Route::post('/parent/reupload/document/{student_id}','ParentController@reuploadDocuments')->name('parent.reupload.document');
 
@@ -303,7 +309,7 @@ Route::get('/update-questions','CronjobController@updateStudyMentorQuestions')->
 Route::get('/sessions-reminder','CronjobController@sessionsReminder')->name('session-reminder');
 
 #sitemaps
-Route::get('/sitemap','SitemapController@showSitemapHTML')->name('sitemap');
+
 Route::get('/sitemap.xml','SitemapController@sitemap')->name('sitemap-xml');
 
 #resetPassword
@@ -322,35 +328,11 @@ Route::middleware('auth')->group(function () {
 	Route::get('/get-unread-count', 'Controller@ajaxUnreadCount')->name('get-unread-count');
 });
 		
-// Route::post('/get-selected-program', 'MainController@getSelectedProgram')->name('get-selected-program');
-
-// Route::post('/use-redeem-code', 'MainController@useRedeemCode')->name('use-redeem-code');
-	
-// Route::post('/apply-now/{conference_id}','MainController@postApplyNow')->name('apply-now');
-
-// Route::post('/receive-application', 'MainController@receiveApplication')->name('receive-application');
-
 Route::post('/logout','MainController@logout')->name('logout');
 
 Route::post('/accept-cookies','MainController@acceptCookies');
 
 Route::post('/custom-cookies','MainController@customCookies');
-
-// #single program contact form (modal when you click learn more)
-// Route::post('/request-information', 'ContactController@sendRequestForProgram')->name('request-information');
-
-// #phone modal on bottom right icon
-// Route::post('/phone-contact','ContactController@sendPhoneContact')->name('phone-contact');
-
-// #home page contact form
-// Route::post('/contact','ContactController@sendContact')->name('contact');
-
-// #assitent page request
-// Route::post('/general-request','ContactController@generalRequest')->name('general-request');
-
-// Route::post('/get-programs','MainController@getPrograms')->name('get-programs');
-
-// Route::post('/get-payments-options','MainController@getPaymentOption')->name('get-payments-options');
 
 Route::post('/subscribe','MainController@subscribe')->name('subscribe');
 
@@ -360,8 +342,6 @@ Route::get('/verify/mail/{confcode}', 'MainController@verifyAccount')->name('ver
 Route::get('/verify/mail/resend/{confcode}', 'MainController@resendVerificationLink')->name('verify.mail.resend');
 
 Route::post('/get-courses','AdminController@getCourses')->name('get-courses');
-
-#Both -> admin and educator
 
 Route::post('/delete-exam/{exam_id}','AdminController@deleteExam')->name('delete-exam');
 

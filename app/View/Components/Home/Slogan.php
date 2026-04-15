@@ -4,11 +4,14 @@ namespace App\View\Components\Home;
 
 use Illuminate\View\Component;
 use App\Program;
-
+use Illuminate\Http\Request;
+ 
 class Slogan extends Component
 {
-    public function __construct()
+    public $texts;
+    public function __construct(Request $request)
     {
+        $this->texts = $request->all()['texts'];       
     }
 
     /**

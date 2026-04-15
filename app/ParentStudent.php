@@ -20,6 +20,7 @@ class ParentStudent extends Model
     const PAID_APPLICATION_FEE = 1;
     const DOCUMENTS_APPROVED = 2;
     const ACTIVE = 3;
+    const GRADUATED = 4;
 
     public function status_name(){
         $status_name = '';

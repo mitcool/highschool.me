@@ -11,23 +11,22 @@ class StudentCreated extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $student;
+    public $password;
+    public $parent;
+    public function __construct($parent,$student,$password)
     {
-        //
+        $this->parent = $parent;
+        $this->student = $student;
+        $this->password = $password;
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
-        return $this->view('email.student-created');
+        return $this->view('email.student-created')
+            ->with('password',$this->password)
+            ->with('student',$this->student)
+            ->with('parent',$this->parent)
+            ->subject($this->student->name.' Is All Set — Here Are Their Login Details');
     }
 }

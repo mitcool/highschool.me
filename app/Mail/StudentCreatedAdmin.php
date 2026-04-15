@@ -11,23 +11,18 @@ class StudentCreatedAdmin extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $parent;
+    public $student;
+    public function __construct($parent,$student)
     {
-        //
+        $this->parent = $parent;
+        $this->student = $student;
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
-        return $this->view('email.student-created-admin');
+        return $this->view('email.student-created-admin')
+            ->with('parent',$this->parent)
+            ->subject('Documents Submitted — '.$this->student->fullname().' — Review Required');
     }
 }

@@ -92,20 +92,26 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear {{ $parent->fullname() }},
+                                                        Dear {{ $parent->name }},
                                                     </h1>
-                                                  
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        <span style="{{$style['bold']}}"> {{ $enrolled_course->student->fullname() }} can start study"{{ $enrolled_course->course->course->title }}". Please click button "Ready for exam" when he is ready for it.
-                                                        <br/>
-                                                    </p>
+                                                 
+                                                     <p style="{{ $style['paragraph-black'] }}">We are pleased to let you know that course materials for {{$enrolled_course->course->course->title}} are now fully available and {{$enrolled_course->student->name}} can begin studying today. This is a moment worth recognizing — the learning journey is officially underway.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">Encourage {{$enrolled_course->student->name}} to log in to the student portal, start with the course introduction, and take a look at the recommended study schedule for the first week. A strong start makes a significant difference, and the structure is designed to help them build momentum from day one.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">{{$enrolled_course->student->name}}'s AI-StudyMentor is active and available 24/7 for subject-specific support whenever they need it. Live sessions with an educator can also be arranged through the portal if more focused help is needed at any point.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">You can monitor {{$enrolled_course->student->name}}'s progress, activity, and upcoming milestones from the parent portal at any time. Staying informed is simple — everything is in one place.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">→ Go to Parent Portal: <a href="{{ route('login') }}">{{route('login')}}</a></p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">We are genuinely excited for this chapter to begin. Thank you for entrusting ONSITES High School with {{$enrolled_course->student->name}}'s education.</p>
                                                     
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
+                                                        Kind regards,<br>ONSITES High School
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
-                                                </td>
+                                                  </td>
                                             </tr>
                                         </table>
                                     </td>

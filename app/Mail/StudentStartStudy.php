@@ -19,6 +19,7 @@ class StudentStartStudy extends Mailable
     public function build()
     {
         return $this->view('email.student-start-study')
-            ->with('enrolled_course',$this->enrolled_course);
+            ->with('enrolled_course',$this->enrolled_course)
+            ->subject('Your '.$this->enrolled_course->course->course->title.' Materials Are Ready — Let\'s Go');
     }
 }

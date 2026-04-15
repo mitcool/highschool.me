@@ -1,7 +1,16 @@
 @extends('template')
 
-@section('headCSS')
+@section('seo')
+	<title>{{trans('faq.meta-title')}}</title>
+	<meta itemprop="description" name="description" content="{{ trans('faq.meta-description') }}" />
+	<meta itemprop="title" property="og:title" content="{{trans('faq.meta-title')}}"/>
+	<meta property="og:type" content="website"/>
+	<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/faq"/>
+	<meta property="og:description" content="{{ trans('faq.meta-description') }}"/>
+	<x-meta-image itemprop="image" nickname="faqs"/>
+@endsection
 
+@section('headCSS')
 <style type="text/css">
 	.faq-heading{
 		background-color: #EE6123 !important;
@@ -26,15 +35,7 @@
 </style>
 @endsection
 
-@section('seo')
-	<title>{{trans('faq.meta-title')}}</title>
-	<meta itemprop="description" name="description" content="{{ trans('faq.meta-description') }}" />
-	<meta itemprop="title" property="og:title" content="{{trans('faq.meta-title')}}"/>
-	<meta property="og:type" content="website"/>
-	<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/faq"/>
-	<meta property="og:description" content="{{ trans('faq.meta-description') }}"/>
-	<x-meta-image itemprop="image" nickname="faqs"/>
-@endsection
+
 
 
 

@@ -94,18 +94,21 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                                     <h1 style="{{ $style['header-1'] }}">
                                                         Dear admin,
                                                     </h1>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        We would like to inform you that the student <strong> {{ $exam->student->fullname() }} {{ $exam->course->course->title }}</strong> has successfully submitted the exam for the subject. The submission has been received and will be reviewed as part of the evaluation process.
+                                                    <p style="{{ $style['paragraph-black'] }}">{{$exam->student->fullname()}} has completed and submitted the exam for {{$exam->course->course->title}}. The submission is now in the system and ready to be assigned for grading.</p>
 
-                                                        <br/>
+                                                    <p style="{{ $style['paragraph-black'] }}">    Please log in to the admin panel to ensure the exam is directed to the correct board of examiners and that the grading process begins promptly. Students and families are notified as soon as results are published, and timely grading is greatly appreciated — it reduces uncertainty and allows the student to move forward with their studies.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">    If there are any notes or flags associated with this submission that need to be reviewed before grading begins, please handle them through the admin panel accordingly.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">   → Grade Exam: <a href="{{ route('login') }}">{{ route('login') }}</a></p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">    Thank you for keeping the grading process running on schedule.
                                                     </p>
                                            
                                                     
-                                                    <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
+                                                        Kind regards,<br>ONSITES High School
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
                                                 </td>
                                             </tr>
                                         </table>

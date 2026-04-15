@@ -4,7 +4,7 @@
 
 
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
-    <h2 class="text-center">Coaching Session for Students</h2>
+    <h2 class="text-center page-headings">Coaching Session for Students</h2>
     <table class="table">
         <tr>
             <th>Date</th>

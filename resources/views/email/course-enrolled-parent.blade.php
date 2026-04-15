@@ -92,18 +92,25 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear {{ $parent->fullname() }},
+                                                        Dear {{ $parent->name }},
                                                     </h1>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        {{ $student->fullname() }} is successfully enrolled to course "{{ $course->course->title }}". Please click "Start study" button when the student is ready to begin his studying process.
-                                                        <br/>
-                                                    </p>
                                                     
+                                                    <p style="{{ $style['paragraph-black'] }}">We are delighted to let you know that {{$student->name}} has been successfully enrolled in {{$course->course->title}}. This is a meaningful step forward, and we are genuinely excited to have {{$student->name}} begin this course.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">Course materials and resources will be made available once the setup process is complete. You will receive a separate notification as soon as {{$student->name}} is cleared to start studying — we want to make sure everything is properly in place before they begin.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">In the meantime, you can monitor the enrollment status and review any upcoming activity through the parent portal. We believe in keeping families fully informed throughout the academic process, and the portal is designed to give you real-time visibility at all times.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">If you have any questions about the course, the learning structure, or what to expect in the coming days, our Help Desk team is ready to assist you.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">→ Go to Parent Portal: <a href="{{ route('login') }}">{{ route('login') }}</a></p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">We look forward to supporting {{$student->name}} through {{$course->course->title}} and beyond.</p>
+
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
+                                                        Kind regards,<br>ONSITES High School
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
                                                 </td>
                                             </tr>
                                         </table>

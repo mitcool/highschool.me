@@ -92,22 +92,29 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear {{ $parent->fullname() }},
+                                                        Dear {{ $parent->name }},
                                                     </h1>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        We would like to inform you that the student <strong> {{ $exam->student->fullname() }} </strong>  have results on exam for <strong> {{ $exam->course->course->title }}</strong>.
-                                                        <br/>
-                                                    </p>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        <strong>Grade:</strong> {{ $exam->grade() }}
-                                                        <br/>
-                                                    </p>
                                                     
+
+                                                    <p style="{{ $style['paragraph-black'] }}">The results for {{$exam->student->name}}'s {{$exam->course->course->title}} exam have been finalized and are now available in the parent portal.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">Grade: {{$exam->grade}}</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">We encourage you to log in and review the full results, which include a detailed performance breakdown and written feedback from the board of examiners. This feedback is an important part of the learning process — it is designed to highlight strengths, identify areas for growth, and help guide the next steps in {{student_first_name}}'s academic journey.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">We recommend taking some time to go through the results together with {{$exam->student->name}}. Understanding the feedback and discussing what it means for the road ahead is one of the most valuable things you can do at this stage.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">→ View Results: <a href="{{route('login')}}">{{route('login')}}</a></p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">If you have any questions about the results or would like to discuss {{$exam->student->name}}'s progress with our team, please reach out through the parent portal at any time. We are always here to help.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">Kind regards,</p>
+                                                    <p style="{{ $style['paragraph-black'] }}">ONSITES High School</p>
+
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
+                                                        Kind regards,<br>ONSITES High School
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
                                                 </td>
                                             </tr>
                                         </table>

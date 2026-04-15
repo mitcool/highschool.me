@@ -92,22 +92,23 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear {{ $exam->student->fullname() }},
+                                                        Dear {{ $exam->student->name }},
                                                     </h1>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        We would like to inform you that you have a date for an exam for <strong>{{ $exam->course->course->title }}</strong>
-                                                        The exam will take place on {{ $exam->datetime->format('d.m.Y H:i') }} (UTC)
-                                                            
-                                                    </p>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        If you have any questions or need additional information, please feel free to contact us.
-                                                    </p>
-                                                    
+                                                   
+                                                    <p style="{{ $style['paragraph-black'] }}">This is a friendly reminder that your  exam for {{ $exam->course->course->title }}is scheduled for {{$exam->datetime->format('d.m.Y')}} at {{$exam->datetime->format('H:i')}}(UTC). The date is approaching and we want to make sure you are fully prepared and have everything in order well in advance.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">In the days leading up to the exam, we encourage you to review your course materials, revisit any areas where you felt less confident, and use your AI-StudyMentor if you need to clarify anything at the last minute. Getting a solid night of rest before the session also makes a real difference — do not underestimate it.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">On the day of the exam, make sure you have a stable internet connection, a quiet and comfortable environment, and that you have logged in to the student portal to review any specific instructions posted by your educator before the session begins.</p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">→ Go to Student Portal: <a href="{{ route('login') }}">{{ route('login') }}</a></p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">You have done the preparation. The work is in. Now it is time to show what you know — approach this with focus, calm, and confidence. We are rooting for you.</p>
+
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
+                                                        Kind regards,<br>ONSITES High School
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
                                                 </td>
                                             </tr>
                                         </table>

@@ -13,7 +13,7 @@
 @section('content')
 <div class="container py-4">
     <div class="text-center mb-4 mt-4">
-        <h2>Edit Reward</h2>
+        <h2 class="page-headings">Edit Reward</h2>
     </div>
 
     <div class="card form-card">

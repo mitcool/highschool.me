@@ -92,22 +92,25 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear {{ $exam->student->fullname() }},
+                                                        Dear {{ $exam->student->name }},
                                                     </h1>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        We would like to inform you that your exam for <strong>{{ $exam->course->course->title }}</strong>
-                                                         on {{ $exam->datetime->format('d.m.Y H:i') }} (UTC) has been cancelled
-                                                            
-                                                    </p>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        If you have any questions or need additional information, please feel free to contact us.
-                                                    </p>
+                                                    <p style="{{ $style['paragraph-black'] }}">We want to make sure you are informed right away: the {{$exam->course->course->title}} exam that was previously scheduled for {{$exam->datetime->format('d.m.Y H:i')}} has been removed from your calendar. A new exam date is being arranged and you will receive a notification with the confirmed details as soon as it is ready.
+
+                                                    <p style="{{ $style['paragraph-black'] }}">This change was made on the administrative side and does not reflect anything about your preparation or your readiness. Please do not let this interruption affect your momentum — continue with your course materials and stay prepared.
+
+                                                    <p style="{{ $style['paragraph-black'] }}">No action is required from you at this time. You can check the student portal for updates, and our team will move as quickly as possible to confirm the new date.
+
+                                                    <p style="{{ $style['paragraph-black'] }}">→ Go to Student Portal: <a href="{{ route('login') }}">{{ route('login') }}</a></p>
+
+                                                    <p style="{{ $style['paragraph-black'] }}">We understand that schedule changes can be frustrating, and we appreciate your patience. Our goal is always to minimize disruption and confirm a new date without delay.
+
+                                                    <p style="{{ $style['paragraph-black'] }}">If you have any questions or concerns in the meantime, please reach out through the Help Desk — we are happy to help.
+
                                                     
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
+                                                        Kind regards,<br>ONSITES High School
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
                                                 </td>
                                             </tr>
                                         </table>

@@ -1,16 +1,12 @@
 @extends('template')
 
 @section('seo')
-	<title>{{ trans('study-registration.meta-title') }}</title>
-	<meta itemprop="description" name="description" content="{{ trans('study-registration.meta-description')}}" />
-	<meta itemprop="title" property="og:title" content="{{ trans('study-registration.meta-title') }}"/>
+	<title>{{ $texts['meta-title'] }}</title>
+	<meta itemprop="description" name="description" content="{{ $texts['meta-description'] }}" />
+	<meta itemprop="title" property="og:title" content="{{ $texts['meta-title'] }}"/>
 	<meta property="og:type" content="website"/>
-	@if(Session::get('applocale') == 'de')
-		<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/de/bewerbung-studium"/>
-	@else
-		<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/en/student-portal"/>
-	@endif
-	<meta property="og:description" content="{{ trans('study-registration.meta-description')}}"/>
+	<meta itemprop="url" property="og:url" content="{{ route('awards') }}"/>
+	<meta property="og:description" content="{{ $texts['meta-description'] }}"/>
 	<x-meta-image itemprop="image" nickname="study_registration"/>
 @endsection
 
@@ -44,33 +40,31 @@
 @endsection
 @section('content')
 
-<div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
+<div aria-label="breadcrumb" class="col-md-9 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">Awards</li>
+		<li class="breadcrumb-item active" aria-current="page">{{ $texts['breadcrumb'] }}</li>
 	</ol>
 </div>
 <img src="{{ asset('images/go.png') }}" alt="" class="w-100">	
 <div class="container-fluid bg-white main_page_container">	
 		<div class="row justify-content-center" >		
-			<div class="col-lg-8 shadow text-center p-4 bg-white" style="margin: 20px auto;">
-				<h1 class="page-headings">Awards</h1>
-				<div class="page-content">Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Studieren und Promovieren sind nicht nur akademische </div>
+			<div class="col-lg-9 shadow text-center p-4 bg-white" style="margin: 20px auto;">
+				<h1 class="page-headings">{{ $texts['heading'] }}</h1>
+				<div class="page-content">{!! $texts['intro'] !!}</div>
 				<hr>
 				<div class="row p-2">
 					<div class="col-md-3">
 						<img src="{{ asset('images/award-1.png') }}" alt="" class="w-100">
 					</div>
-					<div class="col-md-9">
-						<h3 class="font-weight-bold text-left">President's Award for Educational Excellence</h3>
-						<div class="page-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse a repudiandae soluta molestiae dicta harum deleniti in laboriosam ipsum, quaerat alias ipsam eos facilis consequuntur ad. Nulla, eligendi tempora! Praesentium modi in maxime. Esse, labore vitae. Nesciunt ratione rerum labore dignissimos facilis necessitatibus minima omnis consectetur, nostrum delectus eum?	</div>
+					<div class="col-md-9 page-content">
+						{!! $texts['first-award'] !!}
 					</div>
 				</div>
 				<hr>
 				<div class="row p-2 reverse">
-					<div class="col-md-9">
-						<h3 class="font-weight-bold text-left">President's Award for Educational Achievement</h3>
-						<div class="page-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse a repudiandae soluta molestiae dicta harum deleniti in laboriosam ipsum, quaerat alias ipsam eos facilis consequuntur ad. Nulla, eligendi tempora! Praesentium modi in maxime. Esse, labore vitae. Nesciunt ratione rerum labore dignissimos facilis necessitatibus minima omnis consectetur, nostrum delectus eum?	</div>
+					<div class="col-md-9 page-content">
+						{!! $texts['second-award'] !!}
 					</div>
 					<div class="col-md-3">
 						<img src="{{ asset('images/award-2.png') }}" alt="" class="w-100">
@@ -81,9 +75,8 @@
 					<div class="col-md-3">
 						<img src="{{ asset('images/award-3.png') }}" alt="" class="w-100">
 					</div>
-					<div class="col-md-9">
-						<h3 class="font-weight-bold text-left">American Citizenship Award</h3>
-						<div class="page-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse a repudiandae soluta molestiae dicta harum deleniti in laboriosam ipsum, quaerat alias ipsam eos facilis consequuntur ad. Nulla, eligendi tempora! Praesentium modi in maxime. Esse, labore vitae. Nesciunt ratione rerum labore dignissimos facilis necessitatibus minima omnis consectetur, nostrum delectus eum?	</div>
+					<div class="col-md-9 page-content">
+							{!! $texts['third-award'] !!}
 					</div>
 				</div>
 			</div>

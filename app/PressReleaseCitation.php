@@ -11,6 +11,6 @@ class PressReleaseCitation extends Model
     use HasFactory;
 
    protected $casts = [
-    'date'  => 'datetime',
+        'date'  => 'datetime',
     ];
 }

@@ -106,14 +106,18 @@ class MainController extends Controller
   }
   
   public function showWelcome(Request $request) {
-    return view('pages.welcome');
+    $texts = $request->all()['texts'];
+    return view('pages.welcome')
+      ->with('texts',$texts);
   }
 
-  public function earlyRegistration(){
+  public function earlyRegistration(Request $request){
+    $texts = $request->all()['texts'];
     $country = Country::all();
     $restricted_countries = $country ->where('is_restricted',1);
     $allowed_countries = $country ->where('is_restricted',0);
     return view('pages.about.early-registration')
+      ->with('texts',$texts)
       ->with('restricted_countries',$restricted_countries)
       ->with('allowed_countries',$allowed_countries);
   }
@@ -269,13 +273,10 @@ class MainController extends Controller
         ->with('news',$news);
   }
   public function showSinglePressRelease($slug){
-     $news = PressReleaseTranslation::where('slug',$slug)->first() ?? abort(404);
      
-    $article = PressRelease::with('sections')->find($news->news_id);
+    $article = PressRelease::with('sections')->where('slug',$slug)->first() ?? abort(404);
 
-    $hreflang_en = PressReleaseTranslation::where('locale','en')->where('news_id',$article->id)->first()->slug;
-    $hreflang_de = PressReleaseTranslation::where('locale','de')->where('news_id',$article->id)->first()->slug;
-    
+      
     $last_three_articles = PressRelease::where('id','!=',$article->id)
                         ->orderBy('id','desc')
                         ->get()
@@ -283,7 +284,7 @@ class MainController extends Controller
  
     $next =  PressRelease::where('id','>',$article->id)->with('sections')->first() ?? PressRelease::first();
     $prev =  PressRelease::where('id','<',$article->id)->with('sections')->first() ?? PressRelease::orderBy('id','desc')->first();
-    return view('pages.press-release.single',compact('news','article','prev','next','hreflang_en','hreflang_de','last_three_articles'));
+    return view('pages.press-release.single',compact('article','prev','next','last_three_articles'));
   }
  
   public function contact(){

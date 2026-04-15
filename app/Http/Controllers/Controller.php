@@ -248,4 +248,8 @@ class Controller extends BaseController
        
     }
 }
+
+    public function paymentFailed($session_id){
+        dd($session_id);
+    }
 }

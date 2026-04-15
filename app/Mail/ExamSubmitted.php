@@ -23,6 +23,7 @@ class ExamSubmitted extends Mailable
     {
         return $this->view('email.exam-submitted')
             ->with('parent',$this->parent)
-            ->with('exam',$this->exam);
+            ->with('exam',$this->exam)
+            ->with($this->student->name.' Has Submitted Their '.$exam->course->course->title.' Exam — Well Done');
     }
 }

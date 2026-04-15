@@ -7,69 +7,63 @@
         
        <li class="nav-item dropdown">
         <div class="nav-link dropdown-toggle font-weight-bold header-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; text-align: center;">
-          ABOUT
+          {{ $texts['about'] }}
         </div>
          <ul class="dropdown-menu p-0 mt-0">
-            <li><a class="dropdown-item" href="{{ route('school-overview')}}">School Overview</a></li>
-            <li><a class="dropdown-item" href="{{ route('mission-statement') }}">Mission Statement</a></li>
-            <li><a class="dropdown-item" href="{{ route('accreditation') }}">Recognition & Quality Standards</a></li>
-            <li><a class="dropdown-item" href="{{ route('leadership') }}">Leadership</a></li>
-            <li><a class="dropdown-item" href="{{ route('academics') }}">Faculty & Educators</a></li>
-            <li><a class="dropdown-item" href="{{ route('students-in-spotlight') }}">Students in Spotlight</a></li>
-            <li><a class="dropdown-item" href="{{ route('partnership') }}">Partners & Providers</a></li>
+            <li><a class="dropdown-item" href="{{ route('school-overview')}}">{{ $texts['school-overview'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('mission-statement') }}">{{ $texts['mission-statement'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('accreditation') }}">{{ $texts['accreditation'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('leadership') }}">{{ $texts['leadership'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('academics') }}">{{ $texts['academics'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('students-in-spotlight') }}">{{ $texts['students-in-spotlight'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('partnership') }}">{{ $texts['partnership'] }}</a></li>
          </ul>
       </li>
       <li class="nav-item dropdown">
         <div class="nav-link dropdown-toggle font-weight-bold header-link"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; text-align: center;">
-          ACADEMICS
+          {{ $texts['academics-point'] }}
         </div>
          <ul class="dropdown-menu p-0 mt-0">
-            <li><a class="dropdown-item" href="{{ route('highschool-programs') }}">High School Diploma Tracks</a></li>
-            <li><a class="dropdown-item" href="{{ route('graduation-requirements') }}"> Graduation Requirements </a></li>
-            <li><a class="dropdown-item" href="{{ route('credit-recovery') }}"> Credit Recovery</a></li> 
-            <li><a class="dropdown-item" href="{{ route('credit-transfer') }}"> Credit Transfer</a></li> 
-            <li><a class="dropdown-item" href="{{ route('awards') }}"> Awards</a></li> 
-            <li><a class="dropdown-item" href="{{ route('international-students') }}"> International Students</a></li>
-            <li><a class="dropdown-item" href="{{ route('starter-kit') }}">Freshman Kit</a>
+            <li><a class="dropdown-item" href="{{ route('highschool-programs') }}">{{ $texts['highschool-programs'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('graduation-requirements') }}">{{ $texts['graduation-requirements'] }}  </a></li>
+            <li><a class="dropdown-item" href="{{ route('credit-recovery') }}"> {{ $texts['credit-recovery'] }}</a></li> 
+            <li><a class="dropdown-item" href="{{ route('credit-transfer') }}">{{ $texts['credit-transfer'] }} </a></li> 
+            <li><a class="dropdown-item" href="{{ route('awards') }}">{{ $texts['awards'] }}</a></li> 
+            <li><a class="dropdown-item" href="{{ route('international-students') }}"> {{ $texts['international-students'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('starter-kit') }}">{{ $texts['starter-kit'] }}</a>
          </ul>
       </li>
         <li class="nav-item dropdown">
         <div class="nav-link dropdown-toggle font-weight-bold header-link"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; text-align: center;">
-          CURRICULUM
+          {{ $texts['curriculum'] }}
         </div>
          <ul class="dropdown-menu p-0 mt-0">
-            <li><a class="dropdown-item" href="{{ route('standard-high-school') }}">High School Programs</a></li>
-            <li><a class="dropdown-item" href="{{ route('transfer-program') }}">High School International Transfer Program</a></li>
-            <li><a class="dropdown-item" href="{{ route('honors-high-school') }}">Module & Honors Courses</a></li>
-            <li><a class="dropdown-item" href="{{ route('psat') }}">PSAT/SAT Prep-Courses</a></li>
-            <li><a class="dropdown-item" href="{{ route('act') }}">PreACT/ACT Prep-Courses</a></li>
-            <li><a class="dropdown-item" href="{{ route('advanced-placement') }}">Advanced Placement Courses</a></li>
-            <li><a class="dropdown-item" href="{{ route('cte') }}">CTE Prep-Courses</a></li> 
-            <li><a class="dropdown-item" href="{{ route('clep') }}">CLEP Prep-Courses</a></li>
-            <li><a class="dropdown-item" href="{{ route('esol') }}">English Courses (ESOL)</a></li>
-            <li><a class="dropdown-item" href="{{ route('learning-mentoring') }}">Live Sessions & Coaching</a></li> 
+            <li><a class="dropdown-item" href="{{ route('standard-high-school') }}">{{ $texts['standard-high-school'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('transfer-program') }}">{{ $texts['transfer-program'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('honors-high-school') }}">{{ $texts['honors-high-school'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('psat') }}">{{ $texts['psat'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('act') }}">{{ $texts['act'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('advanced-placement') }}">{{ $texts['advanced-placement'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('cte') }}">{{ $texts['cte'] }}</a></li> 
+            <li><a class="dropdown-item" href="{{ route('clep') }}">{{ $texts['clep'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('esol') }}">{{ $texts['esol'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('learning-mentoring') }}">{{ $texts['learning-mentoring'] }}</a></li> 
          </ul>
       </li>
       <li class="nav-item dropdown">
         <div class="nav-link dropdown-toggle font-weight-bold header-link"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; text-align: center;">
-          ADMISSIONS
+          {{ $texts['admission'] }}
         </div>
          <ul class="dropdown-menu p-0 mt-0">
-            <li><a class="dropdown-item" href="{{ route('admission-process') }}">Admission process</a></li>
-            <li><a class="dropdown-item" href="{{ route('enrollment-criteria') }}">Enrollment criteria</a></li>
-            <li><a class="dropdown-item" href="{{ route('enrollment-options') }}">Enrollment options</a></li>
-            <li><a class="dropdown-item" href="{{ route('tuition') }}">Tuition</a></li>
-            <li><a class="dropdown-item" href="{{ route('tuition-assistance') }}">Tuition Assistance (PEP)</a></li>
-            {{-- <li><a class="dropdown-item" href="{{ route('apply') }}">Apply</a></li> --}}
-            <li><a class="dropdown-item" href="{{ route('ambassador-program') }}">Ambassador Program</a></li> 
-            {{-- <li><a class="dropdown-item" href="{{ route('iso') }}">ISO Certification</a></li>  --}}
+            <li><a class="dropdown-item" href="{{ route('admission-process') }}">{{ $texts['admission-process'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('enrollment-criteria') }}">{{ $texts['enrollment-criteria'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('enrollment-options') }}">{{ $texts['enrollment-options'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('tuition') }}">{{ $texts['tuition'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('tuition-assistance') }}">{{ $texts['tuition-assistance'] }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('ambassador-program') }}">{{ $texts['ambassador-program'] }}</a></li> 
          </ul>
       </li>
-      {{-- <li>
-        <a class="font-weight-bold buttonKit" href="{{ route('promotion') }}" style="padding:8px;text-decoration:none;display: inline-flex;text-align: center;">
-          {{trans('nav.kit-button')}}
-        </a>
-      </li>  --}}
+   
     </ul>
     
   </div>

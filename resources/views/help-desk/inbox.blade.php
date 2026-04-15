@@ -3,14 +3,16 @@
 @section('content')
 
 <div class=" container wrapper shadow h-100"> 
-     <div class="text-left mb-3"> 
-        <a href="{{ route('new-help-desk') }}" class=" orange-button mb-3">New Message</a>
+     <div class="text-left mb-3">
+        @if(auth()->user()->role_id != 1)
+            <a href="{{ route('new-help-desk') }}" class=" orange-button mb-3">New Message</a>
+        @endif
     </div>
     <table class="table">
         <thead>
             <tr style="background: #045397;color:white;border-top-right-radius:15px;">
                 <th style="border-top-left-radius:10px;">Inbox</th>
-                <th>Sent</th>
+                <th></th>
                 <th></th>
                 <th style="border-top-right-radius:10px;"></th>
             </tr>

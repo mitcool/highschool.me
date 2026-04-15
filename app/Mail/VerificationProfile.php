@@ -22,7 +22,7 @@ class VerificationProfile extends Mailable
 
     public function build()
     {
-        $subject = 'Verify your account' ;
+        $subject = 'Welcome to ONSITES High School — Let\'s Get You Set Up' ;
         $confirmation_code = data_get($this->mailObject, 'confirmation_code');
         $verification_url = URL::temporarySignedRoute(
             'verify.mail',

@@ -1,51 +1,26 @@
 @extends('template')
 
 @section('seo')
-	<title>{{ trans('welcome.meta-title') }}</title>
-	<meta itemprop="description" name="description" content="{{ trans('welcome.meta-description') }}">
-
-	<meta itemprop="title" property="og:title" content="{{ trans('welcome.meta-title') }}"/>
+	<title>{{ $texts['meta-title'] }}</title>
+	<meta itemprop="description" name="description" content="{{ $texts['meta-description'] }}">
+	<meta itemprop="title" property="og:title" content="{{ $texts['meta-title'] }}"/>
 	<meta property="og:type" content="website"/>
-	@if(app()->currentLocale() == 'de')
-		<meta itemprop="url" property="og:url" content="https://graduate.me"/>
-	@else
-		<meta itemprop="url" property="og:url" content="https://graduate.me/en"/>
-	@endif
-	<meta property="og:description" content="{{ trans('welcome.meta-description') }}"/>
+	<meta itemprop="url" property="og:url" content="{{ route('welcome') }}"/>
+	<meta property="og:description" content="{{ $texts['meta-description'] }}"/>
 	<x-meta-image itemprop="image" nickname="main-image"/>
 
-	@if(app()->currentLocale() == 'en')
-		<script type="application/ld+json">
-	      {
-	        "@context": "https://schema.org",
-	        "@type": "Organization",
-	        "name": "ONSITES Graduate School",
-	        "url": "https://graduate.me/en",
-	        "logo": "https://graduate.me/public/images/logo.png",
-	        "sameAs": [
-	          
-	        ]
-	      }
-	  	</script>
-	@else
-		<script type="application/ld+json">
-	      {
-	        "@context": "https://schema.org",
-	        "@type": "Organization",
-	        "name": "ONSITES Graduate School",
-	        "url": "https://graduate.me",
-	        "logo": "https://graduate.me/public/images/logo.png",
-	        "sameAs": [
-	          
-	        ]
-	      }
-	  	</script>
-	@endif
-
-	<link rel="alternate" href="{{ config('app.url') }}/en" hreflang="en" />
-	<link rel="alternate" href="https://graduate.me" hreflang="de" />
-	<link rel="alternate" href="{{ config('app.url') }}/en" hreflang="x-default" />
-
+	<script type="application/ld+json">
+		{
+		"@context": "https://schema.org",
+		"@type": "Organization",
+		"name": "ONSITES Graduate School",
+		"url": "{{ route('welcome') }}",
+		"logo": "{{ asset('images/onsites-graduate-school-logo.png') }}",
+		"sameAs": [
+			
+		]
+		}
+	</script>
 @endsection
 
 

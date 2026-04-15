@@ -5,8 +5,8 @@
 <div class="shadow container wrapper">
     <div class="border" style="margin:50px 0;padding:20px;">
 
-        <h1 class="text-center">Add new image</h1>
-        <p class="text-danger">*Please add image only after consultation with Web Developer</p>
+        <h1 class="text-center page-headings">Add new image</h1>
+        <p class="text-danger text-center">*Please add image only after consultation with Web Developer</p>
         <hr>
         <form action="{{ route('add-image') }}" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
@@ -25,27 +25,26 @@
                     <input type="file" name="picture" required="required" >
                     <hr>
                 </div>
-                @foreach(Config('languages') as $lang => $language)
+              
                 <div class="col-md-6">
-                    <label class="m-0 font-weight-bold" for="">Alt ({{$lang }})</label>
-                    <input type="text" name="alt_{{ $lang }}" class="form-control" required/>
+                    <label class="m-0 font-weight-bold" for="">Alt</label>
+                    <input type="text" name="alt" class="form-control" required/>
                 </div>
                 <div class="col-md-6">
-                    <label class="m-0 font-weight-bold" for="">Title ({{ $lang }})</label>
-                    <input type="text" name="title_{{ $lang }}" class="form-control" required />
+                    <label class="m-0 font-weight-bold" for="">Title</label>
+                    <input type="text" name="title" class="form-control" required />
                 </div>
-                @endforeach
+                
             </div>
             <button class="btn my-2 btn-secondary">Add Image</button>
         </form>
         
     </div>
-    <h1 class="text-center">Existing images</h1>
-    <p class="text-danger">In case you want to change the image please fill the Image Name field and select file less than 300KB</p>
+    <h1 class="text-center page-headings">Existing images</h1>
+    <p class="text-danger text-center">In case you want to change the image please fill the Image Name field and select file less than 300KB</p>
     @foreach($images as $image)
-        <div class="shadow" style="margin:50px 0;padding:20px;">
-
-            <x-image-component nickname="{{ $image->nickname }}"  class="w-50 shadow"/>
+        <div class="border text-center" style="margin:50px auto;padding:20px;">
+            <x-image-component nickname="{{ $image->nickname }}"  class="w-25 shadow mx-auto"/>
             <h4 class="text-center">{{ $image->nickname }}</h4>
             <form action="{{ route('edit-image', $image->id) }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
@@ -59,25 +58,24 @@
                         <input type="file" name="picture"  >
                     </div>
     
-                    @foreach($image->attributes as $attribute)
                     <div class="col-md-6">
-                        <label class="m-0 font-weight-bold" for="">Alt ({{$attribute->locale }})</label>
-                        <input type="text" value="{{ $attribute->alt }}" name="alt_{{ $attribute->locale }}" class="form-control" required/>
+                        <label class="m-0 font-weight-bold" for="">Alt</label>
+                        <input type="text" value="{{ $image->alt }}" name="alt" class="form-control" required/>
                     </div>
                     <div class="col-md-6">
-                        <label class="m-0 font-weight-bold" for="">Title ({{ $attribute->locale }})</label>
-                        <input type="text" value="{{ $attribute->title }}" name="title_{{ $attribute->locale }}" class="form-control" required />
+                        <label class="m-0 font-weight-bold" for="">Title</label>
+                        <input type="text" value="{{ $image->title }}" name="title" class="form-control" required />
                     </div>
-                    @endforeach
+                 
                     <div class="col-md-12 text-center">
                         <button class="btn my-2 btn-secondary">Edit Image</button>
                     </div>
                 </div>
             </form>
-            
         </div>
-       
     @endforeach
+
+    <div class="d-flex justify-content-center">{{ $images->links() }}</div>
 </div>
 
 @endsection

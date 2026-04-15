@@ -120,22 +120,22 @@
 		    @endauth
 			@auth
 				@if(auth()->user()->role_id == 1)
-					<a class="btn mx-2 orange-button" href="{{ route('admin-dashboard') }}">DASHBOARD</a>
+					<a class="btn mx-2 orange-button" href="{{ route('admin-dashboard') }}">{{ $texts['dashboard'] }}</a>
 				@elseif(auth()->user()->role_id == 2)
-					<a class="btn mx-2 orange-button" href="{{ route('parent.dashboard') }}">DASHBOARD</a>
+					<a class="btn mx-2 orange-button" href="{{ route('parent.dashboard') }}">{{ $texts['dashboard'] }}</a>
 				@elseif(auth()->user()->role_id == 3)
-					<a class="btn mx-2 orange-button" href="{{ route('partner.dashboard') }}">DASHBOARD</a>
+					<a class="btn mx-2 orange-button" href="{{ route('partner.dashboard') }}">{{ $texts['dashboard'] }}</a>
 				@elseif(auth()->user()->role_id == 4)
-					<a class="btn mx-2 orange-button" href="{{ route('student.dashboard') }}">DASHBOARD</a>
+					<a class="btn mx-2 orange-button" href="{{ route('student.dashboard') }}">{{ $texts['dashboard'] }}</a>
 				@elseif(auth()->user()->role_id == 5)
-					<a class="btn mx-2 orange-button" href="{{ route('educator.dashboard') }}">DASHBOARD</a>
+					<a class="btn mx-2 orange-button" href="{{ route('educator.dashboard') }}">{{ $texts['dashboard'] }}</a>
 				@endif
 				
 			@else
-				<a class="btn mx-1 orange-button" href="{{route('register')}}">REGISTER</a>
-				<a class="btn mx-1 orange-button" href="{{route('login')}}">LOGIN</a>
+				<a class="btn mx-1 orange-button" href="{{route('register')}}">{{ $texts['register'] }}</a>
+				<a class="btn mx-1 orange-button" href="{{route('login')}}">{{ $texts['login'] }}</a>
 			@endauth
-			<a class="btn mx-1 contact_btn_header" style="background: #025297;color:white;" href="{{ route('student-advisory-service') }}">CONTACT</a>	
+			<a class="btn mx-1 contact_btn_header" style="background: #025297;color:white;" href="{{ route('student-advisory-service') }}">{{ $texts['contact'] }}</a>	
 		
 				
 		</div>

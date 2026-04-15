@@ -1,5 +1,13 @@
 @extends('template')
-
+@section('seo')
+	<title>{{ $texts['meta-title'] }}</title>
+	<meta itemprop="description" name="description" content="{{ $texts['meta-description']}}" />
+	<meta itemprop="title" property="og:title" content="{{ $texts['meta-title'] }}"/>
+	<meta property="og:type" content="website"/>
+	<meta itemprop="url" property="og:url" content="{{ route('international-students') }}"/>
+	<meta property="og:description" content="{{ $texts['meta-description']}}"/>
+	<x-meta-image itemprop="image" nickname="study_registration"/>
+@endsection
 @section('headCSS')
 <style>
     .h3.blue{
@@ -32,7 +40,7 @@
     <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
         <ol class="bg-white breadcrumb mb-0 p-0">
             <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Ambassador Program</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ $texts['breadcrumb'] }}</li>
         </ol>
     </div>
     
@@ -41,18 +49,13 @@
             <div class="text-center">
                 <img src="{{ asset('images/badge.png') }}" alt="" class="w-25">
             </div>
-             <h1 class="page-headings">Onsites High School Ambassador Program</h1>
-            <p>
-                The Onsites High School Ambassador Program is an initiative designed to engage students as representatives of the school community across social media platforms. The program encourages students to promote school events, achievements, and values through positive and creative online interactions. Ambassadors play a key role in strengthening the school’s online presence while developing valuable skills in communication, leadership, and digital engagement. In recognition of their participation, students earn points for various social media activities, which can later be redeemed for a range of rewards.
-            </p>
+             <h1 class="page-headings">{{ $texts['heading'] }}</h1>
+            {!! $texts['intro'] !!}
         </div>
     </div>
     <div class="container-fluid box" style="background-color:#F1F1F1">
         <div class="container">
-             <h3 class="page-headings h3 blue">How the Program Works</h3>
-             <p>
-                Participants earn points by completing approved social media activities that highlight and promote Onsites High School. Examples include following official school accounts, sharing or creating posts about school events, tagging the school in stories or videos, and participating in challenges or livestreams. Each platform—such as Facebook, Instagram, YouTube, TikTok, Twitter (X), and LinkedIn—offers different ways to contribute, with point values assigned based on the level of engagement and creativity involved. Higher-impact activities, such as hosting livestreams or creating original content, receive greater rewards.
-            </p>
+            {!! $texts['how-it-works'] !!}
             @foreach($ambassador_services as $service)
                 <div class="service-wrapper bg-white pl-3 pr-3">
                     <div class="d-flex justify-content-between" style="padding:10px 0;font-size:1.1rem;color:#045397;font-weight:bold">
@@ -75,27 +78,21 @@
     </div>
     <div class="container-fluid bg-white box">
         <div class="container">
-             <h3 class="page-headings h3 blue">Ambassador Status</h3>
-            <p>
-               To maintain active ambassador status, participants must remain engaged by posting or interacting at least once per month. Ambassadors who become inactive for over a month will lose any points accumulated to that point. Active ambassadors may continue to collect and redeem their points at any time. The children may share in all the the platforms that they are active ambassadors of the school.
-            </p>
+            {!! $texts['status'] !!}
         </div>
     </div>
       <div class="container-fluid box" style="background-color:#F1F1F1">
         <div class="container">
-             <h3 class="page-headings h3 blue">Rewards and Recognition</h3>
-             <p>
-                Points earned through participation can be exchanged for a variety of items. Students may also choose to redeem their points through bundle packages, which combine multiple items at different reward levels. These bundles are designed to offer flexibility and motivation for continued engagement, with options suited to various interests and achievement milestones.
-            </p>
+            {!! $texts['rewards'] !!}
             <div class="shadow bg-white p-3 reward-container">
                 <div class="d-flex justify-content-between" id="open-rewards" style="color:#14213D;font-weight:bold;color:#E9580C;padding:10px 0;">
-                    <div>Reward List</div> 
+                    <div>{{ $texts['reward-list'] }}</div> 
                     <div><i class="fas fa-chevron-up" id="icon" ></i></div>
                 </div> 
                 <div id="rewards">
                     <div class="d-flex justify-content-between" style="color:#14213D;font-weight:bold">
-                        <div>Reward</div> 
-                        <div>Points</div>
+                        <div>{{ $texts['reward'] }}</div> 
+                        <div>{{ $texts['points'] }}</div>
                     </div> 
                     <hr class="my-1">
                     @foreach($ambassador_rewards as $reward)
@@ -112,16 +109,7 @@
 
      <div class="container-fluid bg-white box">
         <div class="container">
-             <h3 class="page-headings h3 blue">Program Purpose and Benefits</h3>
-            <p>
-              The Ambassador Program serves multiple goals:
-              <ul>
-                <li>Enhancing school visibility and reputation through authentic student-led promotion.</li>
-                <li>Encouraging student involvement in school life and online community building.</li>
-                <li>Developing essential skills in communication, digital literacy, and leadership.</li>
-                <li>Rewarding creativity and initiative among students who represent Onsites High School.</li>
-              </ul> 
-            </p>
+             {!! $texts['purpose'] !!}
         </div>
     </div>
 

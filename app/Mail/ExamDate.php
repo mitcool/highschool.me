@@ -21,6 +21,7 @@ class ExamDate extends Mailable
     {
         
         return $this->view('email.exam-date')
+            ->subject('Exam Date Confirmed —'. $exam->student->name.' Is Set for'. $exam->course->course->title)
             ->with('exam',$this->exam);
     }
 }

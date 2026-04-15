@@ -1,5 +1,13 @@
 @extends('template')
-
+@section('seo')
+	<title>{{ $texts['meta-title'] }}</title>
+	<meta itemprop="description" name="description" content="{{ $texts['meta-description']}}" />
+	<meta itemprop="title" property="og:title" content="{{ $texts['meta-title'] }}"/>
+	<meta property="og:type" content="website"/>
+	<meta itemprop="url" property="og:url" content="{{ route('admission-process') }}"/>
+	<meta property="og:description" content="{{ $texts['meta-description']}}"/>
+	<x-meta-image itemprop="image" nickname="study_registration"/>
+@endsection
 @section('headCSS')
 <style>
     .feature{
@@ -139,15 +147,15 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
     <ol class="bg-white breadcrumb mb-0 p-0">
         <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">High School Diploma Tracks</li>
+        <li class="breadcrumb-item active" aria-current="page">{{ $texts['breadcrumb'] }}</li>
     </ol>
 </div>
 
 <div class="container-fluid" style="" id="main-container">
-    <h1 class="text-center page-headings">Online High School Diploma Tracks: Graduate with Power and no Barriers</h1> <br>
-    <h2 class="text-center font-weight-bold" style="margin-bottom:20px;">Three Paths – One High School Diploma: The World Is Your Classroom</h2>
-    <p class="page-content">All paths include full access to every graduation track, rolling enrollment, 12-month schooling, cross-grade learning, and credit-transfer options. Students benefit from subject-specific AI mentors, human educator support, real-time performance tracking, and access to awards programs and parent services. Higher tiers add personal mentoring, college & career coaching, and extended family support – creating a complete learning experience that adapts to every life situation.</p>
-    <h2 class="font-weight-bold text-center" style="margin:50px 0;">High School Tuition Options</h2>
+    <h1 class="text-center page-headings">{{ $texts['heading'] }}</h1> <br>
+    <h2 class="text-center font-weight-bold" style="margin-bottom:20px;">{{ $texts['subheading'] }}</h2>
+    <div class="page-content">{!! $texts['intro'] !!}</div>
+    <h2 class="font-weight-bold text-center" style="margin:50px 0;">{{ $texts['options'] }}</h2>
     <hr>
     <div class="row text-center container mx-auto">
         @foreach($plans as $plan)
@@ -194,8 +202,7 @@
 </div>
 <div class="container-fluid bg-light p-3">
     <div class="container">
-        <h2 class="font-weight-bold text-center">Lorem ipsum</h2>
-        <p class="page-content">Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Suspendisse non orci eros. Curabitur consectetur pellentesque aliquet. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique. Vivamus cursus iaculis lorem vel sollicitudin. Morbi et urna hendrerit mi laoreet dignissim. Proin mattis porttitor lorem a tristique.</p>
+        {!! $texts['last-paragraph'] !!}
         <x-three-buttons/>
     </div>
 </div>

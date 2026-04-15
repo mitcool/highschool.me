@@ -24,6 +24,7 @@ class StudentStartStudyParent extends Mailable
     {
         return $this->view('email.student-start-study-parent')
             ->with('parent',$this->parent)
-            ->with('enrolled_course',$this->enrolled_course);
+            ->with('enrolled_course',$this->enrolled_course)
+            ->subject('Everything Is Ready — '.$this->enrolled_course->student->name.' Can Start '. $this->enrolled_course->course->course->title. ' Today');
     }
 }

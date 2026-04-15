@@ -5,7 +5,7 @@
 @section('content')
 
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
-    <h1>Add Author</h1>
+    <h1 class="page-headings">Add Author</h1>
     <div>
         <form action="{{ route('add-author')}}" enctype="multipart/form-data" method="POST">
             <input required type="text" name="name" class="form-control my-2" placeholder="Name">
@@ -25,7 +25,7 @@
             </div>
         </form>
         <hr>
-        <h2 class="text-center">Current authors</h2>
+        <h2 class="text-center page-headings">Current authors</h2>
          <ul class="list-group text-center">
         @foreach($authors as $a)
             <a href="{{route('show-author',$a->id)}}">

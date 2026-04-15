@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
-use App\Route;
 use App\Study;
 use App\DynamicNewsTranslation;
 use App\Tutorial;
@@ -18,35 +18,20 @@ class SitemapController extends Controller
 {
     //XML SITEMAP
     public function sitemap(Request $request){
-        $lang = $request->segment(1);
-        app()->setLocale($lang);
-        //studies and programs
-        $static_routes = Route::where('sitemap',1)->get();
-        $studies = Study::with('translated')->get();
-        $news = DynamicNewsTranslation::where('locale',$lang)->get();
-        $tutorials = Tutorial::where('type', 0)->get();
-        $faq_categories = FaqCategory::all();
-        $conferences = Conference::all();
-        $categoriesNews = DynamicNewsCategory::get();
-
+        $routes = collect(Route::getRoutes())->filter(function ($route) {
+            $middlware_filter = in_array('text', $route->middleware());
+            $params_filter = !str_contains($route->uri(), '{');
+            return $middlware_filter && $params_filter;
+        });
+       
         return response()
-            ->view('sitemap', compact('lang','static_routes','studies','news', 'tutorials','faq_categories','conferences','categoriesNews'))
+            ->view('sitemap', compact('routes'))
             ->header('Content-Type', 'application/xml');
     }
      //HTML SITEMAP
     public function showSitemapHTML(Request $request) {
-        $studies = Study::all();
-        $second_column_routes = Route::whereIn('slug',['digital-studies','recognition','student-advisory-service','study-financing','study-registration'])->get();
-        $third_column_routes = Route::whereIn('slug',['conferences-and-workshops','conference-calendar','coaching','publishing','publishing-services'])->get();
-        $fourth_column_routes = Route::whereIn('slug',['about','code-of-ethics','blog','accreditation','academics'])->get();
-        $fifth_column_routes = Route::whereIn('slug',['help-desk','faq','privacy-policy','contact-us','imprint','terms-and-conditions','examination-rules'])->get();
-        
-        return view('pages.resources.html-sitemap')
-            ->with('studies',$studies)  //first column
-            ->with('second_column_routes',$second_column_routes)
-            ->with('third_column_routes',$third_column_routes)
-            ->with('fourth_column_routes',$fourth_column_routes)
-            ->with('fifth_column_routes',$fifth_column_routes);
+     
+        return view('pages.footer.sitemap');
     }
      //RSS SITEMAP
     public function rss(){

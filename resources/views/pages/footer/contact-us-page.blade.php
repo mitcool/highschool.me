@@ -16,21 +16,7 @@
 	
 @endsection
 
-@section('language-switcher')
-<div class="dropdown">
-	<button class="btn dropdown-toggle text-uppercase" style="background: #025297;color:white;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	  {{ app()->currentLocale() }}
-	  </button>
-	  <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton">
-		<div>
-			<a href="{{ config('app.url') }}/en/contact" class="text-uppercase btn d-inline-block bg-transparent">EN</a>
-		</div>
-		<div>
-			<a href="{{ config('app.url') }}/de/kontakt" class="text-uppercase btn d-inline-block bg-transparent">DE</a>
-		</div>
-	  </div> 
-  </div>
-@endsection
+
 @section('headCSS')
 <style>	
 	.tooltip.show {
@@ -147,9 +133,7 @@
 @endsection
 
 @section('content')
-@php
-    $breadcrumb_title = strtok(trans('contact-us.meta-title'), '|');
-@endphp
+
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
@@ -162,11 +146,9 @@
 <div class="container-fluid main_page_container ">
 	<div class="row justify-content-center ">
 		<div class="col-md-10 contact-wrapper text-center">
-			<h1>Requests, Ideas, or Feedback? We are here for you!</h1>
+			<h1>{{ $texts['heading'] }}</h1>
 			<div class="page-content text-center">
-				Welcome to our contact page.<br>
-				No matter what you need – a quick question, a specific request, or just your thoughts – we are ready to help.<br>
-				It’s simple: Choose the right category in the form below, write your message, and send it off. To save you time, we have listed the most common topics first.
+				{!! $texts['intro'] !!}
 			</div>
 		</div>
 	</div>
@@ -175,7 +157,7 @@
 <div style="background-color: #025297; padding: 20px;">
 	<div class="col-md-8" style="margin: 0 auto;">
 		<h2 class="text-white text-center mt-3 mb-4">
-			All topics in one place – straight to the right team
+			{{ $texts['topics'] }}
 		</h2>
 		<div class="row text-center mb-5">
 			@foreach($categories as $cat)
@@ -201,21 +183,20 @@
   		{{csrf_field()}}
 			<div class="row">
 				<div class="col-lg-12 text-center mb-3">
-					<h2 style="color: #025297;">Contact Us</h2>
-					<p>Just fill out the form, select your topic, and send. We will reply as fast as possible.</p>
+					{!! $texts['form-intro'] !!}
 				</div>
 				<div class="col-lg-12 my-2">
-					<input autocomplete="off" value="{{ old('name_request') }}" required type="text" name="name_request" placeholder="Your name" class="form-control w-100 @error('name_request') is-invalid @enderror">
+					<input autocomplete="off" value="{{ old('name_request') }}" required type="text" name="name_request" placeholder="{{ $texts['name-placeholder'] }}" class="form-control w-100 @error('name_request') is-invalid @enderror">
 					@error('name_request') <span class="validation-error">{!! $errors->first('name_request') !!}</span> @enderror
 				</div>
 				<div class="col-lg-12 my-2">
-					<input autocomplete="off" value="{{ old('email_request') }}" required type="email" name="email_request" placeholder="Your email"  class="form-control w-100  @error('email_request') is-invalid @enderror" >
+					<input autocomplete="off" value="{{ old('email_request') }}" required type="email" name="email_request" placeholder="{{ $texts['email-placeholder'] }}"  class="form-control w-100  @error('email_request') is-invalid @enderror" >
 					@error('email_request') <span class="validation-error">{{ $errors->first('email_request') }}</span> @enderror
 				</div>
 
 				<div class="col-lg-12 my-2">
 					<select class="form-control">
-						<option disabled selected>Select your topic</option>
+						<option disabled selected>{{ $texts['topic-placeholder'] }}</option>
 						@foreach($categories as $cat)
 							<option value="{{ $cat->id }}">{{ $cat->topic }}</option>
 						@endforeach
@@ -223,7 +204,7 @@
 				</div>
 				
 				<div class="col-lg-12 text-center my-2">
-					<textarea autocomplete="off" required rows="10" name="message" placeholder="Your message" class="form-control w-100 @error('message') is-invalid @enderror">{{ old('message') }}</textarea>
+					<textarea autocomplete="off" required rows="10" name="message" placeholder="{{ $texts['message-placeholder'] }}" class="form-control w-100 @error('message') is-invalid @enderror">{{ old('message') }}</textarea>
 					@error('message') <span class="validation-error">{{ $errors->first('message') }}</span> @enderror
 					
 					<label class="ohnohoney" for="name"></label>
@@ -239,17 +220,17 @@
                         </div>
                     </div>
 
-					<button class="orange-button btn mt-3" style="border-radius: 30px;">Contact Us</button>
+					<button class="orange-button btn mt-3" style="border-radius: 30px;">{{ $texts['submit-btn'] }}</button>
 				</div>
 			</div>
 		</form>
 	</div>
 	<div class="col-md-6 w-100" id="phone">
 		<div class="d-flex justify-content-center align-items-center flex-column w-100">
-			<h2 class="mb-3 text-center" style="color: #025297;">Want to talk right now?</h2>
+			<h2 class="mb-3 text-center" style="color: #025297;">{{ $texts['phone-heading'] }}</h2>
 			<p class="text-center">
-			Give us a call:<br>
-			<p class="text-center" style="color: #EF6024; font-size: 24px; font-weight: 700;">+1 (727) 739 02 80</p>
+			{{ $texts['phone-subheading'] }}<br>
+			<p class="text-center" style="color: #EF6024; font-size: 24px; font-weight: 700;">{{ $texts['phone-number'] }}</p>
 		</div>
 	</div>
 </div>

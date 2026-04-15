@@ -21,6 +21,7 @@ class StudentReadyForExam extends Mailable
     public function build()
     {
         return $this->view('email.student-ready-for-exam')
+            ->subject('Student Ready for Exam —'. $this->enrolled_course->student->fullname().' — '.$this->enrolled_course->course->course->title. '— Action Required')
             ->with('enrolled_course',$this->enrolled_course);
     }
 }

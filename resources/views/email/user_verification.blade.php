@@ -92,25 +92,46 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear user,
+                                                        Dear {{$mailObject['name']}},
                                                     </h1>
+                                                    
+
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Thank you for your registration and your interest in our high-quality education institution.
+                                                        We are delighted to welcome you to ONSITES High School. Registering your account is the first step in a journey we are truly excited to share with you and your family, and we are very glad you are here.
+
+                                                        <br/>
+                                                    </p>
+                                                    <p style="{{ $style['paragraph-black'] }}">
+                                                        To activate your account and gain full access to the parent portal, please verify your email address by clicking the link below. This is a quick but important step — it ensures that all communications, updates, and notifications related to your student's education reach you securely and without delay.
+                                                        <br/>
+                                                    </p>
+
+                                                     <p style="{{ $style['paragraph-black'] }}">
+                                                        Verify Your Account:
                                                         <br/>
                                                     </p>
                                                     <p style="{{ $style['paragraph-black'] }}">
                                                         <a style="{{$style['button']}};margin-bottom: 15px;" href="{{ $verification_url }}">Verify profile</a>
                                                     </p>
-                                                    <p style="{{ $style['paragraph-gray'] }}">
-                                                        This verification link expires in 24 hours.
+                                                    <p style="{{ $style['paragraph-black'] }}">
+                                                    Please note that this verification link is valid for 24 hours. If it expires before you have had a chance to use it, you can request a new one from the login page at any time. If you did not create this account, you can safely ignore this email — no further action is required.
+                                                        <br/>
                                                     </p>
-                                           
-                                                    
+                                                    <p style="{{ $style['paragraph-black'] }}">
+                                                    Once your account is verified, you will have access to the parent portal, where you can monitor your student's progress, review course materials, manage documents, track exam dates, and stay in contact with our team. Everything you need to stay informed is in one place.
+                                                            <br/>
+                                                    </p>
+                                                    <p style="{{ $style['paragraph-black'] }}">
+                                                    We are always available to answer your questions. Do not hesitate to reach out through the Help Desk if anything is unclear.
+                                                        <br/>
+                                                    </p>
+                                                    <p style="{{ $style['paragraph-black'] }}">
+                                                    Thank you for choosing ONSITES High School. We look forward to a successful and rewarding journey together.
+                                                    </p>
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
+                                                        Kind regards,<br>ONSITES High School
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
                                                 </td>
                                             </tr>
                                         </table>

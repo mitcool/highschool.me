@@ -6,10 +6,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 use App\Notification;
 use Session;
+use App\Text;
 
 class Header extends Component
 {
     public $unreadNotificationsCount;
+    public $texts;
 
     public function __construct() {
         if (Auth::check()) {
@@ -19,6 +21,7 @@ class Header extends Component
         } else {
             $this->unreadNotificationsCount = 0;
         }
+        $this->texts = Text::where('slug','header')->pluck('text_en','title'); 
     }
     
     public function render()
