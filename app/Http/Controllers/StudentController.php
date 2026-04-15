@@ -42,6 +42,7 @@ use App\UserCoachingSession;
 use App\AdditionalCourse;
 use App\ParentStudent;
 use App\StudyMentor;
+use App\PreExamAnswer;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -698,22 +699,53 @@ class StudentController extends Controller
         return view('student.self-assessment-review');
     }
     public function preExam($exam_id){
-        $exam = Exam::find($exam_id);
+        $exam = Exam::where('id', $exam_id)->where('student_id', auth()->id())->firstOrFail();
+
+        if ((int) $exam->pre_exam === 1 || PreExamAnswer::where('exam_id', $exam->id)->exists()) {
+            return redirect()->route('student.exams')->with('error', 'This pre-exam has already been submitted');
+        }
+
         $questions = ExamQuestion::where('subject_id',$exam->course_id)
                                 ->inRandomOrder()
                                 ->take(10)
                                 ->where('type',ExamQuestion::TYPE_PRE_EXAM)
                                 ->get();
-        
-        $exam->update([
-            'pre_exam' => 1
-        ]);
+
         return view('student.pre-exam')
+            ->with('exam', $exam)
             ->with('questions',$questions);
        
     }
 
-    public function submitPreExam(){
+    public function submitPreExam(Request $request){
+        $request->validate([
+            'exam_id' => 'required|integer|exists:exams,id',
+            'answers' => 'required|array|min:1',
+            'answers.*' => 'required|string',
+        ]);
+
+        $exam = Exam::where('id', $request->exam_id)
+            ->where('student_id', auth()->id())
+            ->firstOrFail();
+
+        if ((int) $exam->pre_exam === 1 || PreExamAnswer::where('exam_id', $exam->id)->exists()) {
+            return redirect()->route('student.exams')->with('error', 'This pre-exam has already been submitted');
+        }
+
+        DB::transaction(function () use ($request, $exam) {
+            foreach ($request->answers as $question_id => $answer) {
+                PreExamAnswer::create([
+                    'exam_id' => $exam->id,
+                    'question_id' => $question_id,
+                    'answer' => $answer,
+                ]);
+            }
+
+            $exam->update([
+                'pre_exam' => 1,
+            ]);
+        });
+
         return redirect()->route('student.exams')->with('success_message','Pre exam submitted successfully');
     }
 

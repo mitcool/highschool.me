@@ -144,6 +144,125 @@
         border: 1px solid #00000029;
         border-radius: 10px;
     }
+    .enrolled-courses-card {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 6px 22px rgba(13, 38, 76, 0.10);
+        padding: 18px 16px 10px;
+        margin-top: 50px;
+        overflow: hidden;
+    }
+    .enrolled-courses-title {
+        color: #045397;
+        font-size: 2rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 16px;
+    }
+    .enrolled-courses-table {
+        margin-bottom: 0;
+    }
+    .enrolled-courses-table thead th {
+        border-top: none !important;
+        border-bottom: 2px solid #d9dde5;
+        color: #223a5f;
+        font-size: .98rem;
+        font-weight: 700;
+        padding: 10px 14px;
+        white-space: nowrap;
+    }
+    .enrolled-courses-table tbody td {
+        border-top: none !important;
+        border-bottom: 1px solid #d9dde5;
+        color: #3b4960;
+        font-size: .98rem;
+        padding: 10px 14px;
+        vertical-align: middle;
+    }
+    .enrolled-courses-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+    .enrolled-course-name {
+        color: #34425a;
+        min-width: 260px;
+    }
+    .enrolled-course-status {
+        color: #4a5870;
+        font-weight: 500;
+    }
+    .course-pill {
+        display: inline-block;
+        min-width: 92px;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 10px;
+        font-size: .82rem;
+        font-weight: 600;
+        line-height: 1.2;
+        border: none;
+    }
+    .course-pill-self-pending,
+    .course-pill-action-pending {
+        background: #d9d9d9;
+        color: #fff;
+    }
+    .course-pill-self-results {
+        background: #13b7c8;
+        color: #fff;
+    }
+    .course-pill-action-start {
+        background: #045397;
+        color: #fff;
+    }
+    .course-pill-action-ready {
+        background: #f36a10;
+        color: #fff;
+    }
+    .course-pill-action-date {
+        background: #f7b348;
+        color: #fff;
+    }
+    .course-pill-action-results {
+        background: #2dbb16;
+        color: #fff;
+    }
+    .course-pill-empty {
+        color: #a8b0bf;
+        font-size: .9rem;
+    }
+    .course-action-form {
+        margin: 0;
+    }
+    .course-action-button {
+        cursor: pointer;
+    }
+    .course-action-cell {
+        text-align: right;
+        white-space: nowrap;
+    }
+    @media (max-width: 767.98px) {
+        .enrolled-courses-card {
+            padding: 16px 10px 8px;
+            border-radius: 14px;
+        }
+        .enrolled-courses-title {
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+        }
+        .enrolled-courses-table thead th,
+        .enrolled-courses-table tbody td {
+            padding: 9px 8px;
+            font-size: .92rem;
+        }
+        .enrolled-course-name {
+            min-width: 220px;
+        }
+        .course-pill {
+            min-width: 82px;
+            font-size: .78rem;
+            padding: 5px 8px;
+        }
+    }
 </style>
 @endsection
 @section('content')
@@ -292,43 +411,90 @@
         <p>The student have </p>
         @else
             <x-enrollment-table :student="$student"></x-enrollment-table>
-            <div class="tab-content">
             @if(count($student->enrolled_courses) > 0)
-                <h2 class="text-center" style="margin-top:50px;">Enrolled courses</h2>
+                @php
+                    $status_labels = [
+                        0 => 'Pending',
+                        1 => 'Started',
+                        2 => 'Started',
+                        3 => 'Started',
+                        4 => 'Started',
+                        5 => 'Completed',
+                    ];
+                    $curriculum_type_labels = [
+                        'AP' => 'AP',
+                        'CTE' => 'CTE',
+                        'CLEP' => 'CLEP',
+                        'PSAT' => 'PSAT',
+                        'SAT' => 'SAT',
+                        'PREACT' => 'PreACT',
+                        'ACT' => 'ACT',
+                        'ESOL' => 'ESOL',
+                    ];
+                @endphp
+                <div class="enrolled-courses-card">
+                    <h2 class="enrolled-courses-title">Enrolled Courses</h2>
+                    <div class="table-responsive">
+                        <table class="table enrolled-courses-table">
+                            <thead>
+                                <tr>
+                                    <th>Course Name</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Self-Exam</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($student->enrolled_courses as $enrolled_course)
+                                    @php
+                                        $curriculum_type_code = optional(optional($enrolled_course->course)->curriculumType)->code;
+                                        $course_type = $curriculum_type_labels[$curriculum_type_code] ?? (optional($enrolled_course->course)->required_flag ? 'Core' : 'Elective');
+                                        $pre_exam_state = $pre_exam_states[$enrolled_course->id] ?? null;
+                                        $pre_exam_exam_id = $pre_exam_exam_ids[$enrolled_course->id] ?? null;
+                                        $action_exam_date = $action_exam_dates[$enrolled_course->id] ?? null;
+                                    @endphp
+                                    <tr>
+                                        <td class="enrolled-course-name">{{ $enrolled_course->course->course->title }}</td>
+                                        <td>{{ $course_type }}</td>
+                                        <td class="enrolled-course-status">{{ $status_labels[$enrolled_course->status] ?? 'Pending' }}</td>
+                                        <td>
+                                            @if($pre_exam_state === 'results')
+                                                <a href="{{ route('parent.student.pre-exam', [$student->id, $pre_exam_exam_id]) }}" class="course-pill course-pill-self-results text-decoration-none">Results</a>
+                                            @elseif($pre_exam_state === 'pending')
+                                                <span class="course-pill course-pill-self-pending">Pending</span>
+                                            @else
+                                                <span class="course-pill-empty">-</span>
+                                            @endif
+                                        </td>
+                                        <td class="course-action-cell">
+                                            @if($enrolled_course->status == 0)
+                                                <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST" class="confirm-first course-action-form">
+                                                    {{ csrf_field() }}
+                                                    <button class="course-pill course-pill-action-start course-action-button">Start Study</button>
+                                                </form>
+                                            @elseif($enrolled_course->status == 1)
+                                                <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST" class="confirm-first course-action-form">
+                                                    {{ csrf_field() }}
+                                                    <button class="course-pill course-pill-action-ready course-action-button">Ready for Exam</button>
+                                                </form>
+                                            @elseif($enrolled_course->status == 2)
+                                                <span class="course-pill course-pill-action-pending">Pending</span>
+                                            @elseif($enrolled_course->status == 3)
+                                                <span class="course-pill course-pill-action-date">{{ $action_exam_date ?: 'Pending' }}</span>
+                                            @elseif($enrolled_course->status == 4)
+                                                <span class="course-pill course-pill-action-pending">Pending</span>
+                                            @elseif($enrolled_course->status == 5)
+                                                <span class="course-pill course-pill-action-results">Exam Results</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             @endif
-            @foreach ($student->enrolled_courses as $enrolled_course)
-            
-                <div class="course-row d-flex justify-content-between align-items-center" style="padding:10px 30px;">
-                    <p class="mb-0">{{ $enrolled_course->course->course->title }}</p>
-
-                    {{-- Status Enrolled -> 0 --}}
-                    @if($enrolled_course->status == 0)
-                        <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST" class="confirm-first">
-                            {{ csrf_field() }}
-                            <button class="btn btn btn-outline-secondary"><i class="fas fa-clock"></i> Start Study</button>
-                        </form>  
-                    {{-- Status STATUS_START_STUDY -> 1 --}}
-                    @elseif($enrolled_course->status == 1) 
-                        <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST" class="confirm-first">
-                            {{ csrf_field() }}
-                            <button class="btn btn-info"><i class="fas fa-clock"></i> Ready for Exam</button>
-                        </form>
-                    {{-- STATUS_READY_FOR_EXAM -> 2 --}}
-                    @elseif($enrolled_course->status == 2) 
-                        <button class="btn  btn-outline-secondary">Pending Exam Date</button>
-                    {{-- STATUS_EXAM_APPOINTED -> 3 --}}
-                    @elseif($enrolled_course->status == 3) 
-                        <button class="btn  btn-warning">Exam on {{ $enrolled_course->exam->localdate() }} </button>
-                        {{-- STATUS_EXAM_SUBMITED->4  --}}
-                    @elseif($enrolled_course->status == 4) 
-                        <button class="btn  btn-secondary">Pending Exam Results</button>
-                        {{--STATUS_COMPLETED  --}}
-                    @elseif($enrolled_course->status == 5) 
-                        <button class="btn  btn-success">Completed</button>
-                    @endif     
-                </div> 
-            @endforeach 
-            </div>
         @endif
     {{-- Reupload documents --}}
     @elseif($status == 4)

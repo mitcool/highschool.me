@@ -39,6 +39,7 @@ use App\Notification;
 use App\Exam;
 use App\StudentLocation;
 use App\Ethnicity;
+use App\PreExamAnswer;
 
 use App\Mail\StudentCreated;
 use App\Mail\StudentCredentials;
@@ -857,14 +858,76 @@ class ParentController extends Controller
                                             StudentEnrolledCourse::STATUS_EXAM_APPOINTED,
                                             StudentEnrolledCourse::STATUS_EXAM_SUBMITED]);
         $completed_courses =  $student->enrolled_courses->where('status',StudentEnrolledCourse::STATUS_COMPLETED);
+        $curriculum_course_ids = $student->enrolled_courses->map(function ($enrolled_course) {
+            return optional($enrolled_course->course)->id;
+        })->filter()->unique()->values();
+
+        $course_exams = Exam::where('student_id', $student_id)
+            ->whereIn('course_id', $curriculum_course_ids)
+            ->get()
+            ->keyBy('course_id');
+
+        $submitted_pre_exam_ids = PreExamAnswer::whereIn('exam_id', $course_exams->pluck('id'))
+            ->pluck('exam_id')
+            ->flip();
+
+        $pre_exam_states = [];
+        $pre_exam_exam_ids = [];
+        $action_exam_dates = [];
+        foreach ($student->enrolled_courses as $enrolled_course) {
+            $exam = $course_exams->get(optional($enrolled_course->course)->id);
+
+            if (!$exam) {
+                $pre_exam_states[$enrolled_course->id] = null;
+                $pre_exam_exam_ids[$enrolled_course->id] = null;
+                $action_exam_dates[$enrolled_course->id] = null;
+                continue;
+            }
+
+            $pre_exam_exam_ids[$enrolled_course->id] = $exam->id;
+            $action_exam_dates[$enrolled_course->id] = $exam->localdate();
+
+            if ((int) $exam->pre_exam === 1 && $submitted_pre_exam_ids->has($exam->id)) {
+                $pre_exam_states[$enrolled_course->id] = 'results';
+            } else {
+                $pre_exam_states[$enrolled_course->id] = 'pending';
+            }
+        }
+
         return view('parent.student-profile')
             ->with('credits',$credits)
             ->with('active_plan',$active_plan)
             ->with('student',$student)
             ->with('completed_courses',$completed_courses)
             ->with('in_progress_courses',$in_progress_courses)
+            ->with('pre_exam_states', $pre_exam_states)
+            ->with('pre_exam_exam_ids', $pre_exam_exam_ids)
+            ->with('action_exam_dates', $action_exam_dates)
             ->with('plans',$plans)
             ->with('status',$status);
+    }
+
+    public function studentPreExam($student_id, $exam_id){
+        if (ParentStudent::where('student_id', $student_id)->where('parent_id', auth()->id())->count() < 1) {
+            abort(403);
+        }
+
+        $exam = Exam::where('id', $exam_id)
+            ->where('student_id', $student_id)
+            ->firstOrFail();
+
+        $answers = PreExamAnswer::where('exam_id', $exam->id)
+            ->with('question')
+            ->get();
+
+        if ($answers->isEmpty()) {
+            return redirect()->route('parent.student.profile', $student_id)
+                ->with('error', 'This pre-exam has not been submitted yet');
+        }
+
+        return view('parent.pre-exam')
+            ->with('exam', $exam)
+            ->with('answers', $answers);
     }
 
     public function parentPayPlan(Request $request, $student_id){

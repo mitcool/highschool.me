@@ -18,7 +18,8 @@
                         <td style="padding:10px 35px 35px;color:#222;">
                             <h2 style="margin:0 0 15px;font-size:24px;">Login verification</h2>
                             <p style="margin:0 0 15px;line-height:1.6;">Hello {{ $user->name }},</p>
-                            <p style="margin:0 0 15px;line-height:1.6;">We noticed a login attempt from a different IP address. Please use this PIN code to continue logging in:</p>
+                            <p style="margin:0 0 15px;line-height:1.6;">We noticed a login attempt.</p>
+                            <p style="margin:0 0 15px;line-height:1.6;">Please use this PIN code to continue logging in:</p>
                             <div style="margin:25px 0;text-align:center;">
                                 <span style="display:inline-block;padding:14px 28px;background:#045397;color:#ffffff;font-size:30px;letter-spacing:8px;border-radius:8px;font-weight:bold;">{{ $pinCode }}</span>
                             </div>

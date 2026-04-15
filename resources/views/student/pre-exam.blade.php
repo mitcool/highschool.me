@@ -14,16 +14,17 @@
 <div class="container my-5">
    
     <div class="page-content table-container mx-auto mt-5">
-        <h2 class="text-center mb-4"></h2>
+        <h2 class="text-center mb-4">{{ $exam->course->course->title }}</h2>
         <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam pariatur, magnam cupiditate quod consequuntur aperiam soluta debitis enim quae omnis et sequi nobis beatae nesciunt voluptatibus! Quisquam sit sapiente voluptatibus!</p>
         <div class="col-12 text-right mt-2">
 			<div class="font-weight-bold">
                 <span class="highlighted_text">Time left:</span>
                 <span id="timer"></span>
             </div>
-		</div>
-        <form action="{{ route('submit-pre-exam-exam',0) }}" method="POST" enctype="multipart/form-data" id="exam-form">
+        </div>
+        <form action="{{ route('submit-pre-exam-exam') }}" method="POST" enctype="multipart/form-data" id="exam-form">
             {{ csrf_field() }}
+            <input type="hidden" name="exam_id" value="{{ $exam->id }}">
             @foreach ($questions as $key => $question)
             <div class="shadow p-3">
                 <h4 style="color: #045397;">Question {{ $key+1 }}</h4>

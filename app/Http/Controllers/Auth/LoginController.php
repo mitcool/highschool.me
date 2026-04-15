@@ -74,101 +74,79 @@ class LoginController extends Controller
         $current_ip = $request->ip();
         $user_agent = substr((string) $request->userAgent(), 0, 65535);
         $remember = $request->filled('remember');
-        $latest_approved_verification = LoginVerification::where('user_id', $user->id)
-            ->where('status', 'approved')
-            ->orderByDesc('verified_at')
-            ->orderByDesc('id')
-            ->first();
-
-        $requires_pin = $latest_approved_verification && $latest_approved_verification->ip_address !== $current_ip;
-
-        if ($requires_pin) {
-            if (!$request->filled('verification_token') || !$request->filled('login_pin')) {
-                LoginVerification::where('user_id', $user->id)
-                    ->where('status', 'pending')
-                    ->update(['status' => 'expired']);
-
-                $pin_code = (string) random_int(100000, 999999);
-                $verification = LoginVerification::create([
-                    'user_id' => $user->id,
-                    'verification_token' => Str::random(64),
-                    'ip_address' => $current_ip,
-                    'user_agent' => $user_agent,
-                    'pin_code' => $pin_code,
-                    'attempts' => 0,
-                    'status' => 'pending',
-                    'expires_at' => Carbon::now()->addMinutes(10),
-                ]);
-
-                try {
-                    Mail::to($user->email)->send(new LoginPinCode($user, $pin_code));
-                } catch (\Exception $e) {
-                    info($e->getMessage());
-                }
-
-                return $this->pinRequiredResponse(
-                    $request,
-                    'We sent a PIN code to your email.',
-                    $verification->verification_token
-                );
-            }
-
-            $verification = LoginVerification::where('user_id', $user->id)
-                ->where('verification_token', $request->verification_token)
+        if (!$request->filled('verification_token') || !$request->filled('login_pin')) {
+            LoginVerification::where('user_id', $user->id)
                 ->where('status', 'pending')
-                ->first();
+                ->update(['status' => 'expired']);
 
-            if (!$verification) {
-                return $this->validationErrorResponse($request, [
-                    'login_pin' => ['This verification request was not found. Please try logging in again.'],
-                ], true);
-            }
-
-            if ($verification->ip_address !== $current_ip) {
-                $verification->update(['status' => 'failed']);
-
-                return $this->validationErrorResponse($request, [
-                    'login_pin' => ['The verification request does not match this IP address. Please try again.'],
-                ], true);
-            }
-
-            if ($verification->expires_at && Carbon::now()->gt($verification->expires_at)) {
-                $verification->update(['status' => 'expired']);
-
-                return $this->validationErrorResponse($request, [
-                    'login_pin' => ['This PIN has expired. Please try logging in again.'],
-                ], true);
-            }
-
-            if ($verification->pin_code !== $request->login_pin) {
-                $attempts = $verification->attempts + 1;
-                $verification->update([
-                    'attempts' => $attempts,
-                    'status' => $attempts >= 5 ? 'failed' : 'pending',
-                ]);
-
-                return $this->validationErrorResponse($request, [
-                    'login_pin' => [$attempts >= 5 ? 'Too many invalid PIN attempts. Please try logging in again.' : 'Invalid PIN code.'],
-                ], $attempts < 5, $verification->verification_token);
-            }
-
-            $verification->update([
-                'status' => 'approved',
-                'verified_at' => Carbon::now(),
-            ]);
-        } elseif (!$latest_approved_verification) {
-            LoginVerification::create([
+            $pin_code = (string) random_int(100000, 999999);
+            $verification = LoginVerification::create([
                 'user_id' => $user->id,
-                'verification_token' => null,
+                'verification_token' => Str::random(64),
                 'ip_address' => $current_ip,
                 'user_agent' => $user_agent,
-                'pin_code' => null,
+                'pin_code' => $pin_code,
                 'attempts' => 0,
-                'status' => 'approved',
-                'expires_at' => null,
-                'verified_at' => Carbon::now(),
+                'status' => 'pending',
+                'expires_at' => Carbon::now()->addMinutes(10),
             ]);
+
+            try {
+                Mail::to($user->email)->send(new LoginPinCode($user, $pin_code));
+            } catch (\Exception $e) {
+                info($e->getMessage());
+            }
+
+            return $this->pinRequiredResponse(
+                $request,
+                'We sent a PIN code to your email.',
+                $verification->verification_token
+            );
         }
+
+        $verification = LoginVerification::where('user_id', $user->id)
+            ->where('verification_token', $request->verification_token)
+            ->where('status', 'pending')
+            ->first();
+
+        if (!$verification) {
+            return $this->validationErrorResponse($request, [
+                'login_pin' => ['This verification request was not found. Please try logging in again.'],
+            ], true);
+        }
+
+        if ($verification->ip_address !== $current_ip) {
+            $verification->update(['status' => 'failed']);
+
+            return $this->validationErrorResponse($request, [
+                'login_pin' => ['The verification request does not match this IP address. Please try again.'],
+            ], true);
+        }
+
+        if ($verification->expires_at && Carbon::now()->gt($verification->expires_at)) {
+            $verification->update(['status' => 'expired']);
+
+            return $this->validationErrorResponse($request, [
+                'login_pin' => ['This PIN has expired. Please try logging in again.'],
+            ], true);
+        }
+
+        if ($verification->pin_code !== $request->login_pin) {
+            $attempts = $verification->attempts + 1;
+            $verification->update([
+                'attempts' => $attempts,
+                'status' => $attempts >= 5 ? 'failed' : 'pending',
+            ]);
+
+            return $this->validationErrorResponse($request, [
+                'login_pin' => [$attempts >= 5 ? 'Too many invalid PIN attempts. Please try logging in again.' : 'Invalid PIN code.'],
+            ], $attempts < 5, $verification->verification_token);
+        }
+
+        $verification->update([
+            'status' => 'approved',
+            'verified_at' => Carbon::now(),
+        ]);
 
         Auth::login($user, $remember);
         $request->session()->regenerate();

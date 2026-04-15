@@ -44,6 +44,7 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	Route::get('/invoices/{invoice_id}', 'ParentController@singleInvoice')->name('parent.single-invoice');
 
 	Route::get('/student/profile/{student_id}','ParentController@studentProfile')->name('parent.student.profile');
+	Route::get('/student/profile/{student_id}/pre-exam/{exam_id}','ParentController@studentPreExam')->name('parent.student.pre-exam');
 
 	Route::get('/profile','ParentController@profile')->name('parent.profile');
 
