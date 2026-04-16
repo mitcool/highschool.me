@@ -16,11 +16,11 @@
         <label for="" class="mb-0 font-weight-bold">Elite Plan</label>
         <input type="text" name="elite" class="form-control my-2" required value="{{ $feature->elite }}">
         <label for="" class="mb-0 font-weight-bold">Core Tootltip(optional)</label>
-        <textarea class="form-comtrol" name="core_tooltip" id="" cols="30" rows="10">{!! $feature->core_tooltip !!}</textarea>
+        <textarea class="form-control" name="core_tooltip" id="" cols="30" rows="10">{!! $feature->core_tooltip !!}</textarea>
         <label for="" class="mb-0 font-weight-bold">Pro Tootltip(optional)</label>
-        <textarea class="form-comtrol" name="pro_tooltip" id="" cols="30" rows="10">{!! $feature->pro_tooltip !!}</textarea>
+        <textarea class="form-control" name="pro_tooltip" id="" cols="30" rows="10">{!! $feature->pro_tooltip !!}</textarea>
         <label for="" class="mb-0 font-weight-bold">Elite Tootltip(optional)</label>
-        <textarea class="form-comtrol" name="elite_tooltip" id="" cols="30" rows="10"> {!! $feature->elite_tooltip !!} </textarea>
+        <textarea class="form-control" name="elite_tooltip" id="" cols="30" rows="10"> {!! $feature->elite_tooltip !!} </textarea>
          <label for="" class="mb-0 font-weight-bold">Slug</label>
         <input type="text" name="slug" class="form-control my-2" required value="{{ $feature->slug }}">
         <label for="" class="mb-0 font-weight-bold">Category</label>
