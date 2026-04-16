@@ -1732,7 +1732,7 @@ class AdminController extends Controller
     }
 
     public function addExamQuestionsPage(Request $request) {
-        $courses = CurriculumCourse::get();
+        $courses = CurriculumCourse::with('course')->get();
         
         $questions = ExamQuestion::when($request->course_id, function ($query) use ($request) {
            
@@ -1755,7 +1755,7 @@ class AdminController extends Controller
     }
 
     public function editQuestionPage($question_id) {
-        $question = ExamQuestion::where('id', $question_id)->first();
+        $question = ExamQuestion::with('subject.course')->where('id', $question_id)->first();
 
         return view('admin.edit-exam-question')->with('question', $question);
     }

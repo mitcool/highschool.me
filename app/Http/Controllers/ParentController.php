@@ -40,6 +40,7 @@ use App\Exam;
 use App\StudentLocation;
 use App\Ethnicity;
 use App\PreExamAnswer;
+use App\StudentAnswer;
 
 use App\Mail\StudentCreated;
 use App\Mail\StudentCredentials;
@@ -884,6 +885,7 @@ class ParentController extends Controller
         $pre_exam_states = [];
         $pre_exam_exam_ids = [];
         $action_exam_dates = [];
+        $course_exam_ids = [];
         foreach ($student->enrolled_courses as $enrolled_course) {
             $exam = $course_exams->get(optional($enrolled_course->course)->id);
 
@@ -891,11 +893,13 @@ class ParentController extends Controller
                 $pre_exam_states[$enrolled_course->id] = null;
                 $pre_exam_exam_ids[$enrolled_course->id] = null;
                 $action_exam_dates[$enrolled_course->id] = null;
+                $course_exam_ids[$enrolled_course->id] = null;
                 continue;
             }
 
             $pre_exam_exam_ids[$enrolled_course->id] = $exam->id;
             $action_exam_dates[$enrolled_course->id] = $exam->localdate();
+            $course_exam_ids[$enrolled_course->id] = $exam->id;
 
             if ((int) $exam->pre_exam === 1 && $submitted_pre_exam_ids->has($exam->id)) {
                 $pre_exam_states[$enrolled_course->id] = 'results';
@@ -913,6 +917,7 @@ class ParentController extends Controller
             ->with('pre_exam_states', $pre_exam_states)
             ->with('pre_exam_exam_ids', $pre_exam_exam_ids)
             ->with('action_exam_dates', $action_exam_dates)
+            ->with('course_exam_ids', $course_exam_ids)
             ->with('plans',$plans)
             ->with('status',$status);
     }
@@ -936,6 +941,34 @@ class ParentController extends Controller
         }
 
         return view('parent.pre-exam')
+            ->with('exam', $exam)
+            ->with('answers', $answers);
+    }
+
+    public function studentExamResults($student_id, $exam_id){
+        if (ParentStudent::where('student_id', $student_id)->where('parent_id', auth()->id())->count() < 1) {
+            abort(403);
+        }
+
+        $exam = Exam::where('id', $exam_id)
+            ->where('student_id', $student_id)
+            ->firstOrFail();
+
+        $answers = StudentAnswer::where('exam_id', $exam_id)->get();
+
+        $has_result_data = (int) $exam->status === Exam::STATUS_EVALUATED
+            || !is_null($exam->grade)
+            || !empty($exam->comment)
+            || $answers->contains(function ($answer) {
+                return !empty($answer->comment);
+            });
+
+        if (!$has_result_data) {
+            return redirect()->route('parent.student.profile', $student_id)
+                ->with('error', 'Exam results are not available yet');
+        }
+
+        return view('parent.exam-results')
             ->with('exam', $exam)
             ->with('answers', $answers);
     }

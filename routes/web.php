@@ -45,6 +45,7 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::get('/student/profile/{student_id}','ParentController@studentProfile')->name('parent.student.profile');
 	Route::get('/student/profile/{student_id}/pre-exam/{exam_id}','ParentController@studentPreExam')->name('parent.student.pre-exam');
+	Route::get('/student/profile/{student_id}/exam-results/{exam_id}','ParentController@studentExamResults')->name('parent.student.exam-results');
 
 	Route::get('/profile','ParentController@profile')->name('parent.profile');
 

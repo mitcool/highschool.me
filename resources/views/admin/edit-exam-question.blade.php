@@ -7,6 +7,10 @@
 		<div class="container" style="padding:30px;">
 			<h3 class="text-center">Edit Question</h3>	
 			<div class="row">
+				<div class="col-md-12 my-2 text-center">
+					<label class="font-weight-bold d-block">Course</label>
+					<p class="mb-0">{{ optional(optional($question->subject)->course)->title ?: 'No course assigned' }}</p>
+				</div>
 				<div class="col-md-12 my-2">
 					<label>Your question</label>
             		<textarea  rows="5" name="question" required class="form-control" placeholder="Question">{{ $question->question }}</textarea>

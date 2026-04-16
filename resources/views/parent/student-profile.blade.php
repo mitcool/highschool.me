@@ -462,6 +462,7 @@
                                         $pre_exam_state = $pre_exam_states[$enrolled_course->id] ?? null;
                                         $pre_exam_exam_id = $pre_exam_exam_ids[$enrolled_course->id] ?? null;
                                         $action_exam_date = $action_exam_dates[$enrolled_course->id] ?? null;
+                                        $course_exam_id = $course_exam_ids[$enrolled_course->id] ?? null;
                                     @endphp
                                     <tr>
                                         <td class="enrolled-course-name">{{ $enrolled_course->course->course->title }}</td>
@@ -494,7 +495,7 @@
                                             @elseif($enrolled_course->status == 4)
                                                 <span class="course-pill course-pill-action-pending">Pending</span>
                                             @elseif($enrolled_course->status == 5)
-                                                <span class="course-pill course-pill-action-results">Exam Results</span>
+                                                <a href="{{ route('parent.student.exam-results', [$student->id, $course_exam_id]) }}" class="course-pill course-pill-action-results text-decoration-none">Exam Results</a>
                                             @endif
                                         </td>
                                     </tr>

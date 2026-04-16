@@ -13,4 +13,8 @@ class ExamQuestion extends Model
 
     const TYPE_PRE_EXAM = 0;
     const TYPE_FINAL_EXAM = 1;
+
+    public function subject(){
+        return $this->hasOne('App\CurriculumCourse', 'id', 'subject_id');
+    }
 }
