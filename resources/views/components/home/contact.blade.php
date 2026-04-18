@@ -1,11 +1,10 @@
-<section class="row space white-section">
+<section class="row space white-section" style="padding-bottom:40px !important;">
     <div class="col-md-8 offset-md-2 page-content" >
-        <h2 style="color:#045397" class="text-center">Ready for Your US High School Diploma?</h2>
+        <h2 style="color:#045397" class="text-center">{{ $texts['contact-heading'] }}</h2>
         <hr class="blue-hr">
         <div class="page-content text-center">
-            <p>Rolling Enrollment – Start Anytime.</p>
+            <p>{{ $texts['contact-content'] }}</p>
         </div>
-
         <x-three-buttons />
     </div>
 </section>

@@ -1,8 +1,8 @@
 <div class="text-center space white-section">
-    <h2 class="section-headings" style="color:#045397">Media</h2>
+    <h2 class="section-headings" style="color:#045397">{{ $texts['media-heading'] }}</h2>
     <hr class="blue-hr">
     <div class="page-content text-center">
-        <p>Recognized where ambition lives. Covered by outlets that matter. Amplified for the world to see.</p>
+        <p>{{ $texts['media-content'] }}</p>
     </div>
     <div class="container mt-5">
         <div class="row justify-content-center">

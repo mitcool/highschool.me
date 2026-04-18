@@ -3,17 +3,14 @@
 namespace App\View\Components\Home;
 
 use Illuminate\View\Component;
+use Illuminate\Http\Request;
 
 class Journey extends Component
 {
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $texts;
+    public function __construct(Request $request)
     {
-        //
+        $this->texts = $request->all()['texts'];       
     }
 
     /**

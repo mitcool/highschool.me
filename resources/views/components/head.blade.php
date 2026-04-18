@@ -15,8 +15,9 @@
 		<link rel="icon" type="image/png" sizes="16x16" href="{{asset('images/favicon.png')}}">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,700;1,200&display=swap" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&family=Roboto:wght@300&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Quintessential&display=swap" rel="stylesheet">
+		
+
 		<link rel="canonical" href="{{ url(Request::fullUrl()) }}"/>
 		
 		

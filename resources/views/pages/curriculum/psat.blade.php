@@ -107,8 +107,7 @@
     .description ul li{
         list-style: none;
         padding: 10px 30px;
-                background-image: url({{ asset('images/orange-checkmark.webp') }});
-
+        background-image: url({{ asset('images/orange-checkmark.webp') }});
         background-repeat: no-repeat;
         background-position: left center;
         background-size: 30px;
