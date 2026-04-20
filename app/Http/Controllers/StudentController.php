@@ -50,6 +50,8 @@ use App\Mail\NewDiplomaPrintingRequest;
 use App\Mail\ExamSubmitted;
 use App\Mail\ExamSubmittedAdmin;
 use App\Mail\ExamNoAttended;
+use App\Mail\IntegrityViolationAdmin;
+use App\Mail\IntegrityViolation;
 
 use Carbon\Carbon;
 use DateTime;
@@ -286,12 +288,20 @@ class StudentController extends Controller
 
     public function failExam($exam_id){
         $exam = Exam::find($exam_id);
+        $parent = $exam->student->student_details->parent;
         if($exam->status == 0){
             $exam->update([
             'status' => Exam::STATUS_EVALUATED,
             'grade' => 0
         ]);
         }
+        
+        try{
+            Mail::to($parent->email)->send(new IntegrityViolation($parent,$exam));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+        $this->notifyAdmins(new IntegrityViolationAdmin($exam));
         return;
     }
 
@@ -911,6 +921,13 @@ class StudentController extends Controller
             'group' => $group_sessions_permission
         ];
         return $permissions;
+    }
+
+    public function examProtocol($exam_id){
+        $exam = Exam::find($exam_id);
+        $exam_answers = StudentAnswer::where('exam_id',$exam_id)->get();
+        $pdf = Pdf::loadView('student.protocol',['exam'=>$exam,'exam_answers' => $exam_answers])->set_option('isRemoteEnabled',true)->setPaper('a4');
+        return $pdf->stream();
     }
        
 }

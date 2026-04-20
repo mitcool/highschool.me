@@ -249,5 +249,11 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/restricted-countries', 'AdminController@restrictedCountries')->name('admin.restricted-countries');
 	Route::post('/update-country','AdminController@updateRestrictedCountry')->name('update-country');
 
-});
+	#Other Staff
+	Route::get('/other-staff','AdminController@otherStaff')->name('admin-other-staff');
+	Route::post('/other-staff/add','AdminController@otherStaffAdd')->name('other-staff-add');
+	Route::post('/other-staff/edit','AdminController@otherStaffEdit')->name('other-staff-edit');
+	Route::post('/other-staff/delete','AdminController@otherStaffDelete')->name('other-staff-delete');
 
+
+});

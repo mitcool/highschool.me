@@ -181,7 +181,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-8">
-                                    <input required class="form-control" name="phone" value="{{ optional($educator->invoice_details)->phone }}"/>
+                                    <input type="number" required class="form-control" name="phone" value="{{ optional($educator->invoice_details)->phone }}"/>
                                 </div>
                             </div>
                             <br>

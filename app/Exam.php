@@ -13,11 +13,12 @@ class Exam extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['datetime','course_id','student_id','educator_id','type','status','grade','comment','pre_exam','passed_at','reminder'];
+    protected $fillable = ['datetime','course_id','student_id','educator_id','type','status','grade','comment','pre_exam','passed_at','reminder','admin_id'];
 
      protected $casts = [
         'datetime' => 'datetime',
-        'passed_at'=> 'datetime'
+        'passed_at'=> 'datetime',
+        'submitted_at' => 'datetime'
     ];
 
     const STATUS_APPOINTED = 0;
@@ -46,6 +47,10 @@ class Exam extends Model
 
     public function answers(){
         return $this->hasMany('App\User','id','educator_id');
+    }
+
+    public function admin(){
+        return $this->hasOne('App\User','id','admin_id');
     }
 
     public function localdate(){

@@ -100,7 +100,7 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
 
                                                     <p style="{{ $style['paragraph-black'] }}">Grade: {{$exam->grade}}</p>
 
-                                                    <p style="{{ $style['paragraph-black'] }}">We encourage you to log in and review the full results, which include a detailed performance breakdown and written feedback from the board of examiners. This feedback is an important part of the learning process — it is designed to highlight strengths, identify areas for growth, and help guide the next steps in {{student_first_name}}'s academic journey.</p>
+                                                    <p style="{{ $style['paragraph-black'] }}">We encourage you to log in and review the full results, which include a detailed performance breakdown and written feedback from the board of examiners. This feedback is an important part of the learning process — it is designed to highlight strengths, identify areas for growth, and help guide the next steps in {{$exam->student->name}}'s academic journey.</p>
 
                                                     <p style="{{ $style['paragraph-black'] }}">We recommend taking some time to go through the results together with {{$exam->student->name}}. Understanding the feedback and discussing what it means for the road ahead is one of the most valuable things you can do at this stage.</p>
 

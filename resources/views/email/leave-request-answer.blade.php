@@ -92,22 +92,39 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear user,
+                                                        Dear {{ $parent->name }},
                                                     </h1>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        Your request for leave is:
-                                                        <br/>
-                                                    </p>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        <b>{!! $mailObject !!}</b>
-                                                    </p>
-                                           
+                                                    @if($leave->status == 1)
+                                                        <p style="{{ $style['paragraph-black'] }}">We are pleased to let you know that the absence request for {{$leave->student->name}} covering the period from {{$leave->start_date->format('d.m.Y')}} to {{$leave->end_date->format('d.m.Y')}} has been reviewed and approved. We hope this period brings the rest, recovery, or time away that {{$leave->student->name}} needs.</p>
+
+                                                        <p style="{{ $style['paragraph-black'] }}">Any affected coursework, assessments, or deadlines will be adjusted to account for the approved absence. Full details of how this affects {{$leave->student->name}}'s academic calendar are available in the parent portal — please take a moment to review them so you are prepared for the return.</p>
+
+                                                        <p style="{{ $style['paragraph-black'] }}">When {{$leave->student->name}} is ready to come back to studies, the student portal will reflect any updated schedules or catch-up requirements. Our team is available to support a smooth return if any questions arise at that point.</p>
+
+                                                        <p style="{{ $style['paragraph-black'] }}">→ Go to Parent Portal: <a href="{{ route('login') }}">{{ route('login') }}</a></p>
+
+                                                        <p style="{{ $style['paragraph-black'] }}">Thank you for keeping us informed and for following the correct process. It helps us take better care of {{$leave->student->name}}.</p>
+                                                   
+                                                    @else
+                                                         <p style="{{ $style['paragraph-black'] }}">Thank you for submitting the absence request for  {{$leave->student->name}} covering the period from {{$leave->start_date->format('d.m.Y')}} to {{$leave->end_date->format('d.m.Y')}}. After careful review, we are unfortunately unable to approve the request at this time.</p>
+
+                                                        <p style="{{ $style['paragraph-black'] }}">Reason: {{$leave->reason}}</p>
+
+                                                        <p style="{{ $style['paragraph-black'] }}">We want to make sure you have a clear understanding of the reasoning behind this decision. Our absence policies are in place to protect {{$leave->student->name}}'s academic continuity and ensure they are able to meet the requirements of their program. Decisions in this area are always made with the student's progress and best interests in mind.</p>
+
+                                                        <p style="{{ $style['paragraph-black'] }}">If you believe there are additional circumstances that were not fully considered, or if you would like to discuss this decision with our administration team, please reach out through the parent portal. We are open to the conversation and committed to finding the best path forward for {{$leave->student->name}} together.</p>
+
+                                                        <p style="{{ $style['paragraph-black'] }}">→ Go to Parent Portal: <a href="{{ route('login') }}">{{ route('login') }}</a></p>
+
+                                                        <p style="{{ $style['paragraph-black'] }}">Thank you for keeping us informed and for following the correct process. It helps us take better care of {{$leave->student->name}}.</p>
+
+                                                    @endif
                                                     
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
                                                         Kind regards,<br>Your HIGHSCHOOL.ME support team
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
+                                                    
                                                 </td>
                                             </tr>
                                         </table>

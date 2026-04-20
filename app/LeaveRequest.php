@@ -17,7 +17,8 @@ class LeaveRequest extends Model
         'message',
         'start_date',
         'end_date',
-        'status'
+        'status',
+        'reason'
     ];
 
     protected $casts = [

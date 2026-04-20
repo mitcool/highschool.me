@@ -13,15 +13,20 @@ class LeaveRequestAnswer extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $mailObject;
-
-    public function __construct($mailObject) {
-        $this->mailObject = $mailObject;
+    public $leave;
+    public function __construct($leave) {
+        $this->leave = $leave;
+        
     }
 
     public function build() {   
+        $subject = $this->leave->status == 1 
+            ? 'Absence Request Approved — '.$this->leave->student->name 
+            : 'Absence Request — '.$this->leave->student->name.' — Unable to Approve at This Time';
+        $parent = $this->leave->student->student_details->parent;
         return $this->view('email.leave-request-answer')
-                    ->subject('Application for leave')
-                    ->with(['mailObject' => $this->mailObject]); 
+                    ->subject($subject)
+                    ->with('parent',$parent)
+                    ->with(['leave' => $this->leave]); 
     }
 }

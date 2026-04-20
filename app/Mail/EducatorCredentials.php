@@ -13,7 +13,7 @@ class EducatorCredentials extends Mailable
 
     public $educator;
     public $password;
-    public function __construct()
+    public function __construct($educator,$password)
     {
         $this->educator = $educator;
         $this->password = $password;

@@ -54,7 +54,7 @@ $style = [
     /* Buttons ------------------------------ */
 
     'button' => 'display: block; display: inline-block; width: 320px; min-height: 20px; padding: 10px;
-                 background-color: #26BA99; border-radius: 30px; color: #ffffff; font-size: 15px; line-height: 25px;
+                 background-color: #0863AC; border-radius: 30px; color: #ffffff; font-size: 15px; line-height: 25px;
                  text-align: center; text-decoration: none; -webkit-text-size-adjust: none; font-weight: 550;',
 
     'button--green' => 'background-color: #22BC66;',
@@ -92,42 +92,24 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear {{ $educator->name }},
+                                                        Dear {{ $parent->name }},
                                                     </h1>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        We are delighted to welcome you to ONSITES High School. Your educator account has been successfully created and activated, and we are truly glad to have you as part of our teaching team.                                                        
-                                                        <br/>
-                                                    </p>
-                                                       <p style="{{ $style['paragraph-black'] }}">
-                                                        Your login credentials are below. Please log in as soon as possible and change your password immediately.                                                        <br/>
-                                                    </p>
-                                                     
-                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        <span style="{{$style['bold']}}">Login email: {{ $educator->email }}
-                                                        <br/>
-                                                    
-                                                        <span style="{{$style['bold']}}">Password: {{ $password }}
-                                                        <br/>
-                                                    </p>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        Please note that each time you log in — including the very first time — you will also be asked to enter a PIN code sent to your registered phone number. This is a required security step at every login. Make sure your phone is nearby whenever you access the educator portal.
-                                                    </p>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        Security is a shared responsibility across our school, and keeping your account credentials private helps protect the integrity of student data and academic records. If you experience any difficulty accessing the portal, please contact the administration team without delay.
-                                                    </p>
+                                                   
+                                                    <p style="{{ $style['paragraph-black'] }}">We are writing to inform you of a serious matter that has arisen in connection with {{$exam->student->name}}'s enrollment at ONSITES High School, and we want to ensure you have full and clear information as quickly as possible.</p>
 
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        Once you are inside the educator portal, you will find your assigned courses, student information, assessment tools, and all the resources you need to get started. We encourage you to take some time to explore the platform before your first session. If any aspect of the setup is unclear or you have questions about your assignments, the administration team is available and ready to support you.
-                                                    </p>
+                                                    <p style="{{ $style['paragraph-black'] }}">Following a thorough review, {{$exam->student->name}} has been found in violation of the school's academic integrity policy in connection with the {{$exam->course->course->title}} examination. As a result of this finding, the exam has been recorded as failed in accordance with the guidelines set out in the ONSITES High School Student Code of Conduct.</p>
 
-                                                   <p style="{{ $style['paragraph-black'] }}"> → Log In to Educator Portal: <a href="{{route('login')}}">{{route('login')}}</a></p>
+                                                    <p style="{{ $style['paragraph-black'] }}">We understand that receiving this kind of news is never easy, and we want you to know that this communication comes from a place of transparency, not judgment. Academic integrity is a foundational principle at ONSITES High School — one that protects the value of every qualification our students earn — and it is our responsibility to uphold it consistently and fairly.</p>
 
-                                                   <p style="{{ $style['paragraph-black'] }}">We are confident that your expertise and commitment will make a meaningful contribution to our students' education. We look forward to building something great together.</p>
+                                                    <p style="{{ $style['paragraph-black'] }}">The full details of this decision, including the specific grounds for the finding, are available in the parent portal. We strongly encourage you to review them carefully. If you have questions, concerns, or would like to discuss the matter directly with our administration team, please do not hesitate to reach out — we are here to listen and to help navigate the path forward.</p>
 
+                                                    <p style="{{ $style['paragraph-black'] }}">→ Go to Parent Portal: <a href="{{ route('login') }}">{{ route('login') }}</a></p>
 
+                                                    <p style="{{ $style['paragraph-black'] }}">We remain committed to supporting {{$exam->student->name}}'s education, and we hope this matter can serve as a turning point toward continued progress. Please feel free to contact us at any time.</p>
+                                                
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Kind regards,<br>ONSITES High School
+                                                        Kind regards,<br>Your HIGHSCHOOL.ME support team
                                                     </p>
                                                     
                                                 </td>
@@ -159,6 +141,3 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
     </table>
 </body>
 </html>
-
-
-

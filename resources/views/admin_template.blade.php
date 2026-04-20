@@ -376,6 +376,10 @@
                     <i class="fas fa-user-tie"></i>
                     <span>Educators</span>
                 </a>
+                <a class="admin-mobile-menu-link" href="{{ route('admin-other-staff') }}">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Other Staff</span>
+                </a>
                 <a class="admin-mobile-menu-link" href="{{ route('admin-exams') }}">
                     <i class="fas fa-folder"></i>
                     <span>Exams</span>
@@ -656,6 +660,13 @@
                             <span>Educators</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{ route('admin-other-staff') }}">
+                            <i class="fas fa-user-tie"></i>
+                            <span>Other Staff</span>
+                        </a>
+                    </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-exams') }}">
                             <i class="fas fa-folder"></i>

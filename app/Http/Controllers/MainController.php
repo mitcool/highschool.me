@@ -28,6 +28,8 @@ use App\Mail\Contact;
 use App\Mail\ContactModal;
 use App\Mail\NewHelpDesk;
 use App\Mail\VerificationProfile;
+use App\Mail\EarlyRegistrationEmail;
+use App\Mail\NewHelpDeskAdmin;
 
 use App\Text;
 use App\User;
@@ -94,7 +96,6 @@ use App\Http\Requests\ContactModalRequest;
 use App\Http\Requests\PhoneContactRequest;
 use App\Http\Requests\ProgramContactRequest;
 
-use App\Mail\EarlyRegistrationEmail;
 
 class MainController extends Controller
 {
@@ -402,15 +403,18 @@ public function sendHelpDeskQustion(Request $request){
   $receiver = HelpDesk::where('user_id','!=',$user->id)->where('slug',$slug)->first(); //other side of comunication
   if(!$receiver){
     $user = User::where('role_id',1)->first();
+    $this->notifyAdmins(new NewHelpDeskAdmin($help_desk));
+    
   }
   else{
-    $user = $receiver->user;
+     $user = $receiver->user;
+     try{
+          Mail::to($user->email)->send(new NewHelpDesk($user,$help_desk));
+      }catch(\Exception $e){
+        info($e->getMessage());
+      }
   }
-  try{
-      Mail::to($user->email)->send(new NewHelpDesk($user,$slug));
-  }catch(\Exception $e){
-    info($e->getMessage());
-  }
+ 
   Notification::add($user->id,'New message in Help Desk section');
   return redirect()->route('single-help-desk',$slug)->with('success_message','Your question submitted successfully');
 }

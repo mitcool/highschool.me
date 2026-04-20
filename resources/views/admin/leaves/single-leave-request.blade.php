@@ -189,7 +189,7 @@
             <div class="modal-body" id="confirmModalBody">
                 Are you sure?
             </div>
-
+             <div id="reason" class="p-3"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
 
@@ -197,6 +197,7 @@
                 <form id="confirmModalForm" method="POST" action="">
                     @csrf
                     @method('PATCH')
+                   
                     <button type="submit" id="confirmModalBtn" class="btn btn-primary">Confirm</button>
                 </form>
             </div>
@@ -215,12 +216,15 @@
         var message = button.data('message') || 'Are you sure?';
         var confirmText = button.data('confirm-text') || 'Confirm';
         var confirmClass = button.data('confirm-class') || 'btn-primary';
-
+        $('#reason').html('');
         $('#confirmModalTitle').text(title);
         $('#confirmModalBody').text(message);
 
         $('#confirmModalForm').attr('action', action);
+        if(title == 'Deny request?'){
+             $('#reason').append(`<textarea class="form-control p-3" placeholder="Reason..." name="reason" required form="confirmModalForm"></textarea>`)
 
+        }
         var $btn = $('#confirmModalBtn');
         $btn.text(confirmText);
         $btn.removeClass('btn-primary btn-success btn-danger').addClass(confirmClass);

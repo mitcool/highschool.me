@@ -505,7 +505,11 @@ class ParentController extends Controller
 
         $student = User::find($student_id);
         $this->notifyAdmins(new StudentCreatedAdmin(auth()->user(),$student));
-
+        try{
+            Mail::to(auth()->user()->email)->send(new ApplicationFeePaid(auth()->user(),$student));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }  
         try{
             Mail::to(auth()->user()->email)->send(new ApplicationFeePaid(auth()->user(),$student));
         }catch(\Exception $e){
@@ -1303,6 +1307,8 @@ class ParentController extends Controller
         $total = $enrollement_fee + $program_fee;
         
         $this->createInvoice($total,'Transfer program enrollment');
+        
+        $this->insertAdditionalCourses($plan_id,$student_id);
 
         $expires_at = $type == 1 
                 ? Carbon::now()->addMonths(1)->subDays(1) 

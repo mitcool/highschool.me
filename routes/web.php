@@ -88,7 +88,7 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::post('/transfer-program-pay/{student_id}','ParentController@transferProgramPay')->name('parent.transfer-program-pay');
 
-	Route::get('/transfer-program-pay-success/{student_id}/{type}','ParentController@transferProgramPaySuccess')->name('parent.transfer-pay-success');
+	Route::get('/transfer-program-pay-success/{student_id}/{type}/{plan_id}','ParentController@transferProgramPaySuccess')->name('parent.transfer-pay-success');
 
 	Route::get('/reset-password', 'ParentController@resetPassPage')->name('parent.reset.password.page');
 
@@ -137,6 +137,7 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::post('/book-mentoring-session/{session_id}','ParentController@bookMentoringSession')->name('book-mentoring-session');
 	Route::post('/book-coaching-session/{session_id}','ParentController@bookCoachingSession')->name('book-coaching-session');
 	Route::get('/book-session-success','ParentController@bookSessionSuccess')->name('book-session-success');
+	Route::get('/exam-protocol/{exam_id}','StudentController@examProtocol')->name('exam-protocol');
 	#notifications
 	Route::get('/all-notifications', 'StudentController@showNotifications')->name('student.notifications');
 });

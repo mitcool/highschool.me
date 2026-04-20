@@ -14,6 +14,7 @@
                         <th>Subject</th>
                         <th>Pre-Exam Link</th>
                         <th>Exam Link</th>
+                        <th>Protocol</th>
                     </tr>
                     @endif
                 </thead>
@@ -40,6 +41,11 @@
                                     <span class="badge badge-secondary"> <i class="fas fa-clock"></i> Pending results</span>
                                 @endif
                               
+                            </td>
+                            <td>
+                                @if($exam->status == 2)
+                                    <a href="{{ route('exam-protocol',$exam->id) }}">Link&#187;</a>
+                                @endif
                             </td>
                         </tr>
                     @empty

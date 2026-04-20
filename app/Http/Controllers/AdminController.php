@@ -100,7 +100,7 @@ use App\Country;
 use App\StudentLocation;
 use App\Ethnicity;
 use App\StudentPlan;
-
+use App\OtherStaff;
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
 use App\Mail\ExamDate;
@@ -1428,11 +1428,11 @@ class AdminController extends Controller
             info($e->getMessage());
         }
 
-        try{
-            Mail::to($educator->email)->send(new EducatorCategoriesEmail($educator));
-        }catch(\Exception $e){
-            info($e->getMessage());
-        }
+        // try{
+        //     Mail::to($educator->email)->send(new EducatorCategoriesEmail($educator));
+        // }catch(\Exception $e){
+        //     info($e->getMessage());
+        // }
 
         Notification::add($educator->id,'Welcome to HIGHSCHOOL.ME');
         Notification::add(auth()->id(),'Educator created successfully');
@@ -1610,6 +1610,7 @@ class AdminController extends Controller
     public function createExam(Request $request){
         $exam = $request->only('date','time','course_id','student_id','educator_id','type','pre_exam');
         $exam['datetime'] = $request->date.' '.$request->time;
+        $exam['admin_id'] = auth()->id();
         $exam['status']=0;
         $new_exam = Exam::create($exam);
         $parent=  $new_exam->student->student_details->parent;
@@ -1912,15 +1913,14 @@ class AdminController extends Controller
             'status' => LeaveRequest::STATUS_APPROVED
         ]);
 
-        $statusText = $leave->status_text;
-
-        $admin = User::where('role_id', 1)->first();
-        
+        $parent_email = ($leave->student->student_details->parent->email);
         try{
-            Mail::to($admin->email)->send(new LeaveRequestAnswer($statusText));
+            Mail::to($parent_email)->send(new LeaveRequestAnswer($leave));
         }catch(\Exception $e){
             info($e->getMessage());
         }
+
+       
         Notification::add($leave->student_id,'Your leave request has been approved');
         Notification::add(
             auth()->id(),
@@ -1931,21 +1931,21 @@ class AdminController extends Controller
     }
 
     public function denyLeaveRequest(Request $request, $request_id) {
+        $request->validate([
+            'reason'=>'required'
+        ]);
+        
         $leave = LeaveRequest::findOrFail($request_id);
 
         $leave->update([
-            'status' => LeaveRequest::STATUS_DENIED
+            'status' => LeaveRequest::STATUS_DENIED,
+            'reason' => $request->reason
         ]);
-
-        $statusText = $leave->status_text;
-
-        $admins = User::where('role_id', 1)->get();
-        foreach($admins as $admin) {
-            try{
-                Mail::to($admin->email)->send(new LeaveRequestAnswer($statusText));
-            }catch(\Exception $e){
-                info($e->getMessage());
-            }
+        $parent_email = ($leave->student->student_details->parent->email);
+        try{
+            Mail::to($parent_email)->send(new LeaveRequestAnswer($leave));
+        }catch(\Exception $e){
+            info($e->getMessage());
         }
 
         Notification::add(
@@ -2068,4 +2068,25 @@ class AdminController extends Controller
         return redirect()->back()->with('success_message', 'Country updated successfully');
     }
 
+    public function otherStaff(){
+        $other_staff = OtherStaff::orderBy('id','desc')->get();
+        return view('admin.other-staff')
+            ->with('other_staff',$other_staff);
+    }
+
+    public function otherStaffAdd(Request $request){
+        $staff_member =  $request->except('_token');
+        OtherStaff::create($staff_member);
+        return redirect()->back()->with('success_message', 'Staff member created successfully');
+    }
+    public function otherStaffEdit(Request $request){
+        $staff_member =  $request->except('_token','id');
+        OtherStaff::find($request->id)->update($staff_member);
+        return redirect()->back()->with('success_message', 'Staff member updated successfully');
+       
+    }
+    public function otherStaffDelete(Request $request){
+        OtherStaff::find($request->id)->delete();
+        return redirect()->back()->with('success_message', 'Staff member deleted successfully');
+    }
 }

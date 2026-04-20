@@ -24,6 +24,6 @@ class ExamResultParent extends Mailable
         return $this->view('email.exam-result-parent')
             ->with('parent',$this->parent)
             ->with('exam',$this->exam)
-            ->subject($exam->course->course->title.' Results Are In — '.$student->name.'s Grade Is Ready to View');
+            ->subject($this->exam->course->course->title.' Results Are In — '.$this->exam->name.'s Grade Is Ready to View');
     }
 }

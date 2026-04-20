@@ -54,7 +54,7 @@ $style = [
     /* Buttons ------------------------------ */
 
     'button' => 'display: block; display: inline-block; width: 320px; min-height: 20px; padding: 10px;
-                 background-color: #26BA99; border-radius: 30px; color: #ffffff; font-size: 15px; line-height: 25px;
+                 background-color: #0863AC; border-radius: 30px; color: #ffffff; font-size: 15px; line-height: 25px;
                  text-align: center; text-decoration: none; -webkit-text-size-adjust: none; font-weight: 550;',
 
     'button--green' => 'background-color: #22BC66;',
@@ -92,39 +92,20 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear {{ $educator->name }},
+                                                        Dear admin,
                                                     </h1>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        We are delighted to welcome you to ONSITES High School. Your educator account has been successfully created and activated, and we are truly glad to have you as part of our teaching team.                                                        
-                                                        <br/>
-                                                    </p>
-                                                       <p style="{{ $style['paragraph-black'] }}">
-                                                        Your login credentials are below. Please log in as soon as possible and change your password immediately.                                                        <br/>
-                                                    </p>
-                                                     
-                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        <span style="{{$style['bold']}}">Login email: {{ $educator->email }}
-                                                        <br/>
-                                                    
-                                                        <span style="{{$style['bold']}}">Password: {{ $password }}
-                                                        <br/>
-                                                    </p>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        Please note that each time you log in — including the very first time — you will also be asked to enter a PIN code sent to your registered phone number. This is a required security step at every login. Make sure your phone is nearby whenever you access the educator portal.
-                                                    </p>
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        Security is a shared responsibility across our school, and keeping your account credentials private helps protect the integrity of student data and academic records. If you experience any difficulty accessing the portal, please contact the administration team without delay.
-                                                    </p>
+                                                        <p style="{{ $style['paragraph-black'] }}">An academic integrity violation has been recorded for {{$exam->student->name}} {{$exam->student->surname}} in connection with the examination for {{$exam->course->course->title}}. The exam has been marked as failed and the parent has been notified via the standard parent notification process.</p>
 
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        Once you are inside the educator portal, you will find your assigned courses, student information, assessment tools, and all the resources you need to get started. We encourage you to take some time to explore the platform before your first session. If any aspect of the setup is unclear or you have questions about your assignments, the administration team is available and ready to support you.
-                                                    </p>
+                                                        <p style="{{ $style['paragraph-black'] }}">Please log in to the admin panel to review the case file and ensure that all documentation associated with this violation is complete, properly recorded, and filed in accordance with school policy. Accurate and thorough documentation is essential — both for the integrity of the process itself and to ensure the school's position is fully supported should the matter be queried or appealed at any stage.</p>
 
-                                                   <p style="{{ $style['paragraph-black'] }}"> → Log In to Educator Portal: <a href="{{route('login')}}">{{route('login')}}</a></p>
+                                                        <p style="{{ $style['paragraph-black'] }}">If there are any procedural steps specific to this case that have not yet been completed — such as outstanding decisions under the Student Code of Conduct or additional communications to be issued — please identify them and action them promptly. If coordination with another team member is required, please proceed accordingly.</p>
 
-                                                   <p style="{{ $style['paragraph-black'] }}">We are confident that your expertise and commitment will make a meaningful contribution to our students' education. We look forward to building something great together.</p>
+                                                        <p style="{{ $style['paragraph-black'] }}">Academic integrity cases require careful, fair, and well-documented handling, and we appreciate your diligence in managing this one thoroughly.</p>
 
+                                                        <p style="{{ $style['paragraph-black'] }}">→ Go to Parent Portal: <a href="{{ route('login') }}">{{ route('login') }}</a></p>
 
+                                                        <p style="{{ $style['paragraph-black'] }}">Academic integrity cases require careful, fair, and well-documented handling, and we appreciate your diligence in managing this one thoroughly.</p>
+                                                   
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
                                                         Kind regards,<br>ONSITES High School
@@ -159,6 +140,3 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
     </table>
 </body>
 </html>
-
-
-

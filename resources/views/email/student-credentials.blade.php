@@ -104,7 +104,7 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                                     </p>
                                                      
                                                      <p style="{{ $style['paragraph-black'] }}">
-                                                        <span style="{{$style['bold']}}">Login email:: {{ $user->email }}
+                                                        <span style="{{$style['bold']}}">Login email: {{ $user->email }}
                                                         <br/>
                                                     
                                                         <span style="{{$style['bold']}}">Password: {{ $password }}

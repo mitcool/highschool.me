@@ -7,23 +7,24 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ExamSubmitted extends Mailable
+class IntegrityViolation extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $parent;
     public $exam;
+
     public function __construct($parent,$exam)
     {
-        $this->parent = $parent;
-        $this->exam = $exam;
+       $this->parent = $parent;
+       $this->exam = $exam;
     }
 
     public function build()
     {
-        return $this->view('email.exam-submitted')
+        return $this->view('email.integrity-violation')
+            ->subject('An Important Matter Regarding' .$this->exam->student->name.'\'s Academic Record')
             ->with('parent',$this->parent)
-            ->with('exam',$this->exam)
-            ->with($this->exam->student->name.' Has Submitted Their '.$exam->course->course->title.' Exam — Well Done');
+            ->with('exam',$this->exam);
     }
 }
