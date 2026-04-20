@@ -61,6 +61,10 @@
       padding: 1.25rem 1.5rem 1.5rem;
       border-top: 1px solid #ddd;
     }
+
+    h2 {
+      color: white!important;
+    }
 	</style>
 @endsection
 
@@ -74,8 +78,8 @@
 	<img src="{{ asset('/images/grad-requirements.png') }}" class="w-100">
 	<div class="container page-content">
 		<h1 class="text-center page-headings">{{ $texts['heading'] }}</h1>
-    <h2>{{ $texts['subheading'] }}</h2>
-    <p>{{ $texts['intro'] }}</p>
+    <h4 class="text-center">{{ $texts['subheading'] }}</h4>
+    <p class="mt-5">{{ $texts['intro'] }}</p>
 	</div>
   <div class="container page-content">
       <section class="requirements-section">

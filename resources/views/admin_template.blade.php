@@ -408,6 +408,10 @@
                     <i class="fas fa-user-graduate"></i>
                     <span>Students in Spotlights</span>
                 </a>
+                <a class="admin-mobile-menu-link" href="{{ route('admin.statistics') }}">
+                    <i class="fas fa-table"></i>
+                    <span>Statistics</span>
+                </a>
 
                 <div class="admin-mobile-menu-section">My Profile</div>
                 <a class="admin-mobile-menu-link" href="{{ route('admin.change-password') }}">
@@ -701,6 +705,13 @@
                         <a class="nav-link collapsed" href="{{ route('admin.students-in-spotlights') }}">
                             <i class="fas fa-user-graduate"></i>
                             <span>Students in Spotlights</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <hr class="sidebar-divider">
+                        <a class="nav-link collapsed" href="{{ route('admin.statistics') }}">
+                            <i class="fas fa-table"></i>
+                            <span>Statistics</span>
                         </a>
                     </li>
                     <hr class="sidebar-divider">

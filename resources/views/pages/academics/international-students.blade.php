@@ -44,7 +44,7 @@
 <img src="{{ asset('images/international-students-cover.png') }}" alt="">
 <div class="container-fluid bg-white main_page_container mb-2">	
 		<div class="row justify-content-center" >		
-			<div class="col-lg-8 shadow text-justify p-4 bg-white page-content" style="margin: 0 auto;">
+			<div class="col-lg-8 text-justify p-4 bg-white page-content" style="margin: 0 auto;">
 				<h1 class="text-center font-weight-bold page-headings">{{ $texts['heading'] }}</h1>
 				{!! $texts['intro'] !!}
 				<div class="row">

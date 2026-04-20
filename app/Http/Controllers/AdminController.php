@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use Carbon\Carbon;
@@ -96,6 +97,9 @@ use App\Notification;
 use App\CteProgram;
 use App\CteJob;
 use App\Country;
+use App\StudentLocation;
+use App\Ethnicity;
+use App\StudentPlan;
 
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
@@ -2063,4 +2067,5 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success_message', 'Country updated successfully');
     }
+
 }

@@ -137,6 +137,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('change-educator-category-status/{action}/{id}','AdminController@changeEducatorCategoryStatus')->name('change-educator-category-status');
 	Route::get('/pay-to-educator/{educator_id}', 'AdminController@payToEducatorPage')->name('pay-to-educator');
 	Route::post('/pay-to-educator-action/{educator_id}', 'AdminController@payToEducator')->name('store-pay-to-educator');
+	Route::get('/statistics', 'AdminStatisticsController@statistiscPage')->name('admin.statistics');
 
 	//Exams
 	Route::get('/exams','AdminController@exams')->name('admin-exams');
@@ -249,3 +250,4 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/update-country','AdminController@updateRestrictedCountry')->name('update-country');
 
 });
+

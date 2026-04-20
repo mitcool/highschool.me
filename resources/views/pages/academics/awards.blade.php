@@ -49,7 +49,7 @@
 <img src="{{ asset('images/go.png') }}" alt="" class="w-100">	
 <div class="container-fluid bg-white main_page_container">	
 		<div class="row justify-content-center" >		
-			<div class="col-lg-9 shadow text-center p-4 bg-white" style="margin: 20px auto;">
+			<div class="col-lg-9 text-center p-4 bg-white" style="margin: 20px auto;">
 				<h1 class="page-headings">{{ $texts['heading'] }}</h1>
 				<div class="page-content">{!! $texts['intro'] !!}</div>
 				<hr>

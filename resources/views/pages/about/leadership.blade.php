@@ -35,7 +35,7 @@
 
 <div class="container-fluid bg-white main_page_container mb-3">	
     <div class="row justify-content-center" >		
-        <div class="col-lg-8 shadow  p-4 page-content bg-white text-justify" style="margin: 0 auto;">
+        <div class="col-lg-8  p-4 page-content bg-white text-justify" style="margin: 0 auto;">
             <div class="page-content">
                 <div class="">
                     <h1 class="text-center page-headings">{{ $texts['heading'] }}</h1>

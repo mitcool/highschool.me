@@ -145,13 +145,13 @@
 <img src="{{ asset('images/cheerful-teenagers-classroom.png') }}" alt="" class="w-100">
 <div class="container-fluid main-container" >
     <div class="row text-center mx-auto">
-        <div class="col-md-12">
+        <div class="col-md-8" style="margin: 0 auto;">
             <h1 class="text-center page-headings">{{ $texts['heading'] }}</h1> <br>
             <h2 class="text-center font-weight-bold" style="margin-bottom:20px;font-size:1.4rem;">{{ $texts['subheading'] }}</h2>
             <div class="page-content">{!! $texts['intro'] !!}</div>
         </div>
     
-        <div class="col-md-12" style="margin:30px 0;">{!! $texts['intro-2'] !!}</div>
+        <div class="col-md-8" style="margin: 0 auto;">{!! $texts['intro-2'] !!}</div>
     
     </div>
 </div>
