@@ -30,6 +30,14 @@ class EnrollmentTable extends Component
             'categories.curriculumCourses.course',
             'curriculumCourses.course'
         ])->orderBy('id')->get();
+        $this->enrolled_courses = StudentEnrolledCourse::where('user_id',$student->id)->get();
+        $this->enrolled_courses_ids = $this->enrolled_courses->pluck('catalog_course_id')->toArray();
+        $this->completed_courses_ids = $this->enrolled_courses->where('status',StudentEnrolledCourse::STATUS_COMPLETED)->pluck('catalog_course_id')->toArray();
+        $this->in_progress_courses_ids = $this->enrolled_courses->where('status','<',StudentEnrolledCourse::STATUS_COMPLETED)->pluck('catalog_course_id')->toArray();
+        $this->student = $student;
+        $this->track = $this->student->student_details->track;
+        
+        $this->transfer_program_courses = CurriculumCourse::where('curriculum_type_id',11)->get();
 
         foreach($this->curriculumTypes as $type){
             
@@ -57,13 +65,22 @@ class EnrollmentTable extends Component
             }
         }
 
-        $this->enrolled_courses = StudentEnrolledCourse::where('user_id',$student->id)->get();
-        $this->enrolled_courses_ids = $this->enrolled_courses->pluck('catalog_course_id')->toArray();
-        $this->completed_courses_ids = $this->enrolled_courses->where('status',StudentEnrolledCourse::STATUS_COMPLETED)->pluck('catalog_course_id')->toArray();
-        $this->in_progress_courses_ids = $this->enrolled_courses->where('status','<',StudentEnrolledCourse::STATUS_COMPLETED)->pluck('catalog_course_id')->toArray();
-        $this->student = $student;
-        $this->track = $this->student->student_details->track;
-        $this->transfer_program_courses = CurriculumCourse::where('curriculum_type_id',11)->get();
+        
+        if($this->track == 3){
+            $core_courses_check = AdditionalCourse::where('student_id',$student->id)
+                    ->where('course_type',0)
+                    ->where('status',0)
+                    ->count();
+            $elective_courses_check = AdditionalCourse::where('student_id',$student->id)
+                    ->where('course_type',1)
+                    ->where('status',0)
+                    ->count();
+            $this->curriculumTypes[0]->permission = $core_courses_check > 0 ? true : false;
+            $this->curriculumTypes[1]->permission = $elective_courses_check > 0 ? true : false;
+            $this->curriculumTypes[10]->permission = true;
+        }
+
+      
     }
 
 

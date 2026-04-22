@@ -787,10 +787,46 @@ class AdminController extends Controller
         return view('admin.single-invoice')->with('invoice', $invoice);
     }
 
-    public function allEnrollmentCoursesPage() {
-        $courses = CatalogCourse::with('curriculumCourses')->paginate(10);
+    public function allEnrollmentCoursesPage(Request $request,$id = null) {
+       // $courses = CatalogCourse::with('curriculumCourses')->get()->sortBy('curriculumCourses.curriculum_type_id ');
 
-        return view('admin.all-enrollment-courses')->with('courses', $courses);
+        $curriculum_types = CurriculumType::where('id','<',12)->get();
+
+        if($id){
+            
+            $courses = CatalogCourse::query()
+                ->leftJoin('curriculum_courses', 'catalog_courses.id', '=', 'curriculum_courses.course_id')
+                ->where('curriculum_courses.curriculum_type_id',$id)
+                ->orderBy('curriculum_courses.id')
+                ->select('catalog_courses.*')
+                ->with('curriculumCourses')
+                ->paginate(15);
+            
+        }
+        elseif($request->get('search')){
+            $search = $request->get('search');
+            $courses = CatalogCourse::query()
+                ->leftJoin('curriculum_courses', 'catalog_courses.id', '=', 'curriculum_courses.course_id')
+                ->where('catalog_courses.title',$search)
+                ->orWhere('catalog_courses.fldoe_course_code',$search)
+                ->orderBy('curriculum_courses.id')
+                ->select('catalog_courses.*')
+                ->with('curriculumCourses')
+                ->paginate(15);
+           
+        }
+        else{
+            $courses = CatalogCourse::query()
+                ->leftJoin('curriculum_courses', 'catalog_courses.id', '=', 'curriculum_courses.course_id')
+                ->orderBy('curriculum_courses.id')
+                ->select('catalog_courses.*')
+                ->with('curriculumCourses')
+                ->paginate(15);
+        }
+        
+        return view('admin.all-enrollment-courses')
+            ->with('curriculum_types',$curriculum_types)
+            ->with('courses', $courses);
     }
 
     public function showAddEnrollmentCourse() {
@@ -982,7 +1018,7 @@ class AdminController extends Controller
         $cteJobs = CteJob::orderBy('name')->get();
 
         $pivot = $course->curriculumTypes->first()->pivot;
-
+        
         return view('admin.edit-enrollment-course')
             ->with('course', $course)
             ->with('curriculumTypes', $curriculumTypes)
@@ -1624,7 +1660,7 @@ class AdminController extends Controller
             info($e->getMessage());
         }
         try{
-            Mail::to($new_exam->student->email)->send(new ExamDateParent($parent,$new_exam));
+            Mail::to($parent->email)->send(new ExamDateParent($parent,$new_exam));
         }catch(\Exception $e){  
             info($e->getMessage());
         }

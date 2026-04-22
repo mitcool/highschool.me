@@ -107,7 +107,6 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                                     <p style="{{ $style['paragraph-black'] }}">
                                                         Kind regards,<br>Your HIGHSCHOOL.ME support team
                                                     </p>
-                                                    <p style="{{ $style['paragraph'] }}">This email message is being sent to you automatically in connection with the processing of a project because you registered at the HIGHSCHOOL.ME portal as a client, university, or a company as well as accepted the relevant terms and conditions in the course of the registration process. Please do not reply to this email. Log in to your account to carry out the appropriate actions and to use the appropriate communication options available.</p>
                                                 </td>
                                             </tr>
                                         </table>

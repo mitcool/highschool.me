@@ -177,7 +177,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	//Courses for the enrollment process
 	Route::get('/enrollment-courses', 'AdminController@showAddEnrollmentCourse')->name('enrollment-courses');
 	Route::post('/add-enrollment-course', 'AdminController@AddEnrollmentCourse')->name('add-enrollment-course');
-	Route::get('/all-enrollment-courses', 'AdminController@allEnrollmentCoursesPage')->name('all-enrollment-courses');
+	Route::get('/all-enrollment-courses/{id?}', 'AdminController@allEnrollmentCoursesPage')->name('all-enrollment-courses');
 	Route::get('/edit-enrollment-course/{course_id}', 'AdminController@editEnrollmentCoursePage')->name('edit-enrollment-course');
 	Route::post('/update-enrollment-course/{course_id}', 'AdminController@updateEnrollmentCourse')->name('admin.update-enrollment-course');
 	

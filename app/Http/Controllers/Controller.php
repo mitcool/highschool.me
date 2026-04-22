@@ -147,12 +147,24 @@ class Controller extends BaseController
     }
      public function calculateCredits($student_enrolled_courses,$track){
         $credits = [];
-        $core_credits = $track == 1 ? 16 : 15;
+       
+        if($track == 1){
+             $core_credits = 16;
+             $needed_elective_credits =8;
+        }
+        elseif($track == 2){
+             $core_credits = 15;
+             $needed_elective_credits = 3;
+        }
+        elseif($track == 3){
+             $core_credits = 6;
+             $needed_elective_credits = 0;
+        }
         $elective_credits = 0;
         $total_grade = 0;
         $average_grade = 0;
         $completed_courses = 0;
-        $needed_elective_credits = $track == 1 ? 8 : 3;
+       
         $credits['needed_credits'] = 0;
         $credits['completed_credits'] = 0;
         $credits['diploma'] = 0;

@@ -132,7 +132,7 @@
                                     min="0"
                                     id="default_credits"
                                     name="default_credits"
-                                    value="{{ old('default_credits', 1) }}"
+                                    value="{{ $course->default_credits  }}"
                                     class="form-control"
                                     placeholder="e.g. 1.0"
                                 >
@@ -225,7 +225,7 @@
                                         <select id="cte_category_id" class="form-control">
                                             <option value="">-- Select cluster --</option>
                                             @foreach($cteCategories as $cteCategory)
-                                                <option value="{{ $cteCategory->id }}" {{ (string) old('category_id', $currentCategoryId) === (string) $cteCategory->id ? 'selected' : '' }}>
+                                                <option value="{{ $cteCategory->id }}" {{ (string) $currentCategoryId === (string) $cteCategory->id ? 'selected' : '' }}>
                                                     {{ $cteCategory->name }}
                                                 </option>
                                             @endforeach
@@ -240,7 +240,7 @@
                                                 <option
                                                     value="{{ $program->id }}"
                                                     data-category-id="{{ $program->category_id }}"
-                                                    {{ (string) old('program_id', $currentProgramId) === (string) $program->id ? 'selected' : '' }}
+                                                    {{ (string) $currentProgramId === (string) $program->id ? 'selected' : '' }}
                                                 >
                                                     {{ $program->program_title }}
                                                 </option>
@@ -253,7 +253,7 @@
                                         <select id="job_id" name="job_id" class="form-control">
                                             <option value="">-- Select job --</option>
                                             @foreach($cteJobs as $job)
-                                                <option value="{{ $job->id }}" {{ (string) old('job_id', $currentJobId) === (string) $job->id ? 'selected' : '' }}>
+                                                <option value="{{ $job->id }}" {{ (string)  $currentJobId === (string) $job->id ? 'selected' : '' }}>
                                                     {{ $job->name }}
                                                 </option>
                                             @endforeach
@@ -305,13 +305,13 @@
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label for="ap_subject_code" class="form-label">
-                                            AP Subject Code
-                                        </label>
+                                            AP Subject Code 
+                                        </label> 
                                         <input
                                             type="text"
                                             id="ap_subject_code"
                                             name="ap_subject_code"
-                                            value="{{ old('ap_subject_code') }}"
+                                            value="{{ $course->apDetail ? $course->apDetail->ap_subject_code :  old('ap_subject_code') }}"
                                             class="form-control"
                                             placeholder="e.g. ENGLANG, BIO, CALCAB"
                                         >
@@ -324,7 +324,7 @@
                                             type="text"
                                             id="ap_exam_code"
                                             name="ap_exam_code"
-                                            value="{{ old('ap_exam_code') }}"
+                                            value="{{ $course->apDetail ? $course->apDetail->ap_exam_code :  old('ap_exam_code') }}"
                                             class="form-control"
                                             placeholder="e.g. 23"
                                         >
@@ -350,7 +350,7 @@
                                             type="text"
                                             id="lld_level"
                                             name="lld_level"
-                                            value="{{ old('lld_level') }}"
+                                            value="{{ $course->esolDetail ? $course->esolDetail->lld_level : old('lld_level') }}"
                                             class="form-control"
                                             placeholder="e.g. Entering, Emerging, Developing"
                                         >
@@ -363,7 +363,7 @@
                                             type="text"
                                             id="cefr_level"
                                             name="cefr_level"
-                                            value="{{ old('cefr_level') }}"
+                                            value="{{ $course->esolDetail ? $course->esolDetail->cefr_level : old('cefr_level') }}"
                                             class="form-control"
                                             placeholder="e.g. A1, A2, B1, B2, C1"
                                         >

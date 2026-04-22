@@ -177,7 +177,7 @@
 							{{ $texts['cookies'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
-							<a href="/">
+							<a href="{{ route('sitemap') }}">
 							{{ $texts['sitemap'] }}
 						</a></li>
 					</ul>

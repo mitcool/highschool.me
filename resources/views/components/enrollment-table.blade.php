@@ -182,7 +182,7 @@
         }
        
 </style>
- @if($track == 3)
+ {{-- @if($track == 3)
     <div class="container my-5">
     
     <h2 class="text-center mb-4">Enroll</h2>   
@@ -205,10 +205,10 @@
             @endif
         </div>   
         @endforeach
- @else
+ @else --}}
 <div class="container my-5">
     
-    <h2 class="text-center mb-4">Enroll</h2>
+    <h2 class="text-center mb-4">Enroll </h2>
 
     @php
         $typeLabels = [
@@ -223,6 +223,10 @@
             'ACT'    => 'ACT',
             'ESOL'   => 'ESOL',
         ];
+
+        if($track == 3){
+            $typeLabels['TP'] = 'TP';
+        }
 
         $displayTypes = $curriculumTypes->filter(function ($type) use ($typeLabels) {
             return isset($typeLabels[$type->code]);
@@ -276,6 +280,7 @@
                             @php
                                 $collapseId = $tabId . '-cat-' . $category->id;
                                 $hasCourses = $category->curriculumCourses->count() > 0;
+                               
                             @endphp
 
                             <div class="card">
@@ -423,4 +428,4 @@
         @endforeach
     </div>
 </div>
-@endif
+{{-- @endif --}}

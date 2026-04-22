@@ -106,7 +106,7 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
 
                                                     <p style="{{ $style['paragraph-black'] }}">If anything comes up between now and the exam — a technical issue, a scheduling conflict, or a question about the process — please reach out through the parent portal as early as possible so our team has time to assist. We are always better able to help when there is enough notice.</p>
 
-                                                    <p style="{{ $style['paragraph-black'] }}">→ Go to Parent Portal: <a href="{{route('login')}}"></a> {{route('login')}}</p>
+                                                    <p style="{{ $style['paragraph-black'] }}">→ Go to Parent Portal: <a href="{{route('login')}}">{{route('login')}}</a> </p>
 
                                                     <p style="{{ $style['paragraph-black'] }}">We are confident {{$exam->student->name}} is well prepared. We look forward to sharing the results with you once grading is complete.</p>
 
