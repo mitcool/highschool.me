@@ -130,7 +130,7 @@
     </ol>
 </div>
 
-<img src="{{ asset('images/clep-background.png') }}" alt="" class="w-100">
+<x-image-component nickname="diverse-students-smiling-campus" class="w-100" loading="eager"/>
 
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
     <h1 class="text-center page-headings">{{ $texts['heading'] }}</h1> <br>

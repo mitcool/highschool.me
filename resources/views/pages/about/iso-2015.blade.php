@@ -47,7 +47,7 @@
 <div class="container-fluid  pt-0">
 	<div class="row justify-content-center">
 		<div class="mb-4 text-center">
-			<img src="{{ asset('images/recognition-pages/cover-iso-2015.webp') }}">
+			<x-image-component nickname="iso-9001-blue-teal-digital-background" loading="eager" />
 		</div>
 		<div class="col-md-10 col-lg-8 mb-4 text-center">
 			<h1 class="page-headings">{{ $texts['heading'] }}</h1>

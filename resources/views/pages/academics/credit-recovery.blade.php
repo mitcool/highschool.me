@@ -56,7 +56,7 @@
 		</ol>
 	</div>
 
-	<x-image-component nickname="study_registration" class="study_registration-images main-pictures-pages" loading="eager"/>
+	<x-image-component nickname="four-diverse-students-sharing-tablet" class="study_registration-images main-pictures-pages" loading="eager"/>
 
 	<div class="container-fluid p-0">
 	    <div>

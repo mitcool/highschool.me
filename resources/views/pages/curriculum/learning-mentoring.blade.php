@@ -129,7 +129,8 @@
         <li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
     </ol>
 </div>
-<img src="{{ asset('images/mentoring-sessions-background.png') }}" alt="" class="w-100">
+
+<x-image-component nickname="teacher-one-on-one-tutoring-student-classroom" class="w-100" loading="eager"/>
 
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
     <h1 class="text-center page-headings" style="word-wrap: break-word">{{ $texts['heading'] }}</h1> <br>

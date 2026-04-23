@@ -81,6 +81,7 @@
 
 
 <x-image-component nickname="blog-cover" id="cover" class="main-pictures-pages" loading="eager"/>
+
 <div itemscope itemtype="http://schema.org/Blog" class="container-fluid main-container-back">
 	<div id="blog_row" class="row justify-content-center">
 		<div class="col-md-10 col-lg-8" >

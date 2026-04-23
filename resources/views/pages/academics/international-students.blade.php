@@ -41,7 +41,9 @@
 		<li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
 	</ol>
 </div>
-<img src="{{ asset('images/international-students-cover.png') }}" alt="">
+
+<x-image-component nickname="colorful-world-globe-close-up" class="w-100" loading="eager"/>
+
 <div class="container-fluid bg-white main_page_container mb-2">	
 		<div class="row justify-content-center" >		
 			<div class="col-lg-8 text-justify p-4 bg-white page-content" style="margin: 0 auto;">

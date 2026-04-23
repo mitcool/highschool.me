@@ -35,10 +35,6 @@
 </style>
 @endsection
 
-
-
-
-
 @section('content')
 @php
     $breadcrumb_title = strtok(trans('faq.meta-title'), '|');
@@ -49,7 +45,10 @@
 		<li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb_title }}</li>
 	</ol>
 </div>
+
+{{--
 <x-image-component nickname="faqs" class="faqs-images main-pictures-pages" loading="eager"/>
+--}}
 
 <div class="container-fluid main_page_container">
 	<div class="row justify-content-center">

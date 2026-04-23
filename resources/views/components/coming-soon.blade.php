@@ -61,7 +61,7 @@
     </style>
 
     <div class="coming-soon-card">
-        <img src="{{ asset('images/coming-soon.png') }}" alt="" title="" class="coming-soon-illustration">
+        <x-image-component nickname="cartoon-character-tools-gears-maintenance" loading="eager" />
 
         <h2 class="coming-soon-title">Coming soon</h2>
 

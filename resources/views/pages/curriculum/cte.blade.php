@@ -129,7 +129,8 @@
         <li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
     </ol>
 </div>
-<img src="{{ asset('images/cte-background.png') }}" alt="" class="w-100">
+
+<x-image-component nickname="student-raising-hand-teacher-smart-board" class="w-100" loading="eager"/>
 
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
     <h1 class="text-center page-headings">{{ $texts['heading'] }}</h1> <br>

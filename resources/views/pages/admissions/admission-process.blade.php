@@ -141,7 +141,7 @@
     </ol>
 </div>
 
-<img src="{{ asset('images/admission-process.png') }}" alt="" class="w-100"/>
+<x-image-component nickname="library-corridor-tall-bookshelves" class="w-100" loading="eager"/>
 
 <div class="container-fluid bg-white box pl-0 pr-0 page-content">
     <div class="container">

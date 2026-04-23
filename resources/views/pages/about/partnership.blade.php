@@ -50,7 +50,8 @@
 	</ol>
 </div>
 
-<img src="{{ asset('images/education-and-partnership.png') }}" alt="" class="w-100">
+<x-image-component nickname="miami-city-skyline-waterfront" class="w-100" loading="eager"/>
+
 <div class="container-fluid ">
 	<div class="row justify-content-center">
 		<div class="col-md-10 col-lg-8 bg-white page-content" style="padding:30px;">
@@ -110,88 +111,88 @@
 		<div class="row mt-2">
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/l01.png') }}" alt="" class="w-100">
+					<x-image-component nickname="adobe-logo" class="w-100" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/l02.png') }}" alt="" class="w-100">
+					<x-image-component nickname="cisco-logo" class="w-100" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/l03.png') }}" alt="" class="w-100">
+					<x-image-component nickname="certiport-logo" class="w-100" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/l04.png') }}" alt="" class="w-100">
+					<x-image-component nickname="nha-logo" class="w-100" loading="eager" />
 				</div>
 			</div>
 		</div>
 		<div class="row mt-2">
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/l05.png') }}" alt="" class="w-100">
+					<x-image-component nickname="intuit-logo" class="w-100" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/l06.png') }}" alt="" class="w-100">
+					<x-image-component nickname="oracle-logo" class="w-100" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/l07.png') }}" alt="" class="w-100">
+					<x-image-component nickname="google-logo" class="w-100" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/l08.png') }}" alt="" class="w-100">
+					<x-image-component nickname="american-red-cross-logo" class="w-100" loading="eager" />
 				</div>
 			</div>
 		</div>
 		<div class="row mt-2" >
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/l09.png') }}" alt="" class="w-100">
+					<x-image-component nickname="hubspot-logo" class="w-100" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/l10.png') }}" alt="" class="w-100">
+					<x-image-component nickname="amazon-web-services-logo" class="w-100" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/l11.png') }}" alt="" class="w-100">
+					<x-image-component nickname="ncct-logo" class="w-100" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/l12.png') }}" alt="" class="w-100">
+					<x-image-component nickname="nals-logo" class="w-100" loading="eager" />
 				</div>
 			</div>
 		</div>
 		<div class="row mt-2" style="margin-bottom: 50px;">
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/l13.png') }}" alt="" class="w-100">
+					<x-image-component nickname="meta-logo" class="w-100" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/l14.png') }}" alt="" class="w-100">
+					<x-image-component nickname="microsoft-logo" class="w-100" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/l15.png') }}" alt="" class="w-100">
+					<x-image-component nickname="comptia-logo" class="w-100" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/l16.png') }}" alt="" class="w-100">
+					<x-image-component nickname="ibm-logo" class="w-100" loading="eager" />
 				</div>
 			</div>
 		</div>

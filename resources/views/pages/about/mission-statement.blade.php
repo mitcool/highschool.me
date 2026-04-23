@@ -19,7 +19,9 @@
 		<li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
 	</ol>
 </div>
-<img src="{{ asset('images/american-flag-background-independence-day.png') }}" alt="" class="w-100">
+
+<x-image-component nickname="american-flag-background-independence-day" class="w-100" loading="eager"/>
+
 <div class="container-fluid pb-4">
 	<div class="row justify-content-center">
 		<div class="col-md-10 col-lg-8 bg-white">

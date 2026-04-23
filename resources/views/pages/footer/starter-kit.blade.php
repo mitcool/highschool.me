@@ -177,20 +177,20 @@
             <div class="col-lg-9 text-center">
                 <h1 class="page-headings p-3">The Ultimate Freshman Kit: Feel Like You’ve Always Been Here</h1>
 
-                <p class="lead text-dark text-justify">
+                <p class="text-dark text-justify">
                     Earn real high school credits through a recognized curriculum that
                     meets national academic standards.
                 </p>
-                <p class="lead text-dark text-justify">
+                <p class="text-dark text-justify">
                     Be part of the movement from Day One.
                 </p>
-                <p class="lead text-dark text-justify">
+                <p class="text-dark text-justify">
                     Not as a newcomer, but as a core member of the community.
                 </p>
-                <p class="lead text-dark text-justify">
+                <p class="text-dark text-justify">
                     The individually curated Freshman Kit puts you right in the middle of it. Whether it’s Street Mode, Tech Vibe, Green Flow, or a deep Study Grind – each kit is matched to your vibe and combines trend pieces with smart essentials into a clean, cohesive setup.
                 </p>
-                <p class="lead text-dark text-justify">
+                <p class="text-dark text-justify">
                     No mainstream defaults. No copy-paste styles.
                 </p>
             </div>
@@ -240,13 +240,13 @@
             <div class="col-lg-9 text-center">
                 <h2 class="p-3">The Freshman Setup – Inside your Welcome Loot</h2>
 
-                <p class="lead text-dark text-justify">
+                <p class="text-dark text-justify">
                     Every Kit is a Unique Match: Once your enrollment is locked in, we curate and pack your individual setup from our latest highlights and ship it straight to your door. 
                 </p>
-                <p class="lead text-dark text-justify">
+                <p class="text-dark text-justify">
                     Get ready for the ultimate unboxing experience – your personalized gear is on its way. 
                 </p>
-                <p class="lead text-dark text-justify">
+                <p class="text-dark text-justify">
                     No boring standard-packs. Depending on the current drop, your setup follows one of these styles:
                 </p>
             </div>
@@ -257,7 +257,7 @@
     <div class="container freshman-kit-cards">
         <div class="freshman-kit-card">
             <div class="freshman-kit-card-image">
-                <img src="{{ asset('/images/freshman-kit/freshman-kit-1.png') }}" alt="Street Mode Freshman Kit">
+                <x-image-component nickname="onsites-freshman-kit-students-smartphone-desk" loading="eager"/>
             </div>
             <div class="freshman-kit-card-body">
                 <h3 class="freshman-kit-card-title">
@@ -281,13 +281,13 @@
                 </p>
             </div>
             <div class="freshman-kit-card-image">
-                <img src="{{ asset('/images/freshman-kit/freshman-kit-2.png') }}" alt="Tech Vibe Freshman Kit">
+                <x-image-component nickname="onsites-freshman-kit-students-enrollment-card-cafe" loading="eager"/>
             </div>
         </div>
 
         <div class="freshman-kit-card">
             <div class="freshman-kit-card-image">
-                <img src="{{ asset('/images/freshman-kit/freshman-kit-3.png') }}" alt="Green Flow Freshman Kit">
+                <x-image-component nickname="onsites-freshman-kit-students-outdoor-picnic" loading="eager"/>
             </div>
             <div class="freshman-kit-card-body">
                 <h3 class="freshman-kit-card-title">
@@ -303,7 +303,7 @@
         <div class="freshman-kit-card is-reversed">
             <div class="freshman-kit-card-body">
                 <h3 class="freshman-kit-card-title">
-                    <i class="fas fa-book-open"></i>
+                    <i class="fas fa-graduation-cap"></i>
                     <span>Study Grind: Locked In and Ready to Win</span>
                 </h3>
                 <p class="freshman-kit-card-text">
@@ -311,7 +311,7 @@
                 </p>
             </div>
             <div class="freshman-kit-card-image">
-                <img src="{{ asset('/images/freshman-kit/freshman-kit-4.png') }}" alt="Study Grind Freshman Kit">
+                <x-image-component nickname="onsites-freshman-kit-students-tablet-outdoor" loading="eager"/>
             </div>
         </div>
     </div>

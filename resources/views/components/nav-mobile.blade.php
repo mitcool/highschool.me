@@ -37,7 +37,7 @@
                       <hr class="m-0">
                       <a href="{{ route('mission-statement') }}" style="text-transform: uppercase;">Mission Statement</a>
                       <hr class="m-0">
-                      <a href="{{ route('accreditation') }}" style="text-transform: uppercase;">Accreditation</a>
+                      <a href="{{ route('accreditation') }}" style="text-transform: uppercase;">Recognition & Quality Standards</a>
                       <hr class="m-0">
                       <a href="{{ route('leadership') }}" style="text-transform: uppercase;">Leadership</a>
                       <hr class="m-0">
@@ -65,6 +65,8 @@
                       <a href="{{ route('awards') }}" style="text-transform: uppercase;">Awards</a>
                       <hr class="m-0">
                       <a href="{{ route('international-students') }}" style="text-transform: uppercase;">International Students</a>
+                      <hr class="m-0">
+                      <a href="{{ route('starter-kit') }}" style="text-transform: uppercase;">Freshman Kit</a>
                       <hr class="m-0">
                   </div>
               </div>

@@ -221,17 +221,17 @@ Route::group(['middleware' => 'text'],function(){
 
 	Route::get('/feature/{slug}','MainController@feature')->name('single-feature');
 
-	Route::get('/code-of-ethics','FooterController@showCodeOfEtics')->name('code-of-ethics');
+	Route::get('/code-of-conduct','FooterController@showCodeOfEtics')->name('code-of-ethics');
 
 	Route::get('/freshman-kit','FooterController@starterKit')->name('starter-kit');
 
 	Route::get('/newsletter','MainController@showNewsletter')->name('newsletter');
 
-	Route::get('/facts-hub','MainController@showFactsHub')->name('facts-hub');
+	Route::get('/fact-hub','MainController@showFactsHub')->name('facts-hub');
 
 	Route::get('/facts-hub/{slug}','MainController@showSingleFactsHub')->name('single-facts-hub');
 
-	Route::get('/press-release','MainController@showPressRelease')->name('press-release');
+	Route::get('/press-releases','MainController@showPressRelease')->name('press-release');
 
 	Route::get('/press-release/{slug}','MainController@showSinglePressRelease')->name('single-press-release');
 

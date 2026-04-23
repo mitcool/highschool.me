@@ -47,7 +47,7 @@
     <div class="container-fluid bg-white box">
         <div class="container">
             <div class="text-center">
-                <img src="{{ asset('images/badge.png') }}" alt="" class="w-25">
+                <x-image-component nickname="gold-shield-ambassador-badge-stars" class="w-25" loading="eager"/>
             </div>
              <h1 class="page-headings">{{ $texts['heading'] }}</h1>
             {!! $texts['intro'] !!}

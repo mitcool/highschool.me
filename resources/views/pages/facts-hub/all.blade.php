@@ -79,12 +79,13 @@
 	</div>
 
 
-<x-image-component nickname="blog-cover" id="cover" class="main-pictures-pages" loading="eager"/>
+<x-image-component nickname="student-laptop-open-textbook" id="cover" class="main-pictures-pages" loading="eager"/>
+
 <div itemscope itemtype="http://schema.org/Blog" class="container-fluid main-container-back">
 	<div id="blog_row" class="row justify-content-center">
 		<div class="col-md-10 col-lg-8" >
 			
-			<h1 class="page-headings mb-2">{{trans('blog.heading')}}
+			<h1 class="page-headings mb-2">{{ $texts['heading'] }}
 				@if(request()->page != '')
 				<br>
 				<span style="opacity: 0;">{{(session()->get('locale')=='en' ? 'Page ' : 'Seite ')}} {{request()->page}}</span>

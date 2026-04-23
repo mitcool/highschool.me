@@ -121,7 +121,8 @@
     </ol>
 </div>
 
-<img src="{{ asset('images/graduation-high-school-university-concept-space-text.png') }}" alt="" class="w-100">
+<x-image-component nickname="graduation-cap-books-red-bow" class="w-100" loading="eager"/>
+
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
         <div class="row text-center container mx-auto">
             <div class="col-md-12">

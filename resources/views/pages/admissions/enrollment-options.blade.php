@@ -50,7 +50,7 @@
 </div>
 
 
-<img src="{{ asset('images/enrollment-options.png') }}" alt=""  class="w-100"/>
+<x-image-component nickname="lecture-hall-wooden-tiered-seats" class="w-100" loading="eager"/>
 
 <div class="container-fluid p-0">
     <div>

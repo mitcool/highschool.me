@@ -1448,7 +1448,7 @@ a:hover {
     }
     .white-hr,
     .blue-hr{
-        width:200px;
+        width: auto!important;
     }
 }
 @media (min-width: 450px) and (max-width: 550px) {

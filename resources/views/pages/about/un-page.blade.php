@@ -48,7 +48,7 @@
 <div class="container-fluid main_page_container pt-0">
 	<div class="row justify-content-center">
 		<div class="text-center mb-4">
-			<img src="{{ asset('images/recognition-pages/cover-un.webp') }}">
+			<x-image-component nickname="united-nations-sdg-4-globe-icon" loading="eager" />
 		</div>
 		<div class="col-md-10 col-lg-8 mb-4 text-center">
 			<h1>{{ $texts['heading'] }}</h1>
@@ -57,7 +57,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="iso-actions divb-5">
+	<div class="iso-actions pb-5">
 		<a href="{{ route('accreditation') }}" class="iso-show-all">Show All</a>
 	</div>
 </div>

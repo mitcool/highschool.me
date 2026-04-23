@@ -48,7 +48,7 @@
 <div class="container-fluid main_page_container pt-0">
 	<div class="row justify-content-center">
 		<div class="text-center mb-4">
-			<img src="{{ asset('images/recognition-pages/florida-department.webp') }}">
+			<x-image-component nickname="fldoe-recognition-diagonal-stripe" loading="eager" />
 		</div>
 		<div class="col-md-10 col-lg-8 mb-4 text-center">
 			<h1>{{ $texts['heading'] }}</h1>

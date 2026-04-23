@@ -202,7 +202,6 @@
 </div>
 <div class="container-fluid bg-light p-3">
     <div class="container">
-        {!! $texts['last-paragraph'] !!}
         <x-three-buttons/>
     </div>
 </div>

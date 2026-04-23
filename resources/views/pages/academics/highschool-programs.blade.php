@@ -142,7 +142,8 @@
     </ol>
 </div>
 
-<img src="{{ asset('images/cheerful-teenagers-classroom.png') }}" alt="" class="w-100">
+<x-image-component nickname="students-studying-laptops-bright-classroom" class="main-pictures-pages"/>
+
 <div class="container-fluid main-container" >
     <div class="row text-center mx-auto">
         <div class="col-md-8" style="margin: 0 auto;">

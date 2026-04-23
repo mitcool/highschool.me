@@ -49,7 +49,7 @@
     </ol>
 </div>
 
-<img src="{{ asset('images/enrollment-criteria.png') }}" alt="" class="w-100" />
+<x-image-component nickname="modern-school-building-atrium-windows" class="w-100" loading="eager"/>
 
 <div class="container-fluid p-0">
     <div>

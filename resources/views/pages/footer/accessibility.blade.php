@@ -24,13 +24,11 @@
 	<x-image-component nickname="accessibility" class="imprint-images main-pictures-pages" loading="eager"/>
 --}}
 
-<div class="container-fluid main_page_container">
-	
-	<div class="row justify-content-center" >
+<div class="container-fluid main_page_container mb-5">
+	<div class="row justify-content-center">
 		<div class="col-md-10 col-lg-8">
 			<h1 class="page-headings">{{$texts['heading']}}</h1>
 			<div class="page-content">{!! $texts['content'] !!}</div>
-			
 		</div>
 	</div>
 </div>

@@ -57,7 +57,7 @@
 			<div class="row" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation">
 					<div>
-						<img src="{{ asset('images/icons/recognition-1.png') }}" class="w-100">
+						<x-image-component nickname="fldoe-logo" class="w-100" loading="eager" />
 					</div>
 				</div>
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
@@ -76,14 +76,14 @@
 				</div>
 				<div class="col-12 col-md-12 col-lg-3 justify-content-end  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<img src="{{ asset('images/icons/recognition-2.png') }}" class="w-100">
+						<x-image-component nickname="college-board-logo" class="w-100" loading="eager" />
 					</div>
 				</div>
 			</div>
 			<div class="row" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation">
 					<div>
-						<img src="{{ asset('images/icons/logo-act-blue.png') }}" class="w-100">
+						<x-image-component nickname="act-inc-logo" class="w-100" loading="eager" />
 					</div>
 				</div>
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
@@ -102,14 +102,14 @@
 				</div>
 				<div class="col-12 col-md-12 col-lg-3 justify-content-end  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<img src="{{ asset('images/icons/recognition-4.png') }}" class="w-100">
+						<x-image-component nickname="iso-9001-logo" class="w-100" loading="eager" />
 					</div>
 				</div>
 			</div>
 			<div class="row" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<img src="{{ asset('images/icons/recognition-5.png') }}" class="w-100">
+						<x-image-component nickname="iso-21001-logo" class="w-100" loading="eager" />
 					</div>
 				</div>
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
@@ -128,14 +128,14 @@
 				</div>
 				<div class="col-12 col-md-12 col-lg-3 justify-content-end  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<img src="{{ asset('images/icons/recognition-6.png') }}" class="w-100">
+						<x-image-component nickname="iso-27001-logo" class="w-100" loading="eager" />
 					</div>
 				</div>
 			</div>
 			<div class="row" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<img src="{{ asset('images/icons/recognition-3.png') }}" class="w-100">
+						<x-image-component nickname="united-nations-logo" class="w-100" loading="eager" />
 					</div>
 				</div>
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">

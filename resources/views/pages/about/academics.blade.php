@@ -74,7 +74,7 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12 col-lg-10" style="padding:30px;">
 			<h1 class="page-headings">{{ $texts['heading'] }}</h1>
-			<div class="page-content">{!! $texts['content'] !!}</div>
+			<div class="page-content mb-4">{!! $texts['content'] !!}</div>
 			<div class="row">
 				@foreach($academics as $key => $academic)	
 					<div class="col-md-6 gap-2 my-2 px-3 w-100"  data-id="{{$academic->id}}" data-key="{{ $key }}" data-name="{{$academic->name }}"data-description="{{ $academic->description }}">

@@ -44,7 +44,7 @@
 	</ol>
 </div>
 
-<x-image-component nickname="credit_transfer" class="study_registration-images main-pictures-pages" loading="eager"/>
+<x-image-component nickname="diverse-students-walking-campus" class="study_registration-images main-pictures-pages" loading="eager"/>
 
 <div class="container-fluid bg-white">	
 	<div class="row justify-content-center" >		

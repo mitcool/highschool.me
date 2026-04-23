@@ -69,7 +69,7 @@
 	<div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 		<ol class="bg-white breadcrumb mb-0 p-0">
 			<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-			<li class="breadcrumb-item active" aria-current="page">Press Release</li>
+			<li class="breadcrumb-item active" aria-current="page">Press Releases</li>
 		</ol>
 	</div>
 
@@ -77,19 +77,21 @@
 
 <div itemscope itemtype="http://schema.org/Blog" class="container-fluid main_page_container">
 	<div id="blog_row" class="row justify-content-center">
-		<div class="col-md-10 col-lg-8 container-style bg-white" >
-			<h1 class="page-headings">Press Release
+		<div class="col-md-10 col-lg-8 bg-white" >
+			<h1 class="page-headings mb-3">Press Releases
 				@if(request()->page != '')
 				<br>
 				<span style="opacity: 0;">{{(session()->get('locale')=='en' ? 'Page ' : 'Seite ')}} {{request()->page}}</span>
 				@endif
 			</h1>
+			<div class="text-center mb-5">
+				<p>Regular and concise updates about the ONSITES High School.</p>
+			</div>
 
 			<div class="row bg-white" id="blog">
 				@foreach($news as $n)
                 <div class="col-lg-12 my-3">
                     <div class="bg-white h-100 d-flex align-items-stretch flex-column "> 
-         
                         <br>
                         <div class="news-info">
                             <a href="{{ route('single-press-release',$n->slug) }}">

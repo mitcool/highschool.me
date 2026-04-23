@@ -46,7 +46,9 @@
 		<li class="breadcrumb-item active" aria-current="page">{{ $texts['breadcrumb'] }}</li>
 	</ol>
 </div>
-<img src="{{ asset('images/go.png') }}" alt="" class="w-100">	
+
+<x-image-component nickname="gold-trophy-city-lights-background" class="w-100" loading="eager"/>
+
 <div class="container-fluid bg-white main_page_container">	
 		<div class="row justify-content-center" >		
 			<div class="col-lg-9 text-center p-4 bg-white" style="margin: 20px auto;">
@@ -55,7 +57,7 @@
 				<hr>
 				<div class="row p-2">
 					<div class="col-md-3">
-						<img src="{{ asset('images/award-1.png') }}" alt="" class="w-100">
+						<x-image-component nickname="gold-medal-ribbon-presidents-award" class="w-100" loading="eager"/>
 					</div>
 					<div class="col-md-9 page-content">
 						{!! $texts['first-award'] !!}
@@ -67,13 +69,13 @@
 						{!! $texts['second-award'] !!}
 					</div>
 					<div class="col-md-3">
-						<img src="{{ asset('images/award-2.png') }}" alt="" class="w-100">
+						<x-image-component nickname="silver-medal-ribbon-presidents-award" class="w-100" loading="eager"/>
 					</div>
 				</div>
 				<hr>
 				<div class="row p-2">
 					<div class="col-md-3">
-						<img src="{{ asset('images/award-3.png') }}" alt="" class="w-100">
+						<x-image-component nickname="american-citizenship-award-shield-badge" class="w-100" loading="eager"/>
 					</div>
 					<div class="col-md-9 page-content">
 							{!! $texts['third-award'] !!}

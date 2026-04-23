@@ -235,6 +235,7 @@ class MainController extends Controller
   
   }
   public function showFactsHub(Request $request){
+    $texts = $request->all()['texts'];
     $news = FactHub::orderBy('id','desc')->paginate(6);
     if($request->has('author')){
       $author_id = DynamicNewsAuthorTranslation::where('locale',request()->segment(1))->where('slug',$request->get('author'))->first()->author_id ?? abort(404);
@@ -247,7 +248,8 @@ class MainController extends Controller
     
     $news->appends($_GET)->links();
     return view('pages.facts-hub.all')
-          ->with('news',$news);
+          ->with('news',$news)
+          ->with('texts',$texts);
   }
   public function showSingleFactsHub($slug){
     $article = FactHub::with('sections')->where('slug',$slug)->first() ?? abort(404);
@@ -288,10 +290,11 @@ class MainController extends Controller
     return view('pages.press-release.single',compact('article','prev','next','last_three_articles'));
   }
  
-  public function contact(){
+  public function contact(Request $request){
+    $texts = $request->all()['texts'];
     $categories = ContactPage::get();
     
-    return view('pages.footer.contact-us-page')->with('categories', $categories);
+    return view('pages.footer.contact-us-page')->with('categories', $categories)->with('texts', $texts);
   }
 
   public function feature($feature_slug){

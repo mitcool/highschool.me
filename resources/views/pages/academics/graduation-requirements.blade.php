@@ -75,7 +75,9 @@
 			<li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
 		</ol>
 	</div>
-	<img src="{{ asset('/images/grad-requirements.png') }}" class="w-100">
+
+  <x-image-component nickname="empty-classroom-rows-of-desks" class="main-pictures-pages"/>
+
 	<div class="container page-content">
 		<h1 class="text-center page-headings">{{ $texts['heading'] }}</h1>
     <h4 class="text-center">{{ $texts['subheading'] }}</h4>
