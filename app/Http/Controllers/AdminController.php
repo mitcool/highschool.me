@@ -101,6 +101,8 @@ use App\StudentLocation;
 use App\Ethnicity;
 use App\StudentPlan;
 use App\OtherStaff;
+use App\CteCourseProgram;
+
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
 use App\Mail\ExamDate;
@@ -823,7 +825,7 @@ class AdminController extends Controller
                 ->with('curriculumCourses')
                 ->paginate(15);
         }
-        
+		
         return view('admin.all-enrollment-courses')
             ->with('curriculum_types',$curriculum_types)
             ->with('courses', $courses);
@@ -845,6 +847,7 @@ class AdminController extends Controller
     }
 
     public function AddEnrollmentCourse(Request $request) {
+        
         // Get the curriculum type first so we know which extra fields are required
         $curriculumType = CurriculumType::findOrFail($request->input('curriculum_type_id'));
 
@@ -856,7 +859,7 @@ class AdminController extends Controller
             'course_number' => ['nullable', 'string', 'max:20'],
             'default_credits' => ['nullable', 'numeric', 'min:0'],
             'category_id' => ['nullable', 'exists:course_categories,id'],
-            'program_id' => ['nullable', 'exists:cte_programs,id'],
+            'program_id*' => ['nullable', 'exists:cte_programs,id'],
             'job_id' => ['nullable', 'exists:cte_jobs,id'],
             'required_flag' => ['nullable', 'boolean'],
             'requirement_text' => ['nullable', 'string', 'max:255'],
@@ -906,11 +909,9 @@ class AdminController extends Controller
         }
 
         $data = $request->validate($rules);
-
         // Normalize some values
         $requiredFlag    = isset($data['required_flag']) ? (bool)$data['required_flag'] : false;
         $creditsOverride = $data['credits_override'] ?? null;
-
         DB::transaction(function () use ($curriculumType, $data, $requiredFlag, $creditsOverride) {
             // 1) Create catalog course
             $course = CatalogCourse::create([
@@ -925,7 +926,7 @@ class AdminController extends Controller
                 'curriculum_type_id' => $curriculumType->id,
                 'course_id' => $course->id,
                 'category_id' => $data['category_id'] ?? null,
-                'program_id' => $curriculumType->code === 'CTE' ? ($data['program_id'] ?? null) : null,
+                'program_id' => $curriculumType->code === null, //'CTE' ? ($data['program_id'] ?? null) : null, <-- old
                 'job_id' => $curriculumType->code === 'CTE' ? ($data['job_id'] ?? null) : null,
                 'required_flag' => $requiredFlag,
                 'requirement_text' => $data['requirement_text'] ?? null,
@@ -957,6 +958,16 @@ class AdminController extends Controller
                 ClepDetail::create([
                     'course_id' => $course->id,
                 ]);
+            }
+
+            //CTE
+           if ($curriculumType->code === 'CTE') {
+                foreach($data['program_id'] as $program_id){
+                    CteCourseProgram::insert([
+                        'course_id' => $course->id,
+                        'program_id' => $program_id
+                    ]);
+                };
             }
 
             // 4) Save FILES (if any)
@@ -1127,7 +1138,7 @@ class AdminController extends Controller
                 ],
                 [
                     'category_id' => $data['category_id'] ?? null,
-                    'program_id' => $curriculumType->code === 'CTE' ? ($data['program_id'] ?? null) : null,
+                    'program_id' => $curriculumType->code ===  null,
                     'job_id' => $curriculumType->code === 'CTE' ? ($data['job_id'] ?? null) : null,
                     'required_flag' => $requiredFlag,
                     'requirement_text' => $data['requirement_text'] ?? null,
@@ -1181,6 +1192,16 @@ class AdminController extends Controller
 
                 ApDetail::where('course_id', $course->id)->delete();
                 EsolDetail::where('course_id', $course->id)->delete();
+            }
+            elseif ($curriculumType->code === 'CTE') {
+               
+                CteCourseProgram::where('course_id',$course->id)->delete();
+                foreach($data['program_id'] as $program_id){
+                    CteCourseProgram::insert([
+                        'program_id' => $program_id,
+                        'course_id' => $course->id
+                    ]);
+                };
             }
             else {
                 // generic types -> remove all type detail rows

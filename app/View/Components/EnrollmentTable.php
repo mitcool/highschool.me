@@ -25,7 +25,7 @@ class EnrollmentTable extends Component
     {
         $this->curriculumTypes = CurriculumType::with([
             'categories' => function ($q) {
-                $q->orderBy('name');
+                $q->orderBy('order');
             },
             'categories.curriculumCourses.course',
             'curriculumCourses.course'

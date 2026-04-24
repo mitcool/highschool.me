@@ -101,4 +101,12 @@ class CatalogCourse extends Model
         return $this->hasMany(CourseVideo::class, 'course_id')
             ->orderBy('position')->orderBy('id');
     }
+
+    public function cte_program(){
+        return $this->hasMany('App\CteCourseProgram','course_id','id');
+    }
+    public function cte_program_array(){
+        return CteCourseProgram::where('course_id',$this->id)->get()->pluck('program_id')->toArray();
+    }
+   
 }

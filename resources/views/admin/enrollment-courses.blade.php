@@ -220,7 +220,7 @@
 
                                     <div class="col-md-4">
                                         <label for="program_id" class="form-label">Program</label>
-                                        <select id="program_id" name="program_id" class="form-control">
+                                        <select id="program_id" name="program_id[]" class="form-control" multiple>
                                             <option value="">-- Select program --</option>
                                             @foreach($ctePrograms as $program)
                                                 <option

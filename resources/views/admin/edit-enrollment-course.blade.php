@@ -233,27 +233,27 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label for="program_id" class="form-label">Program</label>
-                                        <select id="program_id" name="program_id" class="form-control">
+                                        <label for="program_id" class="form-label">Program </label>
+                                        <select id="program_id" name="program_id[]" class="form-control" multiple>
                                             <option value="">-- Select program --</option>
                                             @foreach($ctePrograms as $program)
                                                 <option
                                                     value="{{ $program->id }}"
                                                     data-category-id="{{ $program->category_id }}"
-                                                    {{ (string) $currentProgramId === (string) $program->id ? 'selected' : '' }}
+                                                    {{ in_array($program->id,$course->cte_program_array()) ? ' selected ' : '' }}
                                                 >
                                                     {{ $program->program_title }}
                                                 </option>
                                             @endforeach
                                         </select>
                                     </div>
-
+                                    
                                     <div class="col-md-4">
                                         <label for="job_id" class="form-label">Job</label>
                                         <select id="job_id" name="job_id" class="form-control">
                                             <option value="">-- Select job --</option>
                                             @foreach($cteJobs as $job)
-                                                <option value="{{ $job->id }}" {{ (string)  $currentJobId === (string) $job->id ? 'selected' : '' }}>
+                                                <option value="{{ $job->id }}" {{ (string)  $course->curriculumCourses[0]->job->id === (string) $job->id ? 'selected' : '' }}>
                                                     {{ $job->name }}
                                                 </option>
                                             @endforeach
