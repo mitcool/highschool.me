@@ -362,6 +362,10 @@
                     <i class="fas fa-folder"></i>
                     <span>Documents</span>
                 </a>
+                <a class="admin-mobile-menu-link" href="{{ route('admin.protocols.index') }}">
+                    <i class="fas fa-file"></i>
+                    <span>Protocols</span>
+                </a>
                 <a class="admin-mobile-menu-link" href="{{ route('admin.all-requested-leaves') }}">
                     <i class="fas fa-door-open"></i>
                     <span>Leave Requests</span>
@@ -635,6 +639,10 @@
                         <a class="nav-link collapsed" href="{{route('admin-student-documents')}}">
                             <i class="fas fa-folder"></i>
                             <span>Documents</span>
+                        </a>
+                        <a class="nav-link collapsed" href="{{ route('admin.protocols.index') }}">
+                            <i class="fas fa-file"></i>
+                            <span>Protocols</span>
                         </a>
                         <a class="nav-link collapsed" href="{{route('admin.all-requested-leaves')}}">
                             <i class="fas fa-door-open"></i>

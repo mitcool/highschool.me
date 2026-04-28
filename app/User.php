@@ -96,6 +96,11 @@ class User extends Authenticatable
     public function exams(){
         return $this->hasMany('App\Exam','student_id','id');
     }
+
+    public function login_verifications()
+    {
+        return $this->hasMany('App\LoginVerification', 'user_id', 'id');
+    }
     
     public function sendPasswordResetNotification($token)
     {

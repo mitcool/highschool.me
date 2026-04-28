@@ -41,6 +41,7 @@ use App\StudentLocation;
 use App\Ethnicity;
 use App\PreExamAnswer;
 use App\StudentAnswer;
+use App\LoginVerification;
 
 use App\Mail\StudentCreated;
 use App\Mail\StudentCredentials;
@@ -137,6 +138,116 @@ class ParentController extends Controller
             Notification::add($exam->student_id,'You have been marked as failed for the '.$exam->course->course->title.' examination due to non-attendance.');
         }
         return view('parent.welcome');
+    }
+
+    public function protocolsPage(Request $request)
+    {
+        $parent_students = ParentStudent::with('student')
+            ->where('parent_id', auth()->id())
+            ->get();
+
+        $student_ids = $parent_students->pluck('student_id')->all();
+
+        $available_years = LoginVerification::whereIn('user_id', $student_ids)
+            ->where('status', 'approved')
+            ->whereNotNull('verified_at')
+            ->selectRaw('YEAR(verified_at) as year')
+            ->distinct()
+            ->orderByDesc('year')
+            ->pluck('year')
+            ->filter()
+            ->values();
+
+        if ($available_years->isEmpty()) {
+            $available_years = collect([(int) now()->format('Y')]);
+        }
+
+        $selected_year = (int) $request->get('year', $available_years->first());
+        if (!$available_years->contains($selected_year)) {
+            $selected_year = (int) $available_years->first();
+        }
+
+        $search = trim((string) $request->get('search', ''));
+
+        $students = $parent_students
+            ->filter(function ($parent_student) use ($selected_year, $search) {
+                if (!$parent_student->student) {
+                    return false;
+                }
+
+                $hasApprovedLogins = LoginVerification::where('user_id', $parent_student->student_id)
+                    ->where('status', 'approved')
+                    ->whereYear('verified_at', $selected_year)
+                    ->exists();
+
+                if (!$hasApprovedLogins) {
+                    return false;
+                }
+
+                if ($search === '') {
+                    return true;
+                }
+
+                $fullName = trim(
+                    ($parent_student->student->name ?? '') . ' ' .
+                    ($parent_student->student->middlename ?? '') . ' ' .
+                    ($parent_student->student->surname ?? '')
+                );
+
+                return stripos($fullName, $search) !== false;
+            })
+            ->sortBy(function ($parent_student) {
+                return trim(($parent_student->student->name ?? '') . ' ' . ($parent_student->student->surname ?? ''));
+            })
+            ->values();
+
+        return view('parent.protocols.index')
+            ->with('available_years', $available_years)
+            ->with('selected_year', $selected_year)
+            ->with('search', $search)
+            ->with('students', $students);
+    }
+
+    public function studentProtocol(Request $request, $student_id)
+    {
+        $parent_student = ParentStudent::with('student')
+            ->where('parent_id', auth()->id())
+            ->where('student_id', $student_id)
+            ->firstOrFail();
+
+        $available_years = LoginVerification::where('user_id', $student_id)
+            ->where('status', 'approved')
+            ->whereNotNull('verified_at')
+            ->selectRaw('YEAR(verified_at) as year')
+            ->distinct()
+            ->orderByDesc('year')
+            ->pluck('year')
+            ->filter()
+            ->values();
+
+        if ($available_years->isEmpty()) {
+            $available_years = collect([(int) now()->format('Y')]);
+        }
+
+        $selected_year = (int) $request->get('year', $available_years->first());
+        if (!$available_years->contains($selected_year)) {
+            $selected_year = (int) $available_years->first();
+        }
+
+        $search = trim((string) $request->get('search', ''));
+
+        $login_attempts = LoginVerification::where('user_id', $student_id)
+            ->where('status', 'approved')
+            ->whereYear('verified_at', $selected_year)
+            ->orderByDesc('verified_at')
+            ->get();
+
+        return view('parent.protocols.show')
+            ->with('student', $parent_student->student)
+            ->with('available_years', $available_years)
+            ->with('selected_year', $selected_year)
+            ->with('login_attempts', $login_attempts)
+            ->with('search', $search);
     }
     public function createStudent(){
         return view('parent.create-student')

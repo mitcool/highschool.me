@@ -54,6 +54,13 @@
         .nav-item a {
             width: 100%!important;
         }
+        .parent-dashboard-row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+        .parent-page-content {
+            width: 100%;
+        }
         .parent-mobile-panel {
             display: none;
             background: var(--parent-sidebar-item-bg);
@@ -133,6 +140,23 @@
         }
         body.parent-desktop-nav-active .parent-desktop-sidebar {
             display: block !important;
+        }
+        @media (min-width: 1461px) {
+            .parent-dashboard-row {
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: flex-start;
+            }
+            .parent-desktop-sidebar {
+                flex: 0 0 240px;
+                max-width: 300px;
+            }
+            .parent-page-content {
+                flex: 1 1 auto;
+                min-width: 0;
+                width: auto;
+                padding-left: 24px;
+            }
         }
         @media (max-width: 1460px) {
             .parent-mobile-panel {
@@ -225,6 +249,10 @@
                     <i class="fas fa-scroll"></i>
                     <span>Request Leave</span>
                 </a>
+                <a class="parent-mobile-menu-link" href="{{ route('parent.protocols.index') }}">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Protocols</span>
+                </a>
 
                 <div class="parent-mobile-menu-section">Payments and invoices</div>
                 <a class="parent-mobile-menu-link" href="{{ route('parent.invoices') }}">
@@ -256,7 +284,7 @@
                 </form>
             </div>
         </div>
-        <div class="row px-3">
+        <div class="row parent-dashboard-row">
                 <div id="wrapper" class="parent-desktop-sidebar" style="padding:0 0px;">
                     <ul class="navbar-nav pl-0 sidebar sidebar-dark accordion parent-desktop-sidebar" id="accordionSidebar" style="background:var(--parent-sidebar-bg)">
                         <li class="nav-item black">
@@ -298,6 +326,12 @@
                             <a class="nav-link" href="{{ route('parent.request-leave') }}">
                                 <i class="fas fa-scroll"></i>
                                 <span>Request Leave</span>
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ route('parent.protocols.index') }}">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Protocols</span>
                             </a>
                         </li>
                        <div class="sidebar-heading">Payments and invoices</div>

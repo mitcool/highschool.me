@@ -138,6 +138,8 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/pay-to-educator/{educator_id}', 'AdminController@payToEducatorPage')->name('pay-to-educator');
 	Route::post('/pay-to-educator-action/{educator_id}', 'AdminController@payToEducator')->name('store-pay-to-educator');
 	Route::get('/statistics', 'AdminStatisticsController@statistiscPage')->name('admin.statistics');
+	Route::get('/protocols', 'AdminProtocolController@index')->name('admin.protocols.index');
+	Route::get('/protocols/{student_id}', 'AdminProtocolController@show')->name('admin.protocols.show');
 
 	//Exams
 	Route::get('/exams','AdminController@exams')->name('admin-exams');
