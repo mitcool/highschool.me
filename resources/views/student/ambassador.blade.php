@@ -185,8 +185,11 @@
                                         @endif
                                     </td>
 
-                                    <td @if($activity->status == 'Denied') style="color: red;" @elseif($activity->status == 'Pending') style="color: #F07039;" @else style="color: green;" @endif>
-                                        {{ $activity->status }}
+                                    @php
+                                        $activityStatus = $activity->status ?: ($activity->redeem_points !== null ? 'Approved' : '');
+                                    @endphp
+                                    <td @if($activityStatus == 'Denied') style="color: red;" @elseif($activityStatus == 'Pending') style="color: #F07039;" @else style="color: green;" @endif>
+                                        {{ $activityStatus }}
                                     </td>
                                 </tr>
                             @empty

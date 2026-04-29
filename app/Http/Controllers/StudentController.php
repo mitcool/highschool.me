@@ -52,6 +52,7 @@ use App\Mail\ExamSubmittedAdmin;
 use App\Mail\ExamNoAttended;
 use App\Mail\IntegrityViolationAdmin;
 use App\Mail\IntegrityViolation;
+use App\Mail\AmbassadorRewardRedemptionRequest;
 
 use Carbon\Carbon;
 use DateTime;
@@ -121,7 +122,13 @@ class StudentController extends Controller
 
         // Total collected points
         $totalPoints = AmbassadorActivity::where('user_id', auth()->id())
-        ->where('status', 'Approved')
+        ->where(function ($query) {
+            $query->where('status', 'Approved')
+                ->orWhere(function ($subQuery) {
+                    $subQuery->whereNull('status')
+                        ->whereNotNull('redeem_points');
+                });
+        })
         ->with('action')
         ->get()
         ->sum(fn ($a) => ($a->action->value ?? 0) + ($a->redeem_points ?? 0));
@@ -504,19 +511,30 @@ class StudentController extends Controller
         ]);
 
         $user = auth()->user();
+        $selectedRewardIds = collect($request->rewards)->pluck('id')->all();
+        $selectedRewards = AmbassadorReward::whereIn('id', $selectedRewardIds)
+            ->get()
+            ->keyBy('id');
 
         // Recalculate total points (SECURITY)
         $totalPoints = AmbassadorActivity::where('user_id', $user->id)
+            ->where(function ($query) {
+                $query->where('status', 'Approved')
+                    ->orWhere(function ($subQuery) {
+                        $subQuery->whereNull('status')
+                            ->whereNotNull('redeem_points');
+                    });
+            })
             ->with('action')
             ->get()
-            ->sum(fn ($activity) => $activity->action->value ?? 0);
+            ->sum(fn ($activity) => ($activity->action->value ?? 0) + ($activity->redeem_points ?? 0));
 
         if ($totalPoints <= 500) {
             return back()->withErrors('You need more than 500 points to redeem rewards.');
         }
 
-        $basketTotal = collect($request->rewards)->sum(function ($reward) {
-            return AmbassadorReward::find($reward['id'])->points;
+        $basketTotal = collect($request->rewards)->sum(function ($reward) use ($selectedRewards) {
+            return optional($selectedRewards->get($reward['id']))->points ?? 0;
         });
 
         if ($basketTotal < 500) {
@@ -527,7 +545,8 @@ class StudentController extends Controller
             return back()->withErrors('Not enough points.');
         }
 
-        DB::transaction(function () use ($request, $user, $basketTotal) {
+        $order = null;
+        DB::transaction(function () use ($request, $user, $basketTotal, $selectedRewards, &$order) {
 
             $order = AmbassadorRedemptionOrder::create([
                 'user_id' => $user->id,
@@ -541,7 +560,7 @@ class StudentController extends Controller
 
             // Save redemptions
             foreach ($request->rewards as $reward) {
-                $rewardModel = AmbassadorReward::findOrFail($reward['id']);
+                $rewardModel = $selectedRewards->get($reward['id']);
 
                 AmbassadorRedemption::create([
                     'order_id' => $order->id,
@@ -557,9 +576,25 @@ class StudentController extends Controller
                 'service_id' => null,
                 'action_id' => null,
                 'link' => 'Redeem Rewards',
+                'status' => 'Approved',
                 'redeem_points' => -$basketTotal,
             ]);
         });
+
+        $rewardItems = collect($request->rewards)
+            ->map(function ($reward) use ($selectedRewards) {
+                return $selectedRewards->get($reward['id']);
+            })
+            ->filter()
+            ->values();
+
+        $order->setRelation('user', $user);
+        $this->notifyAdmins(new AmbassadorRewardRedemptionRequest(
+            $order,
+            $rewardItems,
+            $basketTotal,
+            $totalPoints
+        ));
 
         return back()->with('success_message', 'Rewards redeemed successfully');
     }
