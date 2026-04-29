@@ -23,6 +23,7 @@ use App\CourseFile;
 use App\CourseVideo;
 use App\StudentAnswer;
 use App\CourseCategory;
+use App\Country;
 
 class EducatorController extends Controller
 {
@@ -410,5 +411,11 @@ class EducatorController extends Controller
         }
 
         return redirect()->back()->with('success_message','Your request was successfull');
+    }
+
+    public function profile(){
+        $countries = Country::all();
+        return view('educator.profile')
+        ->with('countries',$countries);
     }
 }

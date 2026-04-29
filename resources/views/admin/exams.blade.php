@@ -63,7 +63,7 @@
                 <th>Subject</th>
                 <th>Student</th>
                 <th>Exam Type</th>
-                <th class="text-center" colspan="2">Action</th>
+                <th class="text-center" colspan="3">Action</th>
             </tr>
         @endif
         @forelse($exams as $exam)
@@ -90,12 +90,16 @@
                     <td class="text-center">
                         <a href="{{ route('single-submission',$exam->id) }}" target="blank">Details...</a>
                     </td>
+                    <td></td>
                 @else
                     <td class="text-center">
                         Exam evaluated 
                     </td>
                     <td class="text-center">
                         <a href="{{ route('single-submission',$exam->id) }}" target="blank">Details...</a>
+                    </td>
+                     <td class="text-center">
+                        <a href="{{ route('exam-protocol',$exam->id) }}" target="blank">Protocol...</a>
                     </td>
                 @endif
             </tr>

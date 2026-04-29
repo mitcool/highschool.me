@@ -59,7 +59,7 @@ class CronjobController extends Controller
                 if($student->student->active_plan || $student->track == 4 || $student->track == 3){
                     #NOTE tokens == questions 
                     $tokens = $student->student->active_plan->plan_id == 3 ? 1200 : 500;
-                    $student->update(['tokens' => $tokens]);
+                    $student->update(['tokens' => ($student->student_details->tokens + $tokens)]);
                     Notification::add($student->student_id,"Congratulations you have received new  ".$tokens. " questions for AI Study Mentor");
                 }
                 

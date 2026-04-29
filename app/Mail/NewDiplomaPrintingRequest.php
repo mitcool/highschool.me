@@ -14,7 +14,7 @@ class NewDiplomaPrintingRequest extends Mailable
     public $diploma_request;
     public function __construct($diploma_request)
     {
-        $diploma_request = $this->$diploma_request;
+        $this->$diploma_request = $diploma_request;
     }
 
     /**

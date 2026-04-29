@@ -739,6 +739,13 @@
                     </div>
                     <li class="nav-item">
                         <hr class="sidebar-divider">
+                        <a class="nav-link collapsed" href="{{ route('admin.profile') }}">
+                            <i class="fas fa-key"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <hr class="sidebar-divider">
                         <a class="nav-link collapsed" href="{{ route('admin.change-password') }}">
                             <i class="fas fa-key"></i>
                             <span>Change password</span>

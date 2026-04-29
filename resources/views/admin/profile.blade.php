@@ -1,4 +1,4 @@
-@extends('parent.dashboard')
+@extends('admin_template')
 
 @section('css')
 

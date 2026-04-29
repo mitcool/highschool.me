@@ -43,6 +43,7 @@ use App\AdditionalCourse;
 use App\ParentStudent;
 use App\StudyMentor;
 use App\PreExamAnswer;
+use App\Country;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -52,7 +53,10 @@ use App\Mail\ExamSubmittedAdmin;
 use App\Mail\ExamNoAttended;
 use App\Mail\IntegrityViolationAdmin;
 use App\Mail\IntegrityViolation;
+use App\Mail\PreExamSubmittedParent;
 use App\Mail\AmbassadorRewardRedemptionRequest;
+
+use App\Services\ClaudeService;
 
 use Carbon\Carbon;
 use DateTime;
@@ -60,6 +64,11 @@ use DateTimeZone;
 
 class StudentController extends Controller
 {
+
+    public $claude;
+    public function __construct(){
+        $this->claude = new ClaudeService();
+    }
     public function dashboard(){
 
         $exams = Exam::where('status',Exam::STATUS_APPOINTED)->where('student_id',auth()->id())->get();
@@ -273,7 +282,10 @@ class StudentController extends Controller
             ]);
            
         }
-        $exam->update(['status' => Exam::STATUS_SUBMITTED ]);
+        $exam->update([
+            'status' => Exam::STATUS_SUBMITTED,
+            'submitted_at' => Carbon::now() 
+        ]);
 
         StudentEnrolledCourse::where('catalog_course_id',$exam->course_id)->where('user_id',auth()->id())->update([
             'status' => StudentEnrolledCourse::STATUS_EXAM_SUBMITED
@@ -465,6 +477,8 @@ class StudentController extends Controller
         return view('student.single-study-mentor-chat')
             ->with('mentor',$mentor);
     }
+
+    #CHAT GPT
     public function singleStudyMentorChatPost(Request $request){
         $user_tokens = auth()->user()->student_details->tokens;
         if($user_tokens <= 0){
@@ -498,6 +512,35 @@ class StudentController extends Controller
         session()->put('conversation',$conversation);
         return ['answer'=>$answer,'tokens_left' => $tokens_left];
         
+    }
+
+    public function claudeChat(Request $request){
+      if(auth()->user()->student_details->tokens <= 0){
+            return ['answer'=> 'You have no questions left. Please contact the support team','tokens_left' => 0];
+       }
+       $conversation = session()->has('conversation') ? session()->get('conversation') : [];
+       $conversation[] = ['role' => 'user','content' => $request->message,];
+       $response = $this->claude->message([
+            'model' => 'claude-opus-4-7',
+            'max_tokens' => 400,
+            'messages' => $conversation,
+        ]);
+
+        info($response);
+
+        auth()->user()->student_details->decrement('tokens');
+        $output = [
+            'answer' => $response['content'][0]['text'],
+            'tokens_left' => auth()->user()->student_details->tokens
+        ];
+
+        $conversation[] = [
+            'role' => 'assistant',
+            'content' => $response['content'][0]['text']
+        ];
+        session()->put('conversation',$conversation);
+        
+        return $output;
     }
     public function redeemRewards(Request $request) {
         $request->validate([
@@ -772,6 +815,7 @@ class StudentController extends Controller
         $exam = Exam::where('id', $request->exam_id)
             ->where('student_id', auth()->id())
             ->firstOrFail();
+        $parent = $exam->student->student_details->parent;
 
         if ((int) $exam->pre_exam === 1 || PreExamAnswer::where('exam_id', $exam->id)->exists()) {
             return redirect()->route('student.exams')->with('error', 'This pre-exam has already been submitted');
@@ -790,6 +834,12 @@ class StudentController extends Controller
                 'pre_exam' => 1,
             ]);
         });
+        
+        try{
+            Mail::to($parent->email)->send(new PreExamSubmittedParent($parent,$exam));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
 
         return redirect()->route('student.exams')->with('success_message','Pre exam submitted successfully');
     }
@@ -797,13 +847,7 @@ class StudentController extends Controller
     public function diplomas(){
         $diploma_request = DiplomaPrintingRequest::where('student_id',auth()->id())->first();
         $student = auth()->user();
-        if($student->student_details->track == 3){
-            $credits = $this->checkTransferProgramDiploma($student->enrolled_courses);
-         
-        }
-        else{
-            $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
-        }
+        $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
         
         return view('student.diplomas')
             ->with('diploma_request',$diploma_request)
@@ -813,13 +857,7 @@ class StudentController extends Controller
 
     public function generatePdfDiploma($student_id){
         $student = User::find($student_id);
-        if($student->student_details->track == 3){
-            $credits = $this->checkTransferProgramDiploma($student->enrolled_courses);
-         
-        }
-        else{
-            $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
-        }
+        $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
         $pdf = Pdf::loadView('student.diploma-pdf',['student' => $student,'credits' => $credits])->set_option('isRemoteEnabled',true)->setPaper('a4','landscape');
         return $pdf->stream();
     }
@@ -850,7 +888,7 @@ class StudentController extends Controller
 
     public function requestDiplomaCopySuccess(){
         $diploma_request = DiplomaPrintingRequest::create(['student_id' => auth()->id(),'status' => 0]);
-        $this->notifyAdmins(send(new NewDiplomaPrintingRequest($diploma_request)));
+        $this->notifyAdmins(new NewDiplomaPrintingRequest($diploma_request));
         return redirect()->route('student.diplomas')
             ->with('success_message','Diploma copy requested successfully');
     }
@@ -963,6 +1001,12 @@ class StudentController extends Controller
         $exam_answers = StudentAnswer::where('exam_id',$exam_id)->get();
         $pdf = Pdf::loadView('student.protocol',['exam'=>$exam,'exam_answers' => $exam_answers])->set_option('isRemoteEnabled',true)->setPaper('a4');
         return $pdf->stream();
+    }
+
+    public function profile(){
+        $countries = Country::all();
+        return view('student.profile')
+        ->with('countries',$countries);
     }
        
 }

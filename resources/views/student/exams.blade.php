@@ -21,6 +21,7 @@
                 <tbody class="text-center">
                    @forelse($exams as $exam)
                         <tr>
+                               
                             <td>{{ $exam->localdate()}}</td>
                          
                             <td>{{ $exam->course->course->title }}</td>

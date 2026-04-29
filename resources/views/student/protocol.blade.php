@@ -53,9 +53,9 @@
             <tr>
                 <td>
                     <span class="normal">Exam Start</span><br> 
-                    <span class="bold">{{ $exam->datetime->format('H:i') }}</span><br> <br>
+                    <span class="bold">{{ $exam->datetime->format('H:i') }} UTC</span><br> <br>
                     <span class="normal">Exam End</span><br> 
-                    <span class="bold">{{ $exam->submitted_at->format('H:i') }}</span> <br><br>
+                    <span class="bold">{{ $exam->submitted_at->format('H:i') }} UTC</span> <br><br>
                     
                 </td>
                 <td style="text-align:right;">
@@ -64,11 +64,11 @@
                     <span class="normal">Time Limit Applied</span><br> 
                     <span class="bold">
                         @if($exam->type == 2) 
-                        168 Hours
+                            168 Hours
                         @elseif($exam->type == 1 && $exam->student->student_details->is_disabled == 1) 
-                        360 Minutes
+                            360 Minutes
                         @else
-                        120 Minutes
+                            120 Minutes
                         @endif
                     </span> <br><br>
                    
@@ -83,7 +83,7 @@
                     <span class="normal">Accommodation</span><br> 
                     <span class="bold">No</span><br> <br>
                     <span class="normal">Accommodation Date</span><br> 
-                    <span class="bold">{{ $exam->submitted_at->format('H:i') }}</span> <br><br>
+                    <span class="bold">{{ $exam->submitted_at->format('H:i') }} UTC</span> <br><br>
                     
                 </td>
                 <td style="text-align:right;">
@@ -144,7 +144,7 @@
                 </td>
                 <td style="text-align:right;">
                     <span class="normal">Final GPA (1.0 - 4.0)</span><br> 
-                    <span class="bold">{{ $exam->grade }}</span><br> <br>
+                    <span class="bold">{{ number_format($exam->grade,1,'.') }}</span><br> <br>
                      <span class="normal">Pass Rule Applied</span><br> 
                     <span class="bold">GPA >= 1.0</span><br> <br>
                 </td>

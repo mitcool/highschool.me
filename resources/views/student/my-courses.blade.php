@@ -131,7 +131,7 @@
 
 @section('content')
 <div class="container my-5">
-    @if(auth()->user()->student_details->track == 1 || auth()->user()->student_details->track == 2)
+    @if(auth()->user()->student_details->track == 1 || auth()->user()->student_details->track == 2 || auth()->user()->student_details->track == 3 )
     <div class="card graduation-card p-4">
         <h2 class="text-center mb-4">Graduation Process</h2>
         <div class="position-relative mb-4">

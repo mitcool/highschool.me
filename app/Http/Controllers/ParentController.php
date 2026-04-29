@@ -493,7 +493,7 @@ class ParentController extends Controller
             StudentDocument::insert(['file'=>$withdrawal_confirmation_name,'type'=>7,'student_id'=>$student->id,'is_approved' => 0]);
         }
         
-         #withdrawal_confirmation (document 8) optinal
+         #iep (document 8) optinal
         if($request->hasFile('iep')){
             $iep_name =  $this->upload_file($request->file('iep'),$path); 
             StudentDocument::insert(['file'=>$iep_name,'type'=> 8,'student_id'=>$student->id,'is_approved' => 0]);
@@ -1104,7 +1104,7 @@ class ParentController extends Controller
     }
 
     public function updateInfo(Request $request){
-        
+      
         $request->validate([
             "email" => 'required',
             'country_id'=> 'required',
@@ -1113,13 +1113,18 @@ class ParentController extends Controller
             'street_number' => 'required',
             'zip' => 'required',
             "phone" => "required|regex:/^[0-9]\d{6,15}$/|min:6|max:15",
-            "phone_code" => 'required|regex:/^\+[0-9]\d{0,3}$/'
+            "phone_code" => 'required|regex:/^\+[0-9]\d{0,3}$/',
+            "avatar" => ['required', 'file', 'mimes:jpg,jpeg,webp,png,svg', 'max:300']
         ]);
-        $user = $request->email;
-        if(auth()->user()->email != $request->email){
-            if(User::where('email',$request->email)->count() > 0){
+        $email = $request->email;
+        if(auth()->user()->email != $email){
+            if(User::where('email',$email)->count() > 0){
                 return redirect()->back()->with('error','Email has already been taken');
             }
+        }
+        if($request->hasFile('avatar')){
+            $avatar = $this->upload_file($request->file('avatar'),'images/avatars/'.auth()->id());
+            auth()->user()->update(['avatar'=> $avatar]);
         }
         $details = $request->only('city','street','street_number','zip','country_id','phone','phone_code');
         $details['user_id'] = auth()->id();
@@ -1422,13 +1427,14 @@ class ParentController extends Controller
         $this->insertAdditionalCourses($plan_id,$student_id);
 
         $expires_at = $type == 1 
-                ? Carbon::now()->addMonths(1)->subDays(1) 
-                : Carbon::now()->addYears(1)->subDays(1); 
+                ? Carbon::now()->addYears(1)->subDays(1) 
+                : Carbon::now()->addMonths(1)->subDays(1); 
         ParentStudent::where('student_id',$student_id)
             ->update(['status' => ParentStudent::ACTIVE]);
 
-        StudentPlan::insert([
+        StudentPlan::create([
             'plan_id' => $plan->id,
+            'type' => $type,
             'student_id' => $student_id,
             'expires_at' => $expires_at
         ]);
@@ -1495,5 +1501,92 @@ class ParentController extends Controller
 
         return view('parent.all-notifications')->with('notifications', $notifications);
     }
+
+    public function plans(){
+        $parent_students = ParentStudent::where('parent_id',auth()->id())->get();
+        return view('parent.plans')
+            ->with('parent_students',$parent_students);
+    }
+
+    public function terminatePlan($plan_id){
+        StudentPlan::find($plan_id)->delete();
+        return redirect()->back()->with('success_message','Your plan has been terminated succesfully');
+    }
+
+    public function changePlan($student_id){
+        $student = User::find($student_id);
+        $plans = Plan::all();
+        return view('parent.change-plan')
+            ->with('plans',$plans)
+            ->with('student',$student);
+    }
+
+    public function updatePlan(Request $request,$student_id){
+        
+        $requested_plan = $request->plan;
+        $type  = $request->payment_type;
+        $student = User::find($student_id);
+        $plan = Plan::find($request->plan);
+        $total = $type == 1 ? $plan->price_per_year : $plan->price_per_month;
+         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $session = \Stripe\Checkout\Session::create([
+            'line_items'  => [
+                [
+                    'price_data' => [
+                        'currency'     => 'usd',
+                        'product_data' => [
+                            'name' => 'Change of plan',
+                        ],
+                        'unit_amount'  => $total*100, 
+                    ],
+                    'quantity'   => 1,
+                ],
+            ],
+            'mode'        => 'payment',
+            'success_url' => route('parent.update-plan-success',[$student->id,$requested_plan,$type]),
+            'cancel_url'  => route('change-plan',$student->id),
+        ]);
+
+        return redirect()->away($session->url);
+       
+
+    }
+
+    public function updatePlanSuccess($student_id,$plan_id,$type){
+        $student = User::find($student_id);
+        $active_plan = $student->active_plan;
+        $expires_at = $type == 0  
+                ? Carbon::parse($active_plan->expires_at)->addMonths(1)->subDays(1) 
+                : Carbon::parse($active_plan->expires_at)->addYears(1)->subDays(1); // monthly or yearly
+        
+        // upgrade
+        if($plan_id > $student->active_plan->plan_id){
+           $student->active_plan->update([
+                'expires_at' => $expires_at,
+                'type' => $type,
+                'plan_id' => $plan_id,
+           ]); 
+        }
+         //downgrade or extend
+        else{
+            $plan = StudentPlan::create([
+                'plan_id' => $plan_id,
+                'student_id' =>$student_id,
+                'created_at' => $active_plan->expires_at,
+                'expires_at' => $expires_at,
+                'type' => $type
+            ]);
+        }
+        ///TODO:: email and notification
+        try{
+
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+        return redirect()->route('parent.plans')->with('success_message','Plan has been changed successfully');
+       
+    }
+    
 }
 

@@ -259,7 +259,10 @@
                     <i class="fas fa-file-invoice"></i>
                     <span>Payments and invoices</span>
                 </a>
-
+                 <a class="parent-mobile-menu-link" href="{{ route('parent.plans') }}">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Plans</span>
+                </a>
                 <div class="parent-mobile-menu-section">Help Desk</div>
                 <a class="parent-mobile-menu-link" href="{{ route('help-desk') }}">
                     <i class="fas fa-envelope"></i>
@@ -341,7 +344,12 @@
                                 <span>Payments and invoices</span>
                             </a>
                         </li>
-                        
+                         <li class="nav-item active">
+                            <a class="nav-link" href="{{route('parent.plans')}}">
+                                <i class="fas fa-file-invoice"></i>
+                                <span>Plans</span>
+                            </a>
+                        </li>
                         <div class="sidebar-heading">Help Desk</div>
                         <li class="nav-item active">
                             <a class="nav-link" href="{{route('help-desk')}}">
@@ -511,3 +519,4 @@
 </body>
 
 </html>
+ 

@@ -1748,7 +1748,8 @@ class AdminController extends Controller
         ]);
         $exam = Exam::find($exam_id);
         $student = $exam->student;
-        $parent = $student->student_details->parent;
+        $student_details =$student->student_details;
+        $parent = $student_details->parent;
         $grade = $request->grade;
         $exam_comment = $request->exam_comment;
         $course = StudentEnrolledCourse::where('user_id',$exam->student_id)->where('catalog_course_id',$exam->course_id)->first();
@@ -1761,17 +1762,21 @@ class AdminController extends Controller
         $exam->update([
             'grade' => $grade,
             'comment'=> $exam_comment,
-            'status' => Exam::STATUS_EVALUATED
+            'status' => Exam::STATUS_EVALUATED,
+            'evaluated_at' => Carbon::now()
         ]);
         if($grade > 1){
             $exam->update(['passed_at' => Carbon::now()]);
             $course->update(['status' => StudentEnrolledCourse::STATUS_COMPLETED]);
+            # here is the diploma logic
+            $this->calculateCredits($student->enrolled_courses,$student_details->track); 
         }
         else{
             $course->update(['status' => StudentEnrolledCourse::STATUS_READY_FOR_EXAM]);
         }
-        Notification::add($exam->student_id,'You have a new exam results');
-        Notification::add($parent->id,'You have a new exam results');
+
+        
+
         try{
             Mail::to($student->email)->send(new ExamResult($exam));
         }catch(\Exception $e){
@@ -1782,6 +1787,9 @@ class AdminController extends Controller
         }catch(\Exception $e){
             info($e->getMessage());
         }
+
+        Notification::add($exam->student_id,'You have a new exam results');
+        Notification::add($parent->id,'You have a new exam results');
         return redirect()->back()->with('success_message','Exam evaluated successfully');
         
     }
@@ -2145,5 +2153,36 @@ class AdminController extends Controller
     public function otherStaffDelete(Request $request){
         OtherStaff::find($request->id)->delete();
         return redirect()->back()->with('success_message', 'Staff member deleted successfully');
+    }
+
+    public function profile(){
+        $countries = Country::all();
+        return view('admin.profile')
+        ->with('countries',$countries);
+    }
+
+    public function updateInfo(Request $request){
+        
+        $request->validate([
+            "email" => 'required',
+            'country_id'=> 'required',
+            'city' => 'required',
+            'street' => 'required',
+            'street_number' => 'required',
+            'zip' => 'required',
+            "phone" => "required|regex:/^[0-9]\d{6,15}$/|min:6|max:15",
+            "phone_code" => 'required|regex:/^\+[0-9]\d{0,3}$/'
+        ]);
+        $user = $request->email;
+        if(auth()->user()->email != $request->email){
+            if(User::where('email',$request->email)->count() > 0){
+                return redirect()->back()->with('error','Email has already been taken');
+            }
+        }
+        $details = $request->only('city','street','street_number','zip','country_id','phone','phone_code');
+        $details['user_id'] = auth()->id();
+        InvoiceDetail::updateOrCreate(['user_id'=>auth()->user()->id],$details);
+        Notification::add(auth()->id(),'Congratulations your details have been update successfully');
+        return redirect()->back()->with('success_message','User info updated successfully');
     }
 }

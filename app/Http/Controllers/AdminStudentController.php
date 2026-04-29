@@ -12,6 +12,7 @@ use App\StudentDocument;
 use App\CurriculumCourse;
 use App\StudentEnrolledCourse;
 use App\Notification;
+use App\Exam;
 
 use App\Mail\WrongDocument;
 use App\Mail\ApplicationRejection;
@@ -60,7 +61,7 @@ class AdminStudentController extends Controller
         };
         
         $student_document->update(['is_approved' => $is_approved]);
-        $count_approved_documents = StudentDocument::where('type','<',7)
+        $count_approved_documents = StudentDocument::where('type','<',8)
                                                     ->where('student_id',$student_document->student_id)
                                                     ->where('is_approved',1)
                                                     ->count();
@@ -111,8 +112,11 @@ class AdminStudentController extends Controller
         $in_progress_courses =  $student_enrolled_courses->whereIn('status',[StudentEnrolledCourse::STATUS_START_STUDY,StudentEnrolledCourse::STATUS_READY_FOR_EXAM]);
         $completed_courses =  $student_enrolled_courses->where('status',StudentEnrolledCourse::STATUS_COMPLETED);
         $needed_mandatory_courses = $this->checkMandatoryCourses($student_enrolled_courses);
+        $exams = Exam::where('student_id',$student_id)->get();
         return view('admin.student-profile')
             ->with('credits',$credits)
+            ->with('exams',$exams)
+            ->with('student_enrolled_courses',$student_enrolled_courses)
             ->with('completed_courses',$completed_courses)
             ->with('in_progress_courses',$in_progress_courses)
             ->with('student',$student);

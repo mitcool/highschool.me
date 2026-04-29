@@ -253,7 +253,7 @@
                                         <select id="job_id" name="job_id" class="form-control">
                                             <option value="">-- Select job --</option>
                                             @foreach($cteJobs as $job)
-                                                <option value="{{ $job->id }}" {{ (string)  $course->curriculumCourses[0]->job->id === (string) $job->id ? 'selected' : '' }}>
+                                                <option value="{{ $job->id }}" @if($course->curriculumCourses[0]->job) {{  (string)  $course->curriculumCourses[0]->job->id === (string) $job->id ? 'selected' : '' }} @endif>
                                                     {{ $job->name }}
                                                 </option>
                                             @endforeach

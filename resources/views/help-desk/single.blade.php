@@ -6,8 +6,11 @@
         @foreach($help_desk_messages as $hd)
             <div class="border {{ $hd->is_admin==1 ? ' bg-light ' : '' }}" style="padding:20px;margin-top:10px;" >   
                 <div class="d-flex justify-content-between">
-                    <h5 class="font-weight-bold mb-0">From: {{ $hd->user->fullname() }}</h5>
-                    <p class="mb-0">{{ $hd->created_at->format('d.m.Y') }}</p>
+                     <div class="d-flex align-items-center">
+                        <img src="{{ asset('images/avatars/') }}/{{ $hd->user->id }}/{{ $hd->user->avatar }}" alt="" style="width:100px;height:100px;border-radius:100%;" class="border">
+                        <h5 class="font-weight-bold mb-0 mx-2"> {{ $hd->user->fullname() }}</h5>
+                    </div>
+                     <p class="mb-0 ">{{ $hd->created_at->format('d.m.Y') }}</p>
                 </div>
                 <hr>
                 <p><span>Title:</span> {{ $hd->title }}</p>

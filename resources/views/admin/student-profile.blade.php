@@ -198,6 +198,40 @@
             </div>
         </div>
     </div>
+    <h2 class="text-center my-4">Course list</h2>
+        <table class="table">
+            <tr>
+                <th>Subject</th>
+                <th>Mandatory</th>
+                <th>Status</th>
+                <th>Exam Protocol</th>
+                <th>Final Grade</th>
+            </tr>
+                @foreach ($student_enrolled_courses as $enrolled_course)
+                    <tr>
+                        <td>{{ $enrolled_course->course->course->title }} </td>
+                        <td>{{ $enrolled_course->course->required_flag == 1 ? 'Yes' : 'No' }}</td>
+                        <td>
+                            @if($enrolled_course->status ==5 )
+                                Completed
+                            @elseif($enrolled_course->status <= 1)
+                                Pending
+                            @else
+                                In progress
+                            @endif
+                        </td>
+                        <td>
+                            @if($enrolled_course->status == 5) <a href="{{ route('exam-protocol',$enrolled_course->passed_exam->id) }}">View</a> @endif
+                        </td>
+                        <td>{{ $enrolled_course->status == 5 ?  $enrolled_course->passed_exam->grade : '' }}</td>
+                    </tr>
+                @endforeach
+        </table>
 
+        <div class="text-center">
+            <a href="{{ route('admin-student-overview') }}" class="btn btn-outline-secondary me-2">Close</a>
+        </div>
 </div>
+
+
 @endsection

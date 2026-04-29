@@ -240,6 +240,9 @@
         text-align: right;
         white-space: nowrap;
     }
+    .price{
+        color:black;
+    }
     @media (max-width: 767.98px) {
         .enrolled-courses-card {
             padding: 16px 10px 8px;
@@ -364,7 +367,7 @@
                 <p>Mandatory International Transfer Program Fee:</p>
                  @foreach($plans as $key => $plan)
                     <div>
-                        <input class="plans" value="{{ $plan->id }}" type="radio" {{ $key == 0 ? ' checked ' : '' }} name="plan" data-price-per-year="{{ $plan->price_per_year }}" data-price-per-month="{{ $plan->price_per_month }}"> {{ $plan->name }} Package (${{ $plan->price_per_year() }})
+                        <input class="plans" value="{{ $plan->id }}" type="radio" {{ $key == 0 ? ' checked ' : '' }} name="plan" data-price-per-year="{{ $plan->price_per_year }}" data-price-per-month="{{ $plan->price_per_month }}"> {{ $plan->name }} Package <span class="price">(${{ $plan->price_per_month() }})</span>
                     </div> 
                 @endforeach
                 <p class="mb-0 font-weight-bold mt-3">Please select Monthly or Yearly Plan:</p>
@@ -378,7 +381,7 @@
                 <hr>
                 <div class="d-flex justify-content-between">
                     <div class="total">
-                        Total Fee:  <span id="total-transfer-program">$2200.00</span>
+                        Total Fee:  <span id="total-transfer-program">$490.00</span>
                     </div>
                     <button class="orange-button">Proceed to Payment</button>
                 </div>
@@ -392,7 +395,7 @@
                 <p class="mb-0 font-weight-bold mt-3">Please select your preferred Package:</p>
                 @foreach($plans as $key => $plan)
                     <div>
-                        <input class="plans" value="{{ $plan->id }}" type="radio" {{ $key == 0 ? ' checked ' : '' }} name="plan" data-price-per-year="{{ $plan->price_per_year }}" data-price-per-month="{{ $plan->price_per_month }}"> {{ $plan->name }} Package (${{ $plan->price_per_year() }})
+                        <input class="plans" value="{{ $plan->id }}" type="radio" {{ $key == 0 ? ' checked ' : '' }} name="plan" data-price-per-year="{{ $plan->price_per_year }}" data-price-per-month="{{ $plan->price_per_month }}"> {{ $plan->name }} Package <span class="price">(${{ $plan->price_per_year() }})</span>
                     </div> 
                 @endforeach
                 <p class="mb-0 font-weight-bold mt-3">Please select Monthly or Yearly Plan:</p>
@@ -539,28 +542,44 @@
 @section('scripts')
 
 @if($student->student_details->track == 3)
-<script>
-    let plan  = $('input[class=plans]:checked').attr('data-price-per-year');
-    let total = Number(plan) + 300;
-    $('#total-transfer-program').html('$' + total.toFixed(2));
-
-    $('.plans').on('click',function(){
-        let type_of_payment = $('.payment-type:checked')
-        let plan = type_of_payment.val() == 0 
-            ? $('input[class=plans]:checked').attr('data-price-per-month') 
-            : $('input[class=plans]:checked').attr('data-price-per-year');
-         let total = Number(plan) + 300;
-        $('#total-transfer-program').html('$' + total.toFixed(2));
-    });
-    $('.payment-type').on('click',function(){
-         let type_of_payment = $('.payment-type:checked')
-         let plan = type_of_payment.val() == 0 
-            ? $('input[class=plans]:checked').attr('data-price-per-month') 
-            : $('input[class=plans]:checked').attr('data-price-per-year');
+    <script>
+        let plan  = $('input[class=plans]:checked').attr('data-price-per-month');
+        $('input[class=plans]:checked').closest('div').find('.price').css('color','#E9580C')
         let total = Number(plan) + 300;
-       $('#total-transfer-program').html('$' + total.toFixed(2));
-    })
-</script>
+        $('#total-transfer-program').html('$' + total.toFixed(2));
+
+        $('.plans').on('click',function(){
+             $('.price').css('color','black')
+            let type_of_payment = $('.payment-type:checked')
+            let plan = type_of_payment.val() == 0 
+                ? $('input[class=plans]:checked').attr('data-price-per-month') 
+                : $('input[class=plans]:checked').attr('data-price-per-year');
+                let total = Number(plan) + 300;
+                let plan_price = Number(plan).toFixed(2)
+                 $(this).closest('div').find('.price').css('color','#E9580C').html('($'+ plan_price + ')')
+            $('#total-transfer-program').html('$' + total.toFixed(2));
+        });
+        $('.payment-type').on('click',function(){
+            let type_of_payment = $('.payment-type:checked')
+            let plan = type_of_payment.val() == 0 
+                ? $('input[class=plans]:checked').attr('data-price-per-month') 
+                : $('input[class=plans]:checked').attr('data-price-per-year');
+            let total = Number(plan) + 300;
+             $('.price').css('color','black')
+               let plan_price = Number(plan).toFixed(2);
+               $('input[class=plans]:checked').closest('div').find('.price').css('color','#E9580C').html('($'+ plan_price + ')');
+            let prices = $('.price');
+            let i = 0;
+            for (const current_plan of $('.plans')) {
+                let current_price = type_of_payment.val() == 0 
+                    ? current_plan.getAttribute('data-price-per-month') 
+                    : current_plan.getAttribute('data-price-per-year')
+                prices[i].innerHTML ='($'+ Number(current_price).toFixed(2)+ ')';
+                i++;
+            }
+        $('#total-transfer-program').html('$' + total.toFixed(2));
+        })
+    </script>
 @endif
 <script>
     $(document).ready(function(){
@@ -575,6 +594,8 @@
             let plan_price = payment_type == 0 ? $(this).attr('data-price-per-month') : $(this).attr('data-price-per-year');
             let total = Number(plan_price) + 300;
             $('#total').html('$' + total.toFixed(2));
+
+            $(this).closest('div').find('.price').css('color','#E9580C')
         });
 
         $('.payment-type').on('click',function(){

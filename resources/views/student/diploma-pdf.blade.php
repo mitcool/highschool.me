@@ -15,7 +15,7 @@
         </div>
         <hr style="height: 0x;border-top:3px solid #E9580C; margin-top:20px;">
         <div style="text-align: center;">
-            <h1 style="text-align:center;color:#FFD631;font-size:40px;margin-bottom:0;">HIGH SCHOOL {{ $credits['avarage_grade'] >= 3.5 ? 'HONORS' : '' }} DIPLOMA</h1>
+            <h1 style="text-align:center;color:#FFD631;font-size:40px;margin-bottom:0;">HIGH SCHOOL {{ $credits['average_grade'] >= 3.5 ? 'HONORS' : '' }} DIPLOMA</h1>
             <p style="color:#14213D">THIS CERTIFICATE IS PROUDLY PRESENTED TO</p>
              <h1 style="font-size:40px;margin-top:50px;color:#E9580C;">{{ $student->fullname() }}</h1>
              <p style="color:#14213D">for successfully completing the requirements prescribed for graduation</p>

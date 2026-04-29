@@ -63,7 +63,7 @@
         </table>
       
         <hr>
-        <form action="{{ route('approve.student',$student->student_id) }}" method="POST" class="confirm-first text-center my-3 {{ $student->approved_documents_count() > 5 ? ' d-block ' : 'd-none' }} " id="approve-student-form">
+        <form action="{{ route('approve.student',$student->student_id) }}" method="POST" class="confirm-first text-center my-3 {{ $student->approved_documents_count() > 6 ? ' d-block ' : 'd-none' }} " id="approve-student-form">
             {{ csrf_field() }}
             <div class="">
                 <input type="checkbox" name="is_disabled"> IEP / 504
@@ -131,7 +131,7 @@
             .then(response => {
                 $(`.approve-button[data-value=${response.document_id}]`).removeClass('btn-secondary').addClass('btn-success').html('Approved')
                 $(`.reject-button[data-value=${response.document_id}]`).remove();
-                if(response.count > 5){
+                if(response.count > 6){
                     $('#approve-student-form').removeClass('d-none');
                     $('#wrong-document').addClass('d-none')
                 }

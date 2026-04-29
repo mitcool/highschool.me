@@ -98,6 +98,11 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	Route::get('/request-leave', 'ParentController@requestLeavePage')->name('parent.request-leave');
 	Route::post('/store-leave', 'ParentController@requestLeave')->name('parent.store-leave');
 
+	Route::get('/plans','ParentController@plans')->name('parent.plans');
+	Route::post('/terminate-plan/{plan_id}','ParentController@terminatePlan')->name('terminate-plan');
+	Route::get('/change-plan/{student_id}','ParentController@changePlan')->name('change-plan');
+	Route::post('/update-plan/{student_id}','ParentController@updatePlan')->name('parent.update-plan');
+	Route::get('/update-plan-success/{student_id}/{requested_plan}/{type}','ParentController@updatePlanSuccess')->name('parent.update-plan-success');
 	#notifications
 	Route::get('/all-notifications', 'ParentController@showNotifications')->name('parent.notifications');
 
@@ -116,7 +121,8 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::get('/study-mentor','StudentController@studyMentor')->name('student.study-mentor');
 	Route::get('/study-mentor/{slug}','StudentController@singleStudyMentor')->name('student.single-study-mentor');
 	Route::get('/single-study-mentor-chat/{slug}','StudentController@singleStudyMentorChat')->name('student.single-study-mentor-chat');
-	Route::post('/study-mentor-chat','StudentController@singleStudyMentorChatPost')->name('student.study-mentor-chat-post');
+	# chat gpt Route::post('/study-mentor-chat','StudentController@singleStudyMentorChatPost')->name('student.study-mentor-chat-post');
+	Route::post('/study-mentor-chat','StudentController@claudeChat')->name('student.study-mentor-chat-post');
 	Route::get('/exams','StudentController@exams')->name('student.exams');
 	Route::get('/exams/{id}','StudentController@singleExam')->name('student.single-exam');
 	Route::get('/exams/result/{id}','StudentController@singleExamResults')->name('student.single-exam-results');
@@ -139,10 +145,13 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::post('/book-mentoring-session/{session_id}','ParentController@bookMentoringSession')->name('book-mentoring-session');
 	Route::post('/book-coaching-session/{session_id}','ParentController@bookCoachingSession')->name('book-coaching-session');
 	Route::get('/book-session-success','ParentController@bookSessionSuccess')->name('book-session-success');
-	Route::get('/exam-protocol/{exam_id}','StudentController@examProtocol')->name('exam-protocol');
+	
+	Route::get('/profile','StudentController@profile')->name('student.profile');
 	#notifications
 	Route::get('/all-notifications', 'StudentController@showNotifications')->name('student.notifications');
 });
+
+Route::get('/exam-protocol/{exam_id}','StudentController@examProtocol')->name('exam-protocol');
 
 Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');
 
@@ -172,6 +181,7 @@ Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 	Route::get('/materials/{course_id}','EducatorController@editCourseMaterials')->name('educator.course-materials');
 	Route::post('/course-material/add','EducatorController@addCourseMaterials')->name('educator.add-course-material');
 	Route::post('/new-course-request','EducatorController@requestNewCourse')->name('educator.request-new-course');
+	Route::get('/profile','EducatorController@profile')->name('educator.profile');
 	#notifications
 	Route::get('/all-notifications', 'EducatorController@showNotifications')->name('educator.notifications');
 

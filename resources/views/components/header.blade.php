@@ -87,10 +87,14 @@
 					href="{{ route('educator.notifications') }}"
 				@endif 
 			    >
-			        <i class="fas fa-user-circle"></i>
+					@if(auth()->user()->avatar)
+						 <img src="{{ asset('images/avatars')}}/{{ auth()->id() }}/{{ auth()->user()->avatar }}" alt="" id="user-avatar">
+					@else
+			        	<i class="fas fa-user-circle"></i>
 			            <span id="notifBadgeMobile" style="display:none;">
 			                {{ $unreadNotificationsCount > 99 ? '99+' : $unreadNotificationsCount }}
 			            </span>
+					@endif
 			    </a>
 		    @endauth
 			<x-nav-mobile/>
@@ -112,10 +116,16 @@
 					href="{{ route('educator.notifications') }}"
 				@endif 
 			    class="notif-btn" title="Notifications">
-			        <i class="fas fa-user-circle" style="font-size: 22px;"></i>
-			            <span class="notif-badge" id="notifBadge" style="display:none;">
-			                {{ $unreadNotificationsCount > 99 ? '99+' : $unreadNotificationsCount }}
-			            </span>
+					
+					@if(auth()->user()->avatar)
+						 <img src="{{ asset('images/avatars')}}/{{ auth()->id() }}/{{ auth()->user()->avatar }}" alt="" id="user-avatar">
+					@else
+						<i class="fas fa-user-circle" style="font-size: 22px;"></i>
+							<span class="notif-badge" id="notifBadge" style="display:none;">
+								{{ $unreadNotificationsCount > 99 ? '99+' : $unreadNotificationsCount }}
+							</span>
+					@endif
+			        
 			    </a>
 		    @endauth
 			@auth

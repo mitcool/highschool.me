@@ -1,4 +1,4 @@
-@extends('parent.dashboard')
+@extends('educator.dashboard')
 
 @section('css')
 

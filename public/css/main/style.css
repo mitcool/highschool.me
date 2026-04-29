@@ -693,7 +693,10 @@ a:hover {
     padding: 70px;
 }
 
-
+#user-avatar{
+   width: 22px;
+   height:22px;
+}
 /*
   * And let's fade it in from the left
   */

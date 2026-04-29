@@ -13,10 +13,10 @@
     <link href="{{asset('css/admin/sb-admin-2.min.css')}}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{asset('/assets/fontawesome-free-5.5.0-web/css/all.min.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     @yield('css')
     <style>
@@ -229,6 +229,10 @@
                 </a>
 
                 <div class="educator-mobile-menu-section">Profile Settings</div>
+                  <a class="educator-mobile-menu-link" href="{{ route('educator.profile') }}">
+                    <i class="fas fa-key"></i>
+                    <span>Profile</span>
+                </a>
                 <a class="educator-mobile-menu-link" href="{{ route('educator.reset.password.page') }}">
                     <i class="fas fa-key"></i>
                     <span>Password change</span>
@@ -304,6 +308,12 @@
                     <div class="sidebar-heading">
                         Profile Settings
                     </div>
+                     <li class="nav-item active">
+                        <a class="nav-link" href="{{ route('educator.profile') }}">
+                            <i class="fas fa-key"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ route('educator.reset.password.page') }}">
                             <i class="fas fa-key"></i>
@@ -323,27 +333,62 @@
             </div>
 
             @if(Session::has('success_message'))
-                <div class="alert alert-success text-center alert-fixed shadow" role="alert">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {{ Session::get('success_message') }}
-                </div>
-            @endif
+                        <div class="modal fade" id="message_modal">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body text-center">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <div></div>
+                                        {!! Session::get('success_message') !!}
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 50px; color:black; margin-bottom: 15px;">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div> 
+                    @endif
 
-            @if(Session::has('error'))
-                <div class="alert alert-danger text-center alert-fixed shadow" role="alert">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {{ Session::get('error') }}
-                </div>
-            @endif
+                    @if(Session::has('error'))
+                        <div class="modal fade" id="message_modal">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content error-msg">
+                                <div class="modal-body text-center">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <div></div>
+                                        {{ Session::get('error') }}
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 50px; color:black; margin-bottom: 15px;">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div> 
+                    @endif
 
-            @if(count($errors) > 0)
-                @foreach($errors->all() as $error)
-                    <div class="alert alert-danger text-center alert-fixed shadow" role="alert">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        {{ $error }}
-                    </div>
-                @endforeach
-            @endif
+                    @if(count($errors) > 0)
+                        <div class="modal fade" id="message_modal">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content error-msg">
+                                <div class="modal-body text-center">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <div>
+                                            @foreach($errors->all() as $error)
+                                             <p class="text-left"> {{ $error }} </p>  
+                                            @endforeach
+                                        </div>
+                                        
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size: 50px; color:black; margin-bottom: 15px;">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>  
+                    @endif
 
             @yield('content')
                 
@@ -374,6 +419,8 @@
             }    
         });
        }
+
+       $('#message_modal').modal('show');
 
        const educatorMobileMenu = document.getElementById('educatorMobileMenu');
        const educatorMobileMenuToggle = document.querySelector('.educator-mobile-panel-toggle');

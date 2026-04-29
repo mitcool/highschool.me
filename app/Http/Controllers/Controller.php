@@ -14,7 +14,11 @@ use App\RelatedCourse;
 use App\CurriculumCourse;
 use App\Notification;
 use App\StudentEnrolledCourse;
+use App\ParentStudent;
 use Carbon\Carbon;
+
+use App\Mail\GraduationEmailStudent;
+use App\Mail\GraduationEmailParent;
 
 use DB;
 
@@ -147,7 +151,7 @@ class Controller extends BaseController
     }
      public function calculateCredits($student_enrolled_courses,$track){
         $credits = [];
-       
+        
         if($track == 1){
              $core_credits = 16;
              $needed_elective_credits =8;
@@ -169,7 +173,6 @@ class Controller extends BaseController
         $credits['completed_credits'] = 0;
         $credits['diploma'] = 0;
         $credits['graduation_date'] = '';
-        
         foreach($student_enrolled_courses as $enrolled_course){
             $credits['needed_credits'] += $enrolled_course->course->default_credits;
             $type = CurriculumCourse::where('id',$enrolled_course->catalog_course_id)->first()->curriculum_type_id;
@@ -200,34 +203,44 @@ class Controller extends BaseController
         }
         $credits['completed_courses'] = $completed_courses;
         $credits['average_grade'] = $average_grade;
+
+        //Transfer program
+        if($track == 3){
+            $credits['needed_credits'] = $core_credits;
+            if($credits['completed_credits'] >= $credits['needed_credits']){
+                $credits['diploma'] = 1;
+                
+                $credits['graduation_date'] = $student_enrolled_courses
+                    ->where('status',StudentEnrolledCourse::STATUS_COMPLETED)
+                    ->last()->passed_exam->passed_at->format('d.m.Y');
+                $student = $student_enrolled_courses[0]->student;
+                $parent = $student->student_details->parent;
+
+                if($student->student_details->status !=  ParentStudent::GRADUATED){
+                    try{
+                        Mail::to($student->email)->send(new GraduationEmailStudent($student));
+                    }catch(\Exception $e){
+                        info($e->getMessage());
+                    }
+                    try{
+                        Mail::to($parent->email)->send(new GraduationEmailParent($parent,$student));
+                    }catch(\Exception $e){
+                        info($e->getMessage());
+                    }
+                    $student->student_details->update(['status' => ParentStudent::GRADUATED]);
+
+                    Notification::add(auth()->id(),'Congratulations student\'s diploma is ready',);
+                    Notification::add(auth()->id(),'Congratulations your diploma is ready');
+                }
+                
+            }
+            $credits['completed_courses'] = $completed_courses;
+            $credits['average_grade'] = $average_grade;
+        }
         
         return $credits;
     }
 
-    public function checkTransferProgramDiploma($enrolled_courses){
-        $student_info = [];
-        $completed_courses = 0;
-        $total_grade = 0;
-        $needed_courses = CurriculumCourse::where('curriculum_type_id',11)->count(); //all TP courses
-        foreach($enrolled_courses as $course){
-            
-            if($course->course->curriculum_type_id && $course->status == StudentEnrolledCourse::STATUS_COMPLETED){
-                $completed_courses++;
-                $total_grade += $course->passed_exam->grade;
-            }
-        }
-        if($completed_courses>=$needed_courses){
-            $student_info['diploma'] = 1;
-            $student_info['avarage_grade'] = $total_grade/$completed_courses;
-            $student_info['graduation_date'] = $enrolled_courses
-                                                    ->where('status',StudentEnrolledCourse::STATUS_COMPLETED)
-                                                    ->last()->passed_exam->passed_at->format('d.m.Y');
-        }
-        
-       
-        return $student_info;
-       
-    }
     
     public function deleteSingleNotification(Request $request, $id) {
         Notification::where('id', $id)->where('user_id', auth()->id())->delete();

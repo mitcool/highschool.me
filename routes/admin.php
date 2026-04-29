@@ -257,5 +257,8 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/other-staff/edit','AdminController@otherStaffEdit')->name('other-staff-edit');
 	Route::post('/other-staff/delete','AdminController@otherStaffDelete')->name('other-staff-delete');
 
+	//Profile
+	Route::get('/profile','AdminController@profile')->name('admin.profile');
+
 
 });

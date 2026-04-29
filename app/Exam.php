@@ -13,7 +13,22 @@ class Exam extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['datetime','course_id','student_id','educator_id','type','status','grade','comment','pre_exam','passed_at','reminder','admin_id'];
+    protected $fillable = [
+        'datetime',
+        'course_id',
+        'student_id',
+        'educator_id',
+        'type',
+        'status',
+        'grade',
+        'comment',
+        'pre_exam',
+        'passed_at',
+        'reminder',
+        'admin_id',
+        'submitted_at',
+        'evaluated_at'
+    ];
 
      protected $casts = [
         'datetime' => 'datetime',

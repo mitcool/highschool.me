@@ -260,6 +260,10 @@
                 </a>
 
                 <div class="student-mobile-menu-section">Profile Settings</div>
+                <a class="student-mobile-menu-link" href="{{ route('student.profile') }}">
+                    <i class="fas fa-key"></i>
+                    <span>Profile</span>
+                </a>
                 <a class="student-mobile-menu-link" href="{{ route('student.reset.password.page') }}">
                     <i class="fas fa-key"></i>
                     <span>Password change</span>
@@ -343,6 +347,12 @@
                     <div class="sidebar-heading">
                         Profile Settings
                     </div>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ route('student.profile') }}">
+                            <i class="fas fa-key"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ route('student.reset.password.page') }}">
                             <i class="fas fa-key"></i>

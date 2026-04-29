@@ -126,6 +126,56 @@
         border: 1px solid #00000029;
         border-radius: 10px;
     }
+    .course-pill {
+        display: inline-block;
+        min-width: 92px;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 10px;
+        font-size: .82rem;
+        font-weight: 600;
+        line-height: 1.2;
+        border: none;
+    }
+    .course-pill-self-pending,
+    .course-pill-action-pending {
+        background: #d9d9d9;
+        color: #fff;
+    }
+    .course-pill-self-results {
+        background: #13b7c8;
+        color: #fff;
+    }
+    .course-pill-action-start {
+        background: #045397;
+        color: #fff;
+    }
+    .course-pill-action-ready {
+        background: #f36a10;
+        color: #fff;
+    }
+    .course-pill-action-date {
+        background: #f7b348;
+        color: #fff;
+    }
+    .course-pill-action-results {
+        background: #2dbb16;
+        color: #fff;
+    }
+    .course-pill-empty {
+        color: #a8b0bf;
+        font-size: .9rem;
+    }
+    .course-action-form {
+        margin: 0;
+    }
+    .course-action-button {
+        cursor: pointer;
+    }
+    .course-action-cell {
+        text-align: right;
+        white-space: nowrap;
+    }
 </style>
 @endsection
 
@@ -133,7 +183,9 @@
 <div class="container my-5">
     <div class="card graduation-card p-4">
         <h2 class="text-center mb-4">Degree Transcripts</h2>
-        
+          @if(array_key_exists('diploma',$credits) && $credits['diploma'] == 1)
+                <p class="text-center">* Charges may apply for receiving a physical copy</p>
+            @endif
         <div class="table-responsive">
             <table class="table course-table">
                 <thead>
@@ -170,11 +222,11 @@
                     <td>
                         @if($diploma_request)
                             @if($diploma_request->status == 0)
-                                <button class="orange-button">Requested</button>
+                                <button class="course-pill course-pill-action-start">Requested</button>
                             @elseif($diploma_request->status == 1)
-                                <button class="orange-button">Sent</button>
+                                <button class="course-pill course-pill-action-pending">Sent</button>
                             @elseif($diploma_request->status == 2)
-                                <button class="orange-button">Delivered</button>
+                                <button class="course-pill course-pill-action-results">Delivered</button>
                             @endif
                         @else
                             @if(array_key_exists('diploma',$credits) && $credits['diploma'] == 1)
@@ -192,9 +244,7 @@
             
                 {{-- <p class="text-center">Your diploma cannot be issued at this time because some required courses remain incomplete.</p> --}}
             {{-- @endif --}}
-             @if(array_key_exists('diploma',$credits) && $credits['diploma'] == 1)
-                <p>* Charges may apply for receiving a physical copy</p>
-            @endif
+           
         </div>
     </div>
 </div>
