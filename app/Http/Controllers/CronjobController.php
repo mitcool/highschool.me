@@ -149,4 +149,43 @@ class CronjobController extends Controller
             }
         }
     }
+
+    public function promoteStudentGrades()
+    {
+        if (!ParentStudent::supportsGradeStartedAt()) {
+            return 'Skipped: parent_students.grade_started_at column is missing.';
+        }
+
+        $now = Carbon::now()->startOfDay();
+        $checked = 0;
+        $updated = 0;
+
+        $students = ParentStudent::whereIn('track', [1, 2, 4])
+            ->whereIn('grade', [9, 10, 11])
+            ->whereNotNull('grade_started_at')
+            ->get();
+
+        foreach ($students as $student) {
+            $checked++;
+
+            if (!$student->isGradePromotionDue($now)) {
+                continue;
+            }
+
+            $nextGrade = $student->nextGradeLevel();
+
+            if (is_null($nextGrade)) {
+                continue;
+            }
+
+            $student->update([
+                'grade' => $nextGrade,
+                'grade_started_at' => $now->copy(),
+            ]);
+
+            $updated++;
+        }
+
+        return "Checked {$checked} students. Promoted {$updated} grade(s).";
+    }
 }

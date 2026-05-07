@@ -328,6 +328,10 @@
                     <i class="fas fa-envelope"></i>
                     <span>Student Help Desk</span>
                 </a>
+                <a class="admin-mobile-menu-link" href="{{ route('admin-educator-help-desk') }}">
+                    <i class="fas fa-envelope"></i>
+                    <span>Educator Help Desk</span>
+                </a>
 
                 <div class="admin-mobile-menu-section">Texts</div>
                 <a class="admin-mobile-menu-link" href="{{ route('faq-categories') }}">
@@ -426,7 +430,7 @@
                     <i class="fas fa-key"></i>
                     <span>Change password</span>
                 </a>
-                <form action="{{ route('logout') }}" method="post">
+                <form action="{{ route('logout') }}" method="post" class="admin-mobile-menu-section">
                     {{ csrf_field() }}
                     <button type="submit" class="admin-mobile-menu-button">
                         <i class="fas fa-sign-out-alt"></i>
@@ -582,6 +586,12 @@
                         <a class="nav-link collapsed" href="{{route('admin-student-help-desk')}}">
                             <i class="fas fa-envelope"></i>
                             <span>Student Help Desk</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('admin-educator-help-desk')}}">
+                            <i class="fas fa-envelope"></i>
+                            <span>Educator Help Desk</span>
                         </a>
                     </li>
                     <hr class="sidebar-divider"> 
@@ -753,7 +763,7 @@
                     </li>
                     <li class="nav-item">
                         <hr class="sidebar-divider">
-                        <form action="{{ route('logout') }}" method="post">
+                        <form action="{{ route('logout') }}" method="post" class="sidebar-heading p-0">
                             {{ csrf_field() }}
                             <button class="nav-link collapsed bg-transparent border-0">
                                 <i class="fas fa-sign-out-alt"></i>

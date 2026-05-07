@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
 use App\StudentDocument;
 
@@ -13,7 +14,17 @@ class ParentStudent extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['status','expired_at','is_disabled','grade','parent_id','student_id','track','feedback','tokens','gender','student_location_id','ethnicity_id'];
+    protected $fillable = ['status','expired_at','is_disabled','grade','grade_started_at','parent_id','student_id','track','feedback','tokens','gender','student_location_id','ethnicity_id','language_level'];
+
+    protected $casts = [
+        'grade_started_at' => 'datetime',
+    ];
+
+    const LANGUAGE_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+    const GRADE_LEVELS = [9, 10, 11, 12];
+    const AUTO_GRADE_PROMOTION_DAYS = 365;
+
+    protected static $supportsGradeStartedAtColumn;
 
     //STATUSES
     const CREATED = 0;
@@ -79,5 +90,54 @@ class ParentStudent extends Model
         elseif($this->track==3){
             return 'Credit Transfer Track';
         }
+    }
+
+    public function usesTransferProgramGradeRule(?int $upgradeOption = null): bool
+    {
+        return (int) $this->track === 3
+            || ((int) $this->track === 4 && (int) $upgradeOption === 3);
+    }
+
+    public function canSelectGrade(?int $upgradeOption = null): bool
+    {
+        return !$this->usesTransferProgramGradeRule($upgradeOption);
+    }
+
+    public function canAutoPromoteGrade(): bool
+    {
+        return in_array((int) $this->track, [1, 2, 4], true)
+            && in_array((int) $this->grade, [9, 10, 11], true);
+    }
+
+    public function nextGradeLevel(): ?int
+    {
+        if (!$this->canAutoPromoteGrade()) {
+            return null;
+        }
+
+        return (int) $this->grade + 1;
+    }
+
+    public function isGradePromotionDue(?Carbon $now = null): bool
+    {
+        if (!$this->canAutoPromoteGrade() || !$this->grade_started_at) {
+            return false;
+        }
+
+        $now = ($now ?: Carbon::now())->copy()->startOfDay();
+
+        return $this->grade_started_at->copy()
+            ->startOfDay()
+            ->addDays(self::AUTO_GRADE_PROMOTION_DAYS)
+            ->lte($now);
+    }
+
+    public static function supportsGradeStartedAt(): bool
+    {
+        if (is_null(static::$supportsGradeStartedAtColumn)) {
+            static::$supportsGradeStartedAtColumn = Schema::hasColumn('parent_students', 'grade_started_at');
+        }
+
+        return static::$supportsGradeStartedAtColumn;
     }
 }

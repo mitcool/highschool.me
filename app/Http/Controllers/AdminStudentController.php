@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 use Mail;
+use Carbon\Carbon;
 
 use App\User;
 use App\ParentStudent;
@@ -119,7 +121,48 @@ class AdminStudentController extends Controller
             ->with('student_enrolled_courses',$student_enrolled_courses)
             ->with('completed_courses',$completed_courses)
             ->with('in_progress_courses',$in_progress_courses)
-            ->with('student',$student);
+            ->with('student',$student)
+            ->with('grade_levels', ParentStudent::GRADE_LEVELS);
+    }
+
+    public function updateStudentGrade(Request $request, $student_id)
+    {
+        $student = User::with('student_details')->findOrFail($student_id);
+        $studentDetails = $student->student_details;
+
+        if (!$studentDetails) {
+            return response()->json([
+                'message' => 'Student details were not found.',
+            ], 404);
+        }
+
+        if (!$studentDetails->canSelectGrade()) {
+            return response()->json([
+                'message' => 'This student is assigned to the International Transfer Program, so the grade cannot be changed here.',
+            ], 422);
+        }
+
+        $validated = $request->validate([
+            'grade' => ['required', 'integer', Rule::in(ParentStudent::GRADE_LEVELS)],
+        ]);
+
+        $gradeUpdate = [
+            'grade' => $validated['grade'],
+        ];
+
+        if (
+            ParentStudent::supportsGradeStartedAt()
+            && (is_null($studentDetails->grade) || (int) $studentDetails->grade !== (int) $validated['grade'])
+        ) {
+            $gradeUpdate['grade_started_at'] = Carbon::now();
+        }
+
+        $studentDetails->update($gradeUpdate);
+
+        return response()->json([
+            'message' => 'Student grade updated successfully.',
+            'grade' => $validated['grade'],
+        ]);
     }
 
     public function uploadedDocumentsFromParentPage(Request $request, $student_id) {

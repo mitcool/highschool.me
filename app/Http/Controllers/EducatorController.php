@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
 
 use App\GroupSession;
@@ -335,7 +336,15 @@ class EducatorController extends Controller
 
     public function editCourseMaterials($cc_id){
         $course = CurriculumCourse::find($cc_id);
-        $course_files  = CourseFile::where('course_id',$course->course_id)->get();
+        $course_files_query = CourseFile::where('course_id',$course->course_id);
+        if (Schema::hasColumn('course_files', 'position')) {
+            $course_files_query->orderByRaw('CASE WHEN position IS NULL THEN 1 ELSE 0 END')
+                ->orderBy('position')
+                ->orderBy('id');
+        } else {
+            $course_files_query->orderBy('id');
+        }
+        $course_files  = $course_files_query->get();
         $course_videos  = CourseVideo::where('course_id',$course->course_id)->get();
         return view('educator.course-materials')
             ->with('course_files',$course_files)
@@ -359,11 +368,17 @@ class EducatorController extends Controller
                 if (!$uploadedFile) {
                     continue;
                 }
-                CourseFile::create([
+                $filePayload = [
                     'course_id'     => $course->id,
                     'label'         => isset($labels[$index]) ? $labels[$index] : null,
                     'stored_path'   => $uploadedFile,
-                ]);
+                ];
+
+                if (Schema::hasColumn('course_files', 'position')) {
+                    $filePayload['position'] = $index + 1;
+                }
+
+                CourseFile::create($filePayload);
             }
         }
 

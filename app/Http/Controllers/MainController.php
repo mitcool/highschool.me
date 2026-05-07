@@ -389,6 +389,10 @@ public function sendHelpDeskQustion(Request $request){
   elseif($user->role_id == 4){
     $is_parent = 0;
   }
+  elseif($user->role_id == 5){
+    $is_parent = 0;
+    $is_educator = 1;
+  }
   else{
      $is_parent = $prev_message->is_parent; //in case admin answer  
   }
@@ -400,6 +404,7 @@ public function sendHelpDeskQustion(Request $request){
     'message' => $request->message,
     'is_admin' => $is_admin,
     'is_parent' => $is_parent,
+    'is_educator' => $is_educator,
     'slug' => $slug
   ]);
 
@@ -434,6 +439,10 @@ public function singleHelpDesk($slug){
   elseif(auth()->user()->role_id == 4){
     $template = 'student.dashboard';
   }
+  elseif(auth()->user()->role_id == 5){
+    $template = 'educator.dashboard';
+  }
+
   return view('help-desk.single')
     ->with('help_desk_messages',$help_desk_messages)
     ->with('template',$template);
@@ -448,6 +457,10 @@ public function helpDesk(){
   elseif(auth()->user()->role_id == 4){
     $template = 'student.dashboard';
   }
+  elseif(auth()->user()->role_id == 5){
+    $template = 'educator.dashboard';
+  }
+
   return view('help-desk.inbox')
         ->with('template',$template)
         ->with('help_desk',$help_desk);
@@ -461,6 +474,10 @@ public function newHelpDesk($slug = null){
   elseif(auth()->user()->role_id == 4){
     $template = 'student.dashboard';
   }
+  elseif(auth()->user()->role_id == 5){
+    $template = 'educator.dashboard';
+  }
+
   return view('help-desk.new')
     ->with('slug',$slug)
     ->with('template',$template);

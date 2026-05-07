@@ -268,9 +268,9 @@
                     <i class="fas fa-key"></i>
                     <span>Password change</span>
                 </a>
-                <form action="{{ route('logout') }}" method="post">
+                <form action="{{ route('logout') }}" method="post" class="student-mobile-menu-section">
                     {{ csrf_field() }}
-                    <button type="submit" class="student-mobile-menu-button">
+                    <button type="submit" class="student-mobile-menu-button" style="background-color: var(--student-sidebar-heading-bg);border-top: none;">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
                     </button>
@@ -360,7 +360,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <form action="{{ route('logout') }}" method="post">
+                        <form action="{{ route('logout') }}" method="post" class="sidebar-heading p-0">
                             {{ csrf_field() }}
                             <button class="nav-link collapsed bg-transparent border-0">
                                 <i class="fas fa-sign-out-alt"></i>

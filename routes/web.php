@@ -114,41 +114,44 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::get('/ambassador-program', 'StudentController@ambassadorPage')->name('student.ambassador-program');
 	Route::get('/activities/{platform_id}', 'StudentController@getActivities')->name('student.get-activity');
 	Route::post('/store-activity', 'StudentController@storeActivity')->name('student.store-activity');
-	Route::get('/my-courses', 'StudentController@myCoursesPage')->name('student.my-courses');
-	Route::get('/course/{course_id}','StudentController@singleCourse')->name('student.single-course');
-	Route::get('/course-material/{material_id}', 'StudentController@singleMaterial')->name('student.course-material');
-	Route::get('/course-video/{video_id}', 'StudentController@singleVideo')->name('student.course-video');
-	Route::get('/study-mentor','StudentController@studyMentor')->name('student.study-mentor');
-	Route::get('/study-mentor/{slug}','StudentController@singleStudyMentor')->name('student.single-study-mentor');
-	Route::get('/single-study-mentor-chat/{slug}','StudentController@singleStudyMentorChat')->name('student.single-study-mentor-chat');
-	# chat gpt Route::post('/study-mentor-chat','StudentController@singleStudyMentorChatPost')->name('student.study-mentor-chat-post');
-	Route::post('/study-mentor-chat','StudentController@claudeChat')->name('student.study-mentor-chat-post');
-	Route::get('/exams','StudentController@exams')->name('student.exams');
-	Route::get('/exams/{id}','StudentController@singleExam')->name('student.single-exam');
-	Route::get('/exams/result/{id}','StudentController@singleExamResults')->name('student.single-exam-results');
 	Route::post('/ambassador/redeem', 'StudentController@redeemRewards')->name('ambassador.redeem');
-	Route::post('/submit-exam/{exam_id}','StudentController@submitExam')->name('submit-exam');
-	Route::post('/fail-exam/{exam_id}','StudentController@failExam')->name('fail-exam');
-	Route::get('/self-assessment-test/{material_id}', 'StudentController@selfAssessmentTest')->name('student.self-assessment-test');
-	Route::post('/self-assessment-test-submit/{attempt}', 'StudentController@submitSelfAssessmentTest')->name('student.self-assessment-test-submit');
-	Route::get('/self-assessment-test-review', 'StudentController@selfAssessmentTestReview')->name('student.self-assessment-review');
-	Route::get('/pre-exam/{subject_id}','StudentController@preExam')->name('student.pre-exam');
-	Route::post('/submit-pre-exam','StudentController@submitPreExam')->name('submit-pre-exam-exam');
 	Route::get('/diplomas','StudentController@diplomas')->name('student.diplomas');
 	Route::get('/generate-pdf-diploma/{student_id}','StudentController@generatePdfDiploma')->name('student.generate-pdf-diploma');
 	Route::post('/request-diploma-copy','StudentController@requestDiplomaCopy')->name('request-diploma-copy');
     Route::get('/request-diploma-copy-success','StudentController@requestDiplomaCopySuccess')->name('request-diploma-copy-success');
     Route::get('/digital-transcript/{student_id}','StudentController@digitalTransript')->name('student.generate-pdf-transcript');
- 	Route::post('/record-fraud','StudentController@recordFraud')->name('record-fraud');
-	Route::get('/meetings','StudentController@meetings')->name('student.meetings');
-	Route::post('/book-group-session/{session_id}','ParentController@bookGroupSession')->name('book-group-session');
-	Route::post('/book-mentoring-session/{session_id}','ParentController@bookMentoringSession')->name('book-mentoring-session');
-	Route::post('/book-coaching-session/{session_id}','ParentController@bookCoachingSession')->name('book-coaching-session');
-	Route::get('/book-session-success','ParentController@bookSessionSuccess')->name('book-session-success');
 	
 	Route::get('/profile','StudentController@profile')->name('student.profile');
 	#notifications
 	Route::get('/all-notifications', 'StudentController@showNotifications')->name('student.notifications');
+
+	Route::middleware('student.long_leave_restriction')->group(function () {
+		Route::get('/my-courses', 'StudentController@myCoursesPage')->name('student.my-courses');
+		Route::get('/course/{course_id}','StudentController@singleCourse')->name('student.single-course');
+		Route::get('/course-material/{material_id}', 'StudentController@singleMaterial')->name('student.course-material');
+		Route::get('/course-video/{video_id}', 'StudentController@singleVideo')->name('student.course-video');
+		Route::get('/study-mentor','StudentController@studyMentor')->name('student.study-mentor');
+		Route::get('/study-mentor/{slug}','StudentController@singleStudyMentor')->name('student.single-study-mentor');
+		Route::get('/single-study-mentor-chat/{slug}','StudentController@singleStudyMentorChat')->name('student.single-study-mentor-chat');
+		# chat gpt Route::post('/study-mentor-chat','StudentController@singleStudyMentorChatPost')->name('student.study-mentor-chat-post');
+		Route::post('/study-mentor-chat','StudentController@claudeChat')->name('student.study-mentor-chat-post');
+		Route::get('/exams','StudentController@exams')->name('student.exams');
+		Route::get('/exams/{id}','StudentController@singleExam')->name('student.single-exam');
+		Route::get('/exams/result/{id}','StudentController@singleExamResults')->name('student.single-exam-results');
+		Route::post('/submit-exam/{exam_id}','StudentController@submitExam')->name('submit-exam');
+		Route::post('/fail-exam/{exam_id}','StudentController@failExam')->name('fail-exam');
+		Route::get('/self-assessment-test/{material_id}', 'StudentController@selfAssessmentTest')->name('student.self-assessment-test');
+		Route::post('/self-assessment-test-submit/{attempt}', 'StudentController@submitSelfAssessmentTest')->name('student.self-assessment-test-submit');
+		Route::get('/self-assessment-test-review', 'StudentController@selfAssessmentTestReview')->name('student.self-assessment-review');
+		Route::get('/pre-exam/{subject_id}','StudentController@preExam')->name('student.pre-exam');
+		Route::post('/submit-pre-exam','StudentController@submitPreExam')->name('submit-pre-exam-exam');
+ 		Route::post('/record-fraud','StudentController@recordFraud')->name('record-fraud');
+		Route::get('/meetings','StudentController@meetings')->name('student.meetings');
+		Route::post('/book-group-session/{session_id}','ParentController@bookGroupSession')->name('book-group-session');
+		Route::post('/book-mentoring-session/{session_id}','ParentController@bookMentoringSession')->name('book-mentoring-session');
+		Route::post('/book-coaching-session/{session_id}','ParentController@bookCoachingSession')->name('book-coaching-session');
+		Route::get('/book-session-success','ParentController@bookSessionSuccess')->name('book-session-success');
+	});
 });
 
 Route::get('/exam-protocol/{exam_id}','StudentController@examProtocol')->name('exam-protocol');
@@ -321,6 +324,7 @@ Route::get('/check-subscriptions','CronjobController@checkSubscribtions')->name(
 Route::get('/check-exams','CronjobController@failExamsWhereStudentDoesntShowTo')->name('check-exams');
 Route::get('/update-questions','CronjobController@updateStudyMentorQuestions')->name('update-questions');
 Route::get('/sessions-reminder','CronjobController@sessionsReminder')->name('session-reminder');
+Route::get('/promote-student-grades','CronjobController@promoteStudentGrades')->name('promote-student-grades');
 
 #sitemaps
 

@@ -202,6 +202,12 @@
                     <span>Your Meetings</span>
                 </a>
 
+                <div class="educator-mobile-menu-section">Help Desk</div>
+                <a class="educator-mobile-menu-link" href="{{ route('help-desk') }}">
+                    <i class="fas fa-users"></i>
+                    <span>Educator Help Desk</span>
+                </a>
+
                 <div class="educator-mobile-menu-section">Exams</div>
                 <a class="educator-mobile-menu-link" href="{{ route('educator.exams') }}">
                     <i class="fas fa-folder"></i>
@@ -237,9 +243,9 @@
                     <i class="fas fa-key"></i>
                     <span>Password change</span>
                 </a>
-                <form action="{{ route('logout') }}" method="post">
+                <form action="{{ route('logout') }}" method="post" class="educator-mobile-menu-section">
                     {{ csrf_field() }}
-                    <button type="submit" class="educator-mobile-menu-button">
+                    <button type="submit" class="educator-mobile-menu-button" style="background-color: #7B0039;border-top: none;">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
                     </button>
@@ -248,7 +254,7 @@
         </div>
         <div class="row px-3">
             <div id="wrapper" class="educator-desktop-sidebar" style="padding:0 0px;">
-                <ul class="navbar-nav pl-2 sidebar sidebar-dark accordion educator-desktop-sidebar" id="accordionSidebar" style="background:#045397">
+                <ul class="navbar-nav pl-0 sidebar sidebar-dark accordion educator-desktop-sidebar" id="accordionSidebar" style="background:#045397">
                     <li class="nav-item black">
                         <a class="nav-link" href="{{route('educator.dashboard')}}">
                             <i class="fas fa-home"></i>
@@ -269,6 +275,14 @@
                         <a class="nav-link" href="{{route('educator.meetings')}}">
                             <i class="fas fa-users"></i>
                             <span>Your Meetings</span>
+                        </a>
+                    </li>
+
+                    <div class="sidebar-heading">Help Desk</div>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ route('help-desk') }}">
+                            <i class="fas fa-users"></i>
+                            <span>Educator Help Desk</span>
                         </a>
                     </li>
 
@@ -321,7 +335,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <form action="{{ route('logout') }}" method="post">
+                        <form action="{{ route('logout') }}" method="post" class="sidebar-heading p-0">
                             {{ csrf_field() }}
                             <button class="nav-link collapsed bg-transparent border-0">
                                 <i class="fas fa-sign-out-alt"></i>

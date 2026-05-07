@@ -88,6 +88,14 @@
         background: #cf4900;
         color: #fff;
     }
+    .btn-open.disabled,
+    .btn-open.disabled:hover {
+        background: #cfcfcf;
+        color: #fff;
+        box-shadow: none;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
 
     .btn-close-big {
         background: #e65100;
@@ -131,25 +139,35 @@
         {{-- MATERIALS --}}
         @forelse($materials as $material)
             @php
-                $hasSelfAssessment = true; // change logic if needed
+                $materialState = $materialStates->get($material->id);
             @endphp
 
             <div class="material-row">
                 <div class="material-name">{{ $material->label }}</div>
 
-                @if($hasSelfAssessment && $enrolled_course->status < 4)
+                @if($materialState && $materialState['can_take_self_assessment'])
                     <a class="self-link"
                        href="{{ route('student.self-assessment-test', $material->id) }}">
-                        Self Assessment
+                        {{ $materialState['self_assessment_completed'] ? 'Self Assessment Completed' : 'Self Assessment' }}
                     </a>
+                @elseif($materialState && $materialState['self_assessment_completed'])
+                    <span class="self-link disabled">Self Assessment Completed</span>
+                @elseif($materialState && !$materialState['has_self_assessment'])
+                    <span class="self-link disabled">No Self Assessment</span>
+                @elseif($materialState && !$materialState['is_unlocked'])
+                    <span class="self-link disabled">Self Assessment Locked</span>
                 @else
                     <span class="self-link disabled">Self Assessment</span>
                 @endif
 
-                <a class="btn btn-open"
-                   href="{{ route('student.course-material', $material->id) }}">
-                    Open
-                </a>
+                @if($materialState && $materialState['is_unlocked'])
+                    <a class="btn btn-open"
+                       href="{{ route('student.course-material', $material->id) }}">
+                        Open
+                    </a>
+                @else
+                    <span class="btn btn-open disabled">Locked</span>
+                @endif
             </div>
         @empty
             <p class="text-muted text-center my-4">No materials available for this course.</p>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 use Mail;
 use Cookie;
@@ -252,7 +253,8 @@ class ParentController extends Controller
     public function createStudent(){
         return view('parent.create-student')
             ->with('student_locations', StudentLocation::orderBy('id')->get())
-            ->with('ethnicities', Ethnicity::orderBy('id')->get());
+            ->with('ethnicities', Ethnicity::orderBy('id')->get())
+            ->with('language_levels', ParentStudent::LANGUAGE_LEVELS);
     }
     public function meetings_all(){
         $students = ParentStudent::where('parent_id',auth()->id())->get();
@@ -356,6 +358,7 @@ class ParentController extends Controller
             'gender' => 'required|in:male,female',
             'student_location_id' => 'required|exists:student_locations,id',
             'ethnicity_id' => 'required|exists:ethnicities,id',
+            'language_level' => ['required', Rule::in(ParentStudent::LANGUAGE_LEVELS)],
         ]);
 
         $education_option = $request->education_option;
@@ -390,6 +393,7 @@ class ParentController extends Controller
             'gender' => $request->gender,
             'student_location_id' => $request->student_location_id,
             'ethnicity_id' => $request->ethnicity_id,
+            'language_level' => $request->language_level,
             'tokens' => 500  // Defined by marketing team (TOKENS == QUESTIONS) //After selection of plan update in case they have Pro or Elite
         ]);
 
@@ -460,7 +464,19 @@ class ParentController extends Controller
         
         $request->validate($validation_rules,$validation_messages);
         $grade = $request->grade;
-        ParentStudent::where('student_id',$student_id)->first()->update([ 'grade'=>$grade ]);
+        $parentStudent = ParentStudent::where('student_id',$student_id)->first();
+        $gradeUpdate = ['grade' => $grade];
+
+        if (
+            $parentStudent
+            && !is_null($grade)
+            && ParentStudent::supportsGradeStartedAt()
+            && (is_null($parentStudent->grade) || (int) $parentStudent->grade !== (int) $grade)
+        ) {
+            $gradeUpdate['grade_started_at'] = Carbon::now();
+        }
+
+        $parentStudent->update($gradeUpdate);
 
         $path = base_path()."/public/documents/".$student->id;
         #Parent Id (document 1) required
@@ -1457,7 +1473,17 @@ class ParentController extends Controller
 
     public function requestLeave(Request $request) {
         $request->validate([
-            'leave_type' => 'required|integer',
+            'student_id' => [
+                'required',
+                'integer',
+                Rule::exists('parent_students', 'student_id')->where(function ($query) {
+                    $query->where('parent_id', auth()->id());
+                }),
+            ],
+            'leave_type' => ['required', 'integer', Rule::in([
+                LeaveRequest::TYPE_MEDICAL,
+                LeaveRequest::TYPE_PERSONAL,
+            ])],
             'file' => 'required|file|max:2048',
             'message' => 'required|string',
             'start_date' => 'required|date',

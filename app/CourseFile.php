@@ -13,6 +13,7 @@ class CourseFile extends Model
         'course_id',
         'label',
         'stored_path',
+        'position',
     ];
 
     /**

@@ -155,6 +155,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	
 	Route::get('/help-desk/parent','AdminController@parentHelpDesk')->name('admin-parent-help-desk');
 	Route::get('/help-desk/student','AdminController@studentHelpDesk')->name('admin-student-help-desk');
+	Route::get('/help-desk/educator','AdminController@educatorHelpDesk')->name('admin-educator-help-desk');
 	Route::get('/help-desk/new','AdminController@newHelpDesk')->name('admin.single-help-desk');
 
 	Route::get('/family-consultations','AdminMeetingController@familyConsultations')->name('admin-family-consultations');
@@ -236,6 +237,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
     Route::patch('/leave-requests/deny/{request_id}', 'AdminController@denyLeaveRequest')->name('admin.leave_requests.deny');
 
 	Route::get('/single/student/{student_id}','AdminStudentController@singleStudentProfile')->name('admin.single-student');
+	Route::post('/single/student/{student_id}/grade','AdminStudentController@updateStudentGrade')->name('admin.single-student-grade.update');
 	Route::get('/single/student/uploaded-documents/{student_id}', 'AdminStudentController@uploadedDocumentsFromParentPage')->name('admin.single-student-uploaded-documents');
 
 	Route::get('/diploma-requests','AdminController@diplomaRequests')->name('admin-student-diploma-requests');

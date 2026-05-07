@@ -979,11 +979,17 @@ class AdminController extends Controller
                     if (!$uploadedFile) {
                         continue;
                     }
-                    CourseFile::create([
+                    $filePayload = [
                         'course_id'     => $course->id,
                         'label'         => isset($labels[$index]) ? $labels[$index] : null,
                         'stored_path'   => $uploadedFile,
-                    ]);
+                    ];
+
+                    if (Schema::hasColumn('course_files', 'position')) {
+                        $filePayload['position'] = $index + 1;
+                    }
+
+                    CourseFile::create($filePayload);
                 }
             }
 
@@ -1228,11 +1234,17 @@ class AdminController extends Controller
                         continue;
                     }
 
-                    CourseFile::create([
+                    $filePayload = [
                         'course_id'   => $course->id,
                         'label'       => $label ?: null,
                         'stored_path' => $link, // this is your "link to file"
-                    ]);
+                    ];
+
+                    if (Schema::hasColumn('course_files', 'position')) {
+                        $filePayload['position'] = $index + 1;
+                    }
+
+                    CourseFile::create($filePayload);
                 }
             }
 
@@ -1627,7 +1639,7 @@ class AdminController extends Controller
         return redirect()->route('pay-to-educator', $educator->id)->with('success_message','Credit memo created successfully');
     }
 
-    #Using the same view for both help desks
+    #Using the same view for both help desks and for the educators
     public function parentHelpDesk(){
         $template = 'admin_template';
         $help_desk = HelpDesk::orderBy('id','desc')->where('is_parent',1)->get()->groupBy('slug');
@@ -1637,7 +1649,14 @@ class AdminController extends Controller
     }
     public function studentHelpDesk(){
         $template = 'admin_template';
-        $help_desk = HelpDesk::orderBy('id','desc')->where('is_parent',0)->get()->groupBy('slug');
+        $help_desk = HelpDesk::orderBy('id','desc')->where([ ['is_parent',0], ['is_educator', '!=', 1] ])->get()->groupBy('slug');
+        return view('help-desk.inbox')
+            ->with('template',$template)
+            ->with('help_desk',$help_desk);
+    }
+    public function educatorHelpDesk(){
+        $template = 'admin_template';
+        $help_desk = HelpDesk::orderBy('id','desc')->where('is_educator',1)->get()->groupBy('slug');
         return view('help-desk.inbox')
             ->with('template',$template)
             ->with('help_desk',$help_desk);

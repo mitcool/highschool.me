@@ -84,7 +84,7 @@ class CurriculumController extends Controller
 
     public function learningMentoring(Request $request){
         $texts = $request->all()['texts'];
-        $courses = CourseType::whereIn('id',[11,12,13])->get();
+        $courses = CourseType::whereIn('id',[11,12,13,15])->get();
         return view('pages.curriculum.learning-mentoring')
             ->with('texts',$texts)
             ->with('courses',$courses);

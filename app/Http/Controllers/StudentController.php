@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Schema;
 
 use DB;
 use Mail;
@@ -330,17 +331,33 @@ class StudentController extends Controller
             abort(403);
         };
         
-        $materials = CourseFile::where('course_id', $enrolled_course->course->course_id)->get();
+        $materials = $this->getOrderedCourseMaterials($enrolled_course->course->course_id);
+        $materialStates = $this->buildMaterialStates($materials, $enrolled_course);
         $videos = CourseVideo::where('course_id', $enrolled_course->course->course_id)->get();
 
         return view('student.single-course')
             ->with('enrolled_course',$enrolled_course)
             ->with('materials', $materials)
+            ->with('materialStates', $materialStates)
             ->with('videos', $videos);
     }
 
     public function singleMaterial(Request $request, $material_id) {
         $file = CourseFile::where('id', $material_id)->firstOrFail();
+        $enrolled_course = $this->getEnrolledCourseForCatalogCourse($file->course_id);
+
+        if (!$enrolled_course) {
+            abort(403);
+        }
+
+        $materials = $this->getOrderedCourseMaterials($file->course_id);
+        $materialStates = $this->buildMaterialStates($materials, $enrolled_course);
+        $materialState = $materialStates->get($file->id);
+
+        if (!$materialState || !$materialState['is_unlocked']) {
+            return redirect()->route('student.single-course', $enrolled_course->catalog_course_id)
+                ->with('error', 'This material is still locked.');
+        }
 
         $url = trim((string) $file->stored_path);
 
@@ -392,11 +409,16 @@ class StudentController extends Controller
 
     public function singleVideo(Request $request, $video_id) {
         $video = CourseVideo::where('id', $video_id)->firstOrFail();
+        $enrolled_course = $this->getEnrolledCourseForCatalogCourse($video->course_id);
+
+        if (!$enrolled_course) {
+            abort(403);
+        }
 
         $embedUrl = $this->youtubeEmbedUrl($video->url);
 
         if (!$embedUrl) {
-            return back()->with('success_message', 'Invalid YouTube URL.');
+            return back()->with('error', 'Invalid YouTube URL.');
         }
 
         return view('student.single-video')->with('video', $video)->with('embedUrl', $embedUrl);
@@ -645,6 +667,26 @@ class StudentController extends Controller
     public function selfAssessmentTest($material_id) {
         $user = auth()->user();
         $now = Carbon::now();
+        $material = CourseFile::where('id', $material_id)->firstOrFail();
+        $enrolled_course = $this->getEnrolledCourseForCatalogCourse($material->course_id);
+
+        if (!$enrolled_course) {
+            abort(403);
+        }
+
+        $materials = $this->getOrderedCourseMaterials($material->course_id);
+        $materialStates = $this->buildMaterialStates($materials, $enrolled_course);
+        $materialState = $materialStates->get($material->id);
+
+        if (!$materialState || !$materialState['is_unlocked']) {
+            return redirect()->route('student.single-course', $enrolled_course->catalog_course_id)
+                ->with('error', 'This self assessment is still locked.');
+        }
+
+        if (!$materialState['has_self_assessment']) {
+            return redirect()->route('student.single-course', $enrolled_course->catalog_course_id)
+                ->with('error', 'This material does not have a self assessment yet.');
+        }
 
         // Find existing active attempt
         $attempt = SelfAssessmentAttempt::where('user_id', $user->id)
@@ -725,6 +767,62 @@ class StudentController extends Controller
             'duration' => $remainingSeconds, // seconds, not minutes
             'attempt' => $attempt,
         ]);
+    }
+
+    private function getOrderedCourseMaterials($catalogCourseId)
+    {
+        $query = CourseFile::where('course_id', $catalogCourseId)
+            ->withCount('selfAssessmentQuestions');
+
+        if (Schema::hasColumn('course_files', 'position')) {
+            $query->orderByRaw('CASE WHEN position IS NULL THEN 1 ELSE 0 END')
+                ->orderBy('position')
+                ->orderBy('id');
+        } else {
+            $query->orderBy('id');
+        }
+
+        return $query->get();
+    }
+
+    private function getEnrolledCourseForCatalogCourse($catalogCourseId)
+    {
+        return StudentEnrolledCourse::where('user_id', auth()->id())
+            ->whereHas('course', function ($query) use ($catalogCourseId) {
+                $query->where('course_id', $catalogCourseId);
+            })
+            ->first();
+    }
+
+    private function buildMaterialStates($materials, $enrolledCourse)
+    {
+        $completedAttempts = SelfAssessmentAttempt::where('user_id', auth()->id())
+            ->whereIn('material_id', $materials->pluck('id'))
+            ->where('completed', 1)
+            ->pluck('material_id')
+            ->flip();
+
+        $materialStates = collect();
+        $previousStepSatisfied = true;
+
+        foreach ($materials->values() as $index => $material) {
+            $hasSelfAssessment = ((int) ($material->self_assessment_questions_count ?? 0)) > 0;
+            $isUnlocked = $index === 0 ? true : $previousStepSatisfied;
+            $isCompleted = $completedAttempts->has($material->id);
+
+            $materialStates->put($material->id, [
+                'is_unlocked' => $isUnlocked,
+                'has_self_assessment' => $hasSelfAssessment,
+                'self_assessment_completed' => $isCompleted,
+                'can_take_self_assessment' => $isUnlocked
+                    && $hasSelfAssessment
+                    && $enrolledCourse->status < StudentEnrolledCourse::STATUS_EXAM_SUBMITED,
+            ]);
+
+            $previousStepSatisfied = $hasSelfAssessment ? $isCompleted : $isUnlocked;
+        }
+
+        return $materialStates;
     }
 
     public function submitSelfAssessmentTest(Request $request, $attemptId) {

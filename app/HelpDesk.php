@@ -9,7 +9,7 @@ class HelpDesk extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["title","message" ,"user_id" ,"slug",'is_admin','is_new','related_to','is_parent'];
+    protected $fillable = ["title","message" ,"user_id" ,"slug",'is_admin','is_new','related_to','is_parent', 'is_educator'];
 
     public function user(){
         return $this->hasOne('App\User','id','user_id');

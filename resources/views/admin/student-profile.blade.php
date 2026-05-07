@@ -125,6 +125,17 @@
         border: 1px solid #00000029;
         border-radius: 10px;
     }
+
+    .student-grade-control {
+        max-width: 320px;
+        margin-top: 12px;
+    }
+
+    .student-grade-feedback {
+        display: none;
+        margin-top: 8px;
+        font-size: 14px;
+    }
 </style>
 @endsection
 @section('content')
@@ -136,6 +147,29 @@
             <h5>Email: <span style="color:#004c99;font-weight:bold">{{ $student->email }}</span></h5>
             <h5>Born: {{ $student->date_of_birth->format('d.m.Y') }}</h5>
             <h5>Joined: {{ $student->created_at->format('d.m.Y') }}</h5>
+            <div class="student-grade-control">
+                <label for="student-grade-select" class="font-weight-bold mb-1">Grade</label>
+                @if($student->student_details && $student->student_details->usesTransferProgramGradeRule())
+                    <select class="form-control" disabled>
+                        <option selected>International Transfer Program</option>
+                    </select>
+                @else
+                    <select
+                        id="student-grade-select"
+                        class="form-control"
+                        data-student-id="{{ $student->id }}"
+                        data-update-url="{{ route('admin.single-student-grade.update', $student->id) }}"
+                    >
+                        <option value="" disabled {{ is_null(optional($student->student_details)->grade) ? 'selected' : '' }}>Please select</option>
+                        @foreach($grade_levels as $grade_level)
+                            <option value="{{ $grade_level }}" {{ (int) optional($student->student_details)->grade === $grade_level ? 'selected' : '' }}>
+                                {{ $grade_level }}th Grade
+                            </option>
+                        @endforeach
+                    </select>
+                @endif
+                <div id="student-grade-feedback" class="student-grade-feedback"></div>
+            </div>
         </div>
          <div class="col-md-6">
             <h5> Parent Name: <span style="color:#004c99;;font-weight:bold">{{ $student->student_details->parent->fullname() }}</span>
@@ -234,4 +268,60 @@
 </div>
 
 
+@endsection
+@section('scripts')
+<script>
+    $(function () {
+        const $gradeSelect = $('#student-grade-select');
+        const $feedback = $('#student-grade-feedback');
+
+        if (!$gradeSelect.length) {
+            return;
+        }
+
+        let previousValue = $gradeSelect.val();
+
+        $gradeSelect.on('change', function () {
+            const newValue = $(this).val();
+
+            $.ajax({
+                url: $(this).data('update-url'),
+                method: 'POST',
+                data: {
+                    grade: newValue
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    previousValue = newValue;
+                    $feedback
+                        .removeClass('text-danger')
+                        .addClass('text-success')
+                        .text(response.message)
+                        .show();
+                },
+                error: function (xhr) {
+                    $gradeSelect.val(previousValue);
+
+                    let message = 'Unable to update the student grade.';
+
+                    if (xhr.responseJSON) {
+                        if (xhr.responseJSON.message) {
+                            message = xhr.responseJSON.message;
+                        } else if (xhr.responseJSON.errors && xhr.responseJSON.errors.grade && xhr.responseJSON.errors.grade.length) {
+                            message = xhr.responseJSON.errors.grade[0];
+                        }
+                    }
+
+                    $feedback
+                        .removeClass('text-success')
+                        .addClass('text-danger')
+                        .text(message)
+                        .show();
+                }
+            });
+        });
+    });
+</script>
 @endsection

@@ -63,6 +63,17 @@
             </select>
         </div>
         <div class="mb-3">
+            <label for="" class="font-weight-bold mb-0">Language Level<span class="text-danger">*</span></label>
+            <select name="language_level" required class="form-control">
+                <option value="" selected disabled>Please select</option>
+                @foreach($language_levels as $language_level)
+                    <option value="{{ $language_level }}" {{ old('language_level') == $language_level ? 'selected' : '' }}>
+                        {{ $language_level }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="mb-3">
             <label for="" class="font-weight-bold mb-0">Select Education Option<span class="text-danger">*</span></label>
             <select name="education_option" id="" required  class="form-control">
                 <option value="" selected disabled>Please select</option>
