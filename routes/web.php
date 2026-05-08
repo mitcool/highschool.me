@@ -216,15 +216,15 @@ Route::group(['middleware' => 'text'],function(){
 
 	Route::get('/iso-21001-2018', 'AboutController@showSecondIso')->name('second-iso');
 
-	Route::get('/iso-27001-2022', 'AboutController@showThirdIso')->name('third-iso');
+	//Route::get('/iso-27001-2022', 'AboutController@showThirdIso')->name('third-iso');
 
 	Route::get('/florida-department-of-education', 'AboutController@showFloridaDepartment')->name('florida-department');
 
-	Route::get('/college-board', 'AboutController@showCollegeBoard')->name('college-board');
+	//Route::get('/college-board', 'AboutController@showCollegeBoard')->name('college-board');
 
 	Route::get('/united-nations', 'AboutController@showUNpage')->name('united-nations');
 
-	Route::get('/american-college-test', 'AboutController@showACTpage')->name('american-college-test');
+	//Route::get('/american-college-test', 'AboutController@showACTpage')->name('american-college-test');
 
 	Route::get('/blog','MainController@showBlog')->name('blog');
 

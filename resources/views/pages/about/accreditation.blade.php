@@ -67,6 +67,7 @@
 					</div>
 				</div>
 			</div>
+			{{--
 			<div class="row reverse" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
 					<div class="text p-2 page-content">
@@ -93,6 +94,7 @@
 					</div>
 				</div>
 			</div>
+			--}}
 			<div class="row reverse" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
 					<div class="text p-2 page-content">
@@ -119,6 +121,7 @@
 					</div>
 				</div>
 			</div>
+			{{--
 			<div class="row reverse" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
 					<div class="text p-2 page-content">
@@ -132,6 +135,21 @@
 					</div>
 				</div>
 			</div>
+			--}}
+			<div class="row reverse" style="padding:20px;">
+				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
+					<div class="text p-2 page-content">
+					{!! $texts['united-nations'] !!}
+						<a href="{{ route('united-nations') }}" class="orange-button btn accreditation-read-more">{{ $texts['read-more'] }}</a>
+					</div>
+				</div>
+				<div class="col-12 col-md-12 col-lg-3 justify-content-end  d-flex align-items-center image-accreditation" id="collegium-humanum">
+					<div>
+						<x-image-component nickname="united-nations-logo" class="w-100" loading="eager" />
+					</div>
+				</div>
+			</div>
+			{{--
 			<div class="row" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
@@ -145,6 +163,7 @@
 					</div>
 				</div>
 			</div>
+			--}}
 			<br>
 		</div>
 	</div>
