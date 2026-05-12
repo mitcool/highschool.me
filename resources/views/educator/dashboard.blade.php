@@ -227,7 +227,10 @@
                     <i class="fas fa-file"></i>
                     <span>Submitted Exams</span>
                 </a>
-
+                <a class="educator-mobile-menu-link" href="{{ route('educator.complaints') }}">
+                    <i class="fas fa-file"></i>
+                    <span>Complaints</span>
+                </a>
                 <div class="educator-mobile-menu-section">Payments &amp; Invoices</div>
                 <a class="educator-mobile-menu-link" href="{{ route('educator.invoices') }}">
                     <i class="fas fa-file-invoice"></i>
@@ -309,6 +312,12 @@
                         <a class="nav-link" href="{{route('educator.submissions')}}">
                             <i class="fas fa-file"></i>
                             <span>Submitted Exams</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{route('educator.complaints')}}">
+                            <i class="fas fa-file"></i>
+                            <span>Complaints</span>
                         </a>
                     </li>
                     <div class="sidebar-heading">Payments & Invoices</div>

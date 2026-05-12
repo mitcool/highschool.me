@@ -9,7 +9,7 @@ class DiplomaPrintingRequest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['student_id','status'];
+    protected $fillable = ['diploma_id','status','copies'];
 
     public function user(){
         return $this->hasOne('App\User','id','student_id');

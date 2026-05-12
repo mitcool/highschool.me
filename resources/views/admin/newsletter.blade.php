@@ -1,12 +1,18 @@
 @extends('admin_template')
 
 @section('css')
+<style>
+	label{
+		margin-bottom:0;
+		margin-top:10px;
+	}
+</style>
 <script src="https://cdn.ckeditor.com/4.12.1/full/ckeditor.js"></script>
 @endsection
 
 @section('content')
 <div class="shadow container wrapper">    
-	<div class="shadow">
+	<div class="">
 		<h2 class="text-center page-headings">Send newsletter</h2>
 	<hr>
 	<p class="text-right"><span class="text-danger ">* </span>Required fields</p>
@@ -22,7 +28,7 @@
 
 			{{-- Subjects --}}
 			<div class="col-md-12">
-				<label class="font-weight-bold">Subject of newsletter(English)<span class="text-danger">*</span></label>
+				<label class="font-weight-bold">Subject of newsletter<span class="text-danger">*</span></label>
 				<input type="text" value="{{ old('subject') }}" name="subject" class="form-control" required>
 			</div>
 			
@@ -76,7 +82,7 @@
 				</button>
 			</div>
 			<div class="col-md-12">
-				<label class="font-weight-bold" for="">Email greeting English(optional)</label>
+				<label class="font-weight-bold" for="">Email greeting(optional)</label>
 				<textarea name="greeting_en" class="ckeditor" id="greeting_en"></textarea>
 			</div>
 			<div class="col-md-6">
@@ -95,6 +101,15 @@
 					<option value="2">Spanish</option>
 					<option value="3">German</option>
 					<option value="4">French</option>
+				</select>
+			</div>
+			<div class="col-md-6">
+				<label class="font-weight-bold" for="">Newsletter recipients</label>
+				<select name="" id="" class="form-control">
+					<option value="">--Please select your audience--</option>
+					<option value="4">Students</option>
+					<option value="2">Parents</option>
+					<option value="5">Educator</option>
 				</select>
 			</div>
 			<div class="col-md-12 text-center mt-2">

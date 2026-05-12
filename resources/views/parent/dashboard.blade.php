@@ -331,6 +331,12 @@
                                 <span>Request Leave</span>
                             </a>
                         </li>
+                          <li class="nav-item active">
+                            <a class="nav-link" href="{{ route('parent.diplomas') }}">
+                                <i class="fas fa-scroll"></i>
+                                <span>Diplomas</span>
+                            </a>
+                        </li>
                         <li class="nav-item active">
                             <a class="nav-link" href="{{ route('parent.protocols.index') }}">
                                 <i class="fas fa-file-alt"></i>

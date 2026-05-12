@@ -5,17 +5,18 @@ namespace App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Diploma extends Model
+class Complaint extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['student_id','track','grade'];
+    protected $casts = [
+        'date' => 'datetime',
+     
+    ];
 
     public function student(){
         return $this->hasOne('App\User','id','student_id');
     }
 
-    public function verification_of_graduation(){
-        return $this->hasOne('App\VerificationOfGraduation','student_id','student_id');
-    }
+    protected $fillable = ['educator_id','student_id','text','date'];
 }

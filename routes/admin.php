@@ -194,6 +194,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 
 	//Student Overview
 	Route::get('/admin-student-overview','AdminStudentController@overview')->name('admin-student-overview');
+	Route::post('/graduate-student/{student_id}','AdminStudentController@graduateStudent')->name('graduate-student');
 
 	//Payments
 	Route::get('/invoices', 'AdminController@showInvoices')->name('admin-invoices');

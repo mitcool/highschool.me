@@ -809,7 +809,7 @@ class AdminController extends Controller
             $search = $request->get('search');
             $courses = CatalogCourse::query()
                 ->leftJoin('curriculum_courses', 'catalog_courses.id', '=', 'curriculum_courses.course_id')
-                ->where('catalog_courses.title',$search)
+                ->where('catalog_courses.title','Like', '%'.$search.'%')
                 ->orWhere('catalog_courses.fldoe_course_code',$search)
                 ->orderBy('curriculum_courses.id')
                 ->select('catalog_courses.*')

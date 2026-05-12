@@ -16,93 +16,67 @@ Auth::routes();
 Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 
 	Route::get('/dashboard', 'ParentController@dashboard')->name('parent.dashboard');
-
 	Route::get('/meetings','ParentController@meetings_all')->name('parent.meetings');
-
 	Route::get('/meetings/{student_id}','ParentController@meetings_student')->name('parent.meetings.student');
-
 	Route::get('/student/add','ParentController@createStudent')->name('parent.create.student');
-
 	Route::post('/student/create','ParentController@addStudent')->name('student.add');
-
 	Route::get('/select-track/{student_id}','ParentController@selectTrack')->name('parent.select-track');
-
 	Route::post('/update-track/{student_id}','ParentController@updateTrack')->name('parent.update-student-track');
-
 	Route::get('/student/documents/{student_id}','ParentController@studentDocuments')->name('parent.student.documents');
-
 	Route::post('/student/documents/submit','ParentController@studentDocumentsSubmit')->name('parent.student.documents.submit');
-
 	Route::get('/student/module/courses/{student_id}','ParentController@studentModuleCourses')->name('parent.student.module.courses');
-
 	Route::get('/student/sessions/{student_id}','ParentController@studentSessions')->name('parent.student.sessions');
-
 	Route::get('/payments','ParentController@payments')->name('parent.payments');
-
 	Route::get('/invoices','ParentController@invoices')->name('parent.invoices');
-
 	Route::get('/invoices/{invoice_id}', 'ParentController@singleInvoice')->name('parent.single-invoice');
-
 	Route::get('/student/profile/{student_id}','ParentController@studentProfile')->name('parent.student.profile');
 	Route::get('/student/profile/{student_id}/pre-exam/{exam_id}','ParentController@studentPreExam')->name('parent.student.pre-exam');
 	Route::get('/student/profile/{student_id}/exam-results/{exam_id}','ParentController@studentExamResults')->name('parent.student.exam-results');
 	Route::get('/protocols', 'ParentController@protocolsPage')->name('parent.protocols.index');
 	Route::get('/protocols/{student_id}', 'ParentController@studentProtocol')->name('parent.protocols.show');
-
+	Route::get('/diplomas','ParentController@diplomas')->name('parent.diplomas');
+    Route::get('/request-copy/{id}','ParentController@requestCopy')->name('request-copy');
+	Route::post('/request-copy/{id}','ParentController@requestCopyPost')->name('request-copy-post');
+	Route::post('request-physical-copy-post/{diploma_id}','ParentController@requestPhysicalCopyPost')->name('request-physical-copy-post');
+	Route::get('/physical-copy-request-success/{diploma_id}','ParentController@physicalCopyRequest')->name('parent.physical-copy-request-success');
+	Route::get('/pay-copy-success','ParentConroller@payCopySuccess')->name('parent.pay-copy-success');
+	Route::get('copies-number/{diploma_id}','ParentController@copiesNumber')->name('parent.copies-number');
+	Route::post('/change-diploma-copies-count/{diploma_id}/{type}','ParentController@changeDiplomaCopiesCount')->name('change-diploma-copies-count');
 	Route::get('/profile','ParentController@profile')->name('parent.profile');
-
 	Route::get('/application-fee/{student_id}','ParentController@applicationFee')->name('application-fee');
-
 	Route::get('/application-fee-success/{student_id}','ParentController@applicationFeeSuccess')->name('application-fee-success');
-
 	Route::get('/enrollment-fee/{student_id}/{plan_id}/{payment_type}','ParentController@enrollmentFee')->name('enrollment-fee');
-
 	Route::get('/enrollment-fee-success','ParentController@enrollmentFeeSuccess')->name('enrollment-fee-success');
-
 	Route::post('/extend-plan/{student_id}','ParentController@extendPlan')->name('extend-plan');
-
 	Route::get('/extend-plan-success','ParentController@extendPlanSuccess')->name('extend-plan-success');
-
 	Route::post('/request-family-consultation','ParentController@requestFamilyConsultation')->name('request-family-consultation');
-
 	Route::post('/confirm-meeting/{meeting_id}','ParentController@confirmMeeting')->name('confirm-meeting');
-	
 	Route::post('/change-courses-count/{course_id}/{action}','ParentController@changeCourseTypeCount')->name('change-course-type-count');
-
 	Route::get('/course-type-checkout/{student_id}','ParentController@studentCourseTypeCheckout')->name('parent.student.course-type.checkout');
-
 	#releted to Group Session,menotring sessions and coaching sessions
 	Route::post('/change-session-count/{session_id}/{action}','ParentController@changeSessionCount')->name('change-session-count');
-
 	Route::get('/sessions-checkout/{student_id}','ParentController@studentSessionsCheckout')->name('parent.student.sessions.checkout');
-
 	Route::post('/sessions-pay/{student_id}','ParentController@studentSessionsPay')->name('parent.student.sessions.pay');
-
 	Route::post('/course-type-pay/{student_id}','ParentController@studentCourseTypePay')->name('parent.student.courses-type.pay');
-
 	Route::get('/course-type-pay-success/{student_id}','ParentController@studentCourseTypeSuccess')->name('parent.courses-type-pay-success');
-
 	Route::get('/session-pay-success/{student_id}','ParentController@studentSessionsSuccess')->name('session-pay-success');
-
 	Route::post('/enroll/{course_id}','ParentController@enroll')->name('enroll');
-
 	Route::post('/update-enrolled-course-status/{enrolled_course_id}','ParentController@updateEnrolledCourseStatus')->name('update-enrolled-course-status');
-
 	Route::post('/transfer-program-pay/{student_id}','ParentController@transferProgramPay')->name('parent.transfer-program-pay');
-
 	Route::get('/transfer-program-pay-success/{student_id}/{type}/{plan_id}','ParentController@transferProgramPaySuccess')->name('parent.transfer-pay-success');
-
 	Route::get('/reset-password', 'ParentController@resetPassPage')->name('parent.reset.password.page');
-
-	#releted to leaves
+	#related to leaves
 	Route::get('/request-leave', 'ParentController@requestLeavePage')->name('parent.request-leave');
 	Route::post('/store-leave', 'ParentController@requestLeave')->name('parent.store-leave');
-
 	Route::get('/plans','ParentController@plans')->name('parent.plans');
 	Route::post('/terminate-plan/{plan_id}','ParentController@terminatePlan')->name('terminate-plan');
 	Route::get('/change-plan/{student_id}','ParentController@changePlan')->name('change-plan');
 	Route::post('/update-plan/{student_id}','ParentController@updatePlan')->name('parent.update-plan');
 	Route::get('/update-plan-success/{student_id}/{requested_plan}/{type}','ParentController@updatePlanSuccess')->name('parent.update-plan-success');
+	Route::get('/enrollment-confirmation/{student_id}','ParentController@enrollmentConfirmation')->name('enrollment-confirmation');
+	Route::get('/parent.request-verification-of-graduation/{student_id}','ParentController@requestVerificationOfGraduation')->name('parent.request-verification-of-graduation');
+	Route::get('/verification-of-graduation-success/{student_id}','ParentController@verificationOfGraduationSuccess')->name('parent.verification-of-graduation-success');
+	Route::get('/request-verification-of-graduation-pdf/{student_id}','ParentController@requestVerificationOfGraduationPdf')->name('parent.request-verification-of-graduation-pdf');
 	#notifications
 	Route::get('/all-notifications', 'ParentController@showNotifications')->name('parent.notifications');
 
@@ -154,10 +128,6 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	});
 });
 
-Route::get('/exam-protocol/{exam_id}','StudentController@examProtocol')->name('exam-protocol');
-
-Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');
-
 Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 	Route::get('/dashboard', 'EducatorController@dashboard')->name('educator.dashboard');
 	Route::get('/courses','EducatorController@courses')->name('educator.courses');
@@ -185,12 +155,16 @@ Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 	Route::post('/course-material/add','EducatorController@addCourseMaterials')->name('educator.add-course-material');
 	Route::post('/new-course-request','EducatorController@requestNewCourse')->name('educator.request-new-course');
 	Route::get('/profile','EducatorController@profile')->name('educator.profile');
+	Route::get('/complaints','EducatorController@complaints')->name('educator.complaints');
+	Route::post('/complaints','EducatorController@createComplaint')->name('create-complaint');
 	#notifications
 	Route::get('/all-notifications', 'EducatorController@showNotifications')->name('educator.notifications');
 
 });
 
 Route::post('/parent/pay/plan/{student_id}','ParentController@parentPayPlan')->name('parent.pay.plan');
+Route::get('/digital-transcript/{student_id}','StudentController@digitalTransript')->name('student.generate-pdf-transcript');
+
 
 //Public routes
 
@@ -357,6 +331,7 @@ Route::post('/subscribe','MainController@subscribe')->name('subscribe');
 Route::post('/unsubscribe-user/{id}','MainController@unsubscribeUser')->name('unsubscribe-user');
 
 Route::get('/verify/mail/{confcode}', 'MainController@verifyAccount')->name('verify.mail');
+
 Route::get('/verify/mail/resend/{confcode}', 'MainController@resendVerificationLink')->name('verify.mail.resend');
 
 Route::post('/get-courses','AdminController@getCourses')->name('get-courses');
@@ -365,6 +340,9 @@ Route::post('/delete-exam/{exam_id}','AdminController@deleteExam')->name('delete
 
 Route::post('/edit-exam/{exam_id}','AdminController@editExam')->name('edit-exam');
 
+Route::get('/exam-protocol/{exam_id}','StudentController@examProtocol')->name('exam-protocol');
+
+Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');
 
 /*
 Route::get('/down', function() {

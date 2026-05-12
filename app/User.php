@@ -123,5 +123,8 @@ class User extends Authenticatable
         }
     }
 
+    public function diplomas(){
+        return $this->hasMany('App\Diploma','student_id');
+    }
 
 }

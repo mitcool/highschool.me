@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 use Mail;
 use Cookie;
 use Carbon\Carbon;
+use Pdf;
 
 use App\User;
 use App\ParentStudent;
@@ -43,7 +44,11 @@ use App\Ethnicity;
 use App\PreExamAnswer;
 use App\StudentAnswer;
 use App\LoginVerification;
+use App\Diploma;
+use App\VerificationOfGraduation;
+use App\DiplomaPrintingRequest;
 
+use App\Mail\NewDiplomaPrintingRequest;
 use App\Mail\StudentCreated;
 use App\Mail\StudentCredentials;
 use App\Mail\StudentCreatedAdmin;
@@ -1613,6 +1618,166 @@ class ParentController extends Controller
         return redirect()->route('parent.plans')->with('success_message','Plan has been changed successfully');
        
     }
-    
+
+    public function diplomas(){
+        $student_ids = ParentStudent::where('parent_id',auth()->id())->pluck('student_id')->toArray();
+        $diplomas = Diploma::whereIn('student_id',$student_ids)->get();
+        return view('parent.diplomas')->with('diplomas',$diplomas);
+    }
+    public function requestCopy($diploma_id){
+        $diploma = Diploma::find($diploma_id);
+        return view('parent.request-copy')
+            ->with('diploma',$diploma);
+    }
+    public function requestCopyPost(Request $request,$diploma_id){
+        $type = $request->type;
+        if($type == 1 || $type == 2){
+
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+            $total = $type == 1 ?  100 : 200;
+
+            $session = \Stripe\Checkout\Session::create([
+                'line_items'  => [
+                    [
+                        'price_data' => [
+                            'currency'     => 'usd',
+                            'product_data' => [
+                                'name' => 'Change of plan',
+                            ],
+                            'unit_amount'  => $total*100, 
+                        ],
+                        'quantity'   => 1,
+                    ],
+                ],
+                'mode'        => 'payment',
+                'success_url' => route('parent.pay-copy-success'),
+                'cancel_url'  => route('request-copy',$diploma_id)
+            ]);
+
+            return redirect()->away($session->url);
+        }
+        else{
+            return redirect()->route('parent.copies-number',$diploma_id);
+               
+        }
+    }
+
+
+    public function copiesNumber($diploma_id){
+       $diploma = Diploma::find($diploma_id);
+       if(!Cookie::has('diploma-'.$diploma_id)){
+            Cookie::queue('diploma-'.$diploma_id,1);
+       }
+       $total = number_format(Cookie::get('diploma-'.$diploma_id) * 50,2,'.',',');
+       return view('parent.copies-number')
+        ->with('total',$total)
+        ->with('diploma',$diploma);
+    }
+
+    public function changeDiplomaCopiesCount($diploma_id,$type){
+        $copies = Cookie::get('diploma-'.$diploma_id);
+        $type == 'increase' 
+            ? $copies++ 
+            : $copies--;
+        if($copies < 1){
+            return redirect()->back();
+        }
+        Cookie::queue('diploma-'.$diploma_id,$copies);
+
+        return redirect()->back();
+    }
+
+    public function enrollmentConfirmation($student_id){
+        $student = User::find($student_id);
+        $pdf = Pdf::loadView('parent.enrollment-confirmation',['student' => $student])->set_option('isRemoteEnabled',true)->setPaper('a4','landscape');
+        return $pdf->stream();
+    }
+    public function requestVerificationOfGraduation($student_id){
+        $student = User::find($student_id);
+        $total = 50;
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+      
+        $session = \Stripe\Checkout\Session::create([
+            'line_items'  => [
+                [
+                    'price_data' => [
+                        'currency'     => 'usd',
+                        'product_data' => [
+                            'name' => 'Verification of Graduation',
+                        ],
+                        'unit_amount'  => $total*100, 
+                    ],
+                    'quantity'   => 1,
+                ],
+            ],
+            'mode'        => 'payment',
+            'success_url' => route('parent.verification-of-graduation-success',$student_id),
+            'cancel_url'  => route('parent.diplomas')
+        ]);
+
+        return redirect()->away($session->url);
+    }
+
+    public function verificationOfGraduationSuccess($student_id){
+        VerificationOfGraduation::create([
+            'student_id' => $student_id,
+        ]);
+
+        return redirect()->route('parent.diplomas')->with('success_message','Verification of Graduation has been successfully requested');
+    }
+
+    public function requestVerificationOfGraduationPdf($student_id){
+        $student = User::find($student_id);
+        $pdf = Pdf::loadView('parent.verification-of-graduation-pdf',['student' => $student])->set_option('isRemoteEnabled',true)->setPaper('a4','landscape');
+        return $pdf->stream();
+    }
+
+    public function requestPhysicalCopyPost($diploma_id){
+        if(!Cookie::has('diploma-'.$diploma_id)){
+            return redirect()->back();
+        }
+
+        $number_of_copies = (Cookie::get('diploma-'.$diploma_id));
+        $price_per_copy = 50;
+        $total = $price_per_copy * $number_of_copies;
+         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+      
+        $session = \Stripe\Checkout\Session::create([
+            'line_items'  => [
+                [
+                    'price_data' => [
+                        'currency'     => 'usd',
+                        'product_data' => [
+                            'name' => 'Verification of Graduation',
+                        ],
+                        'unit_amount'  => $total*100, 
+                    ],
+                    'quantity'   => 1,
+                ],
+            ],
+            'mode'        => 'payment',
+            'success_url' => route('parent.physical-copy-request-success',$diploma_id),
+            'cancel_url'  => route('parent.diplomas')
+        ]);
+
+        return redirect()->away($session->url);
+
+    }
+
+    public function physicalCopyRequest($diploma_id){
+        if(!Cookie::has('diploma-'.$diploma_id)){
+            return redirect()->back();
+        }
+        $copies = (Cookie::get('diploma-'.$diploma_id));
+        $printing_request = [
+            'diploma_id' => $diploma_id,
+            'copies' => $copies,
+            'status' => 0
+        ];
+        $new_request =  DiplomaPrintingRequest::create($printing_request);
+        $this->notifyAdmins(new NewDiplomaPrintingRequest($new_request));
+        return redirect()->route('parent.diplomas');
+    }
 }
 

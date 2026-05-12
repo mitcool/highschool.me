@@ -534,6 +534,9 @@
                 <button class="shadow orange-button">Send</button>
             </div>
         </form>
+
+    @elseif($status == 5)
+        Graduated student
     @endif
     </div>
 </div>

@@ -232,6 +232,22 @@
             </div>
         </div>
     </div>
+    @if($student->student_details->status != 4)
+    <div class="d-flex justify-content-center my-3">
+        <form action="{{ route('graduate-student',$student->student_details->id) }}" method="POST">
+            {{ csrf_field() }}
+            <button class="btn-info btn">
+                Graduate student
+            </button>
+        </form>
+    </div>
+    @else
+    <div class="d-flex justify-content-center my-3">
+        <button class="btn-secondary btn">
+            Graduated
+        </button>
+    </div>
+    @endif
     <h2 class="text-center my-4">Course list</h2>
         <table class="table">
             <tr>

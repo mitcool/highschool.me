@@ -140,7 +140,7 @@
         {{-- Withdrawal Confirmation  --}}
          <div class="mb-3 d-flex justify-content-between">
             <div>
-                <p  class="font-weight-bold mb-0 ">Withdrawal Confirmation from Previous School<span class="text-danger">*</span></p>
+                <p  class="font-weight-bold mb-0 ">Withdrawal Confirmation from Previous School (optional)</p>
                 <span class="error-message" id="withdrawal_confirmation_error"></span>
             </div> 
             <label for="withdrawal_confirmation" class="custom-form-label">
@@ -225,11 +225,7 @@
             }
             if ($('#school_transcript').get(0).files.length === 0) {
                 e.preventDefault();
-                $('#school_transcript_error').html('Please upload school transcript');
-            }
-            if ($('#withdrawal_confirmation').get(0).files.length === 0) {
-                e.preventDefault();
-                $('#withdrawal_confirmation_error').html('Please upload withdrawal_confirmation');
+                $('#school_transcript_error').html('Please upload school transript');
             }
         })
      

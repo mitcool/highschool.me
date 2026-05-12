@@ -25,6 +25,7 @@ use App\CourseVideo;
 use App\StudentAnswer;
 use App\CourseCategory;
 use App\Country;
+use App\Complaint;
 
 class EducatorController extends Controller
 {
@@ -432,5 +433,20 @@ class EducatorController extends Controller
         $countries = Country::all();
         return view('educator.profile')
         ->with('countries',$countries);
+    }
+
+    public function complaints(){
+        $students = User::where('role_id',4)->get();
+        $complaints = Complaint::where('educator_id',auth()->id())->orderBy('created_at','desc')->get();
+        return view('educator.complaints')
+            ->with('students',$students)
+            ->with('complaints',$complaints);
+    }
+
+    public function createComplaint(Request $request){
+        $complaint = $request->except('_token');
+        $complaint['educator_id'] = auth()->id();
+        Complaint::create($complaint);
+        return redirect()->back()->with('success_message','Complaint created successfully');
     }
 }

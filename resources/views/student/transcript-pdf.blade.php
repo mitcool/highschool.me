@@ -57,7 +57,10 @@
                 </tr>
                 @foreach ($year_exams as $exam )
                     <tr>
-                        <td style="width: 80%;border:1px solid lightgrey;">{{ $exam->course->course->title }}</td>
+                        <td style="width: 80%;border:1px solid lightgrey;">{{ $exam->course->curriculum_type_id == 3 
+                            ? $exam->course->course->title .' Prep-course' 
+                            : $exam->course->course->title }}
+                        </td>
                         <td style="width: 10%;border:1px solid lightgrey;text-align:center;">{{ $exam->course->course->default_credits }}</td>
                         <td style="width: 10%;border:1px solid lightgrey;text-align:center;">{{ $exam->grade }}</td>
                     </tr>

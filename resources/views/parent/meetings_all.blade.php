@@ -2,33 +2,23 @@
 
 @section('content')
 <div class="shadow container wrapper">
-    <h1 class="text-center h2" style="color:#045397">Meetings</h1>
-    <hr>
-           @if($group_sessions_left > 0)
-           <p>Your students are allowed <span class="font-weight-bold">{{ $group_sessions_left }}</span> Group Learning Sessions</p>
-           @endif
-
-           @if($mentoring_sessions_left > 0)
-           <p>Your students are allowed <span class="font-weight-bold">{{ $mentoring_sessions_left }}</span> Personal Mentoring Sessions</p> 
-           @endif
-
-           @if($coaching_sessions_left > 0)
-           <p> Your students are allowed <span class="font-weight-bold">{{ $coaching_sessions_left }}</span> College & Career Coaching </p>
-           @endif
-      
-    <hr>
-    <p class="text-center">If you need more sessions click the link below</p>
+    <h1 class="text-center h2 page-headings" >Your Meetings</h1>
+    <p>Please select student to view or schedule meetings or sessions.</p>
+    @foreach ($students as $student )
     <div class="row">
-        @foreach ($students as $student )
-        <div class="col-md-4">
-            <a href="{{ route('parent.student.sessions',$student->student_id) }}" style="text-decoration: none;">
-                <div class="box">
-                    {{ $student->student->fullname() }}
-                </div>
-            </a>
+        <div class="col-md-6">
+            <div class="box" style="text-decoration: none;">
+                {{ $student->student->fullname() }}
+            </div>
         </div>
-        @endforeach
+        <div class="col-md-3 d-flex justify-content-center align-items-center">
+             <a href="{{ route('parent.student.sessions',$student->student_id) }}" class="orange-button btn">Buy Meetings</a>
+        </div>
+        <div class="col-md-3 d-flex justify-content-center align-items-center">
+            <a href="" class="btn-primary btn">List of Meetings</a> 
+        </div>
     </div>
+    @endforeach
 </div>
 
 @endsection

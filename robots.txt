@@ -3,3 +3,24 @@ Disallow:
 
 Sitemap: https://graduate.me/en/sitemap.xml
 Sitemap: https://graduate.me/de/sitemap.xml
+
+User-agent: GPTBot
+Allow: /
+ 
+User-agent: ChatGPT-User
+Allow: /
+ 
+User-agent: Google-Extended
+Allow: /
+ 
+User-agent: PerplexityBot
+Allow: /
+ 
+User-agent: ClaudeBot
+Allow: /
+ 
+User-agent: anthropic-ai
+Allow: /
+ 
+User-agent: Bytespider
+Allow: /

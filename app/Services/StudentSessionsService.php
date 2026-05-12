@@ -10,7 +10,7 @@ class StudentSessionsService{
 
 
     public function get_sessions(){
-        $sessions = CurriculumType::whereIn('id',[12,13,14])->get();
+        $sessions = CurriculumType::whereIn('id',[12,13,14,15])->get();
         foreach($sessions as $session){
              if(!Cookie::has('session-count-'.$session->id)){
                  Cookie::queue('session-count-'.$session->id, 0, 60);
@@ -23,7 +23,7 @@ class StudentSessionsService{
         return $sessions;
     }
     public function calculate_total(){
-        $sessions = CurriculumType::whereIn('id',[12,13,14])->get();
+        $sessions = CurriculumType::whereIn('id',[12,13,14,15])->get();
         $total = 0;
         foreach($sessions as $session){
              if(!Cookie::has('session-count-'.$session->id)){

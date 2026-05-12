@@ -15,6 +15,7 @@ use App\CurriculumCourse;
 use App\Notification;
 use App\StudentEnrolledCourse;
 use App\ParentStudent;
+use App\Diploma;
 use Carbon\Carbon;
 
 use App\Mail\GraduationEmailStudent;
@@ -228,6 +229,11 @@ class Controller extends BaseController
                         info($e->getMessage());
                     }
                     $student->student_details->update(['status' => ParentStudent::GRADUATED]);
+                    Diploma::create([
+                        'student_id' => $student->id,
+                        'track' => $track,
+                        'grade' => $credits['average_grade']
+                    ]);
 
                     Notification::add(auth()->id(),'Congratulations student\'s diploma is ready',);
                     Notification::add(auth()->id(),'Congratulations your diploma is ready');

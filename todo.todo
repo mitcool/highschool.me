@@ -1,7 +1,61 @@
-Cronjobs:
-☐ Exam on 01 April at 9:00 UTC
-☐ Group sessoin on 01 April at 13:30 Local 10:30 UTC
-☐ Group sessoin on 01 April at 17:30 Local 14:30 UTC
-☐ Mentoring session on 01 April 13:00 local 10:00 UTC
-☐ Coaching on 01 April 13:00 local 10:00 UTC
-☐ Tokens 1199
+TODO::
+    ✔ Make tp courses mandatory @done(26-04-27 10:38)
+    ☐ Email = documents approved
+    ✔ Оцветяване в оранжево на смяна на плановете @done(26-05-04 09:04)
+✔ @done(26-05-04 09:04)
+    ☐ Confirm No Enrollment button stays disabled
+    ☐ 
+Emails:
+    ☐ Diploma Printing Request - requested,sent , delivered (to parent )
+    ☐ Diploma Printing Request - requested,sent , delivered (to admin )
+    ☐ Documents accepted by admin
+    ☐ Terminate,Upgrade,Downgrade Profile
+    ☐
+
+    
+Written Emails:
+    ✔ Account Verification @done(26-04-27 10:59)
+    ✔ Student Account Created @done(26-04-27 10:59)
+    ✔ Document Rejected @done(26-04-27 10:59)
+    ✔ Payment Successful @done(26-04-27 10:59)
+    ✔ Enrollment Confirmed @done(26-04-27 10:59)
+    ✔ Student Can Begin Studying (Parent) @done(26-04-27 10:59)
+    ✔ Exam Submitted @done(26-04-27 10:59)
+    ✔ Exam Results Available (Parent) @done(26-04-27 10:59)
+    ✔ Student Login Credentials @done(26-04-27 11:00)
+    ✔ New Help Desk Ticket (Admin) @done(26-04-27 11:00)
+    ✔ Help Desk Reply (Student) @done(26-04-27 11:00)
+    ✔ Help Desk Reply (Parent) @done(26-04-27 11:00)
+    ✔ Student Can Begin Studying (Student) @done(26-04-27 11:00)
+    ☐ Upcoming Exam Reminder
+    ✔ Exam Results (Student) @done(26-04-27 11:00)
+    ✔ Exam Removed by Admin (Reschedule Pending) @done(26-04-27 11:00)
+    ✔ Educator Account Created @done(26-04-27 11:00)
+    ✔ Application Fee Payment Confirmed @done(26-04-27 11:00)
+    ☐ Documents Submitted (Admin Notification)
+    ✔ Payment Received (Admin Notification) @done(26-04-27 11:00)
+    ☐ Payment Failed (Admin Notification)
+    ✔ Student Ready for Exam (Admin Notification) @done(26-04-27 11:00)
+    ✔ Exam Date Confirmed (Parent) @done(26-04-27 11:00)
+    ✔ Exam Completed (Admin Notification) @done(26-04-27 11:00)
+    ✔ Absence Request Received (Admin Notification) @done(26-04-27 11:00)
+    ✔ Absence Request — Approved (Parent) @done(26-04-27 11:00)
+    ✔ Absence Request — Rejected (Parent) @done(26-04-27 11:00)
+    ☐ Meeting Requested (Admin Notification)
+    ☐ Meeting Assigned (Educator Notification)
+    ☐ Meeting Hours Request (Student)
+    ✔ Ambassador Program Reward Redemption (Admin) @done(26-04-30 14:12)
+    ☐ Diploma and Transcript Issued (Student)
+    ✔ Diploma and Transcript Issued (Parent) @done(26-04-27 10:59)
+    ✔ Pre-Exam Completed (Parent) @done(26-04-27 10:59)
+    ☐ All Self-Assessments Completed (Parent)
+    ☐ Graduation Period Ending (Parent)
+    ☐ Academic Integrity Violation (Parent)
+    ☐ Academic Integrity Violation (Admin)
+
+
+TP GRADUATION TEST:
+    ☐ Enrollment + email
+    ☐ Start Study + email
+    ☐ Ready for exam + email
+    

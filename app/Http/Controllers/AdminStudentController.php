@@ -193,5 +193,11 @@ class AdminStudentController extends Controller
         return redirect()->route('admin-student-documents')->with('success_message','Student has been removed from the system');
 
     }
+
+    public function graduateStudent(Request $request,$student_id){
+        ParentStudent::find($student_id)->update(['status' => ParentStudent::GRADUATED]);
+        
+        return redirect()->back()->with('success_message','Student has been graduated successfully');
+    }
    
 }
