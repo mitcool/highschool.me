@@ -63,7 +63,7 @@ class AdminStudentController extends Controller
         };
         
         $student_document->update(['is_approved' => $is_approved]);
-        $count_approved_documents = StudentDocument::where('type','<',8)
+        $count_approved_documents = StudentDocument::where('is_required',1)
                                                     ->where('student_id',$student_document->student_id)
                                                     ->where('is_approved',1)
                                                     ->count();

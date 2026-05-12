@@ -37,7 +37,7 @@
             .then(response => {
                 $(`.approve-button[data-value=${response.document_id}]`).removeClass('btn-secondary').addClass('btn-success').html('Approved')
                 $(`.reject-button[data-value=${response.document_id}]`).remove();
-                if(response.count > 5){
+                if(response.count >= 5){
                     $('#approve-student-form').removeClass('d-none');
                     $('#wrong-documents').addClass('d-none')
                 }

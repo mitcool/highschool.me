@@ -290,6 +290,12 @@
                     </li>
 
                     <div class="sidebar-heading">Exams</div>
+                     <li class="nav-item active">
+                        <a class="nav-link" href="{{route('educator.overview')}}">
+                            <i class="fas fa-folder"></i>
+                            <span>Overview</span>
+                        </a>
+                    </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="{{route('educator.exams')}}">
                             <i class="fas fa-folder"></i>

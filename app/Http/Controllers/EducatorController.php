@@ -26,6 +26,7 @@ use App\StudentAnswer;
 use App\CourseCategory;
 use App\Country;
 use App\Complaint;
+use App\ParentStudent;
 
 class EducatorController extends Controller
 {
@@ -448,5 +449,27 @@ class EducatorController extends Controller
         $complaint['educator_id'] = auth()->id();
         Complaint::create($complaint);
         return redirect()->back()->with('success_message','Complaint created successfully');
+    }
+    public function overview(){
+        $students = User::where('role_id',4)->paginate(20);
+        return view('educator.overview')
+            ->with('students',$students);
+    }
+    public function singleStudent($student_id){
+        $student = User::find($student_id);
+        $student_enrolled_courses = StudentEnrolledCourse::where('user_id',$student_id)->get(); 
+        $credits = $this->calculateCredits($student_enrolled_courses,$student->student_details->track);
+        $in_progress_courses =  $student_enrolled_courses->whereIn('status',[StudentEnrolledCourse::STATUS_START_STUDY,StudentEnrolledCourse::STATUS_READY_FOR_EXAM]);
+        $completed_courses =  $student_enrolled_courses->where('status',StudentEnrolledCourse::STATUS_COMPLETED);
+        $needed_mandatory_courses = $this->checkMandatoryCourses($student_enrolled_courses);
+        $exams = Exam::where('student_id',$student_id)->get();
+        return view('educator.single-student')
+            ->with('credits',$credits)
+            ->with('exams',$exams)
+            ->with('student_enrolled_courses',$student_enrolled_courses)
+            ->with('completed_courses',$completed_courses)
+            ->with('in_progress_courses',$in_progress_courses)
+            ->with('student',$student)
+            ->with('grade_levels', ParentStudent::GRADE_LEVELS);
     }
 }

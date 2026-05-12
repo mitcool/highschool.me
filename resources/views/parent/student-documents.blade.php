@@ -76,18 +76,6 @@
             <input class="custom-file-input" name="parent_id"  type="file" id="parent_id" accept="application/pdf">
         </div>
 
-        {{-- Custody Document --}}
-        <div class="mb-3 d-flex justify-content-between">
-            <div>
-                <p class="font-weight-bold mb-0 ">Custody Document (if applicable) <span class="text-danger">*</span></p>
-                <span class="error-message" id="custody_document_error"></span>
-            </div>
-            <label for="custody_document" class="custom-form-label">
-                <i class="fas fa-upload"></i> Upload File
-            </label>
-            <input class="custom-file-input" name="custody_document" type="file" id="custody_document" accept="application/pdf">
-        </div>
-
         {{-- Proof of residence --}}
         <div class="mb-3 d-flex justify-content-between">
             <div>
@@ -137,10 +125,22 @@
             <input name="school_transcript" class="custom-file-input" type="file" id="school_transcript" accept="application/pdf">
         </div>
 
+         {{-- Custody Document --}}
+        <div class="mb-3 d-flex justify-content-between">
+            <div>
+                <p class="font-weight-bold mb-0 ">Custody Document (if applicable)</p>
+                <span class="error-message" id="custody_document_error"></span>
+            </div>
+            <label for="custody_document" class="custom-form-label">
+                <i class="fas fa-upload"></i> Upload File
+            </label>
+            <input class="custom-file-input" name="custody_document" type="file" id="custody_document" accept="application/pdf">
+        </div>
+
         {{-- Withdrawal Confirmation  --}}
          <div class="mb-3 d-flex justify-content-between">
             <div>
-                <p  class="font-weight-bold mb-0 ">Withdrawal Confirmation from Previous School (optional)</p>
+                <p  class="font-weight-bold mb-0 ">Withdrawal Confirmation from Previous School (if applicable) </p>
                 <span class="error-message" id="withdrawal_confirmation_error"></span>
             </div> 
             <label for="withdrawal_confirmation" class="custom-form-label">
@@ -152,7 +152,7 @@
         {{-- IEP --}}
         <div class="mb-3 d-flex justify-content-between">
             <div>
-                <p  class="font-weight-bold mb-0 ">IEP / 504 Plan with Medical Documentation (optional)</p>
+                <p  class="font-weight-bold mb-0 ">IEP / 504 Plan with Medical Documentation (if applicable) </p>
                 <span class="error-message" id="iep_error"></span>
             </div>
             <label for="iep" class="custom-form-label">
@@ -207,10 +207,10 @@
                 e.preventDefault();
                 $('#parent_id_error').html('Please upload parent ID');
             }
-            if ($('#custody_document').get(0).files.length === 0) {
-                e.preventDefault();
-                $('#custody_document_error').html('Please upload custody document');
-            }
+            // if ($('#custody_document').get(0).files.length === 0) {
+            //     e.preventDefault();
+            //     $('#custody_document_error').html('Please upload custody document');
+            // }
             if ($('#proof_of_residence').get(0).files.length === 0) {
                 e.preventDefault();
                 $('#proof_of_residence_error').html('Please upload proof of residence');

@@ -69,11 +69,11 @@ class ParentStudent extends Model
     }
 
     public function approved_documents_count(){
-        return StudentDocument::where('type','<',8)->where('student_id',$this->student_id)->where('is_approved',1)->count();
+        return StudentDocument::where('is_required',1)->where('student_id',$this->student_id)->where('is_approved',1)->count();
     }
 
      public function rejected_documents_count(){
-        return StudentDocument::where('type','<',8)->where('student_id',$this->student_id)->where('is_approved',2)->count();
+        return StudentDocument::where('is_required',1)->where('student_id',$this->student_id)->where('is_approved',2)->count();
     }
     
     public function plans(){

@@ -18,6 +18,10 @@
         <form action="{{ route('parent.update-info') }}" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div>
+                <label for="">Name:</label>
+                <input name="text" readonly  type="text" class="form-control" value="{{ auth()->user()->fullname() }}">
+            </div>
+            <div>
                 <label for="">Email:</label>
                 <input name="email" required type="text" class="form-control" value="{{ auth()->user()->email }}">
             </div>

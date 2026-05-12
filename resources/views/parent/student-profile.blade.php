@@ -288,7 +288,11 @@
             </div>
         </div>
         
+        @if($status >= 3)
         
+            <a class="btn my-3 blue-button-outline" href="{{ route('enrollment-confirmation',$student->id) }}" target="_blank">Download Enrollment verification</a>
+
+        @endif
         <hr>
         @if(($student->student_details->track == 1 || $student->student_details->track == 2 || $student->student_details->track == 3) && $status == 3)
             <div class="card graduation-card p-4">

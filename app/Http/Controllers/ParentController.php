@@ -488,9 +488,6 @@ class ParentController extends Controller
         $parent_id_name = $this->upload_file($request->file('parent_id'),$path);
         StudentDocument::insert(['file'=>$parent_id_name,'type'=>1,'student_id'=>$student->id,'is_approved' => 0]);
         
-        #custody_document (document 2) required
-        $custody_document_name = $this->upload_file($request->file('custody_document'),$path); 
-        StudentDocument::insert(['file'=>$custody_document_name,'type'=>2,'student_id'=>$student->id,'is_approved' => 0]);
 
         #proof_of_residence (document 3) required
         $proof_of_residence_name =  $this->upload_file($request->file('proof_of_residence'),$path); 
@@ -507,6 +504,12 @@ class ParentController extends Controller
         #school transcript (document 6) required
         $school_transcript_name =$this->upload_file($request->file('school_transcript'),$path); 
         StudentDocument::insert(['file'=>$school_transcript_name,'type'=>6,'student_id'=>$student->id,'is_approved' => 0]);
+
+        #custody_document (document 2) optional - !!! before it was optional 
+        if($request->hasFile('custody_document')){
+            $custody_document_name = $this->upload_file($request->file('custody_document'),$path); 
+            StudentDocument::insert(['file'=>$custody_document_name,'type'=>2,'student_id'=>$student->id,'is_approved' => 0]);
+        }
 
         #withdrawal_confirmation (document 7) optinal
         if($request->hasFile('withdrawal_confirmation')){
@@ -1135,7 +1138,7 @@ class ParentController extends Controller
             'zip' => 'required',
             "phone" => "required|regex:/^[0-9]\d{6,15}$/|min:6|max:15",
             "phone_code" => 'required|regex:/^\+[0-9]\d{0,3}$/',
-            "avatar" => ['required', 'file', 'mimes:jpg,jpeg,webp,png,svg', 'max:300']
+            "avatar" => ['required', 'file', 'mimes:jpg,jpeg,webp,png,svg', 'max:2000']
         ]);
         $email = $request->email;
         if(auth()->user()->email != $email){

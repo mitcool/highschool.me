@@ -157,6 +157,8 @@ Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 	Route::get('/profile','EducatorController@profile')->name('educator.profile');
 	Route::get('/complaints','EducatorController@complaints')->name('educator.complaints');
 	Route::post('/complaints','EducatorController@createComplaint')->name('create-complaint');
+	Route::get('/overview','EducatorController@overview')->name('educator.overview');
+	Route::get('/single-student/{id}','EducatorController@singleStudent')->name('educator.single-student');
 	#notifications
 	Route::get('/all-notifications', 'EducatorController@showNotifications')->name('educator.notifications');
 
