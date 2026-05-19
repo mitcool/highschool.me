@@ -19,16 +19,38 @@
             </tr>
             @if(count($group_sessions) > 0)
             <tr>
-                <th colspan="2">Date</th>
+                <th>Date</th>
                 <th class="text-right">Link</th>
+                <th class="text-right">Students</a></th>
             </tr>
             @endif
             @forelse ($group_sessions as $session)
                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
-                     <td></td>
                     <td class="text-right">
                         {{ $session->link }}
+                    </td>
+                    <td class="text-right">
+                        <a data-toggle="modal" data-target="#hour-{{ $session->id }}">View</a>
+                        <div class="modal fade" id="hour-{{ $session->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Participants </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    @foreach ($session->students  as $student )
+                                        <p>{{ $student->student->fullname() }}</p>
+                                    @endforeach
+                                </div>
+                                <div class="modal-footer">
+                                    <button  class="btn orange-button" class="close" data-dismiss="modal" aria-label="Close" >Close</button>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             @empty
@@ -45,16 +67,38 @@
             </tr>
             @if(count($mentoring_sessions) > 0)
             <tr>
-                <th colspan="2">Date</th>
+                <th>Date</th>
                 <th class="text-right">Link</th>
+                <th class="text-right">Students</a></th>
             </tr>
             @endif
             @forelse ($mentoring_sessions as $session)
                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
-                    <td></td>
                     <td class="text-right">
-                         {{ $session->link }}
+                        {{ $session->link }}
+                    </td>
+                    <td class="text-right">
+                        <a data-toggle="modal" data-target="#hour-{{ $session->id }}">View</a>
+                        <div class="modal fade" id="hour-{{ $session->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Select Category</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                 @foreach ($session->students  as $student )
+                                        <p>{{ $student->student->fullname() }}</p>
+                                    @endforeach
+                                </div>
+                                <div class="modal-footer">
+                                    <button  class="btn orange-button" form="new-course-form" >Save changes</button>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             @empty
@@ -70,16 +114,38 @@
             </tr>
             @if(count($coaching_sessions) > 0)
             <tr>
-                <th colspan="2">Date</th>
+                <th>Date</th>
                 <th class="text-right">Link</th>
+                <th class="text-right">Students</a></th>
             </tr>
             @endif
             @forelse ($coaching_sessions as $session)
-                <tr>
+                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
-                    <td></td>
                     <td class="text-right">
-                         {{ $session->link }}
+                        {{ $session->link }}
+                    </td>
+                    <td class="text-right">
+                        <a data-toggle="modal" data-target="#hour-{{ $session->id }}">View</a>
+                        <div class="modal fade" id="hour-{{ $session->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Select Category</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                 @foreach ($session->students  as $student )
+                                        <p>{{ $student->student->fullname() }}</p>
+                                @endforeach
+                                </div>
+                                <div class="modal-footer">
+                                    <button  class="btn orange-button" form="new-course-form" >Save changes</button>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             @empty

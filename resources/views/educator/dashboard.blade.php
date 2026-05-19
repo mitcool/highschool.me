@@ -128,6 +128,30 @@
         body.educator-desktop-nav-active .educator-desktop-sidebar {
             display: block !important;
         }
+       
+        .pagination .page-link {
+            color: #AB0050!important; /* your color */
+        }
+
+        /* Hover state */
+        .pagination .page-link:hover {
+            color: #ffffff !important;
+            background-color: #AB0050!important;
+            border-color: #AB0050!important;
+        }
+
+        /* Active page */
+        .pagination .page-item.active .page-link {
+            background-color: #AB0050!important;
+            border-color: #AB0050!important;
+            color: #ffffff !important;
+        }
+
+        /* Disabled buttons */
+        .pagination .page-item.disabled .page-link {
+            color: #999999;
+        }
+
         @media (max-width: 1460px) {
             .educator-mobile-panel {
                 display: block !important;
@@ -296,12 +320,12 @@
                             <span>Overview</span>
                         </a>
                     </li>
-                    <li class="nav-item active">
+                    {{-- <li class="nav-item active">
                         <a class="nav-link" href="{{route('educator.exams')}}">
                             <i class="fas fa-folder"></i>
                             <span>Exams</span>
                         </a>
-                    </li>
+                    </li> --}}
                     {{-- <li class="nav-item active">
                         <a class="nav-link" href="{{route('educator.add-exam-question')}}">
                             <i class="fas fa-question"></i>
@@ -337,12 +361,19 @@
                     <div class="sidebar-heading">
                         Profile Settings
                     </div>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ route('educator.hours') }}">
+                            <i class="fas fa-clock"></i>
+                            <span>My Hours</span>
+                        </a>
+                    </li>
                      <li class="nav-item active">
                         <a class="nav-link" href="{{ route('educator.profile') }}">
                             <i class="fas fa-key"></i>
                             <span>Profile</span>
                         </a>
                     </li>
+                    
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ route('educator.reset.password.page') }}">
                             <i class="fas fa-key"></i>

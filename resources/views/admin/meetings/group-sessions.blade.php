@@ -1,39 +1,101 @@
 @extends('admin_template')
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/datetimepicker.css') }}">
+    <style>
+        input{
+            cursor: pointer;
+        }
+    </style>
+@endsection
+
 @section('content')
 
 
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
-    <h2 class="text-center page-headings">Group Session for Students</h2>
-    <table class="table">
-        @if(count($group_sessions) > 0)
-        <tr>
-            <th>Date</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Educator</th>
-            <th>Link</th>
-        </tr>
-        @else
-        <tr>
-            <th colspan="4" class="text-center">No group sessions yet</th>
-        </tr>
-        @endif
-        @foreach ($group_sessions as $session )
-        <tr>
-            <th>{{ $session->date->format('d.m.Y') }}</th>
-            <th>{{ $session->start->format('H:i') }}</th>
-            <th>{{ $session->end->format('H:i') }}</th>
-            <th>{{ $session->educator->fullname() }}</th>
-            <th>{{ $session->link }}</th>
-        </tr>
-        @endforeach
-    </table>
-    <div class="d-flex justify-content-center">
-        {{ $group_sessions->links() }}
-    </div>
-    <div class="text-right mt-5">
-        <a href="{{ route('add-group-session') }}" class="orange-button">Add Group Session</a>
-    </div>
+    <h2 class="text-center page-headings">Set educator sessions</h2>
+    <form action="{{ route('create-group-session') }}" method="POST">
+        {{ csrf_field() }}
+        
+        <div class="row my-2 align-items-center w-100">
+            <div class="col-md-12">
+                <label for="" class="d-block mb-0 font-weight-bold" >Select Educator</label>
+                <select name="educator_id" class="form-control" required id="educator-select">
+                    <option value="" selected disabled>Please select educator</option>
+                    @foreach ($educators as $educator)
+                        <option value="{{ $educator->id }}">{{ $educator->fullname() }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <table class="table" id="educator-hours">
+            
+        </table>
+        <div class="row mt-3">
+            <div class="col-md-12 text-right" >
+                <button class="orange-button">Confirm</button>
+            </div>
+        </div>
+    </form>
 </div>
+@endsection
+
+@section('scripts')
+
+<script>
+    $('#educator-select').on('change',function(){
+        let educator_id = $(this).val();
+        $('#educator-hours').html('')
+        $.ajax({
+                data: {educator_id: educator_id},
+                method: "POST",
+                url: "{{route('get-educator-hours')}}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            }).done(function(hours) {
+                let html = ``; //<h4 class="my-2 text-center">Please set the meetings </h4>
+                for (let index = 0; index < hours.length; index++) {
+                    const date = new Date(hours[index].date);
+                    const start = new Date(hours[index].start);
+                    const end = new Date(hours[index].end);
+                    const date_formatted = date.toLocaleString('en-GB', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                       
+                    });
+                     const start_formatted = start.toLocaleString('en-GB', {
+                        
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    const end_formatted = end.toLocaleString('en-GB', {
+                        
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    html += `
+                        <tr>>
+                            <td class="col-md-3">${date_formatted}</td>
+                            <td class="col-md-3">${start_formatted}</td>
+                            <td class="col-md-3">${end_formatted}</td>
+                            <td class="col-md-3">
+                                <select class="form-control" name="session_type[${hours[index].id}]" required>
+                                    <option selected disabled value="">Please select meeting type</option>
+                                    <option value="12">Group Session</option>
+                                    <option value="13">Personal Mentoring Session</option>
+                                    <option value="14">Career Coaching</option>
+                                    <option value="15">Academic Office Hours</option>
+                                    <option value="16">Family Consultation</option>
+                                </select>
+                            </td>
+                        </tr>`
+                }
+                //Values of type correnspond with curriculum_type_id
+                $('#educator-hours').append(html)
+            }); 
+    })
+   
+</script>
 @endsection

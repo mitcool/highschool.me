@@ -102,6 +102,7 @@ use App\Ethnicity;
 use App\StudentPlan;
 use App\OtherStaff;
 use App\CteCourseProgram;
+use App\EducatorHour;
 
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
@@ -2203,5 +2204,11 @@ class AdminController extends Controller
         InvoiceDetail::updateOrCreate(['user_id'=>auth()->user()->id],$details);
         Notification::add(auth()->id(),'Congratulations your details have been update successfully');
         return redirect()->back()->with('success_message','User info updated successfully');
+    }
+
+    public function getEducatorHours(Request $request){
+        $educator_id = $request->educator_id;
+        $hours = EducatorHour::where('educator_id',$educator_id)->whereNull('type')->get();
+        return $hours;
     }
 }

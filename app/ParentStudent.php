@@ -14,7 +14,7 @@ class ParentStudent extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['status','expired_at','is_disabled','grade','grade_started_at','parent_id','student_id','track','feedback','tokens','gender','student_location_id','ethnicity_id','language_level'];
+    protected $fillable = ['status','expired_at','is_disabled','grade','grade_started_at','parent_id','student_id','track','feedback','tokens','gender','student_location_id','ethnicity_id','language_level','citizenship','id_card_number','current_grade_level','current_school_name','country_of_current_school','preffered_start_date','phone','address','address_two','zip','city','state','country_id'];
 
     protected $casts = [
         'grade_started_at' => 'datetime',

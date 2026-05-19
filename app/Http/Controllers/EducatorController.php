@@ -6,9 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
 
-use App\GroupSession;
-use App\MentoringSession;
-use App\CoachingSession;
 use App\CurriculumCourse;
 use App\User;
 use App\CatalogCourse;
@@ -27,6 +24,7 @@ use App\CourseCategory;
 use App\Country;
 use App\Complaint;
 use App\ParentStudent;
+use App\EducatorHour;
 
 class EducatorController extends Controller
 {
@@ -37,7 +35,7 @@ class EducatorController extends Controller
     public function meetings() {
         $now = Carbon::now();
        
-        $group_sessions = GroupSession::where(function ($query) use ($now) {
+        $group_sessions = EducatorHour::where('type',12)->where(function ($query) use ($now) {
                 $query->where('educator_id',auth()->id())->where('date', '>', $now->toDateString())
                     ->orWhere(function ($q) use ($now) {
                         $q->where('date', $now->toDateString())
@@ -45,7 +43,7 @@ class EducatorController extends Controller
                     });
         })->get();
 
-        $mentoring_sessions = MentoringSession::where(function ($query) use ($now) {
+        $mentoring_sessions = EducatorHour::where('type',13)->where(function ($query) use ($now) {
                 $query->where('educator_id',auth()->id())->where('date', '>', $now->toDateString())
                     ->orWhere(function ($q) use ($now) {
                         $q->where('date', $now->toDateString())
@@ -53,7 +51,7 @@ class EducatorController extends Controller
                     });
         })->get();
        
-        $coaching_sessions = CoachingSession::where(function ($query) use ($now) {
+        $coaching_sessions = EducatorHour::where('type',14)->where(function ($query) use ($now) {
                 $query->where('educator_id',auth()->id())->where('date', '>', $now->toDateString())
                     ->orWhere(function ($q) use ($now) {
                         $q->where('date', $now->toDateString())
@@ -76,23 +74,23 @@ class EducatorController extends Controller
             ->with('categories',$categories)
             ->with('courses',$courses);
     }
-    public function exams(){
-        $students = StudentEnrolledCourse::where('status',StudentEnrolledCourse::STATUS_READY_FOR_EXAM)->select('user_id')->distinct()->get();
-        $all_students = User::where('role_id',4)->get();
-        $all_courses = CurriculumCourse::all();
-        $educators = User::where('role_id',5)->get();
-        $courses = CurriculumCourse::all();
-        $exams = Exam::orderBy('datetime','desc')->where('educator_id',auth()->id())->where('status',Exam::STATUS_APPOINTED)->get();
-        $utc_time = Carbon::now('utc')->format('d.m.Y H:i');
-        return view('educator.exams')
-            ->with('all_students',$all_students)
-            ->with('all_courses',$all_courses)
-            ->with('exams',$exams)
-            ->with('students',$students)
-            ->with('educators',$educators)
-            ->with('utc_time',$utc_time)
-            ->with('courses',$courses);
-    }
+    // public function exams(){
+    //     $students = StudentEnrolledCourse::where('status',StudentEnrolledCourse::STATUS_READY_FOR_EXAM)->select('user_id')->distinct()->get();
+    //     $all_students = User::where('role_id',4)->get();
+    //     $all_courses = CurriculumCourse::all();
+    //     $educators = User::where('role_id',5)->get();
+    //     $courses = CurriculumCourse::all();
+    //     $exams = Exam::orderBy('datetime','desc')->where('educator_id',auth()->id())->where('status',Exam::STATUS_APPOINTED)->get();
+    //     $utc_time = Carbon::now('utc')->format('d.m.Y H:i');
+    //     return view('educator.exams')
+    //         ->with('all_students',$all_students)
+    //         ->with('all_courses',$all_courses)
+    //         ->with('exams',$exams)
+    //         ->with('students',$students)
+    //         ->with('educators',$educators)
+    //         ->with('utc_time',$utc_time)
+    //         ->with('courses',$courses);
+    // }
     public function examQuestions(Request $request){
         $categories = EducatorCategory::where('educator_id',auth()->id())->pluck('category_id')->toArray();
         $courses = CurriculumCourse::whereIn('category_id',$categories)->get();
@@ -471,5 +469,18 @@ class EducatorController extends Controller
             ->with('in_progress_courses',$in_progress_courses)
             ->with('student',$student)
             ->with('grade_levels', ParentStudent::GRADE_LEVELS);
+    }
+
+    public function hours(){
+        $educator_hours = EducatorHour::where('educator_id',auth()->id())->orderBy('date','desc')->paginate(20);
+        return view('educator.hours')
+            ->with('educator_hours',$educator_hours);
+    }
+
+    public function addWorkingHour(Request $request){
+        $working_hour = $request->except('_token');
+        $working_hour['educator_id'] = auth()->id();
+        EducatorHour::create($working_hour);
+        return redirect()->back()->with('success_message','Working hour added successfuly');
     }
 }

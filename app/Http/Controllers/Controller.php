@@ -165,6 +165,9 @@ class Controller extends BaseController
              $core_credits = 6;
              $needed_elective_credits = 0;
         }
+        else{
+            return;
+        }
         $elective_credits = 0;
         $total_grade = 0;
         $average_grade = 0;

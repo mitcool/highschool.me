@@ -22,16 +22,7 @@ use App\Invoice;
 use App\StudentPlan;
 use App\FamilyConsultationRequest as FamilyConsultationRequestModel;
 use App\CourseType;
-use App\FamilyConsultation;
-use App\GroupSession;
-use App\MentoringSession;
-use App\UserGroupSession;
-use App\CoachingSession;
-use App\UserMentoringSession;
-use App\UserCoachingSession;
-use App\PaidGroupSession;
-use App\PaidMentoringSession;
-use App\PaidCoachingSession;
+use App\EducatorHour;
 use App\CurriculumCourse;
 use App\StudentEnrolledCourse;
 use App\HelpDesk;
@@ -47,6 +38,7 @@ use App\LoginVerification;
 use App\Diploma;
 use App\VerificationOfGraduation;
 use App\DiplomaPrintingRequest;
+use App\StudentMeeting;
 
 use App\Mail\NewDiplomaPrintingRequest;
 use App\Mail\StudentCreated;
@@ -257,6 +249,7 @@ class ParentController extends Controller
     }
     public function createStudent(){
         return view('parent.create-student')
+            ->with('countries',Country::orderBy('nicename')->get())
             ->with('student_locations', StudentLocation::orderBy('id')->get())
             ->with('ethnicities', Ethnicity::orderBy('id')->get())
             ->with('language_levels', ParentStudent::LANGUAGE_LEVELS);
@@ -264,74 +257,11 @@ class ParentController extends Controller
     public function meetings_all(){
         $students = ParentStudent::where('parent_id',auth()->id())->get();
         $student_ids = $students->pluck('student_id')->toArray();
-       
-        $paid_group_sessions = AdditionalCourse::whereIn('student_id',$student_ids)->where('course_type',12)->count();
-        $paid_mentoring_sessions = AdditionalCourse::whereIn('student_id',$student_ids)->where('course_type',13)->count();
-        $paid_coaching_sessions = AdditionalCourse::whereIn('student_id',$student_ids)->where('course_type',14)->count();
-
-        $booked_group_sessions = UserGroupSession::whereIn('user_id',$student_ids)->count();
-        $booked_mentoring_sessions = UserGroupSession::whereIn('user_id',$student_ids)->count();
-        $booked_coaching_sessions = UserGroupSession::whereIn('user_id',$student_ids)->count();
-
-        $group_sessions_left = $paid_group_sessions - $booked_group_sessions;
-        $mentoring_sessions_left = $paid_mentoring_sessions - $booked_mentoring_sessions;
-        $coaching_sessions_left = $paid_coaching_sessions - $booked_coaching_sessions;
-
-
         return view('parent.meetings_all')
-            ->with('group_sessions_left',$group_sessions_left)
-            ->with('mentoring_sessions_left',$mentoring_sessions_left)
-            ->with('coaching_sessions_left',$coaching_sessions_left)
+           
             ->with('students',$students);
     }
-    public function meetings_student($student_id){
-
-        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
-            abort(403);
-        }
-        $now = Carbon::now();
-      
-         $group_sessions = GroupSession::where(function ($query) use ($now) {
-                $query->where('date', '>', $now->toDateString())
-                    ->orWhere(function ($q) use ($now) {
-                        $q->where('date', $now->toDateString())
-                            ->where('start', '>', $now->toTimeString());
-                    });
-        })->get();
-
-        $mentoring_sessions = MentoringSession::where(function ($query) use ($now) {
-                $query->where('date', '>', $now->toDateString())
-                    ->orWhere(function ($q) use ($now) {
-                        $q->where('date', $now->toDateString())
-                            ->where('start', '>', $now->toTimeString());
-                    });
-        })->get();
-       
-        $coaching_sessions = CoachingSession::where(function ($query) use ($now) {
-                $query->where('date', '>', $now->toDateString())
-                    ->orWhere(function ($q) use ($now) {
-                        $q->where('date', $now->toDateString())
-                            ->where('start', '>', $now->toTimeString());
-                    });
-        })->get();
-
-        $user_group_sessions = UserGroupSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
-        $user_mentoring_sessions = UserMentoringSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
-        $user_coaching_sessions = UserCoachingSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
-        
-        $permissions = $this->checkPermissionForSessionBooking($student_id);
-      
-        return view('parent.meetings')
-            ->with('group_sessions',$group_sessions)
-            ->with('user_group_sessions',$user_group_sessions)
-            ->with('mentoring_sessions',$mentoring_sessions)
-            ->with('user_mentoring_sessions',$user_mentoring_sessions)
-            ->with('user_coaching_sessions',$user_coaching_sessions)
-            ->with('permissions',$permissions)
-            ->with('coaching_sessions',$coaching_sessions)
-            ->with('student_id',$student_id);
-    }
-
+    
     public function checkPermissionForSessionBooking($student_id){
         $coaching_sessions_permission = false;
         if(AdditionalCourse::where('status',0)->where('student_id',$student_id)->where('course_type',14)->count() > 0){
@@ -354,19 +284,40 @@ class ParentController extends Controller
     }
 
     public function addStudent(Request $request){
-        $request->validate([
+        $same_address = $request->same_address;
+        $validation_rules = [
             'name' => 'required',
             'surname' => 'required',
             'email' => 'required|email:rfc,dns|unique:users,email',
             'date_of_birth' => 'required',
-            'education_option' => 'required',
-            'gender' => 'required|in:male,female',
+            'track' => 'required',
+            'gender' => 'required',
             'student_location_id' => 'required|exists:student_locations,id',
             'ethnicity_id' => 'required|exists:ethnicities,id',
             'language_level' => ['required', Rule::in(ParentStudent::LANGUAGE_LEVELS)],
-        ]);
+            'citizenship' => 'required',
+            'id_card_number' => 'required',
+            'current_grade_level' => 'required',
+            'current_school_name' => 'required',
+            'country_of_current_school' => 'required',
+            'preffered_start_date' => 'required',
+            'phonecode' => 'required',
+            'phone_number' => 'required',
+            'same_address' => 'required',
+        ];
 
-        $education_option = $request->education_option;
+        if($same_address == 1){
+             $validation_rules["address"] = "required";
+             $validation_rules["address_two"] = "nullable";
+             $validation_rules["zip"]  = "required";
+             $validation_rules["city"] = "required";
+             $validation_rules["state"] = "nullable";
+             $validation_rules["country"] = "required";
+        }
+
+        $request->validate($validation_rules);
+
+        $education_option = $request->track;
         $user = $request->only('name','surname','middlename','email','date_of_birth');
         $password  = Str::random(10);
         $student_role_id = 4;
@@ -399,6 +350,19 @@ class ParentController extends Controller
             'student_location_id' => $request->student_location_id,
             'ethnicity_id' => $request->ethnicity_id,
             'language_level' => $request->language_level,
+            'citizenship' => $request->citizenship,
+            'id_card_number' => $request->id_card_number,
+            'current_grade_level' => $request->current_grade_level,
+            'current_school_name' => $request->current_school_name,
+            'country_of_current_school' => $request->country_of_current_school,
+            'preffered_start_date' => $request->preffered_start_date,
+            'phone' => '+(' .$request->phonecode.')'.$request->phone_number,
+            'address' => $same_address == 1 ? $request->address :  auth()->user()->invoice_details->street.' '.auth()->user()->invoice_details->street_number,
+            'address_two' =>  $same_address == 1 ? $request->address_two : auth()->user()->invoice_details->address_two,
+            'zip' => $same_address == 1 ? $request->zip : auth()->user()->invoice_details->zip ,
+            'city' => $same_address == 1 ? $request->city : auth()->user()->invoice_details->city,
+            'state' => $same_address == 1 ? $request->state : auth()->user()->invoice_details->state,
+            'country_id' => $same_address == 1 ? $request->country : auth()->user()->invoice_details->country_id,
             'tokens' => 500  // Defined by marketing team (TOKENS == QUESTIONS) //After selection of plan update in case they have Pro or Elite
         ]);
 
@@ -755,6 +719,8 @@ class ParentController extends Controller
         $group_sessions = 0;
         $mentoring_sessions = 0;
         $coaching_sessions = 0;
+        $academic_hours = 0;
+        $family_cosultations = 0;
 
         if($plan_id == 2){
             $ap = 1;
@@ -762,6 +728,8 @@ class ParentController extends Controller
             $cte = 2;
             $esol = 0;
             $group_sessions = 1;
+            $family_cosultations = 1;
+            
         }
         elseif($plan_id == 3){
             $ap = 2;
@@ -771,6 +739,8 @@ class ParentController extends Controller
             $group_sessions = 1;
             $mentoring_sessions = 1;
             $coaching_sessions = 1;
+            $academic_hours = 1;
+            $family_cosultations = 2;
         }
 
         for($i=0;$i < $psat; $i++){
@@ -833,6 +803,20 @@ class ParentController extends Controller
              AdditionalCourse::insert([
                 'student_id' => $student_id,
                 'course_type' => 14,
+                'status' => 0 // not enrolled
+            ]);
+        }
+         for($i=0;$i < $academic_hours; $i++){
+             AdditionalCourse::insert([
+                'student_id' => $student_id,
+                'course_type' => 15,
+                'status' => 0 // not enrolled
+            ]);
+        }
+        for($i=0;$i < $family_cosultations; $i++){
+             AdditionalCourse::insert([
+                'student_id' => $student_id,
+                'course_type' => 16,
                 'status' => 0 // not enrolled
             ]);
         }
@@ -1233,55 +1217,55 @@ class ParentController extends Controller
         return view('parent.student-sessions-success');
     }
 
-    public function  bookGroupSession($session_id){
-       $user_id = auth()->user()->id;
-       $session = GroupSession::find($session_id);
-       UserGroupSession::insert([
-            'user_id' => $user_id,
-            'session_id' => $session_id
-       ]);
-      try{
-         Mail::to(auth()->user()->email)->send(new SessionBookingConfirmation($session,auth()->user()));
-      }catch(\Exception $e){
-        info($e->getMessage());
-      }
+    // public function  bookGroupSession($session_id){
+    //    $user_id = auth()->user()->id;
+    //    $session = GroupSession::find($session_id);
+    //    UserGroupSession::insert([
+    //         'user_id' => $user_id,
+    //         'session_id' => $session_id
+    //    ]);
+    //   try{
+    //      Mail::to(auth()->user()->email)->send(new SessionBookingConfirmation($session,auth()->user()));
+    //   }catch(\Exception $e){
+    //     info($e->getMessage());
+    //   }
 
-       return redirect()->route('book-session-success')->with('success_message','The group session booked successfully');
-    }
+    //    return redirect()->route('book-session-success')->with('success_message','The group session booked successfully');
+    // }
 
-    public function  bookMentoringSession($session_id){
-       $user_id = auth()->user()->id;
-       $session = MentoringSession::find($session_id);
-       UserMentoringSession::insert([
-            'user_id' => $user_id,
-            'session_id' => $session_id
-       ]);
+    // public function  bookMentoringSession($session_id){
+    //    $user_id = auth()->user()->id;
+    //    $session = MentoringSession::find($session_id);
+    //    UserMentoringSession::insert([
+    //         'user_id' => $user_id,
+    //         'session_id' => $session_id
+    //    ]);
 
-       try{
-         Mail::to(auth()->user()->email)->send(new SessionBookingConfirmation($session,auth()->user()));
-      }catch(\Exception $e){
-        info($e->getMessage());
-      }
+    //    try{
+    //      Mail::to(auth()->user()->email)->send(new SessionBookingConfirmation($session,auth()->user()));
+    //   }catch(\Exception $e){
+    //     info($e->getMessage());
+    //   }
 
-       return redirect()->route('book-session-success')->with('success_message','The group session booked successfully');
-    }
+    //    return redirect()->route('book-session-success')->with('success_message','The group session booked successfully');
+    // }
 
-     public function  bookCoachingSession($session_id){
-       $user_id = auth()->user()->id;
-       $session = CoachingSession::find($session_id);
-       UserCoachingSession::insert([
-            'user_id' => $user_id,
-            'session_id' => $session_id
-       ]);
+    //  public function  bookCoachingSession($session_id){
+    //    $user_id = auth()->user()->id;
+    //    $session = CoachingSession::find($session_id);
+    //    UserCoachingSession::insert([
+    //         'user_id' => $user_id,
+    //         'session_id' => $session_id
+    //    ]);
 
-       try{
-         Mail::to(auth()->user()->email)->send(new SessionBookingConfirmation($session,auth()->user()));
-      }catch(\Exception $e){
-        info($e->getMessage());
-      }
+    //    try{
+    //      Mail::to(auth()->user()->email)->send(new SessionBookingConfirmation($session,auth()->user()));
+    //   }catch(\Exception $e){
+    //     info($e->getMessage());
+    //   }
 
-       return redirect()->route('book-session-success')->with('success_message','The group session booked successfully');
-    }
+    //    return redirect()->route('book-session-success')->with('success_message','The group session booked successfully');
+    // }
 
 
     public function bookSessionSuccess(){
@@ -1781,6 +1765,19 @@ class ParentController extends Controller
         $new_request =  DiplomaPrintingRequest::create($printing_request);
         $this->notifyAdmins(new NewDiplomaPrintingRequest($new_request));
         return redirect()->route('parent.diplomas');
+    }
+
+    public function  meetingList($student_id){
+        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+            abort(403);
+        }
+
+        $student_meetings = StudentMeeting::where('student_id',$student_id)
+            ->get()
+            ->groupBy(fn ($hour) => $hour->hour->type);
+
+        return view('parent.meetings')
+            ->with('student_meetings',$student_meetings);
     }
 }
 

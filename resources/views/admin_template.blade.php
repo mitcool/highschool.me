@@ -272,9 +272,9 @@
                 <div class="admin-mobile-menu-section">Meetings</div>
                 <a class="admin-mobile-menu-link" href="{{ route('admin-group-sessions') }}">
                     <i class="fas fa-users"></i>
-                    <span>Group Session for Students</span>
+                    <span>Educator Hours</span>
                 </a>
-                <a class="admin-mobile-menu-link" href="{{ route('admin-mentoring-sessions') }}">
+                {{-- <a class="admin-mobile-menu-link" href="{{ route('admin-mentoring-sessions') }}">
                     <i class="fas fa-user-graduate"></i>
                     <span>Mentoring Session for Students</span>
                 </a>
@@ -285,7 +285,7 @@
                 <a class="admin-mobile-menu-link" href="{{ route('admin-family-consultations') }}">
                     <i class="fas fa-handshake"></i>
                     <span>Family Consultation</span>
-                </a>
+                </a> --}}
 
                 <div class="admin-mobile-menu-section">Ambassador</div>
                 <a class="admin-mobile-menu-link" href="{{ route('admin.ambassador-links') }}">
@@ -495,10 +495,10 @@
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('admin-group-sessions')}}">
                             <i class="fas fa-users"></i>
-                            <span>Group Session for Students</span>
+                            <span>Educator Hours</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-mentoring-sessions') }}">
                             <i class="fas fa-user-graduate"></i>
                             <span>Mentoring Session for Students</span>
@@ -515,7 +515,7 @@
                             <i class="fas fa-handshake"></i>
                             <span>Family Consultation</span>
                         </a>
-                    </li>
+                    </li> --}}
 
                     <hr class="sidebar-divider">  
 

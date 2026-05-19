@@ -34,17 +34,13 @@ use App\SelfAssessmentAttemptQuestion;
 use App\Fraud;
 use App\DiplomaPrintingRequest;
 use App\Notification;
-use App\GroupSession;
-use App\MentoringSession;
-use App\CoachingSession;
-use App\UserGroupSession;
-use App\UserMentoringSession;
-use App\UserCoachingSession;
 use App\AdditionalCourse;
 use App\ParentStudent;
 use App\StudyMentor;
 use App\PreExamAnswer;
 use App\Country;
+use App\EducatorHour;
+use App\StudentMeeting;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -1033,7 +1029,7 @@ class StudentController extends Controller
     public function meetings(){
          $now = Carbon::now();
       
-         $group_sessions = GroupSession::where(function ($query) use ($now) {
+         $group_sessions = EducatorHour::where('type',12)->where(function ($query) use ($now) {
                 $query->where('date', '>', $now->toDateString())
                     ->orWhere(function ($q) use ($now) {
                         $q->where('date', $now->toDateString())
@@ -1041,7 +1037,7 @@ class StudentController extends Controller
                     });
         })->get();
 
-        $mentoring_sessions = MentoringSession::where(function ($query) use ($now) {
+        $mentoring_sessions = EducatorHour::where('type',13)->where(function ($query) use ($now) {
                 $query->where('date', '>', $now->toDateString())
                     ->orWhere(function ($q) use ($now) {
                         $q->where('date', $now->toDateString())
@@ -1049,27 +1045,21 @@ class StudentController extends Controller
                     });
         })->get();
        
-        $coaching_sessions = CoachingSession::where(function ($query) use ($now) {
+        $coaching_sessions = EducatorHour::where('type',14)->where(function ($query) use ($now) {
                 $query->where('date', '>', $now->toDateString())
                     ->orWhere(function ($q) use ($now) {
                         $q->where('date', $now->toDateString())
                             ->where('start', '>', $now->toTimeString());
                     });
         })->get();
-
-        $user_group_sessions = UserGroupSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
-        $user_mentoring_sessions = UserMentoringSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
-        $user_coaching_sessions = UserCoachingSession::where('user_id',auth()->id())->pluck('session_id')->toArray();
+        $already_booked_sessions = StudentMeeting::where('student_id',auth()->id())->pluck('educator_hour_id')->toArray();
         $student_id = auth()->id();
         $permissions = $this->checkPermissionForSessionBooking($student_id);
         return view('student.meetings')
             ->with('group_sessions',$group_sessions)
-            ->with('user_group_sessions',$user_group_sessions)
             ->with('mentoring_sessions',$mentoring_sessions)
-            ->with('user_mentoring_sessions',$user_mentoring_sessions)
-            ->with('user_coaching_sessions',$user_coaching_sessions)
-            ->with('permissions',$permissions)
             ->with('coaching_sessions',$coaching_sessions)
+            ->with('already_booked_sessions',$already_booked_sessions)
             ->with('student_id',$student_id);
     }
 
@@ -1105,6 +1095,14 @@ class StudentController extends Controller
         $countries = Country::all();
         return view('student.profile')
         ->with('countries',$countries);
+    }
+
+    public function bookSession(Request $request,$educator_hour_id){
+        $student_id = $request->student_id;
+        StudentMeeting::insert([
+            'student_id'=> $student_id,
+            'educator_hour_id'=> $educator_hour_id
+        ]);
     }
        
 }

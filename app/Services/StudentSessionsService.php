@@ -67,6 +67,8 @@ class StudentSessionsService{
             ]);;
        }
 
+       $this->notifyAdmins();
+
        Cookie::queue(Cookie::forget('session-count-12'));
        Cookie::queue(Cookie::forget('session-count-13'));
        Cookie::queue(Cookie::forget('session-count-14'));

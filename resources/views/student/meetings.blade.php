@@ -19,25 +19,20 @@
             </tr>
             @forelse ($group_sessions as $session)
                 <tr>
-                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->local_start()->format('g:iA') }} </td>
+                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }} </td>
                      <td></td>
                     <td class="text-right">
-                        @if(in_array($session->id,$user_group_sessions))
+                        @if(in_array($session->id,$already_booked_sessions))
                             <button class="btn-enrolled">Already Booked</button>
                         @elseif(count($session->students) > 9)
                             <button class="btn-enrolled">Already Booked</button>
                         @else
                             @if($permissions['group'])
-                            
-                                <form action="{{ route('book-group-session',$session->id) }}" method="POST" id="session-form-{{ $session->id }}">
+                                <form action="{{ route('book-session',$session->id) }}" method="POST" id="session-form-{{ $session->id }}">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="student_id" value="{{ $student_id }}">
                                     <button class="btn-enroll" >Confirm Appointments</button>
                                 </form>
-                            {{-- @else
-                                <a href="{{ route('parent.student.sessions',$student_id) }}">
-                                    <button class="btn-enroll">Buy now</button>
-                                </a> --}}
                             @endif
                         @endif
                     </td>
@@ -51,28 +46,32 @@
             {{-- Mentoring Sessions --}}
              <tr>
                 <th colspan="2">
-                    <h5>Personal Mentoring Sessions</h5>
+                    <h5 class="mb-0">Personal Mentoring Sessions</h5>
                 </th>
                 <th></th>
             </tr>
             @forelse ($mentoring_sessions as $session)
                 <tr>
-                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->local_start()->format('g:iA') }}</td>
-                    <td></td>
+                    <td>
+                        <p class="mb-0">{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</p>
+                    </td>
+                    <td>
+                        <p class="mb-0">{{ $session->educator->fullname() }}</p>
+                    </td>
                     <td class="text-right">
-                        @if(in_array($session->id,$user_mentoring_sessions) && count($session->students) > 1)
+                        @if(in_array($session->id,$already_booked_sessions) && count($session->students) > 1)
                             <button class="btn-enrolled">Already Booked</button>
                         @elseif(count($session->students) >= 1)
                             <button class="btn-enrolled">Already Booked</button>
                         @else
                             @if($permissions['mentoring'])
-                                <form action="{{ route('book-mentoring-session',$session->id) }}" method="POST" id="mentoring-session-form-{{ $session->id }}">
+                                <form action="{{ route('book-session',$session->id) }}" method="POST" id="mentoring-session-form-{{ $session->id }}">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="student_id" value="{{ $student_id }}">
                                     <button class="btn-enroll">Confirm Appointments</button>
                                 </form>
-                            {{-- @else
-                                <a href="{{ route('parent.student.sessions',$student_id) }}" class="btn-enroll">Buy now</a> --}}
+                            @else
+                                <p class="mb-0">Please tell your parent</p>
                             @endif
                         @endif
                     </td>
@@ -92,23 +91,21 @@
             </tr>
             @forelse ($coaching_sessions as $session)
                 <tr>
-                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->local_start()->format('g:iA') }}</td>
+                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
                     <td></td>
                     <td class="text-right">
-                        @if(in_array($session->id,$user_coaching_sessions))
+                        @if(in_array($session->id,$already_booked_sessions))
                             <button class="btn-enrolled">Already Booked</button>
                         @elseif(count($session->students) > 1)
                             <button class="btn-enrolled">Already Booked</button>
                         @else
                             @if($permissions['coaching'])
-                                <form action="{{ route('book-coaching-session',$session->id) }}" method="POST" id="coaching-session-form-{{ $session->id }}">
+                                <form action="{{ route('book-session',$session->id) }}" method="POST" id="coaching-session-form-{{ $session->id }}">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="student_id" value="{{ $student_id }}">
                                     <button class="btn-enroll">Confirm Appointments</button>
                                 </form>
-                            {{-- @else
-                                <a href="{{ route('parent.student.sessions',$student_id) }}" class="btn-enroll">Buy now</a> --}}
-                            @endif
+                           @endif
                         @endif
                     </td>
                 </tr>
