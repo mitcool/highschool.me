@@ -146,6 +146,8 @@ class ParentController extends Controller
 
         $student_ids = $parent_students->pluck('student_id')->all();
 
+        LoginVerification::closeExpiredApprovedSessions();
+
         $available_years = LoginVerification::whereIn('user_id', $student_ids)
             ->where('status', 'approved')
             ->whereNotNull('verified_at')
@@ -208,6 +210,8 @@ class ParentController extends Controller
 
     public function studentProtocol(Request $request, $student_id)
     {
+        LoginVerification::closeExpiredApprovedSessions($student_id);
+
         $parent_student = ParentStudent::with('student')
             ->where('parent_id', auth()->id())
             ->where('student_id', $student_id)

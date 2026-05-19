@@ -11,6 +11,8 @@ class AdminProtocolController extends Controller
 {
     public function index(Request $request)
     {
+        LoginVerification::closeExpiredApprovedSessions();
+
         $available_years = LoginVerification::where('status', 'approved')
             ->whereNotNull('verified_at')
             ->selectRaw('YEAR(verified_at) as year')
@@ -57,6 +59,8 @@ class AdminProtocolController extends Controller
 
     public function show(Request $request, $student_id)
     {
+        LoginVerification::closeExpiredApprovedSessions($student_id);
+
         $student = User::with('student_details')
             ->where('role_id', 4)
             ->findOrFail($student_id);

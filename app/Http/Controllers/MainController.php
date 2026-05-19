@@ -86,6 +86,7 @@ use App\ContactPage;
 use App\HelpDesk;
 use App\Notification;
 use App\EarlyRegistration;
+use App\LoginVerification;
 
 use App\Http\Requests\ContactRequest;
 use App\Http\Requests\AdvisoryRequest;
@@ -154,7 +155,19 @@ class MainController extends Controller
     return redirect()->back()->with('success_message','Email successfully sent');
   }
 
-  public function logout(){
+  public function logout(Request $request){
+    $user = auth()->user();
+    $verificationId = $request->session()->get('login_verification_id');
+
+    if ($user && $verificationId) {
+      LoginVerification::where('id', $verificationId)
+        ->where('user_id', $user->id)
+        ->where('status', 'approved')
+        ->whereNull('logout_at')
+        ->update(['logout_at' => Carbon::now()]);
+    }
+
+    $request->session()->forget('login_verification_id');
     auth()->logout();
     return redirect()->route('welcome',[],301);
   }

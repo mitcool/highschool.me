@@ -4,7 +4,7 @@
 <style>
     .protocol-page {
         width: 100%;
-        max-width: 1200px;
+        max-width: 1280px;
         margin: 38px auto 80px;
         padding: 0 20px;
     }
@@ -33,32 +33,36 @@
     }
     .protocol-grid {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 28px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
     }
-    .protocol-column-table {
+    .protocol-table {
         width: 100%;
         border-collapse: collapse;
         table-layout: fixed;
     }
-    .protocol-column-table thead th {
-        padding: 0 0 8px;
+    .protocol-table thead th {
+        padding: 0 8px 10px;
         border-bottom: 2px solid #cbd5e1;
         color: #1f355d;
         font-size: 1rem;
         font-weight: 700;
         text-align: left;
     }
-    .protocol-column-table tbody td {
-        padding: 7px 0;
+    .protocol-table tbody td {
+        padding: 8px;
         border-bottom: 2px solid #d1d5db;
         color: #475569;
         font-size: 0.96rem;
         line-height: 1.15;
     }
-    .protocol-column-table tbody td:last-child,
-    .protocol-column-table thead th:last-child {
-        text-align: right;
+    .protocol-table th:nth-child(2),
+    .protocol-table th:nth-child(3),
+    .protocol-table th:nth-child(4),
+    .protocol-table td:nth-child(2),
+    .protocol-table td:nth-child(3),
+    .protocol-table td:nth-child(4) {
+        text-align: center;
     }
     .protocol-empty {
         color: #6b7280;
@@ -106,7 +110,7 @@
     }
     @media (max-width: 1100px) {
         .protocol-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: 1fr;
         }
     }
     @media (max-width: 640px) {
@@ -122,10 +126,6 @@
         .protocol-heading h2 {
             font-size: 1.4rem;
         }
-        .protocol-grid {
-            grid-template-columns: 1fr;
-            gap: 18px;
-        }
         .protocol-actions {
             flex-direction: column;
             padding-left: 0;
@@ -140,7 +140,7 @@
 @section('content')
 @php
     $chunkSize = 30;
-    $protocolColumns = $login_attempts->chunk($chunkSize);
+    $protocolTables = $login_attempts->chunk($chunkSize);
 @endphp
 
 <div class="admin-page-content">
@@ -155,19 +155,30 @@
                 <div class="protocol-empty">No successful login attempts were found for this student in the selected year.</div>
             @else
                 <div class="protocol-grid">
-                    @foreach($protocolColumns as $column)
-                        <table class="protocol-column-table">
+                    @foreach($protocolTables as $tableRows)
+                        <table class="protocol-table">
                             <thead>
                                 <tr>
                                     <th>Date</th>
-                                    <th>Time</th>
+                                    <th>Login Time</th>
+                                    <th>Logout Time</th>
+                                    <th>Length</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($column as $attempt)
+                                @foreach($tableRows as $attempt)
+                                    @php
+                                        $loginAt = $attempt->verified_at;
+                                        $logoutAt = $attempt->protocolLogoutAt();
+                                        $lengthInMinutes = $attempt->protocolLengthInMinutes();
+                                    @endphp
                                     <tr>
-                                        <td>{{ optional($attempt->verified_at)->format('d.m.Y') }}</td>
-                                        <td>{{ optional($attempt->verified_at)->format('G:i') }}</td>
+                                        <td>{{ optional($loginAt)->format('d.m.Y') }}</td>
+                                        <td>{{ optional($loginAt)->format('H:i') }}</td>
+                                        <td>{{ optional($logoutAt)->format('H:i') ?: '-' }}</td>
+                                        <td>
+                                            {{ !is_null($lengthInMinutes) ? sprintf('%02d:%02d', intdiv($lengthInMinutes, 60), $lengthInMinutes % 60) : '-' }}
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -251,28 +262,32 @@
                     }
                     .protocol-grid {
                         display: grid;
-                        grid-template-columns: repeat(4, minmax(0, 1fr));
-                        gap: 18px;
+                        grid-template-columns: repeat(2, minmax(0, 1fr));
+                        gap: 14px;
                     }
-                    .protocol-column-table {
+                    .protocol-table {
                         width: 100%;
                         border-collapse: collapse;
                         table-layout: fixed;
                     }
-                    .protocol-column-table thead th {
-                        padding: 0 0 6px;
+                    .protocol-table thead th {
+                        padding: 0 6px 8px;
                         border-bottom: 1px solid #cbd5e1;
                         color: #1f355d;
                         font-size: 13px;
                         font-weight: 700;
                         text-align: left;
                     }
-                    .protocol-column-table thead th:last-child,
-                    .protocol-column-table tbody td:last-child {
-                        text-align: right;
+                    .protocol-table th:nth-child(2),
+                    .protocol-table th:nth-child(3),
+                    .protocol-table th:nth-child(4),
+                    .protocol-table td:nth-child(2),
+                    .protocol-table td:nth-child(3),
+                    .protocol-table td:nth-child(4) {
+                        text-align: center;
                     }
-                    .protocol-column-table tbody td {
-                        padding: 5px 0;
+                    .protocol-table tbody td {
+                        padding: 5px 6px;
                         border-bottom: 1px solid #d1d5db;
                         color: #475569;
                         font-size: 12px;

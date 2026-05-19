@@ -143,13 +143,17 @@ class LoginController extends Controller
             ], $attempts < 5, $verification->verification_token);
         }
 
+        LoginVerification::closeExpiredApprovedSessions($user->id);
+
         $verification->update([
             'status' => 'approved',
             'verified_at' => Carbon::now(),
+            'logout_at' => null,
         ]);
 
         Auth::login($user, $remember);
         $request->session()->regenerate();
+        $request->session()->put('login_verification_id', $verification->id);
 
         $redirect_url = $this->redirectUrlByRole($user->role_id);
 
