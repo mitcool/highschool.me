@@ -398,9 +398,11 @@ public function sendHelpDeskQustion(Request $request){
   $prev_message = HelpDesk::where('slug',$slug)->first();
   if($user->role_id == 2){
     $is_parent = 1;
+    $is_educator = 0;
   }
   elseif($user->role_id == 4){
     $is_parent = 0;
+    $is_educator = 0;
   }
   elseif($user->role_id == 5){
     $is_parent = 0;

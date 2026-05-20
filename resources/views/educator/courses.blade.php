@@ -8,6 +8,7 @@
             <tr>
                 <th>Code</th>
                 <th>Course Title</th>
+                <th>Course Type</th>
                 <th>Materials</th>
             </tr>
         </thead>
@@ -16,6 +17,7 @@
                 <tr>
                     <td>{{ $course->course->fldoe_course_code }}</td>
                     <td>{{ $course->course->title }}</td>
+                    <td>{{ $course->curriculumType->name }}</td>
                     <td>
                         <a href="{{ route('educator.course-materials',$course->id) }}" target="_blank">Edit Materials</a>
                     </td>

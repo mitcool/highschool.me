@@ -12,6 +12,23 @@
         padding:20px;
         margin-top:10px;
     }
+    .profile-picture-field {
+        margin-top: 20px;
+    }
+    .profile-picture-label {
+        display: block;
+        margin-top: 0;
+        margin-bottom: 14px;
+    }
+    .profile-picture-preview {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1px solid #9ca3af;
+        display: block;
+        margin-bottom: 18px;
+    }
 </style>
 
 @endsection
@@ -33,14 +50,18 @@
                 <label for="">Last Name:</label>
                 <input name="email" readonly required type="text" class="form-control" value="{{ auth()->user()->surname }}">
 
-                 <div class="d-flex mt-4 ">
-                @if(auth()->user()->avatar)
-                    <img src="{{ asset('images/avatars') }}/{{ auth()->id() }}/{{ auth()->user()->avatar }}" alt="" style="width:40px;height:40px;margin-right:20px;">
-                @endif
-                <div>
-                    <label for="" class="d-block">Profile picture:</label>
-                    <input type="file" name="avatar">
-                </div>
+                <div class="profile-picture-field">
+                    <label for="avatar" class="profile-picture-label">Profile picture:</label>
+                    @if(auth()->user()->avatar)
+                        <img
+                            src="{{ asset('images/avatars') }}/{{ auth()->id() }}/{{ auth()->user()->avatar }}"
+                            alt="Profile picture"
+                            class="profile-picture-preview"
+                        >
+                    @endif
+                    <div>
+                        <input id="avatar" type="file" name="avatar">
+                    </div>
                 </div>
             </div>
             <div class="shadow section" >

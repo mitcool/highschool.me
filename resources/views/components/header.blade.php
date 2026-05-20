@@ -88,13 +88,15 @@
 				@endif 
 			    >
 					@if(auth()->user()->avatar)
-						 <img src="{{ asset('images/avatars')}}/{{ auth()->id() }}/{{ auth()->user()->avatar }}" alt="" id="user-avatar">
+						<span class="header-user-avatar-frame">
+						 	<img src="{{ asset('images/avatars')}}/{{ auth()->id() }}/{{ auth()->user()->avatar }}" alt="User avatar" class="header-user-avatar">
+						</span>
 					@else
 			        	<i class="fas fa-user-circle"></i>
-			            <span id="notifBadgeMobile" style="display:none;">
-			                {{ $unreadNotificationsCount > 99 ? '99+' : $unreadNotificationsCount }}
-			            </span>
 					@endif
+		            <span id="notifBadgeMobile" style="display:none;">
+		                {{ $unreadNotificationsCount > 99 ? '99+' : $unreadNotificationsCount }}
+		            </span>
 			    </a>
 		    @endauth
 			<x-nav-mobile/>
@@ -118,13 +120,15 @@
 			    class="notif-btn" title="Notifications">
 					
 					@if(auth()->user()->avatar)
-						 <img src="{{ asset('images/avatars')}}/{{ auth()->id() }}/{{ auth()->user()->avatar }}" alt="" id="user-avatar">
+						<span class="header-user-avatar-frame">
+						 	<img src="{{ asset('images/avatars')}}/{{ auth()->id() }}/{{ auth()->user()->avatar }}" alt="User avatar" class="header-user-avatar">
+						</span>
 					@else
 						<i class="fas fa-user-circle" style="font-size: 22px;"></i>
-							<span class="notif-badge" id="notifBadge" style="display:none;">
-								{{ $unreadNotificationsCount > 99 ? '99+' : $unreadNotificationsCount }}
-							</span>
 					@endif
+						<span class="notif-badge" id="notifBadge" style="display:none;">
+							{{ $unreadNotificationsCount > 99 ? '99+' : $unreadNotificationsCount }}
+						</span>
 			        
 			    </a>
 		    @endauth

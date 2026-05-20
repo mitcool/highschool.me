@@ -11,6 +11,8 @@ use App\ParentStudent;
 use App\Exam;
 use App\Notification;
 use App\GroupSession;
+use App\User;
+use App\LoginVerification;
 
 use App\Mail\SubscribtionExpired;
 use App\Mail\SubscribtionExpirationReminder;
@@ -18,6 +20,7 @@ use App\Mail\ExamReminder;
 use App\Mail\ExamNoAttended;
 use App\Mail\ExamNoAttendedParent;
 use App\Mail\SessionReminder;
+use App\Mail\StudentAbsentParentReminder;
  
 class CronjobController extends Controller
 {
@@ -187,5 +190,63 @@ class CronjobController extends Controller
         }
 
         return "Checked {$checked} students. Promoted {$updated} grade(s).";
+    }
+
+    public function sendAbsentStudentParentReminders()
+    {
+        LoginVerification::closeExpiredApprovedSessions();
+
+        $checked = 0;
+        $sent = 0;
+        $now = Carbon::now();
+        $absenceThreshold = $now->copy()->subDays(15);
+        $absenceWindowStart = $now->copy()->subDays(16);
+
+        $students = User::with(['student_details.parent'])
+            ->where('role_id', 4)
+            ->whereHas('student_details', function ($query) {
+                $query->where('status', ParentStudent::ACTIVE);
+            })
+            ->get();
+
+        foreach ($students as $student) {
+            $checked++;
+
+            if (!$student->student_details || !$student->student_details->parent || !$student->student_details->parent->email) {
+                continue;
+            }
+
+            $last_login = LoginVerification::where('user_id', $student->id)
+                ->where('status', 'approved')
+                ->whereNotNull('verified_at')
+                ->orderByDesc('verified_at')
+                ->first();
+
+            if (!$last_login || !$last_login->verified_at) {
+                continue;
+            }
+
+            if (
+                !$last_login->verified_at->lte($absenceThreshold)
+                || !$last_login->verified_at->gt($absenceWindowStart)
+            ) {
+                continue;
+            }
+
+            try {
+                Mail::to($student->student_details->parent->email)->send(
+                    new StudentAbsentParentReminder(
+                        $student->student_details->parent,
+                        $student,
+                        $last_login->verified_at
+                    )
+                );
+                $sent++;
+            } catch (\Exception $e) {
+                info($e->getMessage());
+            }
+        }
+
+        return "Checked {$checked} students. Sent {$sent} absence reminder(s).";
     }
 }

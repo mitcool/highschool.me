@@ -110,7 +110,7 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 		Route::get('/single-study-mentor-chat/{slug}','StudentController@singleStudyMentorChat')->name('student.single-study-mentor-chat');
 		# chat gpt Route::post('/study-mentor-chat','StudentController@singleStudyMentorChatPost')->name('student.study-mentor-chat-post');
 		Route::post('/study-mentor-chat','StudentController@claudeChat')->name('student.study-mentor-chat-post');
-		 Route::get('/exams','StudentController@exams')->name('student.exams');
+		Route::get('/exams','StudentController@exams')->name('student.exams');
 		Route::get('/exams/{id}','StudentController@singleExam')->name('student.single-exam');
 		Route::get('/exams/result/{id}','StudentController@singleExamResults')->name('student.single-exam-results');
 		Route::post('/submit-exam/{exam_id}','StudentController@submitExam')->name('submit-exam');
@@ -305,6 +305,7 @@ Route::get('/check-exams','CronjobController@failExamsWhereStudentDoesntShowTo')
 Route::get('/update-questions','CronjobController@updateStudyMentorQuestions')->name('update-questions');
 Route::get('/sessions-reminder','CronjobController@sessionsReminder')->name('session-reminder');
 Route::get('/promote-student-grades','CronjobController@promoteStudentGrades')->name('promote-student-grades');
+Route::get('/student-absence-reminder','CronjobController@sendAbsentStudentParentReminders')->name('student-absence-reminder');
 
 #sitemaps
 
