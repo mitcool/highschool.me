@@ -9,8 +9,8 @@ class StudentMeeting extends Model
 {
     use HasFactory;
 
-    public function hour(){
-        return $this->hasOne('App\EducatorHour','id','educator_hour_id');
+    public function meeting(){
+        return $this->hasOne('App\Meeting','id','meeting_id');
     }
 
     public function student(){

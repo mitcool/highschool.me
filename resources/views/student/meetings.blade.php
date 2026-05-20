@@ -1,5 +1,16 @@
 @extends('student.dashboard')
 
+@section('headCss')
+<style>
+    tr,td{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 0;
+    }
+</style>
+@endsection
+
 @section('content')
 
 <div class="shadow container wrapper h-100">
@@ -16,7 +27,7 @@
                     <h5>Group Learning Sessions</h5>
                 </th>
             </tr>
-            @if(count($coaching_sessions) > 0)
+            @if(count($group_sessions) > 0)
                 <tr>
                     <th>Date</th>
                     <th>Educator</th>
@@ -25,8 +36,8 @@
             @endif
             @forelse ($group_sessions as $session)
                 <tr>
-                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }} </td>
-                    <td>{{ $session->educator->fullname() }}</td>
+                    <td><span>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</span> </td>
+                    <td><span>{{ $session->educator->fullname() }}</span></td>
                     <td class="text-right">
                         @if(in_array($session->id,$already_booked_sessions))
                             <button class="btn-enrolled">Already Booked</button>
@@ -56,7 +67,7 @@
                 </th>
                 <th></th>
             </tr>
-             @if(count($coaching_sessions) > 0)
+             @if(count($mentoring_sessions) > 0)
                 <tr>
                     <th>Date</th>
                     <th>Educator</th>
@@ -102,7 +113,7 @@
                 </th>
                 <th></th>
             </tr>
-            @if(count($coaching_sessions))
+            @if(count($coaching_sessions) > 0)
                 <tr>
                     <th>Date</th>
                     <th>Educator</th>
@@ -112,7 +123,7 @@
             @forelse ($coaching_sessions as $session)
                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
-                    <td></td>
+                    <td>{{ $session->educator->fullname() }}</td>
                     <td class="text-right">
                         @if(in_array($session->id,$already_booked_sessions))
                             <button class="btn-enrolled">Already Booked</button>
@@ -142,17 +153,17 @@
                 </th>
                 <th></th>
             </tr>
-            @if(count($academic_hours))
+            @if(count($academic_hours) > 0)
                 <tr>
                     <th>Date</th>
                     <th>Educator</th>
                     <th></th>
                 </tr>
             @endif
-            @forelse ($coaching_sessions as $session)
+            @forelse ($academic_hours as $session)
                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
-                    <td></td>
+                    <td>{{ $session->educator->fullname() }}</td>
                     <td class="text-right">
                         @if(in_array($session->id,$already_booked_sessions))
                             <button class="btn-enrolled">Already Booked</button>

@@ -25,6 +25,9 @@ use App\Country;
 use App\Complaint;
 use App\ParentStudent;
 use App\EducatorHour;
+use App\Meeting;
+
+use App\Mail\EducatorWorkingHours;
 
 class EducatorController extends Controller
 {
@@ -35,7 +38,7 @@ class EducatorController extends Controller
     public function meetings() {
         $now = Carbon::now();
        
-        $group_sessions = EducatorHour::where('type',12)->where(function ($query) use ($now) {
+        $group_sessions = Meeting::where('type',12)->where(function ($query) use ($now) {
                 $query->where('educator_id',auth()->id())->where('date', '>', $now->toDateString())
                     ->orWhere(function ($q) use ($now) {
                         $q->where('date', $now->toDateString())
@@ -43,7 +46,7 @@ class EducatorController extends Controller
                     });
         })->get();
 
-        $mentoring_sessions = EducatorHour::where('type',13)->where(function ($query) use ($now) {
+        $mentoring_sessions = Meeting::where('type',13)->where(function ($query) use ($now) {
                 $query->where('educator_id',auth()->id())->where('date', '>', $now->toDateString())
                     ->orWhere(function ($q) use ($now) {
                         $q->where('date', $now->toDateString())
@@ -51,7 +54,15 @@ class EducatorController extends Controller
                     });
         })->get();
        
-        $coaching_sessions = EducatorHour::where('type',14)->where(function ($query) use ($now) {
+        $coaching_sessions = Meeting::where('type',14)->where(function ($query) use ($now) {
+                $query->where('educator_id',auth()->id())->where('date', '>', $now->toDateString())
+                    ->orWhere(function ($q) use ($now) {
+                        $q->where('date', $now->toDateString())
+                            ->where('start', '>', $now->toTimeString());
+                    });
+        })->get();
+
+        $academic_hours = Meeting::where('type',15)->where(function ($query) use ($now) {
                 $query->where('educator_id',auth()->id())->where('date', '>', $now->toDateString())
                     ->orWhere(function ($q) use ($now) {
                         $q->where('date', $now->toDateString())
@@ -60,6 +71,7 @@ class EducatorController extends Controller
         })->get();
         
     	return view('educator.meetings')
+            ->with('academic_hours',$academic_hours)
             ->with('group_sessions', $group_sessions)
             ->with('mentoring_sessions', $mentoring_sessions)
             ->with('coaching_sessions', $coaching_sessions);
@@ -472,7 +484,7 @@ class EducatorController extends Controller
     }
 
     public function hours(){
-        $educator_hours = EducatorHour::where('educator_id',auth()->id())->orderBy('date','desc')->paginate(20);
+        $educator_hours = EducatorHour::where('educator_id',auth()->id())->orderBy('date','desc')->paginate(10);
         return view('educator.hours')
             ->with('educator_hours',$educator_hours);
     }
@@ -486,7 +498,9 @@ class EducatorController extends Controller
             return redirect()->back()->with('error','Please enter  valid dates');
         }
        
-        EducatorHour::create($working_hour);
+        $new_working_hour = EducatorHour::create($working_hour);
+
+        $this->notifyAdmins(new EducatorWorkingHours($new_working_hour));
         return redirect()->back()->with('success_message','Working hour added successfuly');
     }
 }

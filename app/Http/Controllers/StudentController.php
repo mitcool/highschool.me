@@ -52,6 +52,9 @@ use App\Mail\IntegrityViolationAdmin;
 use App\Mail\IntegrityViolation;
 use App\Mail\PreExamSubmittedParent;
 use App\Mail\AmbassadorRewardRedemptionRequest;
+use App\Mail\MeetingConfirmationEducator;
+use App\Mail\MeetingConfirmationParent;
+use App\Mail\MeetingConfirmationStudent;
 
 use App\Services\ClaudeService;
 
@@ -1113,11 +1116,35 @@ class StudentController extends Controller
     }
 
     public function bookSession(Request $request,$meeting_id){
+        $meeting = Meeting::find($meeting_id);
         $student_id = $request->student_id;
+        $student= User::find($request->student_id);
+        $parent = $student->student_details->parent;
+        $educator = $meeting->educator;
+
         StudentMeeting::insert([
             'student_id'=> $student_id,
             'meeting_id'=> $meeting_id
         ]);
+
+        try{
+            Mail::to($educator->email)->send(new MeetingConfirmationEducator($meeting));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+
+        try{
+            Mail::to($educator->email)->send(new MeetingConfirmationStudent($meeting));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+
+        try{
+            Mail::to($educator->email)->send(new MeetingConfirmationParent($meeting));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+        AdditionalCourse::where('course_type',$meeting->type)->first()->delete();
 
         return redirect()->back();
     }

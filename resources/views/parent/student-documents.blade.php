@@ -76,6 +76,18 @@
             <input class="custom-file-input" name="parent_id"  type="file" id="parent_id" accept="application/pdf">
         </div>
 
+         {{-- Custody Document --}}
+        <div class="mb-3 d-flex justify-content-between">
+            <div>
+                <p class="font-weight-bold mb-0 ">Custody Document (if applicable)</p>
+                <span class="error-message" id="custody_document_error"></span>
+            </div>
+            <label for="custody_document" class="custom-form-label">
+                <i class="fas fa-upload"></i> Upload File
+            </label>
+            <input class="custom-file-input" name="custody_document" type="file" id="custody_document" accept="application/pdf">
+        </div>
+
         {{-- Proof of residence --}}
         <div class="mb-3 d-flex justify-content-between">
             <div>
@@ -125,17 +137,7 @@
             <input name="school_transcript" class="custom-file-input" type="file" id="school_transcript" accept="application/pdf">
         </div>
 
-         {{-- Custody Document --}}
-        <div class="mb-3 d-flex justify-content-between">
-            <div>
-                <p class="font-weight-bold mb-0 ">Custody Document (if applicable)</p>
-                <span class="error-message" id="custody_document_error"></span>
-            </div>
-            <label for="custody_document" class="custom-form-label">
-                <i class="fas fa-upload"></i> Upload File
-            </label>
-            <input class="custom-file-input" name="custody_document" type="file" id="custody_document" accept="application/pdf">
-        </div>
+        
 
         {{-- Withdrawal Confirmation  --}}
          <div class="mb-3 d-flex justify-content-between">

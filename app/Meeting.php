@@ -24,4 +24,8 @@ class Meeting extends Model
     public function educator(){
         return $this->hasOne('App\User','id','educator_id');
     }
+
+    public function curriculum_type(){
+        return $this->hasOne('App\CurriculumType','id','type');
+    }
 }

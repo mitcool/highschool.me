@@ -312,7 +312,7 @@
                 </a>
                 <a class="admin-mobile-menu-link" href="{{ route('admin-press-release') }}">
                     <i class="fas fa-bullhorn"></i>
-                    <span>Press Release</span>
+                    <span>Press Releases</span>
                 </a>
                 <a class="admin-mobile-menu-link" href="{{ route('edit-authors') }}">
                     <i class="fas fa-user-edit"></i>
@@ -561,7 +561,7 @@
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-press-release') }}">
                             <i class="fas fa-bullhorn"></i>
-                            <span>Press Release</span>
+                            <span>Press Releases</span>
                         </a>
                     </li>
                      <li class="nav-item">

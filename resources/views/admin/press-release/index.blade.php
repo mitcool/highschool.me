@@ -19,7 +19,7 @@
 
 @section('content')
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">
-    <h2 class="text-center page-headings">Create a "Press Release" article</h2>
+    <h2 class="text-center page-headings">Create a "Press Releases" article</h2>
     <hr>
     <form action="{{ route('press-release-create') }}" method="POST" enctype="multipart/form-data" id="create_news_form">
         {{ csrf_field() }}

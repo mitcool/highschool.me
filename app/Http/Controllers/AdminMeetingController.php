@@ -17,7 +17,9 @@ use App\Notification;
 use App\Meeting;
 use App\EducatorHour;
 use App\CurriculumType;
+
 use App\Mail\DatesForStudentSession;
+use App\Mail\EducatorMeetingDetails;
 
 class AdminMeetingController extends Controller
 {
@@ -40,11 +42,12 @@ class AdminMeetingController extends Controller
         $end = $request->end;
         $link= $request->link;
         $educator_id = $request->educator_id;
+        $educator = User::find($educator_id);
         $date = $request->date;
         $type = $request->type;
-
+        $meetings = [];
         foreach($start as $key => $s){
-             Meeting::create([
+            $meeting  = Meeting::create([
                 'start' => $start[$key],
                 'end' => $end[$key],
                 'link' => $link[$key],
@@ -52,6 +55,13 @@ class AdminMeetingController extends Controller
                 'type' => $type[$key],
                 'date' => $date
              ]);
+             array_push($meetings,$meeting);
+        }
+
+        try{
+            Mail::to($educator->email)->send(new EducatorMeetingDetails($educator,$meetings));
+        }catch(\Exception $e){
+            info($e->getMessage());
         }
        
         Notification::add($educator_id,'New session dates added from admin');

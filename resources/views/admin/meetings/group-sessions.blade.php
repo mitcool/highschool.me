@@ -34,6 +34,7 @@
                  </div>
                  <h4 class="font-weight-bold my-4 text-danger text-center" id="educator-hours"></h4>
                  <div id="meeting-details" class="d-none">
+                     <div class="text-right"><button class="btn-info btn" id="add-meeting" type="button">+ Add Meeting</button></div>
                      <div class="row meeting-row" >
                         <div class="col-md-6">
                             <label for="" class="d-block mb-0 font-weight-bold">Start (UTC)</label>
@@ -61,13 +62,14 @@
                             <hr>
                         </div>
                      </div>
+                    
                  </div>
             </div>
         </div>
         
         <div class="row mt-3">
-            <div class="col-md-12 text-right" >
-                <button class="orange-button">Confirm</button>
+            <div class="col-md-12 text-center" >
+                <button class="orange-button btn-lg btn">Confirm</button>
             </div>
         </div>
     </form>
@@ -130,7 +132,40 @@
                 $('#educator-hours').html(html);
 
             }); 
-    })
-   
+    });
+    $('#add-meeting').on('click',function(){
+        $('#meeting-details').append(`
+            <div class="row meeting-row" >
+                <div class="col-md-12 text-right"><button class="btn close-meeting" type="button">&times;</div>
+                <div class="col-md-6">
+                    <label for="" class="d-block mb-0 font-weight-bold">Start (UTC)</label>
+                    <input type="text" name="start[]" class="form-control timepicker">
+                </div>
+                <div class="col-md-6">
+                    <label for="" class="d-block mb-0 font-weight-bold">End (UTC)</label>
+                    <input type="text" name="end[]" class="form-control timepicker">
+                </div>
+                <div class="col-md-6">
+                    <label for="" class="d-block mb-0 font-weight-bold">Link</label>
+                    <input type="text" name="link[]" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label for="" class="d-block mb-0 font-weight-bold">Type</label>
+                    <select name="type[]" class="form-control" required>
+                        <option value="">-- Please Select --</option>
+                        <option value="12">Group Session</option>
+                        <option value="13">Personal Mentoring Session</option>
+                        <option value="14">Career Coaching</option>
+                        <option value="15">Academic Office Hours</option>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <hr>
+                </div>
+            </div>`)});
+
+        $(document).on('click','.close-meeting',function(){
+            $(this).closest('.meeting-row').remove();
+        })
 </script>
 @endsection

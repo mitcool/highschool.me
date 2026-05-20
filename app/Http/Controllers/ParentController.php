@@ -411,13 +411,13 @@ class ParentController extends Controller
             // Required documents  
             'id' => 'required', #user id
             'parent_id'          => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
-            'custody_document'   => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
             'proof_of_residence' => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
             'student_id'         => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
             'birth_certificate'  => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
             'school_transcript'  => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
 
             // Optional documents
+            'custody_document'   => ['nullable', 'file', 'mimetypes:application/pdf', 'max:5120'],
             'withdrawal_confirmation' => ['nullable', 'file', 'mimetypes:application/pdf', 'max:5120'],
             'iep'                     => ['nullable', 'file', 'mimetypes:application/pdf', 'max:5120'],
         ];
@@ -1779,7 +1779,7 @@ class ParentController extends Controller
 
         $student_meetings = StudentMeeting::where('student_id',$student_id)
             ->get()
-            ->groupBy(fn ($hour) => $hour->hour->type);
+            ->groupBy(fn ($meeting) => $meeting->meeting->type);
 
         return view('parent.meetings')
             ->with('student_meetings',$student_meetings);
