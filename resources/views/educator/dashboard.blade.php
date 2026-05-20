@@ -232,11 +232,11 @@
                     <span>Educator Help Desk</span>
                 </a>
 
-                <div class="educator-mobile-menu-section">Exams</div>
+                {{-- <div class="educator-mobile-menu-section">Exams</div>
                 <a class="educator-mobile-menu-link" href="{{ route('educator.exams') }}">
                     <i class="fas fa-folder"></i>
                     <span>Exams</span>
-                </a>
+                </a> --}}
                 {{--
                 <a class="educator-mobile-menu-link" href="{{ route('educator.add-exam-question') }}">
                     <i class="fas fa-question"></i>
@@ -309,7 +309,7 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ route('help-desk') }}">
                             <i class="fas fa-users"></i>
-                            <span>Educator Help Desk</span>
+                            <span>Student Help Desk</span>
                         </a>
                     </li>
 

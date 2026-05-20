@@ -110,7 +110,7 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 		Route::get('/single-study-mentor-chat/{slug}','StudentController@singleStudyMentorChat')->name('student.single-study-mentor-chat');
 		# chat gpt Route::post('/study-mentor-chat','StudentController@singleStudyMentorChatPost')->name('student.study-mentor-chat-post');
 		Route::post('/study-mentor-chat','StudentController@claudeChat')->name('student.study-mentor-chat-post');
-		// Route::get('/exams','StudentController@exams')->name('student.exams');
+		 Route::get('/exams','StudentController@exams')->name('student.exams');
 		Route::get('/exams/{id}','StudentController@singleExam')->name('student.single-exam');
 		Route::get('/exams/result/{id}','StudentController@singleExamResults')->name('student.single-exam-results');
 		Route::post('/submit-exam/{exam_id}','StudentController@submitExam')->name('submit-exam');
@@ -134,7 +134,7 @@ Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 	Route::get('/dashboard', 'EducatorController@dashboard')->name('educator.dashboard');
 	Route::get('/courses','EducatorController@courses')->name('educator.courses');
 	Route::get('/meetings','EducatorController@meetings')->name('educator.meetings');
-	Route::get('/exams','EducatorController@exams')->name('educator.exams');
+	//Route::get('/exams','EducatorController@exams')->name('educator.exams');
 	// Route::get('/self-assesment','EducatorController@selfAssessment')->name('educator.self-assessment');
 	Route::get('/submissions','EducatorController@submissions')->name('educator.submissions');
 	Route::get('/invoices','EducatorController@invoices')->name('educator.invoices');
@@ -144,7 +144,7 @@ Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 	Route::get('/edit-self-assessment-question/{question_id}', 'EducatorController@editSelfAssessmentQuestionPage')->name('educator.edit-single-self-assessment-question');
 	Route::post('/edit-single-self-assessment-question/{question_id}', 'EducatorController@editSelfAssessmentQuestion')->name('educator.self-assessment-update');
 	Route::post('/delete-single-self-assessment-question/{question_id}', 'EducatorController@deleteSelfAssessmentQuestion')->name('educator.delete-self-asses-question');
-	Route::post('/exams/add','EducatorController@createExam')->name('educator.create-exam');
+	// Route::post('/exams/add','EducatorController@createExam')->name('educator.create-exam');
 	// Route::get('/add-exam-questions', 'EducatorController@addExamQuestionsPage')->name('educator.add-exam-question');
 	// Route::post('/add-exam-question', 'EducatorController@addExamQuestion')->name('educator.exam-question-add');
 	// Route::get('/edit-exam-question/{question_id}', 'EducatorController@editQuestionPage')->name('educator.update-exam-question');

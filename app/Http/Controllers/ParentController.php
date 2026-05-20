@@ -1121,12 +1121,12 @@ class ParentController extends Controller
             "email" => 'required',
             'country_id'=> 'required',
             'city' => 'required',
-            'street' => 'required',
-            'street_number' => 'required',
+            'address' => 'required',
+            'address_two' => 'nullable',
             'zip' => 'required',
             "phone" => "required|regex:/^[0-9]\d{6,15}$/|min:6|max:15",
             "phone_code" => 'required|regex:/^\+[0-9]\d{0,3}$/',
-            "avatar" => ['required', 'file', 'mimes:jpg,jpeg,webp,png,svg', 'max:2000']
+            "avatar" => ['file', 'mimes:jpg,jpeg,webp,png,svg', 'max:2000']
         ]);
         $email = $request->email;
         if(auth()->user()->email != $email){
@@ -1138,7 +1138,8 @@ class ParentController extends Controller
             $avatar = $this->upload_file($request->file('avatar'),'images/avatars/'.auth()->id());
             auth()->user()->update(['avatar'=> $avatar]);
         }
-        $details = $request->only('city','street','street_number','zip','country_id','phone','phone_code');
+    
+        $details = $request->only('city','address','address_two','zip','country_id','phone','phone_code','state');
         $details['user_id'] = auth()->id();
         InvoiceDetail::updateOrCreate(['user_id'=>auth()->user()->id],$details);
         Notification::add(auth()->id(),'Congratulations your details have been update successfully');

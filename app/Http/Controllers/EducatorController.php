@@ -480,6 +480,12 @@ class EducatorController extends Controller
     public function addWorkingHour(Request $request){
         $working_hour = $request->except('_token');
         $working_hour['educator_id'] = auth()->id();
+        $start = Carbon::parse($working_hour['start']);
+        $end = Carbon::parse($working_hour['end']);
+        if($start > $end){
+            return redirect()->back()->with('error','Please enter  valid dates');
+        }
+       
         EducatorHour::create($working_hour);
         return redirect()->back()->with('success_message','Working hour added successfuly');
     }

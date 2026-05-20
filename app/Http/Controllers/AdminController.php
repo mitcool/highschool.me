@@ -2208,7 +2208,9 @@ class AdminController extends Controller
 
     public function getEducatorHours(Request $request){
         $educator_id = $request->educator_id;
-        $hours = EducatorHour::where('educator_id',$educator_id)->whereNull('type')->get();
+        $date = Carbon::parse($request->date);
+        $hours = EducatorHour::where('date',$date)->where('educator_id',$educator_id)->get();
+        
         return $hours;
     }
 }

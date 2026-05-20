@@ -39,7 +39,7 @@ use App\ParentStudent;
 use App\StudyMentor;
 use App\PreExamAnswer;
 use App\Country;
-use App\EducatorHour;
+use App\Meeting;
 use App\StudentMeeting;
 
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -1029,7 +1029,7 @@ class StudentController extends Controller
     public function meetings(){
          $now = Carbon::now();
       
-         $group_sessions = EducatorHour::where('type',12)->where(function ($query) use ($now) {
+         $group_sessions = Meeting::where('type',12)->where(function ($query) use ($now) {
                 $query->where('date', '>', $now->toDateString())
                     ->orWhere(function ($q) use ($now) {
                         $q->where('date', $now->toDateString())
@@ -1037,7 +1037,7 @@ class StudentController extends Controller
                     });
         })->get();
 
-        $mentoring_sessions = EducatorHour::where('type',13)->where(function ($query) use ($now) {
+        $mentoring_sessions = Meeting::where('type',13)->where(function ($query) use ($now) {
                 $query->where('date', '>', $now->toDateString())
                     ->orWhere(function ($q) use ($now) {
                         $q->where('date', $now->toDateString())
@@ -1045,20 +1045,30 @@ class StudentController extends Controller
                     });
         })->get();
        
-        $coaching_sessions = EducatorHour::where('type',14)->where(function ($query) use ($now) {
+        $coaching_sessions = Meeting::where('type',14)->where(function ($query) use ($now) {
                 $query->where('date', '>', $now->toDateString())
                     ->orWhere(function ($q) use ($now) {
                         $q->where('date', $now->toDateString())
                             ->where('start', '>', $now->toTimeString());
                     });
         })->get();
-        $already_booked_sessions = StudentMeeting::where('student_id',auth()->id())->pluck('educator_hour_id')->toArray();
+
+        $academic_hours = Meeting::where('type',15)->where(function ($query) use ($now) {
+                $query->where('date', '>', $now->toDateString())
+                    ->orWhere(function ($q) use ($now) {
+                        $q->where('date', $now->toDateString())
+                            ->where('start', '>', $now->toTimeString());
+                    });
+        })->get();
+        $already_booked_sessions = StudentMeeting::where('student_id',auth()->id())->pluck('meeting_id')->toArray();
         $student_id = auth()->id();
         $permissions = $this->checkPermissionForSessionBooking($student_id);
         return view('student.meetings')
             ->with('group_sessions',$group_sessions)
             ->with('mentoring_sessions',$mentoring_sessions)
             ->with('coaching_sessions',$coaching_sessions)
+            ->with('academic_hours',$academic_hours)
+            ->with('permissions',$permissions)
             ->with('already_booked_sessions',$already_booked_sessions)
             ->with('student_id',$student_id);
     }
@@ -1076,10 +1086,15 @@ class StudentController extends Controller
         if(AdditionalCourse::where('status',0)->where('student_id',$student_id)->where('course_type',12)->count() > 0){
             $group_sessions_permission = true;
         }
+        $academic_hours_permission = false;
+        if(AdditionalCourse::where('status',0)->where('student_id',$student_id)->where('course_type',12)->count() > 0){
+            $academic_hours_permission = true;
+        }
         $permissions = [
             'coaching' => $coaching_sessions_permission,
             'mentoring' => $mentoring_sessions_permission,
-            'group' => $group_sessions_permission
+            'group' => $group_sessions_permission,
+            'academic' => $academic_hours_permission
         ];
         return $permissions;
     }
@@ -1097,12 +1112,14 @@ class StudentController extends Controller
         ->with('countries',$countries);
     }
 
-    public function bookSession(Request $request,$educator_hour_id){
+    public function bookSession(Request $request,$meeting_id){
         $student_id = $request->student_id;
         StudentMeeting::insert([
             'student_id'=> $student_id,
-            'educator_hour_id'=> $educator_hour_id
+            'meeting_id'=> $meeting_id
         ]);
+
+        return redirect()->back();
     }
        
 }

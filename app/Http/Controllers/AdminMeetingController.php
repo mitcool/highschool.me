@@ -14,6 +14,7 @@ use App\FamilyConsultation;
 use App\FamilyConsultationRequest;
 use App\User;
 use App\Notification;
+use App\Meeting;
 use App\EducatorHour;
 use App\CurriculumType;
 use App\Mail\DatesForStudentSession;
@@ -22,10 +23,10 @@ class AdminMeetingController extends Controller
 {
     public function groupSessions(){
         $educators = User::where('role_id',5)->get();
-        $types = CurriculumType::where('id','>',11)->get();
+        // $types = CurriculumType::where('id','>',11)->get();
         
         return view('admin.meetings.group-sessions')
-            ->with('types',$types)
+            // ->with('types',$types)
             ->with('educators',$educators);
     }
     public function addgroupSession(){
@@ -35,26 +36,26 @@ class AdminMeetingController extends Controller
     }
 
     public function createGroupSession(Request $request){
-        $request->validate([
-            'session_type' => 'required|array',
-            
-        ]);
-        $educator_hours = $request->session_type;
+        $start = $request->start;
+        $end = $request->end;
+        $link= $request->link;
         $educator_id = $request->educator_id;
+        $date = $request->date;
+        $type = $request->type;
 
-        foreach($educator_hours as $id =>  $type){
-            EducatorHour::find($id)->update(['type' => $type]);
+        foreach($start as $key => $s){
+             Meeting::create([
+                'start' => $start[$key],
+                'end' => $end[$key],
+                'link' => $link[$key],
+                'educator_id' => $educator_id,
+                'type' => $type[$key],
+                'date' => $date
+             ]);
         }
-
-        // try{
-        //     Mail::to($educator->email)->send(new DatesForStudentSession($educator,$data));
-        // }catch(\Exception $e){
-        //     info($e->getMessage());
-        // }
+       
         Notification::add($educator_id,'New session dates added from admin');
         return redirect()->route('admin-group-sessions')
             ->with('success_message','Group session created successfully');
     }
-
-    
 }

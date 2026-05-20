@@ -12,15 +12,21 @@
         <tbody>
            {{-- Group Sessions --}}
             <tr>
-                <th colspan="2">
+                <th colspan="3">
                     <h5>Group Learning Sessions</h5>
                 </th>
-                <th></th>
             </tr>
+            @if(count($coaching_sessions) > 0)
+                <tr>
+                    <th>Date</th>
+                    <th>Educator</th>
+                    <th></th>
+                </tr>
+            @endif
             @forelse ($group_sessions as $session)
                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }} </td>
-                     <td></td>
+                    <td>{{ $session->educator->fullname() }}</td>
                     <td class="text-right">
                         @if(in_array($session->id,$already_booked_sessions))
                             <button class="btn-enrolled">Already Booked</button>
@@ -50,6 +56,13 @@
                 </th>
                 <th></th>
             </tr>
+             @if(count($coaching_sessions) > 0)
+                <tr>
+                    <th>Date</th>
+                    <th>Educator</th>
+                    <th></th>
+                </tr>
+            @endif
             @forelse ($mentoring_sessions as $session)
                 <tr>
                     <td>
@@ -89,6 +102,53 @@
                 </th>
                 <th></th>
             </tr>
+            @if(count($coaching_sessions))
+                <tr>
+                    <th>Date</th>
+                    <th>Educator</th>
+                    <th></th>
+                </tr>
+            @endif
+            @forelse ($coaching_sessions as $session)
+                <tr>
+                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
+                    <td></td>
+                    <td class="text-right">
+                        @if(in_array($session->id,$already_booked_sessions))
+                            <button class="btn-enrolled">Already Booked</button>
+                        @elseif(count($session->students) > 1)
+                            <button class="btn-enrolled">Already Booked</button>
+                        @else
+                            @if($permissions['coaching'])
+                                <form action="{{ route('book-session',$session->id) }}" method="POST" id="coaching-session-form-{{ $session->id }}">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="student_id" value="{{ $student_id }}">
+                                    <button class="btn-enroll">Confirm Appointments</button>
+                                </form>
+                           @endif
+                        @endif
+                    </td>
+                </tr>
+                @empty
+                    <tr>
+                        <td colspan="3">At the moment, there are no coaching sessions scheduled.</td>
+                    </tr>
+            @endforelse
+
+             {{-- Coaching Sessions --}}
+            <tr>
+                <th colspan="2">
+                    <h5>Academic Hours</h5>
+                </th>
+                <th></th>
+            </tr>
+            @if(count($academic_hours))
+                <tr>
+                    <th>Date</th>
+                    <th>Educator</th>
+                    <th></th>
+                </tr>
+            @endif
             @forelse ($coaching_sessions as $session)
                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
