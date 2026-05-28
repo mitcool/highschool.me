@@ -15,7 +15,7 @@
             {{ csrf_field() }}
           
             <label class="font-weight-bold" for="">Name</label>
-            <input required  name="name" class="form-control" id="ckeditor" value="{{$category->name }}" />
+            <input required  name="name" class="form-control" id="ckeditor" value="{{$category->key }}" />
             <label class="font-weight-bold" for="">Slug</label>
             <input class="form-control" required name="slug"  value="{{ $category->slug }}" />
             <label class="font-weight-bold" for="">Meta title</label>

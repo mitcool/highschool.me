@@ -372,17 +372,14 @@ class AdminController extends Controller
                 ->with('faq_categories',$faq_categories);
     } 
 
-    public function editFaqCategories(Request $request,$category_id){
+    public function editFaqCategories(Request $request, $category_id){
         $input = $request->all();
-        foreach(Config::get('languages') as $lang => $language){
-            FaqCategory::where('category_id',$category_id)->where('locale',$lang)->update([
-
-                  'name' => $input['name_'.$lang],
-                  'slug' => $input['slug_'.$lang],
-                  'meta_title' => $input['meta_title_'.$lang],
-                  'meta_description' => $input['meta_description_'.$lang]  
-            ]);
-        }
+        FaqCategory::where('id',$category_id)->update([
+            'key' => $input['name'],
+            'slug' => $input['slug'],
+            'meta_title' => $input['meta_title'],
+            'meta_description' => $input['meta_description']
+        ]);
 
         return redirect()->back()->with('success_message','Data successfuly updated');
     }
