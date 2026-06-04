@@ -103,6 +103,7 @@ use App\StudentPlan;
 use App\OtherStaff;
 use App\CteCourseProgram;
 use App\EducatorHour;
+use App\Complaint;
 
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
@@ -1682,7 +1683,7 @@ class AdminController extends Controller
             ->with('courses',$courses);
     }
     public function createExam(Request $request){
-        $exam = $request->only('date','time','course_id','student_id','educator_id','type','pre_exam');
+        $exam = $request->only('date','time','course_id','student_id','educator_id','type','pre_exam','topic');
         $exam['datetime'] = $request->date.' '.$request->time;
         $exam['admin_id'] = auth()->id();
         $exam['status']=0;
@@ -2209,5 +2210,17 @@ class AdminController extends Controller
         $hours = EducatorHour::where('date',$date)->where('educator_id',$educator_id)->get();
         
         return $hours;
+    }
+
+    public function complaints(){
+        $complaints = Complaint::all();
+        return view('admin.complaints')
+            ->with('complaints',$complaints);
+    }
+
+    public function educatorDetails($educator_id){
+        $educator = User::find($educator_id);
+        return view('admin.educator-details')
+            ->with('educator',$educator);
     }
 }

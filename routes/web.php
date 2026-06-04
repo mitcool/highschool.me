@@ -38,9 +38,9 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
     Route::get('/request-copy/{id}','ParentController@requestCopy')->name('request-copy');
 	Route::post('/request-copy/{id}','ParentController@requestCopyPost')->name('request-copy-post');
 	Route::post('request-physical-copy-post/{diploma_id}','ParentController@requestPhysicalCopyPost')->name('request-physical-copy-post');
-	Route::get('/physical-copy-request-success/{diploma_id}','ParentController@physicalCopyRequest')->name('parent.physical-copy-request-success');
-	Route::get('/pay-copy-success','ParentConroller@payCopySuccess')->name('parent.pay-copy-success');
-	Route::get('copies-number/{diploma_id}','ParentController@copiesNumber')->name('parent.copies-number');
+	Route::get('/physical-coapy-request-success/{diploma_id}','ParentController@physicalCopyRequestSuccess')->name('parent.physical-copy-request-success');
+	Route::get('/pay-copy-success/{diploma_id}/{type}','ParentController@payCopySuccess')->name('parent.pay-copy-success');
+	Route::get('/copies-number/{diploma_id}','ParentController@copiesNumber')->name('parent.copies-number');
 	Route::post('/change-diploma-copies-count/{diploma_id}/{type}','ParentController@changeDiplomaCopiesCount')->name('change-diploma-copies-count');
 	Route::get('/profile','ParentController@profile')->name('parent.profile');
 	Route::get('/application-fee/{student_id}','ParentController@applicationFee')->name('application-fee');
@@ -73,15 +73,24 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	Route::get('/change-plan/{student_id}','ParentController@changePlan')->name('change-plan');
 	Route::post('/update-plan/{student_id}','ParentController@updatePlan')->name('parent.update-plan');
 	Route::get('/update-plan-success/{student_id}/{requested_plan}/{type}','ParentController@updatePlanSuccess')->name('parent.update-plan-success');
+	//Enrollment Confiramtion
 	Route::get('/enrollment-confirmation/{student_id}','ParentController@enrollmentConfirmation')->name('enrollment-confirmation');
-	Route::get('/parent.request-verification-of-graduation/{student_id}','ParentController@requestVerificationOfGraduation')->name('parent.request-verification-of-graduation');
-	Route::get('/verification-of-graduation-success/{student_id}','ParentController@verificationOfGraduationSuccess')->name('parent.verification-of-graduation-success');
+	Route::get('/enrollment-confirmation-order/{student_id}','ParentController@enrollmentConfirmationOrder')->name('enrollment-confirmation-order');
+	Route::post('enrollment-letter-copies/{type}',"ParentController@enrollmentLetterCopiesChange")->name('enrollment-letter-copies');
+	Route::post('enrollment-confirmation-order-payment/{student_id}/{type}','ParentController@enrollmentConfirmationOrderPayment')->name('enrollment-confirmation-order-payment');
+	Route::get('enrollment-confirmation-order-success/{student_id}/{type}','ParentController@enrollmentConfirmationOrderSuccess')->name('enrollment-confirmation-order-success');
+	//Graduation Verification
+	Route::get('/request-verification-of-graduation/{student_id}','ParentController@requestVerificationOfGraduation')->name('parent.request-verification-of-graduation');
+	Route::get('/request-verification-of-graduation/payment/{student_id}','ParentController@requestVerificationOfGraduationPayment')->name('parent.request-verification-of-graduation-payment');
+	Route::get('/verification-of-graduation-success/{student_id}/{type}/{copies?}','ParentController@verificationOfGraduationSuccess')->name('parent.verification-of-graduation-success');
 	Route::get('/request-verification-of-graduation-pdf/{student_id}','ParentController@requestVerificationOfGraduationPdf')->name('parent.request-verification-of-graduation-pdf');
 	Route::get('/student/meeting-list/{student_id}','ParentController@meetingList')->name('parent.student.meeting-list');
 	#notifications
 	Route::get('/all-notifications', 'ParentController@showNotifications')->name('parent.notifications');
 
 });
+
+Route::get('/generate-pdf-diploma/{student_id}','StudentController@generatePdfDiploma')->name('student.generate-pdf-diploma');
 
 Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::get('/dashboard', 'StudentController@dashboard')->name('student.dashboard');
@@ -91,7 +100,6 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::post('/store-activity', 'StudentController@storeActivity')->name('student.store-activity');
 	Route::post('/ambassador/redeem', 'StudentController@redeemRewards')->name('ambassador.redeem');
 	Route::get('/diplomas','StudentController@diplomas')->name('student.diplomas');
-	Route::get('/generate-pdf-diploma/{student_id}','StudentController@generatePdfDiploma')->name('student.generate-pdf-diploma');
 	Route::post('/request-diploma-copy','StudentController@requestDiplomaCopy')->name('request-diploma-copy');
     Route::get('/request-diploma-copy-success','StudentController@requestDiplomaCopySuccess')->name('request-diploma-copy-success');
     Route::get('/digital-transcript/{student_id}','StudentController@digitalTransript')->name('student.generate-pdf-transcript');
@@ -163,6 +171,9 @@ Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 	Route::get('/single-student/{id}','EducatorController@singleStudent')->name('educator.single-student');
 	Route::get('/hours','EducatorController@hours')->name('educator.hours');
 	Route::post('/hours/add','EducatorController@addWorkingHour')->name('add-working-hour');
+	Route::get('help-desk','EducatorController@helpDesk')->name('educator.help-desk');
+	Route::post('/educator/update','EducatorController@updateInfo')->name('educator.update-info');
+
 	#notifications
 	Route::get('/all-notifications', 'EducatorController@showNotifications')->name('educator.notifications');
 

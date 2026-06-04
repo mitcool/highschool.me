@@ -289,8 +289,20 @@
         </div>
         
         @if($status >= 3)
-        
-            <a class="btn my-3 blue-button-outline" href="{{ route('enrollment-confirmation',$student->id) }}" target="_blank">Download Enrollment verification</a>
+            <div class="d-flex">
+
+                @if($student->student_details->digitalEnrollmentVerification)
+                    <a href="{{ route('enrollment-confirmation',$student->id) }}" class="btn my-3 mr-3 blue-button-outline"><i class="fas fa-download"></i> Download Enrollment Verification</a>
+                @else
+                    <form action="{{ route('enrollment-confirmation-order-payment',[$student->id,'digital']) }}" method="POST" class="mr-3">
+                        {{ csrf_field() }}
+                        <button class="btn my-3 blue-button-outline">Digital Enrollment Verification</button>
+                    </form>
+                @endif
+                
+                <a class="btn my-3 orange-button" href="{{ route('enrollment-confirmation-order',$student->id) }}" target="_blank">Order Enrollment Verification</a>
+            </div>
+            
 
         @endif
         <hr>

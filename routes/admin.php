@@ -121,6 +121,8 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/group-session','AdminMeetingController@groupSessions')->name('admin-group-sessions');
 	Route::get('/add-group-session','AdminMeetingController@addGroupSession')->name('add-group-session');
 	Route::post('/create-group-session','AdminMeetingController@createGroupSession')->name('create-group-session');
+
+	Route::get('/family-consultations','AdminMeetingController@familyConsultations')->name('family-consultations');
 	
 	Route::get('/mentoring-session','AdminMeetingController@mentoringSessions')->name('admin-mentoring-sessions');
 	Route::get('/add-mentoring-session','AdminMeetingController@addMentoringSession')->name('add-mentoring-session');
@@ -160,7 +162,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 
 	Route::get('/family-consultations','AdminMeetingController@familyConsultations')->name('admin-family-consultations');
 	Route::get('/add-family-consultation/{request_id}','AdminMeetingController@addFamilyConsultation')->name('add-family-consultation');
-	Route::post('/create-family-consultation/{request_id}','AdminMeetingController@createFamilyConsultation')->name('create-family-consultation');
+	Route::post('/create-family-consultation/{request_id}','AdminMeetingController@createFamilyConsultation')->name('d');
 	Route::post('/mark-family-consultation-as-completed/{request_id}','AdminMeetingController@markFamilyConsultationAsCompleted')->name('mark-family-consultation-as-completed');
 	
 	// //Courses
@@ -261,9 +263,12 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/other-staff/delete','AdminController@otherStaffDelete')->name('other-staff-delete');
 
 	Route::post('/get-educator-hours','AdminController@getEducatorHours')->name('get-educator-hours');
+	Route::get('/complaints','AdminController@complaints')->name('admin-complaints');
 
 	//Profile
 	Route::get('/profile','AdminController@profile')->name('admin.profile');
+
+	Route::get('/educator/details/{eductoror_id}','AdminController@educatorDetails')->name('admin.educator-details');
 
 
 });

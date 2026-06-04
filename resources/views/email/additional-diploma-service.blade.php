@@ -33,9 +33,7 @@ $style = [
     'paragraph' => 'margin-top: 0; color: grey; font-size: 16px; line-height: 1.5em; text-align:justify;padding:0px 35px 0px 35px;',
 ];
 $fontFamily = 'font-family: Arial, \'Helvetica Neue\', Helvetica, sans-serif;';
-$studentFirstName = $order->user->name;
-$studentLastName = $order->user->surname;
-$rewardItemsText = $rewardItems->pluck('name')->implode(', ');
+
 ?>
 
 <body style="{{ $style['body'] }}">
@@ -60,45 +58,30 @@ $rewardItemsText = $rewardItems->pluck('name')->implode(', ');
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        {{ $adminName }},
+                                                         Dear admin,
                                                     </h1>
 
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        A reward redemption request has been submitted through the Ambassador Program and is waiting for your review. The details are below.
+                                                        We have a new additional diploma service request with following details:
                                                     </p>
 
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        <b>Student:</b> {{ $studentFirstName }} {{ $studentLastName }}<br>
-                                                        <b>Requested reward:</b> {{ $rewardItemsText }}<br>
-                                                        <b>Points required:</b> {{ $pointsRequired }}<br>
-                                                        <b>Student's current points balance:</b> {{ $pointsBalance }}
+                                                        <b>Student:</b> {{ $diploma->student->fullname() }}<br>
+                                                        <b>Service:</b> {{ $service_type }}<br>
+                                                       
+                                        
                                                     </p>
 
+                                                 
+                                                   
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        {{ $studentFirstName }} {{ $studentLastName }} has earned these points through their participation in school-related social media activities as part of the ONSITES High School Ambassador Program. Submitting a redemption request means they are ready to put those points to use - which is exactly what the program is designed to encourage.
-                                                    </p>
-
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        Please log in to the admin panel to review the request, verify the points balance against the cost of the requested reward, and approve or process the redemption accordingly. If there is anything about the request that requires clarification or follow-up with the student before it can be fulfilled, please handle that through the admin panel.
-                                                    </p>
-
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        Prompt and well-handled redemption requests reinforce the value of the Ambassador Program in the eyes of our students. When students see that their efforts translate into tangible recognition without unnecessary delay, it motivates continued engagement - which is good for the student and good for the school community.
-                                                    </p>
-
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        &rarr; Review Redemption Request: <a href="{{ $adminPortalUrl }}">{{ $adminPortalUrl }}</a>
-                                                    </p>
-
-                                                    <p style="{{ $style['paragraph-black'] }}">
-                                                        Thank you for keeping the Ambassador Program running smoothly.
+                                                       
                                                     </p>
 
                                                     <p style="{{ $style['paragraph-black'] }}">
                                                         Kind regards,<br>ONSITES High School
                                                     </p>
-                                                   
-                                                </td>
+                                                   </td>
                                             </tr>
                                         </table>
                                     </td>

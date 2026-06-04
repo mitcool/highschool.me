@@ -40,6 +40,7 @@
             <form action="{{ route('submit-exam',$exam->id) }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <hr>
+                <h2><span class="font-weight-bold">Topic: </span>{{ $exam->topic }}</h2>
                 <input type="file" name="essay" required accept=".pdf">
                 <p style="font-size:14px;" class="text-danger">*Please upload a pdf file</p>
                 <hr>

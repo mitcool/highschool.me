@@ -26,6 +26,15 @@ use App\Complaint;
 use App\ParentStudent;
 use App\EducatorHour;
 use App\Meeting;
+use App\HelpDesk;
+use App\EducatorTechincalSetup;
+use App\EducatorCertificate;
+use App\EducatorTaxDetail;
+use App\EducatorWiseDetail;
+use App\InvoiceDetail;
+use App\EducatorDetail;
+use App\EducatorQualificationDetail;
+use App\EducatorExperience;
 
 use App\Mail\EducatorWorkingHours;
 
@@ -502,5 +511,146 @@ class EducatorController extends Controller
 
         $this->notifyAdmins(new EducatorWorkingHours($new_working_hour));
         return redirect()->back()->with('success_message','Working hour added successfuly');
+    }
+
+    public function helpDesk(){
+        $template = 'educator.dashboard';
+        $help_desk = HelpDesk::orderBy('id','desc')->where([ ['is_parent',0], ['is_educator', '!=', 1] ])->get()->groupBy('slug');
+        return view('help-desk.inbox')
+            ->with('template',$template)
+            ->with('help_desk',$help_desk);
+    }
+
+    public function updateInfo(Request $request){
+  
+        $rules = [
+            "name" => 'required',
+            'middlename' => 'nullable',
+            'surname' => 'required',
+            "contractor_status" => "required",
+            "background_check_consent" => "required",
+            "convictions" => "required",
+            "fepra" => "required",
+            "gdpr" => "required"
+        ];
+
+        if($request->wise_option == 0){
+            $rules['iban'] = 'required';
+            $rules['bic'] = 'required';
+        }else{
+            $rules['account_number'] = 'required';
+            $rules['routing_number'] = 'required';
+            $rules['billing_address'] = 'required';
+        }
+        
+        // 1. Personal Inforation + 8. Contact Information + 9. Address Information
+        $email = $request->email;
+        if(auth()->user()->email != $email){
+            if(User::where('email',$email)->count() > 0){
+                return redirect()->back()->with('error','Email has already been taken');
+            }
+        }
+        if($request->hasFile('avatar')){
+            $avatar = $this->upload_file($request->file('avatar'),'images/avatars/'.auth()->id());
+            auth()->user()->update(['avatar'=> $avatar]);
+        }
+    
+        $details = $request->only('city','address','address_two','zip','country_id','phone','phone_code','state');
+        $details['user_id'] = auth()->id();
+        InvoiceDetail::updateOrCreate(['user_id'=>auth()->user()->id],$details);
+
+        EducatorDetail::updateOrCreate(['educator_id'=>auth()->user()->id],[
+             'date_of_birth' => $request->date_of_birth,
+             'place_of_birth' => $request->place_of_birth,
+             'nationality' => $request->nationality,
+             'country_of_residence' => $request->country_of_residence,
+             'timezone' => $request->timezone,
+             'national_id_number' => $request->national_id_number,
+             'languages' => $request->languages,
+             'consent' => 1
+        ]);
+
+        // 2. Tax details
+        EducatorTaxDetail::updateOrCreate(['educator_id'=>auth()->user()->id],[
+             'tax_residency' => $request->tax_residency,
+             'national_id_number' => $request->national_id_number,
+             'us_tax_resident' => $request->us_tax_resident,
+             'registration_number' => $request->registration_number,
+        ]);
+
+        // 3. Payment Details
+        EducatorWiseDetail::updateOrCreate(['educator_id'=>auth()->user()->id],[
+             'wise_account' => $request->wise_account,
+             'wise_account_email' => $request->wise_account_email,
+             'wise_option' => $request->wise_option,
+             'iban' => $request->iban,
+             'bic' => $request->bic,
+             'account_number' => $request->account_number,
+             'routing_number' => $request->routing_number,
+             'billing_address' => $request->billing_address,
+        ]);
+
+        // 4.Academic Qualifications
+       $degrees = $request->degree;
+       $field_of_study = $request->field_of_study;
+       $institution = $request->institution;
+       $academic_country = $request->academic_country;
+       $year_of_graduation = $request->year_of_graduation;
+       $gpa = $request->gpa;
+       
+       EducatorQualificationDetail::where('educator_id', auth()->id())->delete();
+       foreach($degrees as $key => $degree){
+            EducatorQualificationDetail::create([
+                'educator_id' => auth()->id(),
+                'degree' => $degrees[$key],
+                'field_of_study' => $field_of_study[$key],
+                'institution' => $institution[$key],
+                'academic_country' => $academic_country[$key],
+                'year_of_graduation' => $year_of_graduation[$key],
+                'gpa' => $gpa[$key]
+            ]);
+        }
+        
+        // 5.Teaching Qualifications & Certifications
+        EducatorCertificate::where('educator_id',auth()->id())->delete();
+        $certificates = $request->certificate;
+
+        foreach($certificates as $certificate){
+            EducatorCertificate::create([
+                'educator_id' => auth()->id(),
+                'name' => $certificate
+            ]);
+        }
+
+        //6. Professional Experience
+        $company = $request->company;
+        $position = $request->position;
+        $experience_country = $request->experience_country;
+        $from = $request->from;
+        $to = $request->to;
+
+        EducatorExperience::where('educator_id',auth()->user()->id)->delete();
+
+        foreach($company as $key => $c){
+            EducatorExperience::create([
+                'company'  => $company[$key],
+                'position' => $position[$key],
+                'experience_country' => $experience_country[$key],
+                'from' => $from[$key],
+                'to' => $to[$key],
+                'educator_id' => auth()->id(),
+            ]);
+        }
+
+        //7. Technical Setup
+        EducatorTechincalSetup::updateOrCreate(['educator_id'=>auth()->user()->id],[
+            'camera' => $request->camera,
+            'microphone'=> $request->microphone,
+            'internet_speed' => $request->internet_speed,
+            'quiet_place' => $request->quiet_place,
+            'platform_experience' => $request->platform_experience,
+        ]);
+
+        return redirect()->back()->with('success_message','Info update successfully');
     }
 }

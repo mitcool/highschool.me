@@ -4,7 +4,7 @@
 
 <div class=" container wrapper shadow h-100"> 
      <div class="text-left mb-3">
-        @if(auth()->user()->role_id != 1)
+        @if(auth()->user()->role_id == 2 || auth()->user()->role_id == 4)
             <a href="{{ route('new-help-desk') }}" class=" orange-button mb-3">New Message</a>
         @endif
     </div>

@@ -39,6 +39,7 @@ use App\Diploma;
 use App\VerificationOfGraduation;
 use App\DiplomaPrintingRequest;
 use App\StudentMeeting;
+use App\ParentExtraService;
 
 use App\Mail\NewDiplomaPrintingRequest;
 use App\Mail\StudentCreated;
@@ -58,6 +59,9 @@ use App\Mail\ExamNoAttended;
 use App\Mail\ApplicationFeePaid;
 use App\Mail\PaymentSuccessfullAdmin;
 use App\Mail\NewLeaveRequest;
+use App\Mail\AdditionalDiplomaService;
+use App\Mail\EnrollementLetterPhysicalCopyRequestParent;
+use App\Mail\EnrollementLetterPhysicalCopyRequestAdmin;
 
 use App\Services\StudentSessionsService;
 use App\Services\StudentModuleCourseService;
@@ -261,8 +265,9 @@ class ParentController extends Controller
     public function meetings_all(){
         $students = ParentStudent::where('parent_id',auth()->id())->get();
         $student_ids = $students->pluck('student_id')->toArray();
+        $family_consultation_permission = true;
         return view('parent.meetings_all')
-           
+            ->with('family_consultation_permission',$family_consultation_permission)
             ->with('students',$students);
     }
     
@@ -1116,7 +1121,6 @@ class ParentController extends Controller
     }
 
     public function updateInfo(Request $request){
-      
         $request->validate([
             "email" => 'required',
             'country_id'=> 'required',
@@ -1178,7 +1182,7 @@ class ParentController extends Controller
 
     public function requestFamilyConsultation(Request $request){
 
-        $parent  = User::find($request->parent_id);
+        $parent  = auth()->user();
 
         FamilyConsultationRequestModel::create(['parent_id' => $parent->id,'status' => 0]);
 
@@ -1614,20 +1618,42 @@ class ParentController extends Controller
     public function diplomas(){
         $student_ids = ParentStudent::where('parent_id',auth()->id())->pluck('student_id')->toArray();
         $diplomas = Diploma::whereIn('student_id',$student_ids)->get();
+       
         return view('parent.diplomas')->with('diplomas',$diplomas);
     }
     public function requestCopy($diploma_id){
+
+        $diploma_id = (decrypt($diploma_id));
+        $prices = [90,150,600];
         $diploma = Diploma::find($diploma_id);
+        $graduated_at = $diploma->created_at;
+        $student= $diploma->student;
+        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) > Carbon::now() ? 500  : 250;
+        
         return view('parent.request-copy')
+            ->with('diploma_package_price',$diploma_package_price)
+            ->with('prices',$prices)
             ->with('diploma',$diploma);
     }
     public function requestCopyPost(Request $request,$diploma_id){
         $type = $request->type;
+        $diploma_id = (decrypt($diploma_id));
+        $diploma = Diploma::find($diploma_id);
+        $graduated_at = $diploma->created_at;
+        $student= $diploma->student;
+        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) > Carbon::now() ? 500  : 250;
+        $stripe_descriptions = [
+            'Online notarization only',
+            'Online notarization with digital apostille',
+            'Online notarization with physical apostille'
+        ];
+        
+        $prices = [90,150,600];
         if($type == 1 || $type == 2){
-
+            
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
-            $total = $type == 1 ?  100 : 200;
+            $total = $prices[$type-1] + $diploma_package_price;
 
             $session = \Stripe\Checkout\Session::create([
                 'line_items'  => [
@@ -1635,7 +1661,7 @@ class ParentController extends Controller
                         'price_data' => [
                             'currency'     => 'usd',
                             'product_data' => [
-                                'name' => 'Change of plan',
+                                'name' => $stripe_descriptions[$type-1],
                             ],
                             'unit_amount'  => $total*100, 
                         ],
@@ -1643,39 +1669,47 @@ class ParentController extends Controller
                     ],
                 ],
                 'mode'        => 'payment',
-                'success_url' => route('parent.pay-copy-success'),
-                'cancel_url'  => route('request-copy',$diploma_id)
+                'success_url' => route('parent.pay-copy-success',[encrypt($diploma_id),$type]),
+                'cancel_url'  => route('request-copy',[encrypt($diploma_id)])
             ]);
 
             return redirect()->away($session->url);
         }
         else{
-            return redirect()->route('parent.copies-number',$diploma_id);
+            return redirect()->route('parent.copies-number',encrypt($diploma_id));
                
         }
     }
 
 
     public function copiesNumber($diploma_id){
-       $diploma = Diploma::find($diploma_id);
-       if(!Cookie::has('diploma-'.$diploma_id)){
+        $diploma_id = decrypt($diploma_id);
+        $price_per_copy = 600;
+        $diploma = Diploma::find($diploma_id);
+        $copies =  Cookie::get('diploma') ?? 1;
+        $graduated_at = $diploma->created_at;
+        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) > Carbon::now() ? 500  : 250;
+        if(!Cookie::has('diploma-'.$diploma_id)){
             Cookie::queue('diploma-'.$diploma_id,1);
-       }
-       $total = number_format(Cookie::get('diploma-'.$diploma_id) * 50,2,'.',',');
-       return view('parent.copies-number')
-        ->with('total',$total)
-        ->with('diploma',$diploma);
+        }
+        $total = number_format(($diploma_package_price + ($copies * $price_per_copy)),2,'.',',');
+        return view('parent.copies-number')
+         ->with('price_per_copy',$price_per_copy)
+         ->with('copies',$copies)
+         ->with('total',$total)
+         ->with('diploma_package_price',$diploma_package_price)
+         ->with('diploma',$diploma);
     }
 
     public function changeDiplomaCopiesCount($diploma_id,$type){
-        $copies = Cookie::get('diploma-'.$diploma_id);
+        $copies = Cookie::get('diploma');
         $type == 'increase' 
             ? $copies++ 
             : $copies--;
         if($copies < 1){
             return redirect()->back();
         }
-        Cookie::queue('diploma-'.$diploma_id,$copies);
+        Cookie::queue('diploma',$copies);
 
         return redirect()->back();
     }
@@ -1685,9 +1719,51 @@ class ParentController extends Controller
         $pdf = Pdf::loadView('parent.enrollment-confirmation',['student' => $student])->set_option('isRemoteEnabled',true)->setPaper('a4','landscape');
         return $pdf->stream();
     }
-    public function requestVerificationOfGraduation($student_id){
+
+    #Phisical order of enrollment letter
+    public function enrollmentConfirmationOrder($student_id){
+        $total_copies = Cookie::has('enrollment-letter-copies') ? Cookie::get('enrollment-letter-copies') : 1;
+        $price_per_copy = 180;
+        $total_amount = $total_copies * $price_per_copy;
         $student = User::find($student_id);
-        $total = 50;
+        return view('parent.request-enrollment-letter-copy')
+            ->with('price_per_copy',$price_per_copy)
+            ->with('total_amount',$total_amount)
+            ->with('total_copies',$total_copies)
+            ->with('student',$student);
+    }
+
+    public function enrollmentLetterCopiesChange($action){
+        $total_copies = Cookie::has('enrollment-letter-copies') ? Cookie::get('enrollment-letter-copies') : 1;
+        if($action == 'increase'){
+            $total_copies++;
+        }else{
+            $total_copies--;
+            if($total_copies < 1){
+                $total_copies = 1;
+            }
+        }
+        Cookie::queue('enrollment-letter-copies',$total_copies,60);
+
+        return redirect()->back();
+
+    }
+    public function enrollmentConfirmationOrderPayment($student_id,$type){
+        if($type == 'digital'){
+            $total = 30;
+            $stripe_description = 'Digital Enrollment Confirmation Letter';
+            $success_url = route('enrollment-confirmation-order-success',[$student_id,$type]);
+            $cancel_url = route('parent.student.profile',$student_id);
+        }
+        else{
+            $total_copies = Cookie::has('enrollment-letter-copies') ? Cookie::get('enrollment-letter-copies') : 1;
+            $price_per_copy = 180;
+            $total = $total_copies *$price_per_copy;
+            $stripe_description = 'Physical Enrollment Confirmation Letter';
+            $success_url = route('enrollment-confirmation-order-success',[$student_id,$type]);
+            $cancel_url = route('parent.student.profile',$student_id);
+        }
+       
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
       
         $session = \Stripe\Checkout\Session::create([
@@ -1696,7 +1772,7 @@ class ParentController extends Controller
                     'price_data' => [
                         'currency'     => 'usd',
                         'product_data' => [
-                            'name' => 'Verification of Graduation',
+                            'name' => $stripe_description,
                         ],
                         'unit_amount'  => $total*100, 
                     ],
@@ -1704,17 +1780,109 @@ class ParentController extends Controller
                 ],
             ],
             'mode'        => 'payment',
-            'success_url' => route('parent.verification-of-graduation-success',$student_id),
+            'success_url' => $success_url,
+            'cancel_url'  => $cancel_url
+        ]);
+
+        return redirect()->away($session->url);
+    }
+
+    public function enrollmentConfirmationOrderSuccess($student_id,$type){
+       
+        $service_type = $type == 'digital' ? 2 : 1 ;
+        $student = User::find($student_id);
+        $parent = auth()->user();
+        $total_copies = Cookie::has('enrollment-letter-copies') ? Cookie::get('enrollment-letter-copies') : 1;
+        $service = [
+            'service_type' => $service_type,
+            'student_id' => $student->id
+        ];
+        if($service_type == 1){
+           
+            $service['copies']= $total_copies;
+        }
+
+        ParentExtraService::create($service);
+
+        if($service_type == 1){
+            Cookie::queue(Cookie::forget('enrollment-letter-copies'));
+            try{
+                Mail::to($parent->email)->send(new EnrollementLetterPhysicalCopyRequestParent($student,$total_copies));
+            }catch(\Exception $e){
+                info($e->getMessage());
+            }
+            $this->notifyAdmins(new EnrollementLetterPhysicalCopyRequestAdmin($student,$total_copies));
+        }
+        
+        return redirect()->route('parent.student.profile',$student->id)->with('success_message','Your request has been placed successfully');
+
+    }
+
+    public function requestVerificationOfGraduation($student_id){
+        $student = User::find($student_id);
+        $copies = Cookie::get('verification-of-graduation') ?? 1;
+        return view('parent.verification-of-graduation')
+            ->with('copies',$copies)
+            ->with('student',$student);
+    }
+    
+    public function requestVerificationOfGraduationPayment(Request $request,$student_id){
+        $type = $request->type;
+        $copies = $request->copies;
+        $student = User::find($student_id);
+        $total = $type == 1 ? 30 : 180 * $copies;
+       
+        $stripe_description = $type == 1 
+            ? 'Digital Verification of Graduation' 
+            : 'Physical Verification of Graduation(Copies: '.$copies.')';
+        ;
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+      
+        $session = \Stripe\Checkout\Session::create([
+            'line_items'  => [
+                [
+                    'price_data' => [
+                        'currency'     => 'usd',
+                        'product_data' => [
+                            'name' => $stripe_description,
+                        ],
+                        'unit_amount'  => $total*100, 
+                    ],
+                    'quantity'   => 1,
+                ],
+            ],
+            'mode'        => 'payment',
+            'success_url' => route('parent.verification-of-graduation-success',[$student_id,$type,$copies]),
             'cancel_url'  => route('parent.diplomas')
         ]);
 
         return redirect()->away($session->url);
     }
 
-    public function verificationOfGraduationSuccess($student_id){
-        VerificationOfGraduation::create([
+    public function payCopySuccess($diploma_id,$type,$service_type){
+       $diploma = Diploma::find($diploma_id);
+       $this->notifyAdmins(new AdditionalDiplomaService($diploma,$type,$service_type));
+       return redirect()->route('parent.diplomas')->with('success_message','Your request is successfully placed');
+    }
+
+    public function verificationOfGraduationSuccess($student_id,$type,$copies=null){
+        
+        $service_type = $type == 1 ? 7 : 6;
+        $service = [
+            'service_type' => $service_type,
             'student_id' => $student_id,
-        ]);
+            
+        ];
+
+        if($service_type == 6){
+            $service['copies'] = $copies;
+        }
+        ParentExtraService::create($service);
+        
+        $amount = $service_type == 6 ? 180 * $copies : 30;
+        $description = $service_type == 6 ?  'Graduation Verification Physical' :  'Graduation Verification Digital';
+
+        $this->createInvoice($amount,$description);
 
         return redirect()->route('parent.diplomas')->with('success_message','Verification of Graduation has been successfully requested');
     }
@@ -1726,13 +1894,20 @@ class ParentController extends Controller
     }
 
     public function requestPhysicalCopyPost($diploma_id){
-        if(!Cookie::has('diploma-'.$diploma_id)){
+        
+
+        if(!Cookie::has('diploma')){
             return redirect()->back();
         }
 
-        $number_of_copies = (Cookie::get('diploma-'.$diploma_id));
-        $price_per_copy = 50;
+        $number_of_copies = (Cookie::get('diploma'));
+        $price_per_copy = 600;
         $total = $price_per_copy * $number_of_copies;
+        $diploma_id = (decrypt($diploma_id));
+        $diploma = Diploma::find($diploma_id);
+        $graduated_at = $diploma->created_at;
+        $student= $diploma->student;
+        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) > Carbon::now() ? 500  : 250;
          \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
       
         $session = \Stripe\Checkout\Session::create([
@@ -1741,9 +1916,9 @@ class ParentController extends Controller
                     'price_data' => [
                         'currency'     => 'usd',
                         'product_data' => [
-                            'name' => 'Verification of Graduation',
+                            'name' => 'Online notarization with physical apostille',
                         ],
-                        'unit_amount'  => $total*100, 
+                        'unit_amount'  => ($total+$diploma_package_price)*100, 
                     ],
                     'quantity'   => 1,
                 ],
@@ -1757,17 +1932,35 @@ class ParentController extends Controller
 
     }
 
-    public function physicalCopyRequest($diploma_id){
-        if(!Cookie::has('diploma-'.$diploma_id)){
+    public function physicalCopyRequestSuccess($diploma_id){
+        if(!Cookie::has('diploma')){
             return redirect()->back();
         }
-        $copies = (Cookie::get('diploma-'.$diploma_id));
+        $diploma = Diploma::find($diploma_id);
+        $student = $diploma->student;
+        $copies = (Cookie::get('diploma'));
+        $price_per_copy = 600;
+        $graduated_at = $diploma->created_at;
+        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) > Carbon::now() ? 500  : 250;
+
         $printing_request = [
             'diploma_id' => $diploma_id,
             'copies' => $copies,
             'status' => 0
         ];
         $new_request =  DiplomaPrintingRequest::create($printing_request);
+        $service = [
+            'service_type' => 7,
+            'student_id' => $student->id,
+            'copies' => $copies
+        ];
+
+        $amount = $copies * $price_per_copy + $diploma_package_price;
+
+        ParentExtraService::create($service);
+
+        $this->createInvoice($amount,'Diploma physical copies request(Copiles: '.$copies.')');
+        
         $this->notifyAdmins(new NewDiplomaPrintingRequest($new_request));
         return redirect()->route('parent.diplomas');
     }

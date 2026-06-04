@@ -127,4 +127,32 @@ class User extends Authenticatable
         return $this->hasMany('App\Diploma','student_id');
     }
 
+    public function educator_details(){
+        return $this->hasOne('App\EducatorDetail','educator_id');
+    }
+
+    public function technical_setup(){
+        return $this->hasOne('App\EducatorTechincalSetup','educator_id');
+    }
+
+    public function certificates(){
+        return $this->hasMany('App\EducatorCertificate','educator_id');
+    }
+    public function qualifications(){
+        return $this->hasMany('App\EducatorQualificationDetail','educator_id');
+    }
+
+    public function experience(){
+        return $this->hasMany('App\EducatorExperience','educator_id');
+    }
+    public function tax_details(){
+        
+        return $this->hasOne('App\EducatorTaxDetail','educator_id');
+    }
+
+    public function wise_details(){
+        
+        return $this->hasOne('App\EducatorWiseDetail','educator_id');
+    }
+    
 }

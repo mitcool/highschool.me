@@ -95,24 +95,57 @@
             </tr>
         </table>
         <hr>
+      
         <h2>Exam Content</h2>
-         <table style="width:100%;margin-top:30px;">
-            @foreach ($exam_answers as $key => $answer )
-                <tr>
-                <td>
-                    <span class="normal">Question {{ $key + 1 }}</span><br> 
-                    <span class="bold">{{ $answer->question->question }}</span><br> <br>
-                   
+        @if($exam->type == 1)
+            <table style="width:100%;margin-top:30px;">
+                @foreach ($exam_answers as $key => $answer )
+                    <tr>
+                    <td>
+                        <span class="normal">Question {{ $key + 1 }}</span><br> 
+                        <span class="bold">{{ $answer->question->question }}</span><br> <br>
                     
-                </td>
-                <td style="text-align:right;">
-                    <span class="normal">Student Answer {{ $key+1 }}</span><br> 
-                    <span class="bold">{{ $answer->answer}} </span><br> <br>
-                   
-                </td>
-            </tr>
-            @endforeach
-        </table>
+                        
+                    </td>
+                    <td style="text-align:right;">
+                        <span class="normal">Student Answer {{ $key+1 }}</span><br> 
+                        <span class="bold">{{ $answer->answer}} </span><br> <br>
+                    
+                    </td>
+                </tr>
+                @endforeach
+            </table>
+        @else
+            <table style="width:100%;margin-top:30px;">
+                <tr>
+                    <td>
+                        <span class="normal">Exam Topic</span><br> 
+                        <span class="bold">{{ $exam->topic }}</span><br> <br>    
+                    </td>
+                    <td style="text-align:right;"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="normal">Submission Method</span><br> 
+                        <span class="bold">File Upload</span><br> <br>    
+                    </td>
+                    <td style="text-align:right;">
+                        <span class="normal">File Size</span><br> 
+                        <span class="bold">{{ $exam->filesize() }}</span><br> <br>  
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="normal">File Type</span><br> 
+                        <span class="bold">PDF</span><br> <br>    
+                    </td>
+                    <td style="text-align:right;">
+                        <span class="normal">File Upload Timestamp</span><br> 
+                        <span class="bold">{{ $exam->submitted_at->format('d.m.Y H:i') }}</span><br> <br>
+                    </td>
+                </tr>
+            </table>
+        @endif
          <h2>Exam Integrity</h2>
          <table style="width:100%;margin-top:30px;">
            

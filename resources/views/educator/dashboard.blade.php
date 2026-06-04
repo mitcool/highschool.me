@@ -307,7 +307,7 @@
 
                     <div class="sidebar-heading">Help Desk</div>
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{ route('help-desk') }}">
+                        <a class="nav-link" href="{{ route('educator.help-desk') }}">
                             <i class="fas fa-users"></i>
                             <span>Student Help Desk</span>
                         </a>

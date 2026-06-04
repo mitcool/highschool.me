@@ -9,6 +9,11 @@ class Diploma extends Model
 {
     use HasFactory;
 
+    const TRACKS = [
+        1 => '24',
+        2 => '18',
+        3 => 'Transfer Program', ];
+
     protected $fillable = ['student_id','track','grade'];
 
     public function student(){
@@ -17,5 +22,9 @@ class Diploma extends Model
 
     public function verification_of_graduation(){
         return $this->hasOne('App\VerificationOfGraduation','student_id','student_id');
+    }
+
+    public function track(){
+        return self::TRACKS[$this->track];
     }
 }

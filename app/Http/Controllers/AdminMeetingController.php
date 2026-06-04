@@ -68,4 +68,34 @@ class AdminMeetingController extends Controller
         return redirect()->route('admin-group-sessions')
             ->with('success_message','Group session created successfully');
     }
+
+    public function familyConsultations(){
+        $family_consultations = FamilyConsultationRequest::all();
+        $educators = User::where('role_id',5)->get();
+        return view('admin.meetings.family-consultations')
+            ->with('educators',$educators)
+            ->with('family_consultations',$family_consultations);
+    }
+
+    public function createFamilyConsultation(Request $request,$family_consultation_request_id){
+        $family_consultation_request = FamilyConsultationRequest::find($family_consultation_request_id);
+        FamilyConsultation::create([
+            'start' => $request->start,
+            'end' => $request->end,
+            'date' => $request->date,
+            'link' => $request->link,
+            'educator_id' =>$request->educator_id,
+            'parent_id' => $family_consultation_request->parent_id,
+            'request_id' => $family_consultation_request->id,
+           
+        ]);
+        $family_consultation_request->update([ 'status' => 1]);
+        return redirect()->back()->with('success_message','Family consultation added successfully');
+    }
+
+    public function markFamilyConsultationAsCompleted($family_consultation_request_id){
+        $family_consultation_request = FamilyConsultationRequest::find($family_consultation_request_id);
+        $family_consultation_request->update([ 'status' => 2]);
+        return redirect()->back()->with('success_message','Family consultation marked as completed');
+    }
 }

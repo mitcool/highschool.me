@@ -29,6 +29,7 @@
         }
         .sidebar {
             background-color: var(--admin-sidebar-item-bg)!important;
+            height: 100%;
         }
         .sidebar-heading {
             background-color: var(--admin-sidebar-heading-bg)!important;
@@ -281,11 +282,11 @@
                 <a class="admin-mobile-menu-link" href="{{ route('admin-coaching-sessions') }}">
                     <i class="fas fa-university"></i>
                     <span>College and Career Coaching</span>
-                </a>
+                </a>--}}
                 <a class="admin-mobile-menu-link" href="{{ route('admin-family-consultations') }}">
                     <i class="fas fa-handshake"></i>
                     <span>Family Consultation</span>
-                </a> --}}
+                </a> 
 
                 <div class="admin-mobile-menu-section">Ambassador</div>
                 <a class="admin-mobile-menu-link" href="{{ route('admin.ambassador-links') }}">
@@ -328,10 +329,10 @@
                     <i class="fas fa-envelope"></i>
                     <span>Student Help Desk</span>
                 </a>
-                <a class="admin-mobile-menu-link" href="{{ route('admin-educator-help-desk') }}">
+                {{-- <a class="admin-mobile-menu-link" href="{{ route('admin-educator-help-desk') }}">
                     <i class="fas fa-envelope"></i>
                     <span>Educator Help Desk</span>
-                </a>
+                </a> --}}
 
                 <div class="admin-mobile-menu-section">Texts</div>
                 <a class="admin-mobile-menu-link" href="{{ route('faq-categories') }}">
@@ -378,7 +379,10 @@
                     <i class="fas fa-scroll"></i>
                     <span>Diploma Requests</span>
                 </a>
-
+                <a class="admin-mobile-menu-link" href="{{ route('admin-complaints') }}">
+                    <i class="fas fa-scroll"></i>
+                    <span>Complaints</span>
+                </a>
                 <div class="admin-mobile-menu-section">Educators and Exams</div>
                 <a class="admin-mobile-menu-link" href="{{ route('admin-educators') }}">
                     <i class="fas fa-user-tie"></i>
@@ -509,13 +513,13 @@
                             <i class="fas fa-university"></i>
                             <span>College and Career Coaching</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-family-consultations') }}">
                             <i class="fas fa-handshake"></i>
                             <span>Family Consultation</span>
                         </a>
-                    </li> --}}
+                    </li>
 
                     <hr class="sidebar-divider">  
 
@@ -661,6 +665,10 @@
                         <a class="nav-link collapsed" href="{{route('admin-student-diploma-requests')}}">
                             <i class="fas fa-scroll"></i>
                             <span>Diploma Requests</span>
+                        </a>
+                        <a class="nav-link collapsed" href="{{route('admin-complaints')}}">
+                            <i class="fas fa-scroll"></i>
+                            <span>Complaints</span>
                         </a>
                         <a class="nav-link collapsed" href="{{route('admin.restricted-countries')}}">
                             <i class="fas fa-globe"></i>

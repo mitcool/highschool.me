@@ -27,7 +27,8 @@ class Exam extends Model
         'reminder',
         'admin_id',
         'submitted_at',
-        'evaluated_at'
+        'evaluated_at',
+        'topic'
     ];
 
      protected $casts = [
@@ -61,7 +62,7 @@ class Exam extends Model
     }
 
     public function answers(){
-        return $this->hasMany('App\User','id','educator_id');
+        return $this->hasMany('App\StudentAnswer','exam_id','id');
     }
 
     public function admin(){
@@ -113,5 +114,17 @@ class Exam extends Model
 
     public function frauds(){
         return $this->hasMany('App\Fraud','exam_id','id');
+    }
+
+    public function filesize(){
+        $url =  asset('exams').'/'.$this->id .'/'.$this->answers[0]->answer;
+
+        $headers = get_headers($url, true);
+
+        if (isset($headers['Content-Length'])) {
+            $bytes = ($headers['Content-Length']);
+        }
+
+        return round($bytes / 1024 / 1024, 2) . " MB";
     }
 }

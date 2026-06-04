@@ -10,7 +10,7 @@
     <h2 class="text-center blue-heading h2">Add Exam</h2>
     <p class="text-danger text-center">Please enter the time in UTC timezone <span class="font-weight-bold">(UTC time now : {{ $utc_time }})</span></p>
     <hr/>
-     <form action="{{ route('create-exam') }}" method="POST" >
+     <form action="{{ route('create-exam') }}" method="POST" id="add-exam"  class="exam-form">
         {{ csrf_field() }}
         <div class="row">
             <div class="col-md-6">
@@ -44,10 +44,14 @@
                 
         </select><br>
         <label class="font-weight-bold mb-0" for="">Exam Type</label>
-        <select required class="form-control" name="type" required>
+        <select required class="form-control"  id="exam-type" name="type" required>
             <option value="1">Open Exam</option>
             <option value="2">Essay</option>
         </select><br>
+        <div class="d-none topic">
+                <label class="font-weight-bold mb-0" for="">Topic</label>
+                <input type="text" name="topic" required class="form-control"><br>
+            </div>
         <div class="d-flex justify-content-center">
             <button type="submit" class="btn orange-button mx-2">Add Exam</button>
         </div>
@@ -117,35 +121,42 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('edit-exam',$exam->id) }}" method="POST" id="edit-hour-{{ $exam->id }}">
-                        {{ csrf_field() }}
-                        <label class="font-weight-bold mb-0" for="">Date</label>
-                        <input  class="datepicker form-control" name="date" type="text" value="{{ $exam->datetime->format('d-m-Y') }}" required/><br>
-                        <label class="font-weight-bold mb-0" for="">Time (UTC)</label>
-                        <input  class="timepicker form-control" name="time" value="{{ $exam->datetime->format('H:i') }}" type="text" required /><br>
-                        
-                        <label class="font-weight-bold mb-0" for="">Course</label>
-                        <select required class="form-control" name="course_id" required id="course_id">
-                            @foreach ($all_courses as $course )
-                                <option value="{{ $course->id }}" {{ $course->id == $exam->course_id ? ' selected ' : '' }}>{{ $course->course->title }}</option>
-                            @endforeach
-                        </select><br> 
-                        
-                        <label class="font-weight-bold mb-0" for="">Educator</label>
-                        <select required class="form-control" name="educator_id">
-                            <option value="" selected disabled>Please select educator</option>
-                            @foreach ($educators as $educator )
-                                <option value="{{ $educator->id }}" {{ $educator->id == $exam->educator_id ? ' selected ' : '' }}>{{ $educator->fullname() }}</option>
-                            @endforeach
-                                
-                        </select><br>
-                        <label class="font-weight-bold mb-0" for="">Exam Type</label>
-                        <select required class="form-control" name="type" required>
-                            <option value="1" {{ $exam->type== 1 ? ' selected ' : '' }}>Open Exam</option>
-                            <option value="2" {{ $exam->type== 2 ? ' selected ' : '' }}>Essay</option>
-                        </select><br>
-                    
-                        <input type="hidden" name="pre_exam" value="0">
+                        <form action="{{ route('edit-exam',$exam->id) }}" method="POST" id="edit-hour-{{ $exam->id }}" class="exam-form">
+                            {{ csrf_field() }}
+                            <label class="font-weight-bold mb-0" for="">Date</label>
+                            <input  class="datepicker form-control" name="date" type="text" value="{{ $exam->datetime->format('d-m-Y') }}" required/><br>
+                            <label class="font-weight-bold mb-0" for="">Time (UTC)</label>
+                            <input  class="timepicker form-control" name="time" value="{{ $exam->datetime->format('H:i') }}" type="text" required /><br>
+                            
+                            <label class="font-weight-bold mb-0" for="">Course</label>
+                            <select required class="form-control" name="course_id" required id="course_id">
+                                @foreach ($all_courses as $course )
+                                    <option value="{{ $course->id }}" {{ $course->id == $exam->course_id ? ' selected ' : '' }}>{{ $course->course->title }}</option>
+                                @endforeach
+                            </select><br> 
+                            
+                            <label class="font-weight-bold mb-0" for="">Educator</label>
+                            <select required class="form-control" name="educator_id">
+                                <option value="" selected disabled>Please select educator</option>
+                                @foreach ($educators as $educator )
+                                    <option value="{{ $educator->id }}" {{ $educator->id == $exam->educator_id ? ' selected ' : '' }}>{{ $educator->fullname() }}</option>
+                                @endforeach
+                                    
+                            </select><br>
+                            <div class="exam-type-wrapper">
+                                 <label class="font-weight-bold mb-0" for="">Exam Type</label>
+                                <select required class="form-control edit-exam-type" name="type" required >
+                                    <option value="1" {{ $exam->type== 1 ? ' selected ' : '' }}>Open Exam</option>
+                                    <option value="2" {{ $exam->type== 2 ? ' selected ' : '' }}>Essay</option>
+                                </select><br>
+                                <div class="topic">
+                                    <label class="font-weight-bold mb-0" for="">Topic</label>
+                                    <input type="text" name="topic" required class="form-control" value="{{ $exam->topic }}"><br>
+                                </div>
+                            </div>
+                           
+                            
+                            <input type="hidden" name="pre_exam" value="0">
                          </form>
                     </div>
                     <div class="modal-footer">
@@ -167,6 +178,25 @@
 @section('scripts')
 <script src="{{ asset('js/datetimepicker.js') }}"></script>
 <script>
+
+    $('#exam-type').on('change',function(){
+        if($(this).val()==2){
+            $('#add-exam').find('.topic').removeClass('d-none')
+        }
+        else{
+             $('#add-exam').find('.topic').addClass('d-none')
+        }
+    })
+
+    $('.edit-exam-type').on('change',function(){
+       
+        if($(this).val()==2){
+            $(this).closest('.exam-type-wrapper').find('.topic').removeClass('d-none')
+        }
+        else{
+             $(this).closest('.exam-type-wrapper').find('.topic').addClass('d-none')
+        }
+    })
 
     $('.datepicker').datetimepicker({minDate:new Date(),allowTimes:[],format:'d-m-Y',dateFormat: 'd-m-Y',timepicker:false});
     $('.timepicker').datetimepicker({minDate:new Date(),allowTimes:[],format:'H:i',dateFormat: 'H:i',timepicker:true,datepicker:false,step:15});

@@ -89,6 +89,7 @@
         <tr>
             <th class="text-left">Name</th>
             <th>Email</th>
+            <th>Details</th>
             <th class="text-center">Payments</th>
             <th class="text-center">Edit</th>
             <th class="text-center">Remove</th>
@@ -97,6 +98,7 @@
             <tr>
                 <td class="text-left">{{ $educator->fullname() }}</td>
                 <td>{{ $educator->email }}</td>
+                <td><a href="{{ route('admin.educator-details',$educator->id) }}">View...</a></td>
                 <td class="text-center">
                     <a class="btn btn-info" href="{{ route('pay-to-educator', $educator->id) }}">Payments</a>
                 </td>

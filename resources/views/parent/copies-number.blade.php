@@ -18,20 +18,21 @@
                 {{ csrf_field() }}
                     <button class="btn">-</button>
             </form>
-            <span class="total">{{  Cookie::get('diploma-'.$diploma->id); }}</span>
+            <span class="total">{{ $copies }}</span>
             <form action="{{ route('change-diploma-copies-count',[$diploma->id,'increase']) }}" method="POST">
                 {{ csrf_field() }}
                     <button class="btn">+</button>
             </form>
         </div>
-        <p>Price per copy: <span style="color:#E9580C">$50.00</span></p>
+        <p>Price per copy: <span style="color:#E9580C">${{ number_format($price_per_copy,2,'.',',') }}</span></p>
+        <p>Diploma package: <span style="color:#E9580C">${{ number_format($diploma_package_price,2,'.',',') }}</span></p>
     </div>
     <hr>
     <div class="d-flex justify-content-between align-items-center">
         <h5>Total Amount: <span style="color:#ee6123 !important">${{ $total }}</span></h5>
-        <form action="{{ route('request-physical-copy-post',$diploma->id) }}" id="request-copy-form" method="POST">
+        <form action="{{ route('request-physical-copy-post',encrypt($diploma->id)) }}" id="request-copy-form" method="POST">
             {{ csrf_field() }}
-            <button class="orange-button">Proceed to Payment</button>
+            <button class="orange-button">Proceed to Payment </button>
         </form>
     </div>
 </div>

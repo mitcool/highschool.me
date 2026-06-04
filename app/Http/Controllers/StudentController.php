@@ -1117,34 +1117,34 @@ class StudentController extends Controller
 
     public function bookSession(Request $request,$meeting_id){
         $meeting = Meeting::find($meeting_id);
-        $student_id = $request->student_id;
-        $student= User::find($request->student_id);
+        $student= Auth::user();
         $parent = $student->student_details->parent;
         $educator = $meeting->educator;
 
         StudentMeeting::insert([
-            'student_id'=> $student_id,
+            'student_id'=> $student->id,
             'meeting_id'=> $meeting_id
         ]);
 
-        try{
-            Mail::to($educator->email)->send(new MeetingConfirmationEducator($meeting));
-        }catch(\Exception $e){
-            info($e->getMessage());
-        }
+        // try{
+        //     Mail::to($educator->email)->send(new MeetingConfirmationEducator($meeting));
+        // }catch(\Exception $e){
+        //     info($e->getMessage());
+        // }
 
-        try{
-            Mail::to($educator->email)->send(new MeetingConfirmationStudent($meeting));
-        }catch(\Exception $e){
-            info($e->getMessage());
-        }
+        // try{
+        //     Mail::to($educator->email)->send(new MeetingConfirmationStudent($meeting));
+        // }catch(\Exception $e){
+        //     info($e->getMessage());
+        // }
 
-        try{
-            Mail::to($educator->email)->send(new MeetingConfirmationParent($meeting));
-        }catch(\Exception $e){
-            info($e->getMessage());
-        }
-        AdditionalCourse::where('course_type',$meeting->type)->first()->delete();
+        // try{
+        //     Mail::to($educator->email)->send(new MeetingConfirmationParent($meeting));
+        // }catch(\Exception $e){
+        //     info($e->getMessage());
+        // }
+
+        AdditionalCourse::where('student_id',$student->id)->where('course_type',$meeting->type)->first()->delete();
 
         return redirect()->back();
     }
