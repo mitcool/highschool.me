@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\FaqCategory;
 use App\FaqCategoryTranslation;
 use App\Faq;
+use App\Country;
 
 use Log;
 
@@ -44,5 +45,20 @@ class FooterController extends Controller
     $texts = $request->all()['texts'];
     return view('pages.footer.code-of-ethics')
       ->with('texts',$texts);     
+  }
+
+  public function countryRequirements(Request $request){
+    $texts = $request->all()['texts'];
+    $alphas = range('A', 'Z');
+    $countries = Country::where('informational_page',1)->get()->groupBy(function ($country) {
+      return strtoupper(substr($country->nicename, 0, 1));
+    });
+
+    $country_keys = array_keys($countries->toArray());
+    return view('pages.footer.country-requirements')
+      ->with('countries',$countries)
+      ->with('alphas',$alphas)
+      ->with('country_keys',$country_keys)
+      ->with('texts',$texts);
   }
 }

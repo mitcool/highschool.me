@@ -301,6 +301,8 @@ Route::group(['middleware' => 'text'],function(){
 
 	Route::get('/terms-and-conditions', 'FooterController@terms')->name('terms-and-conditions');
 
+	Route::get('/country-requirements','FooterController@countryRequirements')->name('country-requirements');
+
 	Route::get('/sitemap','SitemapController@showSitemapHTML')->name('sitemap');
 });
 

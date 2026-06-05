@@ -173,6 +173,10 @@
 							{{ $texts['press-release'] }}
 						</a></li>
 						<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
+							<a href="{{ route('country-requirements')}}">
+							Country Requirements
+						</a></li>
+						<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
 							<a href="#" data-toggle="modal" data-target="#cookie_modal">
 							{{ $texts['cookies'] }}
 						</a></li>
