@@ -1797,9 +1797,14 @@ class ParentController extends Controller
             'service_type' => $service_type,
             'student_id' => $student->id
         ];
+
         if($service_type == 1){
-           
             $service['copies']= $total_copies;
+            $total = 180*$total_copies;
+            $description = 'Physical Enrollment Letter (Copies: '.$total_copies. ')';
+        }else{
+            $total = 30;
+            $description = 'Digital Enrollment Letter(digital)';
         }
 
         ParentExtraService::create($service);
@@ -1813,6 +1818,8 @@ class ParentController extends Controller
             }
             $this->notifyAdmins(new EnrollementLetterPhysicalCopyRequestAdmin($student,$total_copies));
         }
+
+        $this->createInvoice($total,$description);
         
         return redirect()->route('parent.student.profile',$student->id)->with('success_message','Your request has been placed successfully');
 
