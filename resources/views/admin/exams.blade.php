@@ -50,7 +50,7 @@
         </select><br>
         <div class="d-none topic">
                 <label class="font-weight-bold mb-0" for="">Topic</label>
-                <input type="text" name="topic" required class="form-control"><br>
+                <input type="text" name="topic" class="form-control exam-topic"><br>
             </div>
         <div class="d-flex justify-content-center">
             <button type="submit" class="btn orange-button mx-2">Add Exam</button>
@@ -151,11 +151,9 @@
                                 </select><br>
                                 <div class="topic">
                                     <label class="font-weight-bold mb-0" for="">Topic</label>
-                                    <input type="text" name="topic" required class="form-control" value="{{ $exam->topic }}"><br>
+                                    <input type="text" name="topic"  class="form-control exam-topic"  value="{{ $exam->topic }}"><br>
                                 </div>
                             </div>
-                           
-                            
                             <input type="hidden" name="pre_exam" value="0">
                          </form>
                     </div>
@@ -192,9 +190,10 @@
        
         if($(this).val()==2){
             $(this).closest('.exam-type-wrapper').find('.topic').removeClass('d-none')
+            $(this).closest('.exam-type-wrapper').find('.exam-topic').prop('required','required').removeClass('d-none')
         }
         else{
-             $(this).closest('.exam-type-wrapper').find('.topic').addClass('d-none')
+             $(this).closest('.exam-type-wrapper').find('.topic').addClass('d-none').removeAttr('required').addClass('d-none');
         }
     })
 

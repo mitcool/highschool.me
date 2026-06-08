@@ -41,6 +41,7 @@ use App\PreExamAnswer;
 use App\Country;
 use App\Meeting;
 use App\StudentMeeting;
+use App\Diploma;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -942,14 +943,10 @@ class StudentController extends Controller
     }
 
     public function diplomas(){
-        $diploma_request = DiplomaPrintingRequest::where('student_id',auth()->id())->first();
-        $student = auth()->user();
-        $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
-        
+        $diplomas = Diploma::where('student_id',auth()->id())->get();
         return view('student.diplomas')
-            ->with('diploma_request',$diploma_request)
-            ->with('credits',$credits)
-            ->with('student',$student);
+            ->with('diplomas',$diplomas);
+            
     }
 
     public function generatePdfDiploma($student_id){

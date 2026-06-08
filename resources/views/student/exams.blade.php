@@ -26,7 +26,9 @@
                          
                             <td>{{ $exam->course->course->title }}</td>
                             <td>
-                                @if($exam->pre_exam == 0 && $exam->status == 0)
+                                @if($exam->type == 2)
+                                    <a href="{{ asset('images/pdf/calendar.pdf') }}" download>Instructions</a>
+                                @elseif($exam->pre_exam == 0 && $exam->status == 0)
                                     <a href="{{ route('student.pre-exam',$exam->id) }}">Link &#187;</a>
                                 @endif
                             </td>

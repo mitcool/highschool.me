@@ -102,7 +102,6 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 	Route::get('/diplomas','StudentController@diplomas')->name('student.diplomas');
 	Route::post('/request-diploma-copy','StudentController@requestDiplomaCopy')->name('request-diploma-copy');
     Route::get('/request-diploma-copy-success','StudentController@requestDiplomaCopySuccess')->name('request-diploma-copy-success');
-    Route::get('/digital-transcript/{student_id}','StudentController@digitalTransript')->name('student.generate-pdf-transcript');
 	
 	Route::get('/profile','StudentController@profile')->name('student.profile');
 	#notifications
@@ -181,7 +180,6 @@ Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 
 Route::post('/parent/pay/plan/{student_id}','ParentController@parentPayPlan')->name('parent.pay.plan');
 Route::get('/digital-transcript/{student_id}','StudentController@digitalTransript')->name('student.generate-pdf-transcript');
-
 
 //Public routes
 

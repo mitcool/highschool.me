@@ -291,7 +291,7 @@
         @if($status >= 3)
             <div class="d-flex">
 
-                @if($student->student_details->digitalEnrollmentVerification)
+                @if(count($student->student_details->digitalEnrollmentVerification))
                     <a href="{{ route('enrollment-confirmation',$student->id) }}" class="btn my-3 mr-3 blue-button-outline"><i class="fas fa-download"></i> Download Enrollment Verification</a>
                 @else
                     <form action="{{ route('enrollment-confirmation-order-payment',[$student->id,'digital']) }}" method="POST" class="mr-3">

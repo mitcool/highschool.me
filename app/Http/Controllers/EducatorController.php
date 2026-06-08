@@ -522,16 +522,55 @@ class EducatorController extends Controller
     }
 
     public function updateInfo(Request $request){
-  
+     
         $rules = [
             "name" => 'required',
             'middlename' => 'nullable',
             'surname' => 'required',
-            "contractor_status" => "required",
-            "background_check_consent" => "required",
-            "convictions" => "required",
+            'date_of_birth' => 'required',
+            'place_of_birth' => 'required',
+            'nationality' => 'required',
+            'country_of_residence' => 'required',
+            'timezone' => 'required',
+            'national_id_number' => 'required',
+            'languages' => 'required',
+            "tax_residency" => 'required',
+            "us_tax_resident" => 'required',
+            "registration_number" => 'required',
+            "wise_account" =>'required',
+            "wise_account_email" => 'required',
+            "degree" => 'required|array', 
+            "field_of_study" => 'required|array',
+            "institution" => 'required|array', 
+            "academic_country" => 'required|array', 
+            "year_of_graduation" => 'required|array', 
+            "gpa" => 'required|array',
+            "certificate" => 'required|array',
+            "company" => 'required|array',
+            "position" => 'required|array',
+            "experience_country" => 'required|array',
+            "from" => 'required|array',
+            "to" => 'required|array',
+            "camera" =>'required',
+            "microphone" => 'required',
+            "internet_speed" =>'required',
+            "quiet_place" => 'required',
+            "platform_experience" => 'required',
+            "email" => 'required',
+            "phone_code" => 'required',
+            "phone" => 'required',
+            "address" => 'required',
+            "address_two" =>'required',
+            "zip" =>'required',
+            "city" => 'required',
+            "state" => 'required',
+            "country_id" => 'required',
+            'contractor_status' => 'required',
+            'background_check_consent' => 'required',
+            'convictions' => 'required',
             "fepra" => "required",
-            "gdpr" => "required"
+            "gdpr" => "required",
+
         ];
 
         if($request->wise_option == 0){
@@ -554,9 +593,11 @@ class EducatorController extends Controller
             $avatar = $this->upload_file($request->file('avatar'),'images/avatars/'.auth()->id());
             auth()->user()->update(['avatar'=> $avatar]);
         }
-    
+        $user = $request->only('name','middlename','surname','email');
         $details = $request->only('city','address','address_two','zip','country_id','phone','phone_code','state');
         $details['user_id'] = auth()->id();
+
+        auth()->user()->update($user);
         InvoiceDetail::updateOrCreate(['user_id'=>auth()->user()->id],$details);
 
         EducatorDetail::updateOrCreate(['educator_id'=>auth()->user()->id],[

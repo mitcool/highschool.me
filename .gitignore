@@ -14,3 +14,5 @@ yarn-error.log
 /database/mysql-8
 /public/images/news/
 /public/images/fact-hub/
+/public/images/avatars/
+/public/exams/

@@ -183,62 +183,33 @@
 <div class="container my-5">
     <div class="card graduation-card p-4">
         <h2 class="text-center mb-4">Degree Transcripts</h2>
-          @if(array_key_exists('diploma',$credits) && $credits['diploma'] == 1)
-                <p class="text-center">* Charges may apply for receiving a physical copy</p>
-            @endif
+         
         <div class="table-responsive">
             <table class="table course-table">
                 <thead>
                     <tr class="text-center">
                         <th >Date</th>
                         <th>Digital Degree</th>
+                         <th>Diploma</th>
                         <th>Transcript</th>
-                        <th>Diploma</th>
-                        <th>Request Copy*</th>
+                       
+                       
                     </tr>
                 </thead>
                 <tbody class="text-center">
-                    <td >
-                        @if(array_key_exists('diploma',$credits) && $credits['diploma'] == 1)
-                            {{ $credits['graduation_date'] }} 
-                        @else
-                            - 
-                        @endif
-                    </td>
-                    <td>
-                        {{ $student->student_details->track_name() }}
-                    </td>
-                    <td>
-                        <a href="{{ route('student.generate-pdf-transcript',auth()->id()) }}">Link</a>
-                    </td>
-                   
-                    <td>
-                        @if(array_key_exists('diploma',$credits) && $credits['diploma'] == 1)
-                            <a href="{{ route('student.generate-pdf-diploma',auth()->id()) }}">Link</a>
-                        @else
-                            -
-                        @endif
-                    </td>
-                    <td>
-                        @if($diploma_request)
-                            @if($diploma_request->status == 0)
-                                <button class="course-pill course-pill-action-start">Requested</button>
-                            @elseif($diploma_request->status == 1)
-                                <button class="course-pill course-pill-action-pending">Sent</button>
-                            @elseif($diploma_request->status == 2)
-                                <button class="course-pill course-pill-action-results">Delivered</button>
-                            @endif
-                        @else
-                            @if(array_key_exists('diploma',$credits) && $credits['diploma'] == 1)
-                                <form action="{{ route('request-diploma-copy') }}" class="confirm-first" method="POST">
-                                    {{ csrf_field() }}
-                                    <button class="orange-button">Request copy</button>
-                                </form>
-                            @else
-                                -
-                            @endif
-                         @endif   
-                    </td>
+                   @foreach ($diplomas as $diploma)
+                        <tr class="text-center">
+                            <td >{{ $diploma->created_at->format('d-m-Y') }}</td>
+                            <td>{{ auth()->user()->student_details->track_name() }}</td>
+                            <td>
+                                <a href="{{ route('student.generate-pdf-diploma',auth()->id()) }}">Link</a>
+                            </td>
+                            <td>
+                                <a href="{{ route('student.generate-pdf-transcript',auth()->id()) }}">Link</a>
+                            </td>
+                        </tr>
+                   @endforeach
+                    
                 </tbody>
             </table>
             

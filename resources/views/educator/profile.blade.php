@@ -46,7 +46,7 @@
                 <input name="middlename"  type="text" class="form-control" value="{{ auth()->user()->middlename }}">
 
                 <label for="">Last Name:</label>
-                <input name="email"  required type="text" class="form-control" value="{{ auth()->user()->surname }}">
+                <input name="surname"  required type="text" class="form-control" value="{{ auth()->user()->surname }}">
 
                 <div class="row">
                     <div class="col-md-6">

@@ -88,7 +88,7 @@ class ParentStudent extends Model
             return '18-Credit-ACCEL Graduation Track';
         }
         elseif($this->track==3){
-            return 'Credit Transfer Track';
+            return 'Transfer Program Track';
         }
     }
 
