@@ -273,7 +273,7 @@
                 <div class="admin-mobile-menu-section">Meetings</div>
                 <a class="admin-mobile-menu-link" href="{{ route('admin-group-sessions') }}">
                     <i class="fas fa-users"></i>
-                    <span>Educator Hours</span>
+                    <span>Set Sessions</span>
                 </a>
                 {{-- <a class="admin-mobile-menu-link" href="{{ route('admin-mentoring-sessions') }}">
                     <i class="fas fa-user-graduate"></i>
@@ -377,7 +377,7 @@
                 </a>
                 <a class="admin-mobile-menu-link" href="{{ route('admin-student-diploma-requests') }}">
                     <i class="fas fa-scroll"></i>
-                    <span>Diploma Requests</span>
+                    <span> Requests</span>
                 </a>
                 <a class="admin-mobile-menu-link" href="{{ route('admin-complaints') }}">
                     <i class="fas fa-scroll"></i>
@@ -499,7 +499,7 @@
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('admin-group-sessions')}}">
                             <i class="fas fa-users"></i>
-                            <span>Educator Hours</span>
+                            <span>Set Sessions</span>
                         </a>
                     </li>
                     {{-- <li class="nav-item">
@@ -592,12 +592,12 @@
                             <span>Student Help Desk</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link collapsed" href="{{route('admin-educator-help-desk')}}">
                             <i class="fas fa-envelope"></i>
                             <span>Educator Help Desk</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <hr class="sidebar-divider"> 
 
                     <div class="sidebar-heading">
@@ -664,7 +664,7 @@
                         </a>
                         <a class="nav-link collapsed" href="{{route('admin-student-diploma-requests')}}">
                             <i class="fas fa-scroll"></i>
-                            <span>Diploma Requests</span>
+                            <span>Requests</span>
                         </a>
                         <a class="nav-link collapsed" href="{{route('admin-complaints')}}">
                             <i class="fas fa-scroll"></i>

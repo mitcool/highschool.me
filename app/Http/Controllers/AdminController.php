@@ -104,6 +104,7 @@ use App\OtherStaff;
 use App\CteCourseProgram;
 use App\EducatorHour;
 use App\Complaint;
+use App\ParentExtraService;
 
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
@@ -118,6 +119,7 @@ use App\Mail\ExamResultParent;
 use App\Mail\ExamResult;
 use App\Mail\EducatorCategoriesEmail;
 use App\Mail\EducatorCredentials;
+use App\Mail\ParentExtraServiceRequestStatus;
 
 class AdminController extends Controller
 {
@@ -1951,9 +1953,20 @@ class AdminController extends Controller
     }
     
      public function diplomaRequests(){
-        $diploma_requests = DiplomaPrintingRequest::orderBy('id','desc')->get();
+        $requests = ParentExtraService::all();
+        
         return view('admin.diploma-requests')
-            ->with('diploma_requests',$diploma_requests);
+            ->with('requests',$requests);
+    }
+
+    public function singleDiplomaRequest($id){
+        $request = ParentExtraService::find($id);
+        $statuses = ParentExtraService::STATUSES;
+        $parent = $request->student->student_details->parent;
+        return view('admin.single-diploma-request')
+            ->with('statuses',$statuses)
+            ->with('parent',$parent)
+            ->with('request',$request);
     }
 
     public function transfer(Request $request){
@@ -2039,9 +2052,23 @@ class AdminController extends Controller
         return back()->with('success_message', 'Request denied');
     }
     
-    public function ChangeDiplomaPrintingStatus(Request $request,$diploma_request_id){
-        $diploma_request = DiplomaPrintingRequest::find($diploma_request_id);
-        $diploma_request->update(['status' => $diploma_request->status+1]);
+    public function ChangeDiplomaPrintingStatus(Request $request,$printing_request_id){
+        $printing_request = ParentExtraService::find($printing_request_id);
+        $new_status = $request->status;
+        if($printing_request->status >= $new_status){
+            return redirect()->back()->with('error','Wrong status change sequence');
+        }
+        else{
+            $printing_request->update(['status' => $new_status]);
+            $parent = $printing_request->student->student_details->parent;
+
+            try{
+                Mail::to($parent->email)->send(new ParentExtraServiceRequestStatus($printing_request));
+            }catch(\Exception $e){
+                info($e->getMessage());
+            }
+        }
+        
         return redirect()->back()->with('success_message','Diploma request updated successfully');
     }
 

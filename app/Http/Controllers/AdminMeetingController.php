@@ -17,7 +17,9 @@ use App\Notification;
 use App\Meeting;
 use App\EducatorHour;
 use App\CurriculumType;
+use App\CatalogCourse;
 
+use App\Mail\FamilyConsultationConfirmation;
 use App\Mail\DatesForStudentSession;
 use App\Mail\EducatorMeetingDetails;
 
@@ -25,10 +27,11 @@ class AdminMeetingController extends Controller
 {
     public function groupSessions(){
         $educators = User::where('role_id',5)->get();
+        $catalog_courses = CatalogCourse::all();
         // $types = CurriculumType::where('id','>',11)->get();
         
         return view('admin.meetings.group-sessions')
-            // ->with('types',$types)
+            ->with('catalog_courses',$catalog_courses)
             ->with('educators',$educators);
     }
     public function addgroupSession(){
@@ -45,7 +48,9 @@ class AdminMeetingController extends Controller
         $educator = User::find($educator_id);
         $date = $request->date;
         $type = $request->type;
+        $subject_id = $request->subject_id;
         $meetings = [];
+        
         foreach($start as $key => $s){
             $meeting  = Meeting::create([
                 'start' => $start[$key],
@@ -53,7 +58,8 @@ class AdminMeetingController extends Controller
                 'link' => $link[$key],
                 'educator_id' => $educator_id,
                 'type' => $type[$key],
-                'date' => $date
+                'date' => $date,
+                'subject_id' => $subject_id[$key]
              ]);
              array_push($meetings,$meeting);
         }
@@ -66,7 +72,7 @@ class AdminMeetingController extends Controller
        
         Notification::add($educator_id,'New session dates added from admin');
         return redirect()->route('admin-group-sessions')
-            ->with('success_message','Group session created successfully');
+            ->with('success_message','New session created successfully');
     }
 
     public function familyConsultations(){
@@ -78,8 +84,9 @@ class AdminMeetingController extends Controller
     }
 
     public function createFamilyConsultation(Request $request,$family_consultation_request_id){
+        
         $family_consultation_request = FamilyConsultationRequest::find($family_consultation_request_id);
-        FamilyConsultation::create([
+        $family_consultation = FamilyConsultation::create([
             'start' => $request->start,
             'end' => $request->end,
             'date' => $request->date,
@@ -89,6 +96,11 @@ class AdminMeetingController extends Controller
             'request_id' => $family_consultation_request->id,
            
         ]);
+        try{
+            Mail::to($family_consultation->parent->email)->send(new FamilyConsultationConfirmation($family_consultation));
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
         $family_consultation_request->update([ 'status' => 1]);
         return redirect()->back()->with('success_message','Family consultation added successfully');
     }

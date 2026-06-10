@@ -23,8 +23,8 @@
         <tbody>
            {{-- Group Sessions --}}
             <tr>
-                <th colspan="3">
-                    <h5>Group Learning Sessions</h5>
+                <th colspan="4">
+                    <h5>Group Mentoring Sessions</h5>
                 </th>
             </tr>
             @if(count($group_sessions) > 0)
@@ -32,12 +32,14 @@
                     <th>Date</th>
                     <th>Educator</th>
                     <th></th>
+                    <th></th>
                 </tr>
             @endif
             @forelse ($group_sessions as $session)
                 <tr>
                     <td><span>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</span> </td>
                     <td><span>{{ $session->educator->fullname() }}</span></td>
+                    <td></td>
                     <td class="text-right">
                         @if(in_array($session->id,$already_booked_sessions))
                             <button class="btn-enrolled">Already Booked</button>
@@ -62,7 +64,7 @@
 
             {{-- Mentoring Sessions --}}
              <tr>
-                <th colspan="2">
+                <th colspan="4">
                     <h5 class="mb-0">Personal Mentoring Sessions</h5>
                 </th>
                 <th></th>
@@ -71,6 +73,7 @@
                 <tr>
                     <th>Date</th>
                     <th>Educator</th>
+                    <th></th>
                     <th></th>
                 </tr>
             @endif
@@ -82,6 +85,7 @@
                     <td>
                         <p class="mb-0">{{ $session->educator->fullname() }}</p>
                     </td>
+                    <td></td>
                     <td class="text-right">
                         @if(in_array($session->id,$already_booked_sessions) && count($session->students) > 1)
                             <button class="btn-enrolled">Already Booked</button>
@@ -102,14 +106,14 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="3">At the moment, there are no personal sessions scheduled.</td>
+                    <td colspan="4">At the moment, there are no personal sessions scheduled.</td>
                 </tr>
             @endforelse
 
             {{-- Coaching Sessions --}}
             <tr>
-                <th colspan="2">
-                    <h5>Coaching sessions</h5>
+                <th colspan="4">
+                    <h5>College & Career Coaching</h5>
                 </th>
                 <th></th>
             </tr>
@@ -118,12 +122,14 @@
                     <th>Date</th>
                     <th>Educator</th>
                     <th></th>
+                    <th></th>
                 </tr>
             @endif
             @forelse ($coaching_sessions as $session)
                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
                     <td>{{ $session->educator->fullname() }}</td>
+                    <td></td>
                     <td class="text-right">
                         @if(in_array($session->id,$already_booked_sessions))
                             <button class="btn-enrolled">Already Booked</button>
@@ -149,7 +155,7 @@
              {{-- Coaching Sessions --}}
             <tr>
                 <th colspan="2">
-                    <h5>Academic Hours</h5>
+                    <h5>Personal Tutoring Sessions</h5>
                 </th>
                 <th></th>
             </tr>
@@ -157,6 +163,7 @@
                 <tr>
                     <th>Date</th>
                     <th>Educator</th>
+                    <th>Subject</th>
                     <th></th>
                 </tr>
             @endif
@@ -164,6 +171,7 @@
                 <tr>
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
                     <td>{{ $session->educator->fullname() }}</td>
+                    <td>{{ $session->course->title }}</td>
                     <td class="text-right">
                         @if(in_array($session->id,$already_booked_sessions))
                             <button class="btn-enrolled">Already Booked</button>

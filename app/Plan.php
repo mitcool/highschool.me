@@ -10,6 +10,10 @@ class Plan extends Model
     use HasFactory;
 
     protected $fillable = ['name','price_per_month','price_per_year'];
+
+    const CORE  = 1;
+    const PRO = 2;
+    const ELITE = 3;
     
     public $timestamps = false;
 

@@ -162,7 +162,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 
 	Route::get('/family-consultations','AdminMeetingController@familyConsultations')->name('admin-family-consultations');
 	Route::get('/add-family-consultation/{request_id}','AdminMeetingController@addFamilyConsultation')->name('add-family-consultation');
-	Route::post('/create-family-consultation/{request_id}','AdminMeetingController@createFamilyConsultation')->name('d');
+	Route::post('/create-family-consultation/{request_id}','AdminMeetingController@createFamilyConsultation')->name('create-family-consultation');
 	Route::post('/mark-family-consultation-as-completed/{request_id}','AdminMeetingController@markFamilyConsultationAsCompleted')->name('mark-family-consultation-as-completed');
 	
 	// //Courses
@@ -244,6 +244,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/single/student/uploaded-documents/{student_id}', 'AdminStudentController@uploadedDocumentsFromParentPage')->name('admin.single-student-uploaded-documents');
 
 	Route::get('/diploma-requests','AdminController@diplomaRequests')->name('admin-student-diploma-requests');
+	Route::get('/single-diploma-request/{id}','AdminController@singleDiplomaRequest')->name('admin-single-diploma-request');
 	Route::post('admin.change-diploma-printing-status/{request_id}','AdminController@ChangeDiplomaPrintingStatus')->name('admin.change-diploma-printing-status');
 
 	Route::post('/transfer-course','AdminController@transfer')->name('transfer');

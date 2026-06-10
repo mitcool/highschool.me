@@ -16,7 +16,11 @@
           <p><span class="font-weight-bold">Help Desk</span> – You have a specific question. Message us.</p> --}}
           <div class="shadow w-50 mx-auto d-flex" style="padding:20px;">
               <div class="image">
-                  <img src="{{ asset('images/avatars') }}/{{ auth()->id() }}/{{ auth()->user()->avatar }}" alt="" style="width:140px;display:block">
+                  @if(auth()->user()->avatar)
+                    <img src="{{ asset('images/avatars') }}/{{ auth()->id() }}/{{ auth()->user()->avatar }}" alt="" style="width:140px;display:block">
+                  @else
+                    <i class="fas fa-user-circle" style="font-size: 140px;color: #045397;"></i>
+                  @endif
                   <img src="{{ asset('images/logo.svg') }}" alt="" style="width:140px;display:block;margin-top:10px;">
               </div>
               <div class="info" style="margin-left:20px;">

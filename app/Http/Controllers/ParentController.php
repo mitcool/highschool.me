@@ -20,6 +20,7 @@ use App\InvoiceDetail;
 use App\Country;
 use App\Invoice;
 use App\StudentPlan;
+use App\FamilyConsultation;
 use App\FamilyConsultationRequest as FamilyConsultationRequestModel;
 use App\CourseType;
 use App\EducatorHour;
@@ -1181,8 +1182,26 @@ class ParentController extends Controller
     }
 
     public function requestFamilyConsultation(Request $request){
-
         $parent  = auth()->user();
+        $family_consultation_year_count = FamilyConsultation::where('parent_id',$parent->id)->where('date','>',Carbon::now()->subYear(1))->count();
+        
+        if(count($parent->students) < 1){
+            return redirect()->back();
+        };
+        $student_ids = $parent->students->pluck('student_id')->toArray();
+        $highest_plan_of_parent_students =StudentPlan::whereIn('student_id',$student_ids)->orderBy('plan_id','desc')->first()->plan_id;
+        $plan_family_consultation = 0;
+
+        if($highest_plan_of_parent_students == Plan::PRO){
+            $plan_family_consultation = 1; # PRO Plan are allowed 1 consultation per year
+        }
+        elseif($highest_plan_of_parent_students == Plan::ELITE){
+             $plan_family_consultation = 2; # Elite Plan are allowed 2 consultations per year
+        }
+
+        if($family_consultation_year_count >= $plan_family_consultation){
+            return redirect()->back()->with('error','You have been reached the limit of Family Consultations your plan offers.Please contact the support team if you have any questions');
+        }
 
         FamilyConsultationRequestModel::create(['parent_id' => $parent->id,'status' => 0]);
 
@@ -1225,57 +1244,6 @@ class ParentController extends Controller
         $this->createInvoice($amount,$description);
         return view('parent.student-sessions-success');
     }
-
-    // public function  bookGroupSession($session_id){
-    //    $user_id = auth()->user()->id;
-    //    $session = GroupSession::find($session_id);
-    //    UserGroupSession::insert([
-    //         'user_id' => $user_id,
-    //         'session_id' => $session_id
-    //    ]);
-    //   try{
-    //      Mail::to(auth()->user()->email)->send(new SessionBookingConfirmation($session,auth()->user()));
-    //   }catch(\Exception $e){
-    //     info($e->getMessage());
-    //   }
-
-    //    return redirect()->route('book-session-success')->with('success_message','The group session booked successfully');
-    // }
-
-    // public function  bookMentoringSession($session_id){
-    //    $user_id = auth()->user()->id;
-    //    $session = MentoringSession::find($session_id);
-    //    UserMentoringSession::insert([
-    //         'user_id' => $user_id,
-    //         'session_id' => $session_id
-    //    ]);
-
-    //    try{
-    //      Mail::to(auth()->user()->email)->send(new SessionBookingConfirmation($session,auth()->user()));
-    //   }catch(\Exception $e){
-    //     info($e->getMessage());
-    //   }
-
-    //    return redirect()->route('book-session-success')->with('success_message','The group session booked successfully');
-    // }
-
-    //  public function  bookCoachingSession($session_id){
-    //    $user_id = auth()->user()->id;
-    //    $session = CoachingSession::find($session_id);
-    //    UserCoachingSession::insert([
-    //         'user_id' => $user_id,
-    //         'session_id' => $session_id
-    //    ]);
-
-    //    try{
-    //      Mail::to(auth()->user()->email)->send(new SessionBookingConfirmation($session,auth()->user()));
-    //   }catch(\Exception $e){
-    //     info($e->getMessage());
-    //   }
-
-    //    return redirect()->route('book-session-success')->with('success_message','The group session booked successfully');
-    // }
-
 
     public function bookSessionSuccess(){
         return view('parent.book-session-success');
@@ -1980,8 +1948,9 @@ class ParentController extends Controller
         $student_meetings = StudentMeeting::where('student_id',$student_id)
             ->get()
             ->groupBy(fn ($meeting) => $meeting->meeting->type);
-
+        $family_consultations = FamilyConsultation::where('parent_id',auth()->id())->where('date','>',Carbon::now())->get();
         return view('parent.meetings')
+            ->with('family_consultations',$family_consultations)
             ->with('student_meetings',$student_meetings);
     }
 }

@@ -50,13 +50,17 @@
                         </div>
                         <div class="col-md-6">
                             <label for="" class="d-block mb-0 font-weight-bold">Type</label>
-                            <select name="type[]" class="form-control" required>
+                            <select name="type[]" class="form-control type" required>
                                 <option value="">-- Please Select --</option>
                                 <option value="12">Group Session</option>
                                 <option value="13">Personal Mentoring Session</option>
                                 <option value="14">Career Coaching</option>
                                 <option value="15">Academic Office Hours</option>
                             </select>
+                        </div>
+                        <div class="col-md-12 subject-id">
+                            <input type="hidden" name="subject_id[]">
+                             
                         </div>
                         <div class="col-md-12">
                             <hr>
@@ -151,13 +155,16 @@
                 </div>
                 <div class="col-md-6">
                     <label for="" class="d-block mb-0 font-weight-bold">Type</label>
-                    <select name="type[]" class="form-control" required>
+                    <select name="type[]" class="form-control type" required>
                         <option value="">-- Please Select --</option>
                         <option value="12">Group Session</option>
                         <option value="13">Personal Mentoring Session</option>
                         <option value="14">Career Coaching</option>
                         <option value="15">Academic Office Hours</option>
                     </select>
+                </div>
+                 <div class="col-md-12 subject-id">
+                    <input type="hidden" name="subject_id[]">
                 </div>
                 <div class="col-md-12">
                     <hr>
@@ -167,5 +174,23 @@
         $(document).on('click','.close-meeting',function(){
             $(this).closest('.meeting-row').remove();
         })
+        $(document).on('change','.type',function(){
+            if($(this).val() == 15){
+                
+                $(this).closest('.meeting-row').find('.subject-id').html(`<label for="" class="d-block mb-0 font-weight-bold">Subject</label>
+                             <select type="text" name="subject_id[]" class="form-control" required>
+                                <option value="" selected disabled>-- Please Select --</option>
+                                @foreach($catalog_courses as $catalog_course)
+                                    <option value="{{ $catalog_course->id }}">{{ $catalog_course->title }}</option>
+                                @endforeach
+                             </select>`);
+            }
+            else{
+                $(this).closest('.meeting-row').find('.subject-id').html(`<input type="hidden" name="subject_id[]" />`)
+
+            }
+        });
+            
+    
 </script>
 @endsection

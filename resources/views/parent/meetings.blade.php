@@ -41,7 +41,28 @@
                         <td class="text-right">{{ $meeting->meeting->link }}</td>
                     </tr>
                 @endforeach
-           @endforeach
+
+               
+            @endforeach
+            @if(count($family_consultations))
+            <tr>
+                <th colspan="4">
+                    <h5 class="mb-0">Family Consultations</h5>
+                </th>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <th>Educator</th>
+                <th>Link</th>
+            </tr>
+            @endif
+            @foreach ($family_consultations as  $family_consultation)
+                <tr>
+                    <td>{{ $family_consultation->date->format('F d,Y') }} at {{ $family_consultation->start->format('g:iA') }}</td>
+                    <td>{{ $family_consultation->educator->fullname() }}</td>
+                    <td>{{ $family_consultation->link }}</td>
+                </tr>        
+            @endforeach
         </tbody>
     </table>
 </div>
