@@ -10,7 +10,7 @@
                 <hr>
             </div>
         </div>
-        @if(count($student->student_details->digitalVerificationOfGraduation))
+        @if(count($student->student_details->digitalVerificationOfGraduation) > 0)
             <a href="{{ route('parent.request-verification-of-graduation-pdf',$student->id) }}" class="btn my-3 mr-3 blue-button-outline"><i class="fas fa-download"></i> Download  Graduation Letter</a>
         @endif
         <h5 style="color:#E9580C;">Request Verification of Graduation Letter</h5>

@@ -4,7 +4,7 @@
 <div class="shadow container wrapper">
     <h1 class="text-center h2 page-headings" >Your Meetings</h1>
 
-    @if(auth()->user()->students)
+    @if(count(auth()->user()->students) == 0)
     <p class="text-center page-content">You don't have any students yet </p>
     @else
     <p class="font-weight-bold">Please select student to view or schedule meetings or sessions.</p>
