@@ -696,7 +696,7 @@ class ParentController extends Controller
             'expires_at' => $exprires_at,
         ]);
 
-        $this->insertAdditionalCourses($student_data['plan_id'],$student_data['student_id']);
+        //$this->insertAdditionalCourses($student_data['plan_id'],$student_data['student_id']);
 
         $this->createInvoice($invoice_data['amount'],$invoice_data['description']);
 
@@ -1409,7 +1409,7 @@ class ParentController extends Controller
         
         $this->createInvoice($total,'Transfer program enrollment');
         
-        $this->insertAdditionalCourses($plan_id,$student_id);
+        //$this->insertAdditionalCourses($plan_id,$student_id);
 
         $expires_at = $type == 1 
                 ? Carbon::now()->addYears(1)->subDays(1) 
@@ -1596,7 +1596,7 @@ class ParentController extends Controller
         $diploma = Diploma::find($diploma_id);
         $graduated_at = $diploma->created_at;
         $student= $diploma->student;
-        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) > Carbon::now() ? 500  : 250;
+        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) < Carbon::now() ? 500  : 250;
         
         return view('parent.request-copy')
             ->with('diploma_package_price',$diploma_package_price)
@@ -1609,7 +1609,7 @@ class ParentController extends Controller
         $diploma = Diploma::find($diploma_id);
         $graduated_at = $diploma->created_at;
         $student= $diploma->student;
-        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) > Carbon::now() ? 500  : 250;
+        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) < Carbon::now() ? 500  : 250;
         $stripe_descriptions = [
             'Online notarization only',
             'Online notarization with digital apostille',
@@ -1923,7 +1923,7 @@ class ParentController extends Controller
             'copies' => $copies,
             'status' => 0
         ];
-        $new_request =  DiplomaPrintingRequest::create($printing_request);
+        //$new_request =  DiplomaPrintingRequest::create($printing_request);
         $service = [
             'service_type' => 7,
             'student_id' => $student->id,
@@ -1936,7 +1936,7 @@ class ParentController extends Controller
 
         $this->createInvoice($amount,'Diploma physical copies request(Copiles: '.$copies.')');
         
-        $this->notifyAdmins(new NewDiplomaPrintingRequest($new_request));
+        //$this->notifyAdmins(new NewDiplomaPrintingRequest($new_request));
         return redirect()->route('parent.diplomas');
     }
 

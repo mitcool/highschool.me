@@ -12,7 +12,9 @@
     </style>
 </head>
 <body>
-    <div style="text-align:center;width:40%;margin:0 auto;"><img style="width: 50%" src="{{ asset('images/logo.svg') }}" alt=""></div>
+    <div style="text-align:center;width:40%;margin:0 auto;">
+        <img src="{{ public_path('images/logo.svg') }}" alt="" style="width:50%;margin:0 auto;">
+    </div>
 
     <hr style="border-top:3px solid blue;">
 

@@ -240,15 +240,24 @@
             @php $tabId = strtolower($type->code); @endphp
             <li class="nav-item p-0">
                 <a
-                    class="nav-link {{ $loop->first ? 'active' : '' }}"
+                    @if($track == 3)
+                        class="nav-link {{ $loop->last ? 'active' : '' }}"
+                    @else
+                        class="nav-link {{ $loop->first ? 'active' : '' }}"
+                    @endif
                     id="{{ $tabId }}-tab"
                     data-toggle="pill"
                     href="#{{ $tabId }}"
                     role="tab"
                     aria-controls="{{ $tabId }}"
-                    aria-selected="{{ $loop->first ? 'true' : 'false' }}"
+                    @if($track ==3)
+                        aria-selected="{{ $loop->last ? 'true' : 'false' }}"
+                    @else
+                        
+                        aria-selected="{{ $loop->first ? 'true' : 'false' }}"
+                    @endif
                 >
-                    {{ $typeLabels[$type->code] }} 
+                    {{ $typeLabels[$type->code] }}  
                 </a>
             </li>
         @endforeach
@@ -267,7 +276,11 @@
             @endphp
 
             <div
-                class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
+                @if($track == 3)
+                    class="tab-pane fade {{ $loop->last ? 'show active' : '' }}"
+                @else 
+                    class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
+                @endif
                 id="{{ $tabId }}"
                 role="tabpanel"
                 aria-labelledby="{{ $tabId }}-tab"

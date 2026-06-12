@@ -376,7 +376,7 @@
                                 <span>Change Password</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item " style="background: #26088d" >
                            
                             <form action="{{ route('logout') }}" method="post">
                                 {{ csrf_field() }}

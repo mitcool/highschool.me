@@ -61,4 +61,10 @@ class FooterController extends Controller
       ->with('country_keys',$country_keys)
       ->with('texts',$texts);
   }
+
+  public function singleCountryRequirements($country_id){
+    $country  = Country::find($country_id);
+    return view('pages.footer.single-country-requirements')
+      ->with('country',$country);
+  }
 }

@@ -301,6 +301,8 @@ Route::group(['middleware' => 'text'],function(){
 
 	Route::get('/country-requirements','FooterController@countryRequirements')->name('country-requirements');
 
+	Route::get('/country-requirements/{country_id}','FooterController@singleCountryRequirements')->name('single-country-requirements');
+
 	Route::get('/sitemap','SitemapController@showSitemapHTML')->name('sitemap');
 });
 

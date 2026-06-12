@@ -1153,10 +1153,10 @@ class StudentController extends Controller
         $educator = $meeting->educator;
         $plan = auth()->user()->active_plan;
         if($meeting->is_full()){
-            return redirect()->back();
+            return redirect()->back()->with('error','This meeting is already booked');
         }
         if(!$plan){
-            return redirect()->back();
+            return redirect()->back()->with('error','');
         }
 
         $this->bookSingleMeeting($meeting,$student->id);

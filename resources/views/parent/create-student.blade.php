@@ -164,7 +164,7 @@
             <option value="" selected disabled>-- Please select --</option>
             @foreach($countries as $country)
                 <option value="{{ $country->phonecode }}" >
-                    +{{ $country->phonecode }}
+                   {{ $country->nicename }} (+{{ $country->phonecode }})
                 </option>
             @endforeach
         </select>
