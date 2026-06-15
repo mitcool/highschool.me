@@ -4,16 +4,18 @@
     <div class="shadow  mx-auto wrapper h-100" style="width:80%;">
         <h1 class="text-center h2 page-headings" style="color:#045397">Diplomas</h1>
         <table class="table">
-            <tr>
-                <th>Date</th>
-                <th>Digital Degree</th>
-                <th>Student</th>
-                <th class="text-center">Diploma</th>
-                <th class="text-center">Digital Transcript</th>
-                <th class="text-center">Verification of Graduation</th>
-                <th class="text-center">Request Copy*</th>
-              
-            </tr>
+            @if(count($diplomas) > 0)
+                <tr>
+                    <th>Date</th>
+                    <th>Digital Degree</th>
+                    <th>Student</th>
+                    <th class="text-center">Diploma</th>
+                    <th class="text-center">Digital Transcript</th>
+                    <th class="text-center">Verification of Graduation</th>
+                    <th class="text-center">Request Copy*</th>
+                
+                </tr>
+            @endif
             @foreach ($diplomas  as $diploma )
                 <tr>
                     <td>{{ $diploma->created_at->format('d.m.Y') }}</td>
@@ -40,6 +42,10 @@
             @endforeach
 
         </table>
-       <p>* - The package includes a folder with a certified diploma with an apostille certified by the school principal.</p>
+        @if(count($diplomas) > 0)
+            <p>* - The package includes a folder with a certified diploma with an apostille certified by the school principal.</p>
+        @else
+            <p class="page-content text-center">Your students don't have any diplomas yet</p>
+        @endif
     </div>
 @endsection

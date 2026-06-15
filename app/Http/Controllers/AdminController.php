@@ -1954,7 +1954,6 @@ class AdminController extends Controller
     
      public function diplomaRequests(){
         $requests = ParentExtraService::all();
-        
         return view('admin.diploma-requests')
             ->with('requests',$requests);
     }

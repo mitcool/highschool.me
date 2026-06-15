@@ -462,6 +462,11 @@ class ParentController extends Controller
         $parent_id_name = $this->upload_file($request->file('parent_id'),$path);
         StudentDocument::insert(['file'=>$parent_id_name,'type'=>1,'student_id'=>$student->id,'is_approved' => 0]);
         
+        #custody_document (document 2) optional - !!! before it was optional 
+        if($request->hasFile('custody_document')){
+            $custody_document_name = $this->upload_file($request->file('custody_document'),$path); 
+            StudentDocument::insert(['file'=>$custody_document_name,'type'=>2,'student_id'=>$student->id,'is_approved' => 0]);
+        }
 
         #proof_of_residence (document 3) required
         $proof_of_residence_name =  $this->upload_file($request->file('proof_of_residence'),$path); 
@@ -478,12 +483,6 @@ class ParentController extends Controller
         #school transcript (document 6) required
         $school_transcript_name =$this->upload_file($request->file('school_transcript'),$path); 
         StudentDocument::insert(['file'=>$school_transcript_name,'type'=>6,'student_id'=>$student->id,'is_approved' => 0]);
-
-        #custody_document (document 2) optional - !!! before it was optional 
-        if($request->hasFile('custody_document')){
-            $custody_document_name = $this->upload_file($request->file('custody_document'),$path); 
-            StudentDocument::insert(['file'=>$custody_document_name,'type'=>2,'student_id'=>$student->id,'is_approved' => 0]);
-        }
 
         #withdrawal_confirmation (document 7) optinal
         if($request->hasFile('withdrawal_confirmation')){
@@ -696,7 +695,7 @@ class ParentController extends Controller
             'expires_at' => $exprires_at,
         ]);
 
-        //$this->insertAdditionalCourses($student_data['plan_id'],$student_data['student_id']);
+        $this->insertAdditionalCourses($student_data['plan_id'],$student_data['student_id']);
 
         $this->createInvoice($invoice_data['amount'],$invoice_data['description']);
 
@@ -716,29 +715,26 @@ class ParentController extends Controller
     }
 
     public function insertAdditionalCourses($plan_id,$student_id){
-        // Note SAT == ACT , 
-        //Corespondent to features table
-        //Courses
-        $psat = $plan_id > 1 ?  1 : 1;
-        $sat = $plan_id > 1 ? 1 : 1;
+      
+        
+        $psat = $plan_id > 1 ?  1 : 0;
+        $sat = $plan_id > 1 ? 1 : 0;
+        $preact = $plan_id > 1 ?  1 : 0;
+        $act = $plan_id > 1 ?  1 : 0;
         $ap = 0;
         $clep =0;
         $cte = 0;
         $esol = 0;
-        //Sessions
-        $group_sessions = 0;
-        $mentoring_sessions = 0;
-        $coaching_sessions = 0;
-        $academic_hours = 0;
-        $family_cosultations = 0;
+        $preact = 0;
+        $act = 0;
 
         if($plan_id == 2){
             $ap = 1;
             $clep =1;
             $cte = 2;
             $esol = 0;
-            $group_sessions = 1;
-            $family_cosultations = 1;
+            $preact = 1;
+            $act = 1;
             
         }
         elseif($plan_id == 3){
@@ -746,13 +742,26 @@ class ParentController extends Controller
             $clep =2;
             $cte = 4;
             $esol = 1;
-            $group_sessions = 1;
-            $mentoring_sessions = 1;
-            $coaching_sessions = 1;
-            $academic_hours = 1;
-            $family_cosultations = 2;
+            
+        }
+        //PREACT
+        for($i=0;$i < $preact; $i++){
+             AdditionalCourse::insert([
+                'student_id' => $student_id,
+                'course_type' => 9,
+                'status' => 0 // not enrolled
+            ]);
+        }
+        //ACT
+        for($i=0;$i < $act; $i++){
+             AdditionalCourse::insert([
+                'student_id' => $student_id,
+                'course_type' => 10,
+                'status' => 0 // not enrolled
+            ]);
         }
 
+        //PSAT
         for($i=0;$i < $psat; $i++){
             AdditionalCourse::insert([
                 'student_id' => $student_id,
@@ -760,6 +769,7 @@ class ParentController extends Controller
                 'status' => 0 // not enrolled
             ]);
         }
+        //SAT
         for($i=0;$i < $sat; $i++){
              AdditionalCourse::insert([
                 'student_id' => $student_id,
@@ -767,6 +777,7 @@ class ParentController extends Controller
                 'status' => 0 // not enrolled
             ]);
         }
+        //AP
         for($i=0;$i < $ap; $i++){
             AdditionalCourse::insert([
                 'student_id' => $student_id,
@@ -774,6 +785,7 @@ class ParentController extends Controller
                 'status' => 0 // not enrolled
             ]);
         }
+        //CLEP
         for($i=0;$i < $clep; $i++){
             AdditionalCourse::insert([
                 'student_id' => $student_id,
@@ -781,6 +793,7 @@ class ParentController extends Controller
                 'status' => 0 // not enrolled
             ]);
         }
+        //CTE
         for($i=0;$i < $cte; $i++){
              AdditionalCourse::insert([
                 'student_id' => $student_id,
@@ -788,45 +801,12 @@ class ParentController extends Controller
                 'status' => 0 // not enrolled
             ]);
         }
+
+        //ESOL
         for($i=0;$i < $esol; $i++){
              AdditionalCourse::insert([
                 'student_id' => $student_id,
                 'course_type' => 6,
-                'status' => 0 // not enrolled
-            ]);
-        }
-         for($i=0;$i < $group_sessions; $i++){
-             AdditionalCourse::insert([
-                'student_id' => $student_id,
-                'course_type' => 12,
-                'status' => 0 // not enrolled
-            ]);
-        }
-         for($i=0;$i < $mentoring_sessions; $i++){
-             AdditionalCourse::insert([
-                'student_id' => $student_id,
-                'course_type' => 13,
-                'status' => 0 // not enrolled
-            ]);
-        }
-         for($i=0;$i < $coaching_sessions; $i++){
-             AdditionalCourse::insert([
-                'student_id' => $student_id,
-                'course_type' => 14,
-                'status' => 0 // not enrolled
-            ]);
-        }
-         for($i=0;$i < $academic_hours; $i++){
-             AdditionalCourse::insert([
-                'student_id' => $student_id,
-                'course_type' => 15,
-                'status' => 0 // not enrolled
-            ]);
-        }
-        for($i=0;$i < $family_cosultations; $i++){
-             AdditionalCourse::insert([
-                'student_id' => $student_id,
-                'course_type' => 16,
                 'status' => 0 // not enrolled
             ]);
         }
@@ -1409,7 +1389,7 @@ class ParentController extends Controller
         
         $this->createInvoice($total,'Transfer program enrollment');
         
-        //$this->insertAdditionalCourses($plan_id,$student_id);
+        $this->insertAdditionalCourses($plan_id,$student_id);
 
         $expires_at = $type == 1 
                 ? Carbon::now()->addYears(1)->subDays(1) 
@@ -1590,13 +1570,12 @@ class ParentController extends Controller
         return view('parent.diplomas')->with('diplomas',$diplomas);
     }
     public function requestCopy($diploma_id){
-
         $diploma_id = (decrypt($diploma_id));
         $prices = [90,150,600];
         $diploma = Diploma::find($diploma_id);
         $graduated_at = $diploma->created_at;
         $student= $diploma->student;
-        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) < Carbon::now() ? 500  : 250;
+        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) > Carbon::now() ? 250  : 500;
         
         return view('parent.request-copy')
             ->with('diploma_package_price',$diploma_package_price)
@@ -1605,24 +1584,37 @@ class ParentController extends Controller
     }
     public function requestCopyPost(Request $request,$diploma_id){
         $type = $request->type;
+        if(!$type){
+            $service_type = 8;
+            $type = 4;
+        }
+        elseif($type == 1){
+            $service_type = 3;
+        }
+        elseif($type ==2){
+            $service_type = 4;
+        }
+        elseif($type ==3){
+            $service_type = 5;         
+        }
         $diploma_id = (decrypt($diploma_id));
         $diploma = Diploma::find($diploma_id);
         $graduated_at = $diploma->created_at;
         $student= $diploma->student;
-        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) < Carbon::now() ? 500  : 250;
+        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) > Carbon::now() ? 250  : 500;
+        
         $stripe_descriptions = [
-            'Online notarization only',
-            'Online notarization with digital apostille',
-            'Online notarization with physical apostille'
+            'Diploma Package + Online notarization only',
+            'Diploma Package + Online notarization with digital apostille',
+            'Diploma Package + Online notarization with physical apostille',
+            'Diploma Package'
         ];
         
-        $prices = [90,150,600];
-        if($type == 1 || $type == 2){
+        $prices = [90,150,600,0]; 
+        if($type == 1 || $type == 2 || $type == 4){
             
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-
             $total = $prices[$type-1] + $diploma_package_price;
-
             $session = \Stripe\Checkout\Session::create([
                 'line_items'  => [
                     [
@@ -1637,7 +1629,7 @@ class ParentController extends Controller
                     ],
                 ],
                 'mode'        => 'payment',
-                'success_url' => route('parent.pay-copy-success',[encrypt($diploma_id),$type]),
+                'success_url' => route('parent.pay-copy-success',[encrypt($diploma_id),$type,$service_type]),
                 'cancel_url'  => route('request-copy',[encrypt($diploma_id)])
             ]);
 
@@ -1656,7 +1648,7 @@ class ParentController extends Controller
         $diploma = Diploma::find($diploma_id);
         $copies =  Cookie::get('diploma') ?? 1;
         $graduated_at = $diploma->created_at;
-        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) > Carbon::now() ? 500  : 250;
+        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) > Carbon::now() ? 250  : 500;
         if(!Cookie::has('diploma-'.$diploma_id)){
             Cookie::queue('diploma-'.$diploma_id,1);
         }
@@ -1757,18 +1749,19 @@ class ParentController extends Controller
 
     public function enrollmentConfirmationOrderSuccess($student_id,$type){
        
-        $service_type = $type == 'digital' ? 2 : 1 ;
+        $service_type = $type == 'digital' ? 1 : 2 ;
         $student = User::find($student_id);
         $parent = auth()->user();
         $total_copies = Cookie::has('enrollment-letter-copies') ? Cookie::get('enrollment-letter-copies') : 1;
         $service = [
             'service_type' => $service_type,
-            'student_id' => $student->id
+            'student_id' => $student->id,
+            'status' => 0
         ];
 
-        if($service_type == 1){
+        if($service_type == 2){
             $service['copies']= $total_copies;
-            $total = 180*$total_copies;
+            $total = 180 * $total_copies;
             $description = 'Physical Enrollment Letter (Copies: '.$total_copies. ')';
         }else{
             $total = 30;
@@ -1835,21 +1828,33 @@ class ParentController extends Controller
     }
 
     public function payCopySuccess($diploma_id,$type,$service_type){
-       $diploma = Diploma::find($diploma_id);
-       $this->notifyAdmins(new AdditionalDiplomaService($diploma,$type,$service_type));
-       return redirect()->route('parent.diplomas')->with('success_message','Your request is successfully placed');
+        $diploma_id = (decrypt($diploma_id));
+        $diploma = Diploma::find($diploma_id);
+        $service = [
+            'service_type' => $service_type,
+            'student_id' => $diploma->student_id,
+            'status' => 0
+            
+        ];
+        $description = 'Diploma Requests';
+        $new_service = ParentExtraService::create($service);
+        $this->createInvoice($new_service->price(),$description);
+        $this->notifyAdmins(new AdditionalDiplomaService($diploma,$type,$service_type));
+        return redirect()->route('parent.diplomas')
+            ->with('success_message','Your request is successfully placed');
     }
 
     public function verificationOfGraduationSuccess($student_id,$type,$copies=null){
         
-        $service_type = $type == 1 ? 7 : 6;
+        $service_type = $type == 1 ? 6 : 7;
         $service = [
             'service_type' => $service_type,
             'student_id' => $student_id,
+            'status' => 0
             
         ];
 
-        if($service_type == 6){
+        if($service_type == 7){
             $service['copies'] = $copies;
         }
         ParentExtraService::create($service);
@@ -1872,6 +1877,7 @@ class ParentController extends Controller
         
 
         if(!Cookie::has('diploma')){
+        
             return redirect()->back();
         }
 
@@ -1882,7 +1888,7 @@ class ParentController extends Controller
         $diploma = Diploma::find($diploma_id);
         $graduated_at = $diploma->created_at;
         $student= $diploma->student;
-        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) > Carbon::now() ? 500  : 250;
+        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) > Carbon::now() ? 250  : 500;
          \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
       
         $session = \Stripe\Checkout\Session::create([
@@ -1916,18 +1922,18 @@ class ParentController extends Controller
         $copies = (Cookie::get('diploma'));
         $price_per_copy = 600;
         $graduated_at = $diploma->created_at;
-        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) > Carbon::now() ? 500  : 250;
+        $diploma_package_price = Carbon::parse($graduated_at)->addDays(90) > Carbon::now() ? 250  : 500;
 
         $printing_request = [
             'diploma_id' => $diploma_id,
             'copies' => $copies,
             'status' => 0
         ];
-        //$new_request =  DiplomaPrintingRequest::create($printing_request);
         $service = [
-            'service_type' => 7,
+            'service_type' => 5,
             'student_id' => $student->id,
-            'copies' => $copies
+            'copies' => $copies,
+            'status' => 0
         ];
 
         $amount = $copies * $price_per_copy + $diploma_package_price;
@@ -1935,8 +1941,11 @@ class ParentController extends Controller
         ParentExtraService::create($service);
 
         $this->createInvoice($amount,'Diploma physical copies request(Copiles: '.$copies.')');
+
+        if(!Cookie::has('diploma')){
+            Cookie::queue(Cookie::forget('diploma'));
+        }
         
-        //$this->notifyAdmins(new NewDiplomaPrintingRequest($new_request));
         return redirect()->route('parent.diplomas');
     }
 

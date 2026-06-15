@@ -42,6 +42,7 @@ use App\Country;
 use App\Meeting;
 use App\StudentMeeting;
 use App\Diploma;
+use App\SingleExamQuestion;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -211,11 +212,25 @@ class StudentController extends Controller
 
     public function singleExam($exam_id){
         $exam = Exam::find($exam_id);
-        $questions = ExamQuestion::where('subject_id',$exam->course_id)
+        
+        $questions  = SingleExamQuestion::where('exam_id',$exam_id)->get();
+
+        if(count($questions) == 0){
+            $exam_questions = ExamQuestion::where('subject_id',$exam->course_id)
             ->where('type',ExamQuestion::TYPE_FINAL_EXAM)    
             ->inRandomOrder()
             ->take(10)
-            ->get();
+            ->pluck('id');
+
+            foreach($exam_questions as $question){
+                SingleExamQuestion::insert([
+                    'exam_id' => $exam_id,
+                    'question_id' => $question
+                ]);
+            }
+        }
+        $questions  = SingleExamQuestion::where('exam_id',$exam_id)->get();
+        
         $time_started = Carbon::parse($exam->datetime);
         $now = Carbon::now();
         #Essay
@@ -312,7 +327,8 @@ class StudentController extends Controller
         if($exam->status == 0){
             $exam->update([
             'status' => Exam::STATUS_EVALUATED,
-            'grade' => 0
+            'grade' => 0,
+            'submitted_at' => Carbon::now()
         ]);
         }
         

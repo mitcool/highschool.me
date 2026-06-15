@@ -9,23 +9,28 @@
         <div class="table-responsive">
             <table class="table course-table">
                 <thead>
-                    <tr class="text-center">
-                       
-                        <th class="text-left">Date/Time (UTC)</th>
-                        <th>Student Name</th>
-                        <th>Subject</th>
-                        <th>Link</th>
-                    </tr>
+                    @if(count($exams) > 0)
+                        <tr class="text-center">
+                            <th class="text-left">Date/Time (UTC)</th>
+                            <th>Student Name</th>
+                            <th>Subject</th>
+                            <th>Link</th>
+                        </tr>
+                    @endif
                 </thead>
                 <tbody class="text-center">
-                   @foreach($exams as $exam)
+                   @forelse($exams as $exam)
                         <tr>
                             <td class="text-left">{{ $exam->datetime->format('d.m.Y H:i')}}</td>
                             <td>{{ $exam->student->fullname() }}</td>
                             <td>{{ $exam->course->course->title }}</td>
                             <td><a href="{{ route('single-submission',$exam->id) }}" class="view-link">View</a></td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td class="text-center" colspan="4">No submissions at the moment</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

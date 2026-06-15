@@ -15,11 +15,11 @@
         <div class="row">
             <div class="col-md-6">
                 <label class="font-weight-bold mb-0" for="">Date</label>
-                <input  class="form-control datepicker" name="date" type="text" required /><br>
+                <input  class="form-control datepicker" autocomplete="off" name="date" type="text" required /><br>
             </div>
             <div class="col-md-6">
                 <label class="font-weight-bold mb-0" for="">UTC Time</label>
-                <input class="form-control timepicker" name="time" type="text" required /><br>
+                <input class="form-control timepicker" autocomplete="off" name="time" type="text" required /><br>
             </div>
         </div>
 
@@ -50,7 +50,7 @@
         </select><br>
         <div class="d-none topic">
                 <label class="font-weight-bold mb-0" for="">Topic</label>
-                <input type="text" name="topic" class="form-control exam-topic"><br>
+                <input type="text" name="topic" class="form-control exam-topic" autocomplete="off"><br>
             </div>
         <div class="d-flex justify-content-center">
             <button type="submit" class="btn orange-button mx-2">Add Exam</button>

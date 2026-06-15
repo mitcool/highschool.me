@@ -477,7 +477,13 @@
                                 @foreach ($student->enrolled_courses as $enrolled_course)
                                     @php
                                         $curriculum_type_code = optional(optional($enrolled_course->course)->curriculumType)->code;
-                                        $course_type = $curriculum_type_labels[$curriculum_type_code] ?? (optional($enrolled_course->course)->required_flag ? 'Core' : 'Elective');
+                                        if($curriculum_type_code == 'TP'){
+                                            $course_type = 'Transfer Program';
+                                        }
+                                        else{
+                                            $course_type = $curriculum_type_labels[$curriculum_type_code] ?? (optional($enrolled_course->course)->required_flag ? 'Core' : 'Elective');
+                                        }
+                                       
                                         $pre_exam_state = $pre_exam_states[$enrolled_course->id] ?? null;
                                         $pre_exam_exam_id = $pre_exam_exam_ids[$enrolled_course->id] ?? null;
                                         $action_exam_date = $action_exam_dates[$enrolled_course->id] ?? null;

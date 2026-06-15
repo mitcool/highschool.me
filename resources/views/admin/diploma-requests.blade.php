@@ -20,10 +20,18 @@
                 <td>{{ $request->student->student_details->parent->fullname() }}</td>
                 <td>{{ $request->type->name }}</td>
                 <td>{{ $request->student->fullname() }}</td>
-                <td>${{ number_format($request->type->price,2,'.',',') }}</td>
-                <td>{{ $request->status() }}</td>
+                <td>{{ '$'.number_format($request->price(),2,'.',',') }}</td>
+                <td
+                    >@if($request->service_type == 2 || $request->service_type == 7)
+                        {{ $request->status() }}
+                    @else
+                        Delivered
+                    @endif
+                </td>
                 <td>
-                    <a href="{{ route('admin-single-diploma-request',$request->id) }}">View</a>
+                    @if($request->service_type == 2  || $request->service_type == 7)
+                        <a href="{{ route('admin-single-diploma-request',$request->id) }}">View</a>
+                    @endif
                 </td>
             </tr>
         @endforeach

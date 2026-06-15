@@ -127,7 +127,7 @@
                 <div class="row align-items-center mb-3">
                     <div class="col-auto">
                         <div class="badge-placeholder">
-                            <img src="{{ asset('images/badge.png') }}" alt="Ambassador Badge" class="img-fluid" style="width: 150px;">
+                            <img src="{{ asset('images/admissions-page/gold-shield-ambassador-badge-stars.webp') }}" alt="Ambassador Badge" class="img-fluid" style="width: 150px;">
                         </div>
                     </div>
                     <div class="col">

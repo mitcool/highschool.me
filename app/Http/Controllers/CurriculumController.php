@@ -84,7 +84,11 @@ class CurriculumController extends Controller
 
     public function learningMentoring(Request $request){
         $texts = $request->all()['texts'];
-        $courses = CourseType::whereIn('id',[11,12,13,15])->get();
+        ///Hardcoded ID from course_types table (Chat Gpt solution of custom reorder)
+        $ids = [11, 12, 15, 13]; 
+        $courses = CourseType::whereIn('id', $ids)
+            ->orderByRaw('FIELD(id, ' . implode(',', $ids) . ')')
+            ->get();
         return view('pages.curriculum.learning-mentoring')
             ->with('texts',$texts)
             ->with('courses',$courses);

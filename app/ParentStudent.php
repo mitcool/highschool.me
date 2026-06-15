@@ -143,16 +143,16 @@ class ParentStudent extends Model
 
     //Additional Services
     public function digitalEnrollmentVerification(){
-        return $this->hasMany('App\ParentExtraService','student_id','student_id')->where('service_type',2);
-    }
-    public function physicalEnrollmentVerification(){
         return $this->hasMany('App\ParentExtraService','student_id','student_id')->where('service_type',1);
     }
+    public function physicalEnrollmentVerification(){
+        return $this->hasMany('App\ParentExtraService','student_id','student_id')->where('service_type',2);
+    }
     public function digitalVerificationOfGraduation(){
-        return $this->hasMany('App\ParentExtraService','student_id','student_id')->where('service_type',7);
+        return $this->hasMany('App\ParentExtraService','student_id','student_id')->where('service_type',6);
     }
     public function physicalVerificationOfGraduation(){
-        return $this->hasMany('App\ParentExtraService','student_id','student_id')->where('service_type',6);
+        return $this->hasMany('App\ParentExtraService','student_id','student_id')->where('service_type',7);
     }
 
 }

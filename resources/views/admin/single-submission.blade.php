@@ -3,7 +3,8 @@
 @section('content')
 
 
-    <div class="shadow container wrapper">    
+    <div class="shadow container wrapper">  
+        <a href="{{ route('admin-submissions') }}">All Submissions</a>  
         <h1 class="text-center page-headings">{{ $exam->course->course->title }}</h1>
         <h2 class="text-center">{{ $exam->student->fullname() }}</h2>
         <h5 class="text-center">Type of exam: <span class="font-weight-bold">{{ $exam->type == 1 ? 'Open Questions Exam' : 'Essay' }}</span></h5>

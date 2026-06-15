@@ -39,7 +39,7 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	Route::post('/request-copy/{id}','ParentController@requestCopyPost')->name('request-copy-post');
 	Route::post('request-physical-copy-post/{diploma_id}','ParentController@requestPhysicalCopyPost')->name('request-physical-copy-post');
 	Route::get('/physical-coapy-request-success/{diploma_id}','ParentController@physicalCopyRequestSuccess')->name('parent.physical-copy-request-success');
-	Route::get('/pay-copy-success/{diploma_id}/{type}','ParentController@payCopySuccess')->name('parent.pay-copy-success');
+	Route::get('/pay-copy-success/{diploma_id}/{type}/{service_type}','ParentController@payCopySuccess')->name('parent.pay-copy-success');
 	Route::get('/copies-number/{diploma_id}','ParentController@copiesNumber')->name('parent.copies-number');
 	Route::post('/change-diploma-copies-count/{diploma_id}/{type}','ParentController@changeDiplomaCopiesCount')->name('change-diploma-copies-count');
 	Route::get('/profile','ParentController@profile')->name('parent.profile');

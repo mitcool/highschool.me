@@ -172,7 +172,7 @@
                     <span class="normal">Educator Name / ID</span><br> 
                     <span class="bold">{{ $exam->educator->fullname() }}</span><br> <br>
                        <span class="normal">Grading Date</span><br> 
-                    <span class="bold">{{ $exam->passed_at->format('d.m.Y') }}</span><br> <br>
+                    <span class="bold">{{  $exam->passed_at ? $exam->passed_at->format('d.m.Y') : '-' }}</span><br> <br>
                     
                 </td>
                 <td style="text-align:right;">

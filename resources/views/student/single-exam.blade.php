@@ -27,8 +27,8 @@
                 @foreach ($questions as $key => $question)
                 <div class="shadow p-3">
                     <h4 style="color: #045397;">Question {{ $key+1 }}</h4>
-                    <p class="font-weight-bold">{{ $question->question }}</p>
-                    <textarea required name="answers[{{ $question->id }}]" id="" cols="30" rows="10" class="form-control"></textarea>
+                    <p class="font-weight-bold">{{ $question->exam_question->question }}</p>
+                    <textarea required name="answers[{{ $question->exam_question->id }}]" id="" cols="30" rows="10" class="form-control"></textarea>
                 </div>
              @endforeach
              

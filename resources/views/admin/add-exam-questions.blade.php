@@ -24,7 +24,7 @@
                     <option value="">-- Select Course --</option>
                     @foreach($courses as $course)
                         <option value="{{ $course->id }}">
-                            {{ $course->course->title }}
+                            {{ $course->course->title }} ({{ $course->curriculumType->code }}) 
                         </option>
                     @endforeach
                 </select>
@@ -68,7 +68,7 @@
                     @foreach($courses as $course)
                         <option value="{{ $course->id }}"
                             {{ request('course_id') == $course->id ? 'selected' : '' }}>
-                            {{ optional($course->course)->title }}
+                            {{ optional($course->course)->title }} ({{ $course->curriculumType->code }})
                         </option>
                     @endforeach
                 </select>
