@@ -26,6 +26,7 @@
                 <th colspan="4">
                     <h5>Group Mentoring Sessions</h5>
                 </th>
+                <th></th>
             </tr>
             @if(count($group_sessions) > 0)
                 <tr>
@@ -39,6 +40,7 @@
                 <tr>
                     <td><span>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</span> </td>
                     <td><span>{{ $session->educator->fullname() }}</span></td>
+                    <td></td>
                     <td></td>
                     <td class="text-right">
                         @if(in_array($session->id,$already_booked_sessions))
@@ -86,6 +88,7 @@
                         <p class="mb-0">{{ $session->educator->fullname() }}</p>
                     </td>
                     <td></td>
+                    <td></td>
                     <td class="text-right">
                         @if(in_array($session->id,$already_booked_sessions) && count($session->students) > 1)
                             <button class="btn-enrolled">Already Booked</button>
@@ -98,8 +101,6 @@
                                     <input type="hidden" name="student_id" value="{{ $student_id }}">
                                     <button class="btn-enroll">Confirm Appointments</button>
                                 </form>
-                            @else
-                                <p class="mb-0">Please tell your parent</p>
                             @endif
                         @endif
                     </td>
@@ -148,13 +149,13 @@
                 </tr>
                 @empty
                     <tr>
-                        <td colspan="3">At the moment, there are no coaching sessions scheduled.</td>
+                        <td colspan="4">At the moment, there are no coaching sessions scheduled.</td>
                     </tr>
             @endforelse
 
              {{-- Coaching Sessions --}}
             <tr>
-                <th colspan="2">
+                <th colspan="4">
                     <h5>Personal Tutoring Sessions</h5>
                 </th>
                 <th></th>
@@ -165,6 +166,7 @@
                     <th>Educator</th>
                     <th>Subject</th>
                     <th></th>
+                    
                 </tr>
             @endif
             @forelse ($academic_hours as $session)
@@ -190,7 +192,7 @@
                 </tr>
                 @empty
                     <tr>
-                        <td colspan="3">At the moment, there are no coaching sessions scheduled.</td>
+                        <td colspan="4">At the moment, there are no coaching sessions scheduled.</td>
                     </tr>
             @endforelse
         </tbody>

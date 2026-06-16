@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class ParentExtraServiceType extends Model
 {
     use HasFactory;
+
 }

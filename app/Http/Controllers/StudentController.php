@@ -1236,7 +1236,7 @@ class StudentController extends Controller
                 
                 if($sessions_last_week_limit >=$allowed_meetings_per_week[$plan->plan_id][$meeting->type] && $additional_sessions_bought > 0){
                    AdditionalCourse::where('status',0)
-                    ->where('student_id',$student->id)
+                    ->where('student_id',$student_id)
                     ->where('course_type',$meeting->type)
                     ->first()
                     ->delete();
@@ -1250,7 +1250,7 @@ class StudentController extends Controller
             else{
                 if($additional_sessions_bought > 0){
                     AdditionalCourse::where('status',0)
-                        ->where('student_id',$student->id)
+                        ->where('student_id',$student_id)
                         ->where('course_type',$meeting->type)
                         ->first()
                         ->delete();

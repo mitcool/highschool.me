@@ -1710,14 +1710,14 @@ class ParentController extends Controller
     }
     public function enrollmentConfirmationOrderPayment($student_id,$type){
         if($type == 'digital'){
-            $total = 30;
+            $total = ParentExtraServiceType::find(1)->price;
             $stripe_description = 'Digital Enrollment Confirmation Letter';
             $success_url = route('enrollment-confirmation-order-success',[$student_id,$type]);
             $cancel_url = route('parent.student.profile',$student_id);
         }
         else{
             $total_copies = Cookie::has('enrollment-letter-copies') ? Cookie::get('enrollment-letter-copies') : 1;
-            $price_per_copy = 180;
+            $price_per_copy = ParentExtraServiceType::find(2)->price;
             $total = $total_copies *$price_per_copy;
             $stripe_description = 'Physical Enrollment Confirmation Letter';
             $success_url = route('enrollment-confirmation-order-success',[$student_id,$type]);
@@ -1761,10 +1761,11 @@ class ParentController extends Controller
 
         if($service_type == 2){
             $service['copies']= $total_copies;
-            $total = 180 * $total_copies;
+            $price = ParentExtraServiceType::find(7)->price;
+            $total = $price * $total_copies;
             $description = 'Physical Enrollment Letter (Copies: '.$total_copies. ')';
         }else{
-            $total = 30;
+            $total = ParentExtraServiceType::find(6)->price;
             $description = 'Digital Enrollment Letter(digital)';
         }
 
@@ -1798,7 +1799,9 @@ class ParentController extends Controller
         $type = $request->type;
         $copies = $request->copies;
         $student = User::find($student_id);
-        $total = $type == 1 ? 30 : 180 * $copies;
+        $total = $type == 1 
+            ? ParentExtraServiceType::find(6)->price 
+            : ParentExtraServiceType::find(7)->price * $copies;
        
         $stripe_description = $type == 1 
             ? 'Digital Verification of Graduation' 
@@ -1874,15 +1877,13 @@ class ParentController extends Controller
     }
 
     public function requestPhysicalCopyPost($diploma_id){
-        
-
         if(!Cookie::has('diploma')){
         
             return redirect()->back();
         }
 
         $number_of_copies = (Cookie::get('diploma'));
-        $price_per_copy = 600;
+        $price_per_copy = ParentExtraServiceType::find(5)->price;;
         $total = $price_per_copy * $number_of_copies;
         $diploma_id = (decrypt($diploma_id));
         $diploma = Diploma::find($diploma_id);
