@@ -125,9 +125,9 @@
         body.educator-desktop-nav-active .educator-mobile-panel {
             display: none !important;
         }
-        body.educator-desktop-nav-active .educator-desktop-sidebar {
+        /*body.educator-desktop-nav-active .educator-desktop-sidebar {
             display: block !important;
-        }
+        }*/
        
         .pagination .page-link {
             color: #AB0050!important; /* your color */
@@ -280,7 +280,7 @@
             </div>
         </div>
         <div class="row px-3">
-            <div id="wrapper" class="educator-desktop-sidebar" style="padding:0 0px;">
+            <div id="wrapper" class="educator-desktop-sidebar" style="padding:0 0px; height: stretch;">
                 <ul class="navbar-nav pl-0 sidebar sidebar-dark accordion educator-desktop-sidebar" id="accordionSidebar" style="background:#045397">
                     <li class="nav-item black">
                         <a class="nav-link" href="{{route('educator.dashboard')}}">

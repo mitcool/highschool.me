@@ -214,9 +214,9 @@ input:checked + .slider:before {
     right: 6px;
     top: 0.8em;
 }
-.dropdown-menu {
+/*.dropdown-menu {
     background: #f2f9ff !important;
-}
+}*/
 
 .dropdown-submenu .dropdown-menu {
     top: 0;
@@ -401,9 +401,9 @@ a:hover {
 .nav-item.black{
     background-color: black;
 }
-.nav-link{
+/*.nav-link{
     opacity: 0.8;
-}
+}*/
 .nav-link:hover{
    opacity: 1;
    color: tomato !important;

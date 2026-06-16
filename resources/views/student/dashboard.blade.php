@@ -137,9 +137,9 @@
         body.student-desktop-nav-active .student-mobile-panel {
             display: none !important;
         }
-        body.student-desktop-nav-active .student-desktop-sidebar {
+        /*body.student-desktop-nav-active .student-desktop-sidebar {
             display: block !important;
-        }
+        }*/
         @media (min-width: 1461px) {
             .student-dashboard-row {
                 display: flex;
@@ -280,7 +280,7 @@
             </div>
         </div>
         <div class="row student-dashboard-row">
-            <div id="wrapper" class="student-desktop-sidebar" style="padding:0 0px;">
+            <div id="wrapper" class="student-desktop-sidebar" style="padding:0 0px; height: stretch;">
                 <ul class="navbar-nav sidebar sidebar-dark accordion student-desktop-sidebar pl-0" id="accordionSidebar" style="background:var(--student-sidebar-bg)">
                     <li class="nav-item black">
                         <a class="nav-link" href="{{route('student.dashboard')}}">
@@ -495,14 +495,14 @@
        window.addEventListener('resize', syncStudentNavigation);
 
        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-		fetch('/set-timezone', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-CSRF-TOKEN': '{{ csrf_token() }}'
-			},
-			body: JSON.stringify({ timezone })
-		});
+        fetch('/set-timezone', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ timezone })
+        });
 
         $('#message_modal').modal('show');
     </script>

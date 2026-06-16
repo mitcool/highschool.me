@@ -138,9 +138,9 @@
         body.parent-desktop-nav-active .parent-mobile-panel {
             display: none !important;
         }
-        body.parent-desktop-nav-active .parent-desktop-sidebar {
+        /*body.parent-desktop-nav-active .parent-desktop-sidebar {
             display: block !important;
-        }
+        }*/
         @media (min-width: 1461px) {
             .parent-dashboard-row {
                 display: flex;
@@ -288,7 +288,7 @@
             </div>
         </div>
         <div class="row parent-dashboard-row">
-                <div id="wrapper" class="parent-desktop-sidebar" style="padding:0 0px;">
+                <div id="wrapper" class="parent-desktop-sidebar" style="padding:0 0px; height: stretch;">
                     <ul class="navbar-nav pl-0 sidebar sidebar-dark accordion parent-desktop-sidebar" id="accordionSidebar" style="background:var(--parent-sidebar-bg)">
                         <li class="nav-item black">
                             <a class="nav-link" href="{{route('parent.dashboard')}}">
@@ -376,7 +376,7 @@
                                 <span>Change Password</span>
                             </a>
                         </li>
-                        <li class="nav-item " style="background: #26088d" >
+                        <li class="nav-item sidebar-heading" style="padding: 0px;">
                            
                             <form action="{{ route('logout') }}" method="post">
                                 {{ csrf_field() }}
@@ -513,16 +513,14 @@
        window.addEventListener('resize', syncParentNavigation);
 
        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-		fetch('/set-timezone', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-CSRF-TOKEN': '{{ csrf_token() }}'
-			},
-			body: JSON.stringify({ timezone })
-		});
-
-        
+        fetch('/set-timezone', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ timezone })
+        });
     </script>
 </body>
 

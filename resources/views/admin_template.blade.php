@@ -10,7 +10,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main/style.css') }}">
-    <link href="{{asset('css/admin/sb-admin-2.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('css/admin/sb-admin-2.css')}}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{asset('/assets/fontawesome-free-5.5.0-web/css/all.min.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
         body.admin-desktop-nav-active .admin-desktop-sidebar {
             display: block !important;
         }
-	.error-msg {
+    .error-msg {
             border-radius: 30px !important;
             border: 5px solid rgb(141, 37, 37) !important;
         }
@@ -444,7 +444,7 @@
             </div>
         </div>
         <div class="row admin-dashboard-row">
-            <div id="wrapper" class="admin-desktop-sidebar" style="padding:0 0px;">
+            <div id="wrapper" class="admin-desktop-sidebar" style="padding:0 0px; height: stretch;">
                 <ul class="navbar-nav sidebar sidebar-dark accordion admin-desktop-sidebar pl-0" id="accordionSidebar" style="background:var(--admin-sidebar-bg);">
                     <li class="nav-item active">
                         <a class="nav-link" href="{{route('admin-dashboard')}}">
