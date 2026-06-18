@@ -81,4 +81,11 @@ class AboutController extends Controller
     return view('pages.about.american-college-test')
       ->with('texts',$texts);
   }
+  public function singleAcademicPage(Request $request, $acad_slug) {
+    $texts = $request->all()['texts'];
+    $teacher = Academic::where('slug', $acad_slug)->first();
+    return view('pages.about.single-academic')
+      ->with('texts',$texts)
+      ->with('teacher', $teacher);
+  }
 }

@@ -11,6 +11,6 @@ class Academic extends Model
 
     public $timestamps = false;
 
-    public $fillable = ['name','slug','description'];
+    public $fillable = ['name','slug','description', 'single_page_description'];
     
 }

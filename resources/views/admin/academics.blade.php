@@ -20,6 +20,11 @@
 							<textarea  rows="5" name="description" required class="form-control" placeholder="Description"></textarea>
 						</div>
 
+						<div class="col-md-12 my-2">
+							<p>Single Page Content</p>
+							<textarea rows="5"  name="single_page_description" required class="form-control ckeditor"></textarea>
+						</div>
+
 						<div class="col-md-6 my-2">
 							 <div class="custom-file">
 						    <input type="file" name="picture" class="custom-file-input" id="avatar" required>
@@ -44,4 +49,16 @@
 				</div>	
 		</form>
 	</div>
+@endsection
+
+@section('scripts')
+	<script src="https://cdn.ckeditor.com/4.12.1/full/ckeditor.js"></script>
+
+	<script>   
+    $(document).ready(function(){
+        $('.ckeditor').each(function(){
+            CKEDITOR.replace($(this).attr('id'),);
+        });
+    });
+	</script>
 @endsection

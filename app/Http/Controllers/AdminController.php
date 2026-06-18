@@ -216,7 +216,7 @@ class AdminController extends Controller
         $request->validate([
             'picture' => 'max:200'
         ]);
-        $academic_data = $request->only('name','slug','description');
+        $academic_data = $request->only('name','slug','description', 'single_page_description');
         $academic = Academic::create($academic_data);
         $image = $request->file('picture');
         $input = $request->all();

@@ -199,6 +199,8 @@ Route::group(['middleware' => 'text'],function(){
 
 	Route::get('/academics','AboutController@showAcademics')->name('academics');
 
+	Route::get('/academics/{acad_slug}', 'AboutController@singleAcademicPage')->name('single-academic');
+
 	Route::get('/accreditation','AboutController@showAccreditation')->name('accreditation');
 
 	Route::get('/iso-9001-2015', 'AboutController@showFirstIso')->name('first-iso');

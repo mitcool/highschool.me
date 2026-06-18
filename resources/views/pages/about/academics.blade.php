@@ -55,6 +55,18 @@
 		cursor:pointer;
 		background:white;
 	}
+
+	.educator-box-inside {
+		text-decoration: none;
+	}
+
+	.educator-box-inside:hover {
+		text-decoration: none;
+	}
+
+	.description {
+		color: black!important;
+	}
 </style>
 @endsection
 
@@ -77,9 +89,9 @@
 			<div class="page-content mb-4">{!! $texts['content'] !!}</div>
 			<div class="row">
 				@foreach($academics as $key => $academic)	
-					<div class="col-md-6 gap-2 my-2 px-3 w-100"  data-id="{{$academic->id}}" data-key="{{ $key }}" data-name="{{$academic->name }}"data-description="{{ $academic->description }}">
+					<div class="col-md-6 gap-2 my-2 px-3 w-100">
 						<div class="educator-box">
-							<div class="row p-4">
+							<a class="row p-4 educator-box-inside" href="{{ route('single-academic', $academic->slug) }}">
 								<div class="col-md-4">
 									<x-image-component nickname="academic-{{$academic->id}}" class="w-100" style="display:block;" id="test"/>
 								</div>
@@ -87,7 +99,7 @@
 									<h5 class="name" style="color:#035397;font-weight-bold;">{{ $academic->name }}</h5>
 									<p class="description">{{ $academic->description }}</p>
 								</div>		
-							</div>		
+							</a>		
 						</div>									
 					</div>
 				@endforeach
@@ -99,75 +111,6 @@
 
 @section('footerScripts')
 <script>
-	$(document).ready(function(){
-		$('.academic-box').on('click',function(){
-			if($(window).width() >= 768){
-				$(this).css('opacity',1);
-				let key = ($(this).attr('data-key'));
-				let index = Math.floor(key/4);
-
-				if($('.academic-box').hasClass('active-box')){
-					if(!$(this).hasClass('active-box')){
-						$('.academic-box').removeClass('active-box');
-						$('.academic-box').css('opacity',0.8);
-						$(this).addClass('active-box');
-						$('.academic-info').css('display','none');
-						document.getElementsByClassName('academic-info')[index].style.display = 'block';
-						let name = $(this).attr('data-name');
-						let description = $(this).attr('data-description');
-						let html = `<h2 class="name mt-3">${name}</h2><p class="description">${description}</p>`
-						$(this).parents().find('.academic-info').html(html);
-					}else {
-						document.getElementsByClassName('academic-info')[index].style.display = 'none';						
-						$('.academic-box').removeClass('active-box');
-					}
-				}
-				else{
-					$('.academic-box').removeClass('active-box');
-					$('.academic-box').css('opacity',0.8);
-					$(this).addClass('active-box');
-					$('.academic-info').css('display','none');
-					document.getElementsByClassName('academic-info')[index].style.display = 'block';
-					let name = $(this).attr('data-name');
-					let description = $(this).attr('data-description');
-					let html = `<h2 class="name mt-3">${name}</h2><p class="description">${description}</p>`
-					$(this).parents().find('.academic-info').html(html);
-				}
-			}
-			else{
-				$(this).css('opacity',1);
-				let key = ($(this).attr('data-key'));
-
-				if($('.academic-box').hasClass('active-box')){
-					if(!$(this).hasClass('active-box')){
-						$('.academic-box').removeClass('active-box');
-						$('.academic-box').css('opacity',0.8);
-						$(this).addClass('active-box');					
-						$('.academic-info-mobile').css('display','none');
-						$(this).find('.academic-info-mobile').css('display','block');
-						let name = $(this).attr('data-name');
-						let description = $(this).attr('data-description');
-						let html = `<h2 class="name mt-3">${name}</h2><p class="description">${description}</p>`
-						$(this).parents().find('.academic-info-mobile').html(html);
-					}
-					else{
-						$(this).find('.academic-info-mobile').css('display','none');
-						$('.academic-box').removeClass('active-box');
-					}
-				}
-				else{
-					$('.academic-box').removeClass('active-box');
-					$('.academic-box').css('opacity',0.8);
-					$(this).addClass('active-box');					
-					$('.academic-info-mobile').css('display','none');
-					$(this).find('.academic-info-mobile').css('display','block');
-					let name = $(this).attr('data-name');
-					let description = $(this).attr('data-description');
-					let html = `<h2 class="name mt-3">${name}</h2><p class="description">${description}</p>`
-					$(this).parents().find('.academic-info-mobile').html(html);	
-				}			
-			}	
-		})
-	})
+	
 </script>
 @endsection
