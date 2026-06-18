@@ -114,7 +114,7 @@
 @section('content')
 <div class="container py-4">
     <div class="activity-wrapper">
-        <div class="activity-title">Activity</div>
+        <div class="h2 page-headings text-center">Activity</div>
 
         <div class="activity-actions">
             <form method="POST" action="{{ route('admin.delete-notifications') }}">

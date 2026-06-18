@@ -180,21 +180,26 @@
 @endsection
 
 @section('content')
-<div class="container my-5">
+<div class="container wrapper">
+    <h2 class="text-center h2 page-headings">Degree Transcripts</h2>
     <div class="card graduation-card p-4">
-        <h2 class="text-center mb-4">Degree Transcripts</h2>
+        
          
         <div class="table-responsive">
             <table class="table course-table">
                 <thead>
-                    <tr class="text-center">
-                        <th >Date</th>
-                        <th>Digital Degree</th>
-                         <th>Diploma</th>
-                        <th>Transcript</th>
-                       
-                       
-                    </tr>
+                    @if(count($diplomas))
+                        <tr class="text-center">
+                            <th >Date</th>
+                            <th>Digital Degree</th>
+                            <th>Diploma</th>
+                            <th>Transcript</th>
+                        </tr>
+                    @else
+                    <div class="page-content">
+                        <p class="text-center mb-0">No exams at the moment</p>
+                    </div>
+                    @endif
                 </thead>
                 <tbody class="text-center">
                    @foreach ($diplomas as $diploma)

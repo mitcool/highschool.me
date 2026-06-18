@@ -222,7 +222,8 @@
         <h6 class="section-title">Bill To</h6>
         <p>
           {{$invoice->name}} {{$invoice->surname}}<br>
-          {{$invoice->street}}, {{$invoice->street_number}}<br>
+          {{$invoice->street}},<br> 
+          {{$invoice->street_number}}<br>
           {{$invoice->city}}, {{$invoice->ZIPcode}}<br>
           {{$invoice->country->name}}<br>
           {{$invoice->user_email}}<br>

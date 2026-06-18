@@ -120,12 +120,12 @@
 @endsection
 
 @section('content')
-	<div class="container text-center pt-5" style="margin: 0 auto;">
-		<h2 class="text-center mb-5 program-title">{{ $mentor->name }}</h2>
+	<div class="container shadow  wrapper">
+		<h2 class="text-center h2 page-headings">{{ $mentor->name }}</h2>
         <div class="page-content mt-3 text-justify">
             <p>{{ $mentor->description }}</p>
         </div>
-		<div class="shadow-lg mx-auto">
+		<div class="mx-auto">
             <div class="card-body">
                  <div class="video mt-3">
                     <iframe height="600" width="100%" src="{{ $mentor->video }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

@@ -406,7 +406,7 @@
                 </a>
                 <a class="admin-mobile-menu-link" href="{{ route('admin-submissions') }}">
                     <i class="fas fa-file"></i>
-                    <span>Submimissions</span>
+                    <span>Submissions</span>
                 </a>
 
                 <div class="admin-mobile-menu-section">Payments &amp; Invoices</div>
@@ -714,7 +714,7 @@
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="{{ route('admin-submissions') }}">
                             <i class="fas fa-file"></i>
-                            <span>Submimissions</span>
+                            <span>Submissions</span>
                         </a>                     
                     </li>
                     <hr class="sidebar-divider">

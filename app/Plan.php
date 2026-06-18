@@ -14,6 +14,9 @@ class Plan extends Model
     const CORE  = 1;
     const PRO = 2;
     const ELITE = 3;
+
+    const CORE_TOKENS = 1500;
+    const PRO_AND_ELITE_TOKENS = 3000;
     
     public $timestamps = false;
 

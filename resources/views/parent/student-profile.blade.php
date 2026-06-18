@@ -288,7 +288,7 @@
             </div>
         </div>
         
-        @if($status >= 3)
+        @if($status == 3 || $status == 5)
             <div class="d-flex">
 
                 @if(count($student->student_details->digitalEnrollmentVerification))

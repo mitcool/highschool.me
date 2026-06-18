@@ -120,8 +120,9 @@
 @endsection
 
 @section('content')
-	<div class="col-md-6 text-center pt-5" style="margin: 0 auto;">
-		<h2 class="text-center mb-5 program-title">Ambassador Program</h2>
+    
+	<div class="col-md-6 text-center wrapper mx-auto">
+		<h2 class="h2 page-headings text-center">Ambassador Program</h2>
 		<div class="card ambassador-card shadow-lg mx-auto">
             <div class="card-body">
                 <div class="row align-items-center mb-3">

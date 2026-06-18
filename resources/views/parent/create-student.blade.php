@@ -16,11 +16,12 @@
 @endsection
 
 @section('content')
+
+<div class="container wrapper" >
+    <h1 class="text-center h2 page-headings">Add Student</h1>
+
 <div class="row">
-<div class="col-md-12">
-    <h1 class="text-center h2" style="color:#045397;margin:40px 0;">Add Student</h1>
-</div>
-<div class="shadow col-md-10 mx-auto mt-2">
+<div class="shadow col-md-12 mx-auto mt-2">
     <h3 class="text-center my-2">Personal Information</h3>
     <div  class="mb-3">
         <label for="" class="font-weight-bold mb-0">First Name<span class="text-danger">*</span></label>
@@ -94,7 +95,7 @@
     </div>
     
 </div>
-<div class="shadow col-md-10 mx-auto mt-2">
+<div class="shadow col-md-12 mx-auto mt-2">
     <h3 class="text-center my-2">Academic Information</h3>
         <div class="mb-3">
             <label for="" class="font-weight-bold mb-0">Current Grade Level<span class="text-danger">*</span></label>
@@ -151,7 +152,7 @@
             </select>
         </div>
     </div>
-<div class="shadow col-md-10 mx-auto mt-2">
+<div class="shadow col-md-12 mx-auto mt-2">
     <h3 class="text-center my-2">Contact Information</h3>
     <div class="mb-3">
         <label class="font-weight-bold mb-0">Student E-mail address</label>
@@ -175,7 +176,7 @@
         </div>
     </div>
 </div>
-<div class="shadow col-md-10 mx-auto mt-2">
+<div class="shadow col-md-12 mx-auto mt-2">
     <h3 class="text-center my-2">Address Information</h3>
     <div class="mb-3">
         <label class="font-weight-bold mb-0">Same address as parent/legal guardian?</label>

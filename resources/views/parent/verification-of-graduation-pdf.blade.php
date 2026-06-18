@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Enrollment Confirmation</title>
+    <title>Graduation Verification</title>
     <style>
         html,body,*{
              font-family: "Montserrat", sans-serif; 
@@ -29,7 +29,7 @@
             </tr>
             <tr>
                 <td>Miami, FL 33131, United States of America </td>
-                <td  style="text-align:right">Place of Birth:</td>
+                <td  style="text-align:right">Place of Birth: {{ $student->student_details->city }}</td>
             </tr>
             <tr>
                 <td>Phone: +1 (727) 739-0280</td>

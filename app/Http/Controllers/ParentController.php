@@ -41,6 +41,7 @@ use App\VerificationOfGraduation;
 use App\DiplomaPrintingRequest;
 use App\StudentMeeting;
 use App\ParentExtraService;
+use App\ParentExtraServiceType;
 
 use App\Mail\NewDiplomaPrintingRequest;
 use App\Mail\StudentCreated;
@@ -82,7 +83,13 @@ class ParentController extends Controller
     }
 
     private function createInvoice($amount,$description){
-
+        /**
+         * Column `street` in invoices table == `address`
+         * Column `street number` == `address two`
+         * 
+         * Disaster logic from PROJECT MANAGEMENT TEAM - CHANGING ALL THE FIELDS IN PARENT PROFILE PAGE
+         
+         */
         Invoice::insert([
             'invoice_number' => $this->setInvoiceNumber(),
             'user_email' => auth()->user()->email,
@@ -91,8 +98,8 @@ class ParentController extends Controller
             'name' => auth()->user()->name ,
             'created_at' => Carbon::now() ,
             'surname' => auth()->user()->surname,
-            'street' => auth()->user()->invoice_details->street,
-            'street_number' => auth()->user()->invoice_details->street_number,
+            'street' => auth()->user()->invoice_details->address,
+            'street_number' => auth()->user()->invoice_details->address_two,
             'city' => auth()->user()->invoice_details->city ,
             'ZIPcode' => auth()->user()->invoice_details->zip,
             'country_id' => auth()->user()->invoice_details->country_id,
@@ -373,7 +380,8 @@ class ParentController extends Controller
             'city' => $same_address == 1 ? $request->city : auth()->user()->invoice_details->city,
             'state' => $same_address == 1 ? $request->state : auth()->user()->invoice_details->state,
             'country_id' => $same_address == 1 ? $request->country : auth()->user()->invoice_details->country_id,
-            'tokens' => 500  // Defined by marketing team (TOKENS == QUESTIONS) //After selection of plan update in case they have Pro or Elite
+            'tokens' => 1500  // Defined by marketing team (TOKENS == QUESTIONS) 
+            // //After selection of plan update in case they have Pro or Elite
         ]);
 
         try{
@@ -632,6 +640,7 @@ class ParentController extends Controller
     public function payments(){
         $student_ids = ParentStudent::where('parent_id',auth()->user()->id)->pluck('student_id');
         $student_plans = StudentPlan::whereIn('student_id',$student_ids)->get();
+
         return view('parent.payments')
             ->with('student_plans',$student_plans);
     }
@@ -684,7 +693,9 @@ class ParentController extends Controller
     public function enrollmentFeeSuccess(){
        $invoice_data = session()->get('invoice_data');
        $student_data = session()->get('student_data');
-       $tokens = $student_data['plan_id'] == 1 ? 500 : 1200;
+       $tokens = $student_data['plan_id'] == Plan::CORE ? 
+            Plan::CORE_TOKENS : 
+            Plan::PRO_AND_ELITE_TOKENS;
 
        $exprires_at = $student_data['payment_type'] == 0  
                 ? Carbon::now()->addMonths(1)->subDays(1) 

@@ -34,7 +34,8 @@
                     <div style="text-align: left;margin-left:180px;">
                        <span style="color:#E9580C;font-weight:bold;">{{ $student->fullname() }}</span> <br> 
                         Date of Birth:{{ $student->date_of_birth() }} <br> 
-                        Place of Birth: Vienna, Austria <br> Student ID: {{ $student->student_id() }} <br>
+                        Place of Birth: {{ $student->student_details->city }} <br> 
+                        Student ID: {{ $student->student_id() }} <br>
                         Enrolling date: {{ $student->created_at->format('d.m.Y') }}
                     </div>    
                 </td>

@@ -29,7 +29,7 @@
             </tr>
             <tr>
                 <td>Miami, FL 33131, United States of America </td>
-                <td  style="text-align:right">Place of Birth:</td>
+                <td  style="text-align:right">Place of Birth: {{ $student->student_details->city }}</td>
             </tr>
             <tr>
                 <td>Phone: +1 (727) 739-0280</td>

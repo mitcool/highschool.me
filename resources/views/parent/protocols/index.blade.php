@@ -140,9 +140,9 @@
 @endsection
 
 @section('content')
-<div class="parent-page-content">
-    <div class="protocols-page">
-        <h1 class="protocols-title">List of students</h1>
+<div class="shadow container wrapper">
+    <div class="">
+        <h1 class="text-center h2 page-headings">List of students</h1>
 
         <div class="protocols-card">
             <form method="GET" action="{{ route('parent.protocols.index') }}" class="protocols-filters">

@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow-sm">
-                <div class="card-header text-white" style="background-color: #045397;">
+                <div class="card-header text-white" style="background-color: #00A0B2;">
                     <h5 class="mb-0">Change Password</h5>
                 </div>
 

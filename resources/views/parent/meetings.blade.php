@@ -13,7 +13,7 @@
 @endphp
 
 <div class="shadow container wrapper h-100">
-    <h1 class="text-center h2" style="color:#045397">Your Meetings</h1>
+    <h1 class="text-center h2 page-headings">Your Meetings</h1>
     <hr>
     
     <h3 class="text-center">Sessions Schedules</h3>
@@ -21,7 +21,7 @@
     <table class="table table-striped">
         <tbody>
            
-           @foreach ($student_meetings as $key => $meetings)
+           @forelse ($student_meetings as $key => $meetings)
                 <tr>
                     <th colspan="4">
                         <h5 class="mb-0">{{ $meeting_types[$key] }}</h5>
@@ -61,8 +61,13 @@
                     <td>{{ $family_consultation->date->format('F d,Y') }} at {{ $family_consultation->start->format('g:iA') }}</td>
                     <td>{{ $family_consultation->educator->fullname() }}</td>
                     <td>{{ $family_consultation->link }}</td>
-                </tr>        
-            @endforeach
+                </tr>  
+            @empty
+            <div class="page-content">
+                 <p class="text-center">There are currently no sessions available</p>
+            </div>
+                      
+            @endforelse
         </tbody>
     </table>
 </div>

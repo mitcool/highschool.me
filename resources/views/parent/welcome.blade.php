@@ -5,10 +5,11 @@
 @endsection
 
 @section('content')
+
 <div class="shadow container wrapper">    
-  <div class="row my-3"  style="padding:30px;">
+  <div class="row " >
     <div class="col-md-12">
-        <h2 class="text-center">Welcome {{ auth()->user()->fullname() }}</h2>
+        <h2 class="text-center h2 page-headings">Welcome {{ auth()->user()->fullname() }}</h2>
         <hr>
           <div>
             <p><span class="font-weight-bold">Meetings</span> – List of all scheduled meetings.</p>

@@ -4,7 +4,7 @@
 <style>
 	body {
 		background-color: #fafafa;
-		font-family: 'Poppins', sans-serif;
+		/* font-family: 'Poppins', sans-serif; */
     }
     .invoice-container {
 		max-width: 1000px;
@@ -81,14 +81,20 @@
 
 @section('content')
 <div class="container wrapper shadow h-100">
-    <h1 class="text-center h2" style="color:#045397">Invoices</h1>
+    <h1 class="text-center h2 page-headings">Invoices</h1>
     <hr>
+	@if(count($invoices))
     <div class="d-flex justify-content-between fw-bold mb-2 text-secondary px-2">
 		<span>Date</span>
 		<span>Invoice #</span>
 		<span>Amount</span>
 		<span></span>
     </div>
+	@else
+	<div class="page-content text-center">
+		<p>There are currently no invoices available</p>
+    </div>
+	@endif
     <!-- Example invoice rows -->
     @foreach($invoices as $invoice)
     <div class="invoice-row">

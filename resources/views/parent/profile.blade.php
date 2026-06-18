@@ -35,7 +35,7 @@
 @section('content')
 <div class="container wrapper ">
     <div>
-        <h1 style="color:#045397" class="h2 text-center">Hello {{ auth()->user()->name }}, you can edit your profile details here.</h1>
+        <h1 class="text-center h2 page-headings">Hello {{ auth()->user()->name }}, you can edit your profile details here.</h1>
         <form action="{{ route('parent.update-info') }}" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
 

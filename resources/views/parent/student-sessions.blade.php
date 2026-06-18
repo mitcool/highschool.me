@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container wrapper shadow h-100">
-    <div class="page-content" style="padding:20px;">
-        <h1 class="h2 text-center"  style="color:#045397">Premier Learning Services</h1>
+    <div class="page-content">
+        <h1 class="text-center h2 page-headings">Premier Learning Services</h1>
          <p class="text-center">Access high-quality learning and mentoring options to elevate your educational experience.</p>
          <hr>
         <div class="d-flex justify-content-between">

@@ -4,7 +4,7 @@
 
 
 <div class="container shadow wrapper h-100 page-content">
-    <h1 class="text-center h2">Your Plans</h1>
+    <h1 class="text-center h2 page-headings">Your Plans</h1>
    
         <div class="d-flex justify-content-between w-100 flex-column">
             <div>

@@ -13,8 +13,8 @@
 
 @section('content')
 
-<div class="shadow container wrapper h-100">
-    <h1 class="text-center h2" style="color:#045397">Select Your Time Slot</h1>
+<div class="shadow container wrapper">
+    <h1 class="text-center h2 page-headings" style="color:#045397">Select Your Time Slot</h1>
     <hr>
    
     <h3 class="text-center">Sessions Schedules</h3>

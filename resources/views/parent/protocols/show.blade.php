@@ -21,13 +21,13 @@
     }
     .protocol-heading h1 {
         margin: 0 0 8px;
-        color: #111827;
+       
         font-size: 2.05rem;
         font-weight: 700;
     }
     .protocol-heading h2 {
         margin: 0;
-        color: #111827;
+       
         font-size: 1.8rem;
         font-weight: 700;
     }
@@ -147,8 +147,8 @@
     <div class="protocol-page">
         <div class="protocol-card" id="protocolPrintArea">
             <div class="protocol-heading">
-                <h1>Protocol of Attendance for {{ $selected_year }}</h1>
-                <h2>{{ trim($student->fullname()) }}</h2>
+                <h1 class="text-center h2 page-headings">Protocol of Attendance for {{ $selected_year }}</h1>
+                <h2 class="text-center h2 page-headings">{{ trim($student->fullname()) }}</h2>
             </div>
 
             @if($login_attempts->isEmpty())

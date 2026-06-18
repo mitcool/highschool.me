@@ -130,10 +130,11 @@
 @endsection
 
 @section('content')
-<div class="container my-5">
+<div class="container wrapper">
     @if(auth()->user()->student_details->track == 1 || auth()->user()->student_details->track == 2 || auth()->user()->student_details->track == 3 )
+     <h2 class="text-center h2 page-headings">Graduation Process</h2>
     <div class="card graduation-card p-4">
-        <h2 class="text-center mb-4">Graduation Process</h2>
+       
         <div class="position-relative mb-4">
             <div class="progress graduation-progress">
                 <div class="progress-bar bg-success" style="width:{{ $credits['completed_credits'] / $credits['needed_credits'] * 100 }}%"></div>
@@ -184,7 +185,7 @@
     @endif
 
     <div class="table-container mx-auto mt-5">
-        <h2 class="text-center mb-4">My Courses</h2>
+        <h2 class="text-center h2 page-headings">My Courses</h2>
         {{-- @if(auth()->user()->student_details->track == 1 || auth()->user()->student_details->track == 2)
             @foreach ($needed_mandatory_courses as $message)
                 <p class="text-danger mb-0">{{ $message }}</p>

@@ -1,10 +1,14 @@
 @extends('student.dashboard')
 
 @section('content')
-<div class="container my-5">
-    <div class="table-container mx-auto mt-5">
-        <h2 class="text-center mb-4">My Exams</h2>
-        <p class="text-danger">You can make a pre-exam only once</p>
+<div class="container wrapper">
+    <div class="table-container mx-auto">
+        <h2 class="text-center h2 page-headings">My Exams</h2>
+        @if(count($exams) > 0)
+            <div class="page-content">
+                <p class="text-danger">You can make a pre-exam only once</p>
+            </div>
+        @endif
         <div class="table-responsive">
             <table class="table course-table">
                 <thead>

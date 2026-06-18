@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container wrapper shadow h-100">
-        <h2 class="h2 text-center" style="color:#003A6B;">Submit your question</h2>
+        <h2 class="h2 text-center page-headings">Submit your question</h2>
         <div style="padding:20px;">
             <form action="{{ route('send-help-desk') }}" method="POST">
                 {{ csrf_field() }}

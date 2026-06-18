@@ -1,10 +1,10 @@
 @extends('student.dashboard')
 
 @section('content')
-<div class="container" style="padding: 40px;">
+<div class="container shadow  wrapper">
 	<div class="row">
 		<div class="col-md-12 text-center">
-			<h3>Please select a mentor</h3>
+			<h3 class="text-center h2 page-headings">Please select a mentor</h3>
 			<hr>
 		</div>
         @foreach ($study_mentors as $study_mentor)
