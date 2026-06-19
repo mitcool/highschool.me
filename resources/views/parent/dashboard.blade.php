@@ -232,10 +232,10 @@
                     <span>Meetings</span>
                 </a>
 
-                <div class="parent-mobile-menu-section">Child Information</div>
+                <div class="parent-mobile-menu-section">Student Information</div>
                 <a class="parent-mobile-menu-link" href="{{ route('parent.create.student') }}">
                     <i class="fas fa-user-edit"></i>
-                    <span>Add Child</span>
+                    <span>Add Student</span>
                 </a>
                 @if(auth()->user()->students)
                     @foreach (auth()->user()->students as $student)
@@ -306,13 +306,13 @@
                             </a>
                         </li>
                         
-                        <div class="sidebar-heading">Child Information</div>
+                        <div class="sidebar-heading">Student Information</div>
                         
                        
                         <li class="nav-item active">
                             <a class="nav-link" href="{{route('parent.create.student')}}">
                                 <i class="fas fa-user-edit"></i>
-                                <span>Add Child</span>
+                                <span>Add Student</span>
                             </a>
                         </li>
                         @if(auth()->user()->students)
@@ -449,12 +449,10 @@
                     @endif
                     
                     @yield('content')
-            <a class="scroll-to-top rounded" href="#page-top">
-                <i class="fas fa-angle-up"></i>
-            </a>
         </div>
     </div>
     <x-footer/>
+    <x-scroll-top />
     @yield('scripts')
 
     <script type="text/javascript">

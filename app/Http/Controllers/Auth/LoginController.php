@@ -71,6 +71,12 @@ class LoginController extends Controller
             ]);
         }
 
+        if ((int) $user->role_id === 2 && (int) $user->is_verified === 0) {
+            return $this->validationErrorResponse($request, [
+                'email' => ['Please open your email and verify your account before logging in.'],
+            ]);
+        }
+
         $current_ip = $request->ip();
         $user_agent = substr((string) $request->userAgent(), 0, 65535);
         $remember = $request->filled('remember');

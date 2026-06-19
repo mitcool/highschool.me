@@ -1684,6 +1684,46 @@ blockquote p::after {
     z-index: 3;
 }
 
+.scroll-to-top {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #045397;
+    color: #ffffff !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+    box-shadow: 0 10px 24px rgba(4, 83, 151, 0.28);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background-color 0.2s ease;
+    z-index: 1030;
+}
+
+.scroll-to-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.scroll-to-top:hover,
+.scroll-to-top:focus {
+    background: #03457c;
+    color: #ffffff !important;
+}
+
+.scroll-to-top i {
+    font-size: 20px;
+    line-height: 1;
+}
+
 /* only affects mobile hamburger area */
 .menuButton{
     position: relative;
@@ -1744,4 +1784,13 @@ blockquote p::after {
 
 .footer-company-address-detail:hover {
     color: black!important;
+}
+
+@media (max-width: 767px) {
+    .scroll-to-top {
+        right: 15px;
+        bottom: 15px;
+        width: 44px;
+        height: 44px;
+    }
 }

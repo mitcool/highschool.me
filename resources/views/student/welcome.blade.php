@@ -1,5 +1,77 @@
 @extends('student.dashboard')
 
+@section('css')
+<style>
+  .student-digital-card {
+    width: 50%;
+    padding: 20px;
+  }
+  .student-digital-card-image img,
+  .student-digital-card-image i {
+    width: 140px;
+    display: block;
+  }
+  .student-digital-card-logo {
+    margin-top: 10px;
+  }
+  .student-digital-card-info {
+    margin-left: 20px;
+    min-width: 0;
+  }
+  .student-digital-card-name {
+    font-size: 1.7rem;
+    color: #045397;
+    margin-bottom: 0;
+    font-weight: 600;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+  @media (max-width: 1199px) {
+    .student-digital-card {
+      width: 70%;
+    }
+  }
+  @media (max-width: 991px) {
+    .student-digital-card {
+      width: 100%;
+      max-width: 640px;
+    }
+  }
+  @media (max-width: 767px) {
+    .student-digital-card {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 18px 16px;
+    }
+    .student-digital-card-image img,
+    .student-digital-card-image i {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .student-digital-card-info {
+      margin-left: 0;
+      margin-top: 18px;
+      width: 100%;
+    }
+    .student-digital-card-info hr {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  @media (max-width: 480px) {
+    .student-digital-card-name {
+      font-size: 1.35rem;
+    }
+    .student-digital-card-image img,
+    .student-digital-card-image i {
+      width: 110px;
+      font-size: 110px !important;
+    }
+  }
+</style>
+@endsection
+
 @section('content')
 <div class=" container wrapper">    
   <div class="row">
@@ -14,17 +86,17 @@
           <p><span class="font-weight-bold">Study Mentor</span> – Your AI mentors.</p>
           <p><span class="font-weight-bold">Ambassador Program</span> – Become ambassador and win amazing prizes.</p>
           <p><span class="font-weight-bold">Help Desk</span> – You have a specific question. Message us.</p> --}}
-          <div class="shadow w-50 mx-auto d-flex" style="padding:20px;">
-              <div class="image">
+          <div class="shadow mx-auto d-flex student-digital-card">
+              <div class="image student-digital-card-image">
                   @if(auth()->user()->avatar)
-                    <img src="{{ asset('images/avatars') }}/{{ auth()->id() }}/{{ auth()->user()->avatar }}" alt="" style="width:140px;display:block">
+                    <img src="{{ asset('images/avatars') }}/{{ auth()->id() }}/{{ auth()->user()->avatar }}" alt="">
                   @else
                     <i class="fas fa-user-circle" style="font-size: 140px;color: #045397;"></i>
                   @endif
-                  <img src="{{ asset('images/logo.svg') }}" alt="" style="width:140px;display:block;margin-top:10px;">
+                  <img src="{{ asset('images/logo.svg') }}" alt="" class="student-digital-card-logo">
               </div>
-              <div class="info" style="margin-left:20px;">
-                  <p style="font-size: 1.7rem;color:#045397;margin-bottom:0;font-weight:600;">{{ auth()->user()->fullname() }}</p>
+              <div class="info student-digital-card-info">
+                  <p class="student-digital-card-name">{{ auth()->user()->fullname() }}</p>
                   <hr class="mt-0">
                   
                   <p class="mb-0">Date of Birth:</p>

@@ -8,6 +8,8 @@
 
 	<x-footer/>
 
+	<x-scroll-top />
+
 	<x-modals/>
 		
 	<input id="hf" type="hidden" data-accept-cookies="{{Cookie::get('accept_cookies')}}" data-lang="{{Cookie::get('lang_conversion')}}" data-youtube="{{Cookie::get('youtube')}}" data-landbot="{{Cookie::get('landbot')}}" data-maps="{{Cookie::get('google_maps')}}" data-ads="{{Cookie::get('google_ads')}}" data-facebook="{{Cookie::get('facebook')}}" data-analytics="{{Cookie::get('google_analytics')}}">	
