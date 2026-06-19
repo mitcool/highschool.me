@@ -11,7 +11,7 @@
     <p class="text-danger text-center">Please enter the time in UTC timezone <span class="font-weight-bold">(UTC time now : {{ $utc_time }})</span></p>
     <hr/>
     <hr/>
-     <form action="{{ route('educator.create-exam') }}" method="POST" >
+     <form action="{{ route('educator.create-exam') }}" method="POST" class="confirm-first" id="add-exam">
         {{ csrf_field() }}
         <div class="row">
             <div class="col-md-6">

@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="shadow w-auto mx-auto wrapper">    
-    <h2 class="text-center">List of students</h2>
+    <h2 class="page-headings h2 text-center">List of students</h2>
     <hr>
     <table class="table table-striped">
         <tr>

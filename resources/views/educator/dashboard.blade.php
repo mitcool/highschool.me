@@ -13,6 +13,8 @@
     <link href="{{asset('css/admin/sb-admin-2.min.css')}}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{asset('/assets/fontawesome-free-5.5.0-web/css/all.min.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,700;1,200&display=swap" rel="stylesheet">
+    
     {{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
@@ -453,29 +455,52 @@
             @yield('content')
         </div>
     </div>
+      <!-- Confirmation Modal -->
+        <div class="modal fade" id="confirm_modal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content border-0 shadow-xl" style="border:none !important;border-radius:5px !important;padding:20px; ">
+                
+                    <div class="modal-body">
+                        <h3 class="text-center text-dark font-weight-bold">Are you sure?</h3>
+                        <div class="d-flex justify-content-center" style="margin-top:40px;">
+                            <button type="button" class="mx-2 btn-lg btn blue-button-outline" data-dismiss="modal" id="no">
+                                Cancel
+                            </button>
+
+                            <button type="button" class="mx-2 btn-lg btn orange-button" id="yes">
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
      <x-footer />
     <x-scroll-top />
     @yield('scripts')
 
     <script type="text/javascript">   
-       let forms = document.querySelectorAll('.confirm-first');
-       for(let form of forms){
-        
-        form.addEventListener('submit',function(e){
-            if(form.getAttribute('id')=='logout_form' ){
-                form.submit();
-            }
-            else if(form.getAttribute('id')=='create_news_form' ){
-                return;
-            }
-            else{
+        let forms = document.querySelectorAll('.confirm-first');
+
+        for(let form of forms){  
+            form.addEventListener('submit',function(e){
                 e.preventDefault();
-                if(confirm('Are you sure?')){
-                    form.submit();
-                };
-            }    
-        });
-       }
+                $('#confirm_modal').modal('show');
+                $('#yes').attr('data-id',form.getAttribute('id'))
+                
+            });
+        }
+
+       $('#yes').on('click',function(){
+            let id = $(this).attr('data-id');
+            $(`#${id}`).find('button').attr('disabled',true);
+            $('#confirm_modal').modal('hide');
+            $(`#${id}`).submit();
+       })
+       $('#no').on('click',function(){
+            let id = $(this).attr('data-id');
+            $(`#${id}`).find('button').attr('disabled',false);
+       })
 
        $('#message_modal').modal('show');
 

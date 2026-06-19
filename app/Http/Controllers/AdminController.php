@@ -1953,7 +1953,7 @@ class AdminController extends Controller
     }
     
      public function diplomaRequests(){
-        $requests = ParentExtraService::all();
+        $requests = ParentExtraService::orderBy('id','desc')->paginate(10);
         return view('admin.diploma-requests')
             ->with('requests',$requests);
     }
@@ -2054,11 +2054,15 @@ class AdminController extends Controller
     public function ChangeDiplomaPrintingStatus(Request $request,$printing_request_id){
         $printing_request = ParentExtraService::find($printing_request_id);
         $new_status = $request->status;
+        $tracking_number = $request->tracking_number;
         if($printing_request->status >= $new_status){
             return redirect()->back()->with('error','Wrong status change sequence');
         }
         else{
             $printing_request->update(['status' => $new_status]);
+            if($tracking_number){
+                 $printing_request->update(['tracking_number' => $tracking_number]);
+            }
             $parent = $printing_request->student->student_details->parent;
 
             try{

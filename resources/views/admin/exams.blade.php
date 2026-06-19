@@ -61,13 +61,25 @@
      <h2 class="text-center blue-heading h2">Exams</h2>
      <table class="table">
         @if(count($exams) > 0)
-            <tr>
-                <th>Date</th>
-                <th>UTC Time</th>
-                <th>Subject</th>
-                <th>Student</th>
-                <th>Exam Type</th>
-                <th class="text-center" colspan="3">Action</th>
+            <tr class="bg-light">
+                <th>
+                    <span>Date</span>
+                </th>
+                <th>
+                    <span>UTC Time</span>
+                </th>
+                <th>
+                    <span>Subject</span>
+                </th>
+                <th>
+                    <span>Student</span>
+                </th>
+                <th>
+                    <span>Exam Type</span>
+                </th>
+                <th class="text-center" colspan="3">
+                    <span>Action</span>
+                </th>
             </tr>
         @endif
         @forelse($exams as $exam)
@@ -79,12 +91,12 @@
                 <td>{{ $exam->type == 1 ? 'Open Exam' : 'Essay' }}</td>
                 @if($exam->status == 0)
                 <td class="text-center">
-                    <button class="btn btn-link text-underline" style="text-decoration: underline" data-toggle="modal" data-target="#edit-modal-{{ $exam->id }}">Edit</button>
+                    <button class="btn btn-link text-underline m-0 p-0" style="text-decoration: underline" data-toggle="modal" data-target="#edit-modal-{{ $exam->id }}">Edit</button>
                 </td>
                 <td class="text-center">
-                    <form action="{{ route('delete-exam',$exam->id) }}" method="POST" class="confirm-first">
+                    <form action="{{ route('delete-exam',$exam->id) }}" method="POST" class="confirm-first ">
                         {{ csrf_field() }}
-                        <button class="btn btn-link text-underline" style="text-decoration: underline">Remove</button>
+                        <button class="btn btn-link text-underline m-0 p-0" style="text-decoration: underline">Remove</button>
                     </form>
                 </td>
                 @elseif($exam->status==1)

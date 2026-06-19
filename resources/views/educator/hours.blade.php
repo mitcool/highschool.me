@@ -11,8 +11,8 @@
 
 @section('content')
 <div class="container wrapper">
-    <h1 class="text-center h2 font-weight-bold">Set Work Hours</h1>
-    <form action="{{ route('add-working-hour') }}" method="POST">
+    <h1 class="text-center h2 page-headings">Set Work Hours</h1>
+    <form action="{{ route('add-working-hour') }}" method="POST" class="confirm-first" id="add-hours">
         {{ csrf_field() }}
         <div class="row shadow align-items-center" style="padding:20px;">
             <div class="col-md-3"> 

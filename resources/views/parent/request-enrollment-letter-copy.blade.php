@@ -31,7 +31,7 @@
     <hr>
     <div class="d-flex justify-content-between align-items-center">
         <h5>Total Amount: <span style="color:#ee6123 !important">${{ number_format($total_amount,2,'.',',') }}</span></h5>
-        <form action="{{ route('enrollment-confirmation-order-payment',[$student->id,'physical']) }}" id="request-copy-form" method="POST">
+        <form action="{{ route('enrollment-confirmation-order-payment',[$student->id,'physical']) }}" id="request-copy-form" method="POST" class="confirm-first">
             {{ csrf_field() }}
             <button class="orange-button">Proceed to Payment</button>
         </form>

@@ -20,7 +20,7 @@
           
             <div class="d-flex justify-content-between w-100">
                 <div>
-                   <form action="{{ route('parent.update-plan',$student->id) }}" method="POST">
+                   <form action="{{ route('parent.update-plan',$student->id) }}" method="POST" class="confirm-first" id="change-plan">
                 {{ csrf_field() }}
                 
                 <p class="mb-0 font-weight-bold mt-3">Please select your preferred Package:</p>

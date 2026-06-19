@@ -219,7 +219,7 @@
     </div>
     
     <p><span class="font-weight-bold">Legal notice:</span> Additional documentation may be requested in specific legal or administrative situations.*</p>
-    <form action="{{ route('student.add') }}" method="POST" enctype="multipart/form-data" class="d-flex justify-content-center" style="padding: 20px;" id="add-student-form">
+    <form action="{{ route('student.add') }}" method="POST" enctype="multipart/form-data" class="d-flex justify-content-center" style="padding: 20px;" id="add-student-form" class="confirm-first">
         {{ csrf_field() }}
         <a href="{{ route('parent.dashboard') }}" class="blue-button-outline btn-lg btn mx-2">Cancel</a>
         <button class="shadow orange-button btn-lg btn mx-2">Proceed</button>

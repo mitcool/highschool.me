@@ -23,7 +23,7 @@ class ParentExtraService extends Model
        }
     }
 
-    protected $fillable = ['copies','service_type','student_id','status'];
+    protected $fillable = ['copies','service_type','student_id','status','tracking_number'];
 
     public function student(){
         return $this->hasOne('App\User','id','student_id');

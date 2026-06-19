@@ -38,7 +38,7 @@
     <hr>
     <div class="d-flex justify-content-between align-items-center">
         <h5>Total Amount: <span style="color:#ee6123 !important" id="total">${{ number_format(($diploma_package_price),2,'.',',') }}</span></h5>
-        <form action="{{ route('request-copy-post',encrypt($diploma->id)) }}" id="request-copy-form" method="POST">
+        <form action="{{ route('request-copy-post',encrypt($diploma->id)) }}" id="request-copy-form" method="POST" class="confirm-first">
             {{ csrf_field() }}
             <button class="orange-button">Proceed to Payment</button>
         </form>

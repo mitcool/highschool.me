@@ -4,7 +4,7 @@
 <div class="shadow container bg-white my-3">
 	<form action="{{ route('educator.update-question-exam', $question->id) }}" method="POST" enctype="multipart/form-data">
 		{{csrf_field()}}
-		<div class="container" style="padding:30px;">
+		<div class="container">
 			<h3 class="text-center page-headings">Edit Question</h3>	
 			<div class="row">
 				<div class="col-md-12 my-2">

@@ -1,5 +1,63 @@
-☐ Exam Protocol - Accomodation Date ? Passed Date 
-☐ Exam Protocol - Frauds
-☐ Graduation verificaton - Place of birth on PDF
-☐ Status - Graduated , Reupload Documents
+Tests:
+    ✔ Registration @done(26-06-17 10:22)
+    ✔ Verification @done(26-06-17 10:22)
+    ✔ Login + PIN @done(26-06-17 10:22)
+    ✔ Restriction when details are not filled @done(26-06-17 10:22)
+    ✔ Add Avatar and details @done(26-06-17 10:22)
+    ✔ Meeting Page when not student @done(26-06-17 10:23)
+    ✔ Diploma Page when not students or diplomas
+    ✔ Plans and Invoices pages when nothing there - parent @done(26-06-17 15:33)
+    ✔ Send Help Desk From Parent Dash @done(26-06-17 10:26)
+    ✔ Change Password From Dashboard @done(26-06-17 10:28)
+    ✔ Add Student with same details as parent - Transfer Program @done(26-06-17 10:58)
+    ✔ Upload Documents - only the required once @done(26-06-17 11:02)
+    ✔ Pay Application fee - Server 500 @done(26-06-17 11:02)
+    ✔ Invoice Check second column - parent dashboard -> issue in create Invoice @done(26-06-17 16:10)
+    ✔ Approve documents - @done(26-06-17 11:09)
+    ✔ Pay elite package - 1 year @done(26-06-17 11:10)
+    ✔ Digital Enrollment Verification - invoice + payment + download @done(26-06-17 11:10)
+    ✔ Place of birth not showing in Enrollement verification pdf @done(26-06-17 16:24)
+    ✔ Parent Extra Service Table Fix On Stage - wrong names @done(26-06-17 16:24)
+    ✔ Admin - change status of physical order - Sent / Delivered ( Add Tracking Number) @done(26-06-18 15:51)
+    ✔ Confirmation Modal ???? @done(26-06-19 11:00)
+    ----------------------------------
+    ## Enrollment 
+    ✔ Core And Elective Courses -- buy when they are PRO or Elite ???? @done(26-06-18 16:47)
+    ✔ Course Enrollement - Transfer Program Courses @done(26-06-19 09:41)
+    ✔ Course Start Study @done(26-06-17 12:15)
+    ✔ Course Ready For Exam @done(26-06-17 12:15)
+    ✔ Pre exam message in student exams page / dashboard -> hide when no exams @done(26-06-17 16:26)
+    ✔ Headings - make equal in student/parent dash @done(26-06-17 16:56)
+    ✔ My diplomas message when no diploma -> student dashboard @done(26-06-17 16:56)
+    ✔ Add exam admin -> multiple student --Please select -- @done(26-06-17 17:03)
+    ✔ Exams table front end - not equal @done(26-06-18 17:03)
+    ✔ Maybe a filter for courses in add exam questions ??? @done(26-06-18 17:03)
+    ✔ Accomodation date - protocol ??? @done(26-06-18 14:52)
+    ✔ Add Exam Essay @done(26-06-17 13:04)
+    ✔ Instuction and download pdf @done(26-06-17 13:04)
+    ✔ Parent Exam Results Maybe Topic - display @done(26-06-18 17:16)
+    ✔ Single Submissons -> write topic as well / Admin/Single Submission @done(26-06-19 11:18)
+    ✔ Submissions error in admin template spelling @done(26-06-18 08:53)
+    ☐ Hide Instructions when exam is completed
+    ✔ Fix the tokens @done(26-06-19 09:41)
+    ☐ Fail Exam / Not pass exam after evaluation
+    ✔ Transcript Place of Birth check @done(26-06-19 09:42)
+    ✔ Maybe to top scroll ??? - Васко @done(26-06-19 10:16)
+    ✔ Student Help Desk @done(26-06-17 14:03)
+    ☐ Front end of the student card
+    ☐ Fix the status GRADUATED and reupload documents
+    ✔ Graduation of verification - title of pdf page + place of birth of student @done(26-06-19 09:24)
+    ☐ Diploma Package -> payment + invoice
+    ✔ Diploma Requests in admin dash -> order BY + pagination + when empty message @done(26-06-19 09:34)
+    ✔ Complaint -> notifyAdmins @done(26-06-19 10:08)
+    ☐ Change Plan start now ???  
 
+    ✔ Error after the payment of pro package @done(26-06-18 14:52)
+    
+    ################################## MEETINGS #############################
+    ☐ Server Error -> Create Group Sessions
+
+    ####################### EMAILS #################################
+    ☐ Family Consultation Request 
+    ☐ New Complaint -> admin
+    ☐ Enrollement Letter - physical -> request to Parent and Admin

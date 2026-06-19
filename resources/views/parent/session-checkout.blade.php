@@ -6,7 +6,7 @@
     <h1 class="h2 text-center" style="color:#045397">Confirm your details</h1>
     <hr>
     <p class="h3  mt-2" style="color:#045397;">Personal Information</p>
-    <form action="{{ route('parent.student.sessions.pay',$student->id) }}" method="POST">
+    <form action="{{ route('parent.student.sessions.pay',$student->id) }}" method="POST" id="session-pay" class="confirm-first">
         {{ csrf_field() }}
         <label for="" class="d-block font-weight-bold mb-0 mt-2">Full Name:</label>
         <input type="text" readonly value="{{ auth()->user()->name }} {{ auth()->user()->surname }}" class="form-control">

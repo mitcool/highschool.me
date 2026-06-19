@@ -30,7 +30,7 @@
                          
                             <td>{{ $exam->course->course->title }}</td>
                             <td>
-                                @if($exam->type == 2)
+                                @if($exam->type == 2 && $exam->status == 0)
                                     <a href="{{ asset('images/pdf/OHS_Essay_Writing_Guide_and_Template.pdf') }}" download>Instructions</a>
                                 @elseif($exam->pre_exam == 0 && $exam->status == 0)
                                     <a href="{{ route('student.pre-exam',$exam->id) }}">Link &#187;</a>

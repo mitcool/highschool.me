@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="shadow container wrapper">
-    <h1 class="text-center h2 blue-heading">Courses</h1>
+    <h1 class="text-center h2 page-headings">Courses</h1>
     <table class="table">
         <thead>
             <tr>
@@ -40,7 +40,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('educator.request-new-course') }}" id="new-course-form" method="POST">
+                    <form action="{{ route('educator.request-new-course') }}" id="new-course-form" method="POST" class="confirm-first">
                         {{ csrf_field() }}
                         <div class="row text-left">
                             @foreach ($course_categories as $course_category )

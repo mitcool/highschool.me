@@ -22,7 +22,7 @@
             </div>
 		</div>
         @if($exam->type == 1)
-             <form action="{{ route('submit-exam',$exam->id) }}" method="POST" enctype="multipart/form-data" id="exam-form">
+             <form action="{{ route('submit-exam',$exam->id) }}" method="POST" enctype="multipart/form-data" id="exam-form" class="confirm-first">
                 {{ csrf_field() }}
                 @foreach ($questions as $key => $question)
                 <div class="shadow p-3">
@@ -37,7 +37,7 @@
             </div>
             </form>
         @else
-            <form action="{{ route('submit-exam',$exam->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('submit-exam',$exam->id) }}" method="POST" enctype="multipart/form-data" id="exam-form" class="confirm-first">
                 {{ csrf_field() }}
                 <hr>
                 <h2><span class="font-weight-bold">Topic: </span>{{ $exam->topic }}</h2>

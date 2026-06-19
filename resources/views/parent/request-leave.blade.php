@@ -46,7 +46,7 @@
     <div class="text-center">
         <h1 class="text-center h2 page-headings">Request leave for a child</h1>
     </div>
-    <form action="{{ route('parent.store-leave') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('parent.store-leave') }}" method="POST" enctype="multipart/form-data" class="confirm-first" id="store-leave">
         @csrf
         <div class="shadow page-content" style="padding:20px;">
             <div class="form-group">

@@ -5,16 +5,18 @@
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     <h2 class="text-center">Diploma Requests</h2>
     <table class="table">
-        <tr>
-            <th>Date</th>
-            <th>Ordered by</th>
-            <th>Request</th>
-            <th>Student</th>
-            <th>Price</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-        @foreach ($requests as $request)
+        @if(count($requests))
+            <tr>
+                <th>Date</th>
+                <th>Ordered by</th>
+                <th>Request</th>
+                <th>Student</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        @endif
+        @forelse ($requests as $request)
             <tr>
                 <td>{{ $request->created_at->format('d.m.Y') }}</td>
                 <td>{{ $request->student->student_details->parent->fullname() }}</td>
@@ -34,8 +36,15 @@
                     @endif
                 </td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="7" class="text-center">No requests at the moment</td>
+            </tr>
+        @endforelse
     </table>
+    <div class="d-flex justify-content-center">
+        {{ $requests->links() }}
+    </div>
 </div>
 
 @endsection

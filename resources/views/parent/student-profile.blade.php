@@ -294,7 +294,7 @@
                 @if(count($student->student_details->digitalEnrollmentVerification))
                     <a href="{{ route('enrollment-confirmation',$student->id) }}" class="btn my-3 mr-3 blue-button-outline"><i class="fas fa-download"></i> Download Enrollment Verification</a>
                 @else
-                    <form action="{{ route('enrollment-confirmation-order-payment',[$student->id,'digital']) }}" method="POST" class="mr-3">
+                    <form action="{{ route('enrollment-confirmation-order-payment',[$student->id,'digital']) }}" method="POST" class="mr-3 confirm-first" id="enrollment-confirmation-order">
                         {{ csrf_field() }}
                         <button class="btn my-3 blue-button-outline">Digital Enrollment Verification</button>
                     </form>
@@ -376,7 +376,7 @@
     <div class="page-content">
         <h4 style="color:#E9580C">Documentation is Approved</h4>
         @if($student->student_details->track == 3)
-            <form action="{{ route('parent.transfer-program-pay',$student->id) }}" method="POST">
+            <form action="{{ route('parent.transfer-program-pay',$student->id) }}" method="POST" id="transfer-program-pay" class="confirm-first">
                 {{ csrf_field() }}
                 <p>The documentation for this student is approved. You must pay the following fees:</p>
                 <input type="radio" checked readonly class="radio"> Enrolment Fee <span style="color:#E9580C">($300.00)</span> 
@@ -405,7 +405,7 @@
         @else
             <p>The documentation for this student is approved. Please select your plan:</p>
             <p class="mb-0 font-weight-bold mt-3">You must pay mandatory Enrolment Fee:</p>
-            <form action="{{ route('parent.pay.plan',$student->id) }}" method="POST">
+            <form action="{{ route('parent.pay.plan',$student->id) }}" method="POST" id="plan-pay" class="confirm-first">
                 {{ csrf_field() }}
                 <input type="radio" checked readonly class="radio"> Enrolment Fee <span style="color:#E9580C">($300.00)</span> 
                 <p class="mb-0 font-weight-bold mt-3">Please select your preferred Package:</p>
@@ -504,12 +504,12 @@
                                         </td>
                                         <td class="course-action-cell">
                                             @if($enrolled_course->status == 0)
-                                                <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST" class="confirm-first course-action-form">
+                                                <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST" class="confirm-first course-action-form" id="enrolled-course-{{ $enrolled_course->id }}">
                                                     {{ csrf_field() }}
                                                     <button class="course-pill course-pill-action-start course-action-button">Start Study</button>
                                                 </form>
                                             @elseif($enrolled_course->status == 1)
-                                                <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST" class="confirm-first course-action-form">
+                                                <form action="{{ route('update-enrolled-course-status',$enrolled_course->id) }}" method="POST" class="confirm-first course-action-form" id="update-enrolled-course-{{ $enrolled_course->id }}">
                                                     {{ csrf_field() }}
                                                     <button class="course-pill course-pill-action-ready course-action-button">Ready for Exam</button>
                                                 </form>
@@ -533,7 +533,7 @@
         @endif
     {{-- Reupload documents --}}
     @elseif($status == 4)
-        <form action="{{ route('parent.reupload.document',$student->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('parent.reupload.document',$student->id) }}" method="POST" enctype="multipart/form-data" id="reupload-document" class="confirm-first">
             {{ csrf_field() }}
             @if($student->student_details->feedback)
                 <p class="text-danger">{{ $student->student_details->feedback }}</p>
@@ -557,8 +557,8 @@
             </div>
         </form>
 
-    @elseif($status == 5)
-        Graduated student
+    {{-- @elseif($status == 5)
+        Graduated student --}}
     @endif
     </div>
 </div>
@@ -654,10 +654,6 @@
                 return;
             }
         });
-
-        $('.enroll-form').on('submit',function(){
-            $(this).find('button').attr('disabled','true');
-        })
     })
 </script>
 @endsection

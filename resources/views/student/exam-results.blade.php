@@ -19,6 +19,7 @@
             @endforeach
         @else
             @if(count($answers) > 0)
+                <p><span class="font-weight-bold">Topic:</span>  {{ $exam->topic }}</p>
                 <div class="text-right">
                     <a class="text-decoration-none btn btn-secondary" href="{{ asset('exams') }}/{{ $exam->id }}/{{ $answers[0]->answer }}" target="_blank" download><i class="fas fa-download"></i> Download here</a>
                 </div>

@@ -700,10 +700,12 @@ class ParentController extends Controller
        $exprires_at = $student_data['payment_type'] == 0  
                 ? Carbon::now()->addMonths(1)->subDays(1) 
                 : Carbon::now()->addYears(1)->subDays(1); // monthly or yearly
+
         $plan = StudentPlan::create([
             'plan_id' => $student_data['plan_id'],
             'student_id' => $student_data['student_id'],
             'expires_at' => $exprires_at,
+            'type' => $student_data['payment_type']
         ]);
 
         $this->insertAdditionalCourses($student_data['plan_id'],$student_data['student_id']);
@@ -947,6 +949,7 @@ class ParentController extends Controller
             'plan_id' => $student_data['plan_id'],
             'student_id' => $student_data['student_id'],
             'expires_at' => $exprires_at,
+            'type' => $student_data['payment_type'],
             'created_at' => Carbon::now()
         ]);
 

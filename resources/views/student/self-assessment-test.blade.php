@@ -23,7 +23,7 @@
     </div>
 
     {{-- Questions --}}
-    <form method="POST" action="{{ route('student.self-assessment-test-submit', $attempt->id) }}" id="test-form">
+    <form method="POST" action="{{ route('student.self-assessment-test-submit', $attempt->id) }}" id="test-form" class="confirm-first">
         @csrf
 
         @foreach($questions as $index => $question)

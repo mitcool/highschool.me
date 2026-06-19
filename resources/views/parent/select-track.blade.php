@@ -5,7 +5,7 @@
     <h1 class="text-center h2" style="color:#045397">Add Student</h1>
     <hr>
     
-    <form action="{{ route('parent.update-student-track',$student->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('parent.update-student-track',$student->id) }}" method="POST" enctype="multipart/form-data" id="update-track" class="confirm-first">
         {{ csrf_field() }}
       
             <label for="" class="font-weight-bold mb-0">Select Education Option<span class="text-danger">*</span></label>

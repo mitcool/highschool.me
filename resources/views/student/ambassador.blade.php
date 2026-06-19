@@ -209,7 +209,7 @@
         <div class="card form-card shadow mx-auto mt-5">
             <div class="card-body p-4">
                 <h3 class="text-center mb-4 form-title">Submit Activity</h3>
-                <form method="POST" action="{{ route('student.store-activity') }}">
+                <form method="POST" action="{{ route('student.store-activity') }}" class="confirm-first" id="store-activity">
                     @csrf
                     <div class="row mb-3">
                         <div class="col-6">
@@ -324,7 +324,7 @@
         @endforeach
 
 
-        <form method="POST" action="{{ route('ambassador.redeem') }}" id="redeem-form">
+        <form method="POST" action="{{ route('ambassador.redeem') }}" id="redeem-form" class="confirm-first">
             @csrf
 
             <div class="mt-4">

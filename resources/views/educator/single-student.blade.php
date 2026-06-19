@@ -140,7 +140,7 @@
 @endsection
 @section('content')
 <div class="shadow container wrapper">    
-	<h2 class="text-center mb-3 ">Student Information</h2>
+	<h2 class="text-center page-headings">Student Information</h2>
     <div class="row">
         <div class="col-md-6">
             <h5>Student Name: <span style="color:#004c99;font-weight:bold">{{ $student->fullname() }}</span></h5>

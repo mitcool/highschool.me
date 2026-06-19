@@ -36,7 +36,7 @@
 <div class="container wrapper ">
     <div>
         <h1  class="text-center h2 page-headings">Hello {{ auth()->user()->name }}, you can edit your profile details here.</h1>
-        <form action="{{ route('parent.update-info') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('parent.update-info') }}" method="POST" enctype="multipart/form-data" id="update-info" class="confirm-first">
             {{ csrf_field() }}
 
             <div class="shadow section" >

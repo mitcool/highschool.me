@@ -5,7 +5,7 @@
 
 <div class="container shadow wrapper h-100 page-content">
     <h1 class="text-center h2 text-center h2 page-headings">Your Plans</h1>
-    @foreach ($parent_students as $student )
+    @forelse ($parent_students as $student )
         <div class="d-flex justify-content-between w-100 flex-column">
             <div>
                 <h4 style="color:#045397">{{ $student->student->fullname() }} </h4>
@@ -29,7 +29,7 @@
                 </div>
                 <div class="text-right">
                     @if($student->student->active_plan)
-                        <form action="{{ route('terminate-plan',$student->student->active_plan->id) }}" method="POST" class="my-1 confirm-first">
+                        <form action="{{ route('terminate-plan',$student->student->active_plan->id) }}" method="POST" class="my-1 confirm-first" id="terminate-plan-{{ $student->id }}">
                             {{ csrf_field() }}
                             <button style="background:black;color:white;" class="btn">Terminate Plan</button>
                         </form>
@@ -42,7 +42,12 @@
                 </div>
             </div>
         </div>
-    @endforeach
+    @empty
+    <div class="page-content text-center">
+        <p>You don't have any students yet</p>
+    </div>
+    
+    @endforelse
 </div>
 
  

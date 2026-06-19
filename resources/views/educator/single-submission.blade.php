@@ -1,7 +1,7 @@
 @extends('educator.dashboard')
 
 @section('content')
-    <div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
+    <div class="container wrapper shadow">    
         <h1 class="text-center page-headings">{{ $exam->course->course->title }}</h1>
         <h2 class="text-center">{{ $exam->student->fullname() }}</h2>
         <h5 class="text-center">Type of exam: <span class="font-weight-bold">{{ $exam->type == 1 ? 'Open Questions Exam' : 'Essay' }}</span></h5>
@@ -18,6 +18,7 @@
                     </div>
                 @endforeach
             @else
+                <p>Topic: {{ $exam->topic }}</p>
                 <div class="text-right">
                     <a class="text-decoration-none btn btn-secondary" href="{{ asset('exams') }}/{{ $exam->id }}/{{ $answers[0]->answer }}" target="_blank" download"><i class="fas fa-download"></i> Download here</a>
                 </div>
@@ -30,7 +31,7 @@
             </div> 
         @else
             @if($exam->type == 1)
-                <form method="POST" action="{{ route('educator.evaluate-exam',$exam->id) }}">
+                <form method="POST" action="{{ route('educator.evaluate-exam',$exam->id) }}" class="confirm-first" id="evaluate-exam-{{ $exam->id }}">
                      {{ csrf_field() }} 
                     @foreach ($answers as $key => $answer )
                         <div class="shadow p-2">
@@ -52,8 +53,9 @@
                 </form>
             @else
                 @foreach ($answers as $answer )
+                    <p>Topic: {{ $exam->topic }}</p>
                     <a class="text-decoration-none btn btn-secondary" href="{{ asset('exams') }}/{{ $exam->id }}/{{ $answer->answer }}" target="_blank" download><i class="fas fa-download"></i> Download here</a>
-                    <form method="POST" action="{{ route('educator.evaluate-exam',$exam->id) }}">
+                    <form method="POST" action="{{ route('educator.evaluate-exam',$exam->id) }}" class="confirm-first" id="evaluate-exam-{{ $exam->id }}">
                         {{ csrf_field() }}    
                         <label for=""class="text-danger mb-0 mt-2">Grade</label>
                             <input type="number" name="grade" class="form-control" required>

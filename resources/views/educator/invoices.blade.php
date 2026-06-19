@@ -55,7 +55,7 @@
 
 @section('content')
 <div class="container wrapper shadown">
-    <h3 class="blue-heading h2 text-center">Credit Memos</h3>
+    <h3 class="page-headings h2 text-center">Credit Memos</h3>
 	@if(count($invoices)>0)
 		<div class="d-flex justify-content-between fw-bold mb-2 text-secondary px-2">
 			<span>Date</span>

@@ -6,7 +6,7 @@
     <div class="" style="border-radius:5px;padding:20px;">
         <h1 style="color:#045397" class="h2 text-center">Confirm your details</h1>
         <p class="h3  mt-2" style="color:#045397;font-weight:bold;">Personal Information</p>
-        <form action="{{ route('parent.student.courses-type.pay',$student->id) }}" method="POST">
+        <form action="{{ route('parent.student.courses-type.pay',$student->id) }}" method="POST" id="course-pay" class="confirm-first">
             {{ csrf_field() }}
             <label for="" class="d-block font-weight-bold mb-0 mt-2">Full Name:</label>
             <input type="text" readonly value="{{ auth()->user()->name }} {{ auth()->user()->surname }}" class="form-control">

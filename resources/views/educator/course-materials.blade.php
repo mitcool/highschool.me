@@ -50,7 +50,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('educator.add-course-material') }}" method="POST" enctype="multipart/form-data" class="confirm-first">
+                    <form action="{{ route('educator.add-course-material') }}" method="POST" enctype="multipart/form-data" class="confirm-first" id="add-course-material">
                         @csrf
 
                          {{-- hidden template for file row --}}

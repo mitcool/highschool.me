@@ -49,7 +49,7 @@
                             <button class="btn-enrolled">Already Booked</button>
                         @else
                             @if($permissions['group'])
-                                <form action="{{ route('book-session',$session->id) }}" method="POST" id="session-form-{{ $session->id }}">
+                                <form action="{{ route('book-session',$session->id) }}" method="POST" id="session-form-{{ $session->id }}" class="confirm-first">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="student_id" value="{{ $student_id }}">
                                     <button class="btn-enroll" >Confirm Appointments</button>
@@ -96,7 +96,7 @@
                             <button class="btn-enrolled">Already Booked</button>
                         @else
                             @if($permissions['mentoring'])
-                                <form action="{{ route('book-session',$session->id) }}" method="POST" id="mentoring-session-form-{{ $session->id }}">
+                                <form action="{{ route('book-session',$session->id) }}" method="POST" id="mentoring-session-form-{{ $session->id }}" class="confirm-first">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="student_id" value="{{ $student_id }}">
                                     <button class="btn-enroll">Confirm Appointments</button>
@@ -138,7 +138,7 @@
                             <button class="btn-enrolled">Already Booked</button>
                         @else
                             @if($permissions['coaching'])
-                                <form action="{{ route('book-session',$session->id) }}" method="POST" id="coaching-session-form-{{ $session->id }}">
+                                <form action="{{ route('book-session',$session->id) }}" method="POST" id="coaching-session-form-{{ $session->id }}" class="confirm-first">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="student_id" value="{{ $student_id }}">
                                     <button class="btn-enroll">Confirm Appointments</button>
@@ -153,7 +153,7 @@
                     </tr>
             @endforelse
 
-             {{-- Coaching Sessions --}}
+             {{-- Personal Tutoring Sessions --}}
             <tr>
                 <th colspan="4">
                     <h5>Personal Tutoring Sessions</h5>
@@ -181,7 +181,7 @@
                             <button class="btn-enrolled">Already Booked</button>
                         @else
                             @if($permissions['coaching'])
-                                <form action="{{ route('book-session',$session->id) }}" method="POST" id="coaching-session-form-{{ $session->id }}">
+                                <form action="{{ route('book-session',$session->id) }}" method="POST" id="coaching-session-form-{{ $session->id }}" class="confirm-first">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="student_id" value="{{ $student_id }}">
                                     <button class="btn-enroll">Confirm Appointments</button>

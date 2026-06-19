@@ -52,14 +52,7 @@
                 </tr>
             @endforeach
 
-                <tr>
-                    <td colspan="2"></td>
-                    <td colspan="2" class="text-right">
-                        <button class="btn btn-danger" data-toggle="modal" data-target="#reject-modal">
-                            DELETE STUDENT FROM THE SYSTEM
-                        </button>
-                    </td>
-                </tr>
+                
         </table>
       
         <hr>
@@ -70,9 +63,7 @@
             </div>
             <button class="btn btn-info mt-4">Approve Student</button>
         </form>
-
-        <x-external-courses-table :student="$student->student"/>
-
+        
         <form action="{{ route('wrong-document') }}" method="POST" class="text-center my-3 {{ $student->rejected_documents_count() > 0 ? ' d-block ' : 'd-none' }}" id="wrong-document">
         {{ csrf_field() }}
             <div>
@@ -83,6 +74,16 @@
             </div>
             <button style="background:#045397;color:white;" class="btn mt-2">Send Feedback</button>
         </form>
+        <hr>
+        <div class="text-right">
+            <button class="btn btn-danger" data-toggle="modal" data-target="#reject-modal">
+                DELETE STUDENT FROM THE SYSTEM
+            </button>
+        </div>
+
+        {{-- TRANSFER SUBJECTS --}}
+        <x-external-courses-table :student="$student->student"/>
+
 </div>
 
 {{-- Reject modal --}}

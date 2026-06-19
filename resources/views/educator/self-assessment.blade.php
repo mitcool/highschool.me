@@ -3,7 +3,7 @@
 @section('content')
 <div class="container wrapper shadow">
     <div>
-        <h3 class="text-center blue-heading h2">
+        <h3 class="text-center page-headings h2">
             Add Self-assessment Question
         </h3>
 

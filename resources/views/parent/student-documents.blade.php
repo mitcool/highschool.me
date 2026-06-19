@@ -26,7 +26,7 @@
 @section('content')
 <div class="shadow container wrapper h-100">
     <h1 class="text-center h2 page-headings">Documents </h1>
-    <form action="{{ route('parent.student.documents.submit') }}" method="POST" enctype="multipart/form-data" id="document-form">
+    <form action="{{ route('parent.student.documents.submit') }}" method="POST" enctype="multipart/form-data" id="document-form" class="confirm-first">
         {{ csrf_field() }}
         <div  class="mb-3">
             <label for="" class="font-weight-bold mb-0">Applies for:<span class="text-danger">*</span></label>

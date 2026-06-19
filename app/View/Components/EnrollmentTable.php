@@ -67,16 +67,16 @@ class EnrollmentTable extends Component
 
         
         if($this->track == 3){
-            $core_courses_check = AdditionalCourse::where('student_id',$student->id)
-                    ->where('course_type',0)
-                    ->where('status',0)
-                    ->count();
-            $elective_courses_check = AdditionalCourse::where('student_id',$student->id)
-                    ->where('course_type',1)
-                    ->where('status',0)
-                    ->count();
-            $this->curriculumTypes[0]->permission = $core_courses_check > 0 ? true : false;
-            $this->curriculumTypes[1]->permission = $elective_courses_check > 0 ? true : false;
+            // $core_courses_check = AdditionalCourse::where('student_id',$student->id)
+            //         ->where('course_type',0)
+            //         ->where('status',0)
+            //         ->count();
+            // $elective_courses_check = AdditionalCourse::where('student_id',$student->id)
+            //         ->where('course_type',1)
+            //         ->where('status',0)
+            //         ->count();
+            $this->curriculumTypes[0]->permission = true;
+            $this->curriculumTypes[1]->permission = true;
             $this->curriculumTypes[10]->permission = true;
         }
 

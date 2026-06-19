@@ -182,30 +182,7 @@
         }
        
 </style>
- {{-- @if($track == 3)
-    <div class="container my-5">
-    
-    <h2 class="text-center mb-4">Enroll</h2>   
-    @foreach($transfer_program_courses as $tpc)
-      <div class="course-row d-flex justify-content-between align-items-center">
-            <div>
-                {{ $tpc->course->title }}
-            </div>
-            @if(!in_array($tpc->id,$enrolled_courses_ids))
-                
-                <form action="{{ route('enroll',$tpc->id) }}" method="POST" class="confirm-first enroll-form">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="student_id" value="{{ $student->id }}">
-                    <button class="btn btn-enroll">Enroll</button>
-                </form>
-            @elseif(in_array($tpc->id,$in_progress_courses_ids))
-                <span class="btn btn-in-progress">In progress</span>
-            @elseif(in_array($tpc->id,$completed_courses_ids))
-                <span class="btn btn-in-completed">✓ Completed</span>
-            @endif
-        </div>   
-        @endforeach
- @else --}}
+
 <div class="container my-5">
     
     <h2 class="text-center mb-4">Enroll </h2>
@@ -336,7 +313,7 @@
                                                        
                                                         @if(!in_array($cc->id,$enrolled_courses_ids))
                                                             @if($curriculumTypes[$cc->curriculum_type_id-1]->permission)
-                                                                <form class="confirm-first enroll-form" action="{{ route('enroll',$cc->id) }}" method="POST">
+                                                                <form class="confirm-first enroll-form" action="{{ route('enroll',$cc->id) }}" method="POST" id="enroll-form-{{ $cc->id }}">
                                                                     {{ csrf_field() }}
                                                                     <input type="hidden" name="student_id" value="{{ $student->id }}">
                                                                     <button class="btn btn-enroll"> Enroll</button>
@@ -413,7 +390,7 @@
                                                         <span class="btn btn-completed">✓ Completed</span>
                                                     @else
                                                         @if($curriculumTypes[$cc->curriculum_type_id-1]->permission)
-                                                            <form class="confirm-first enroll-form" action="{{ route('enroll',$cc->id) }}" method="POST">
+                                                            <form class="confirm-first enroll-form" action="{{ route('enroll',$cc->id) }}" method="POST" id="enroll-form-{{ $cc->id }}">
                                                                 {{ csrf_field() }}
                                                                 <input type="hidden" name="student_id" value="{{ $student->id }}">
                                                                 <button class="btn btn-enroll"> Enroll</button>

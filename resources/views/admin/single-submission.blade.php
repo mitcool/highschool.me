@@ -30,6 +30,7 @@
                 @endforeach
             @else
                 <div class="text-right">
+                    <p>Topic: {{ $exam->topic }}</p>
                     <a class="text-decoration-none btn btn-secondary" href="{{ asset('exams') }}/{{ $exam->id }}/{{ $answers[0]->answer }}" target="_blank" download><i class="fas fa-download"></i> Download here</a>
                 </div>
             @endif
@@ -70,6 +71,7 @@
                 </form>
             @else
                 @foreach ($answers as $answer )
+                    <p>Topic: {{ $exam->topic }}</p>
                     <a class="text-decoration-none btn btn-secondary" href="{{ asset('exams') }}/{{ $exam->id }}/{{ $answer->answer }}" target="_blank" download><i class="fas fa-download"></i> Download here</a>
                     <form method="POST" action="{{ route('evaluate-exam',$exam->id) }}">
                             <label for=""class="text-danger mb-0 mt-2">Grade</label>

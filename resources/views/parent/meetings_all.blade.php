@@ -24,7 +24,7 @@
     @endforeach
     <div class="text-center">
         @if($family_consultation_permission)
-            <form action="{{ route('request-family-consultation')}}" class="orange-button btn" method="POST">
+            <form action="{{ route('request-family-consultation')}}" class="orange-button btn confirm-first" id="request-family-consultation" method="POST">
                 {{ csrf_field() }}
                 <button class="btn text-white">Request family consultation</button>
             </form>

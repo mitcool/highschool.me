@@ -37,6 +37,7 @@ use App\EducatorQualificationDetail;
 use App\EducatorExperience;
 
 use App\Mail\EducatorWorkingHours;
+use App\Mail\NewComplaint;
 
 class EducatorController extends Controller
 {
@@ -457,7 +458,7 @@ class EducatorController extends Controller
 
     public function complaints(){
         $students = User::where('role_id',4)->get();
-        $complaints = Complaint::where('educator_id',auth()->id())->orderBy('created_at','desc')->get();
+        $complaints = Complaint::where('educator_id',auth()->id())->orderBy('created_at','desc')->paginate(10);
         return view('educator.complaints')
             ->with('students',$students)
             ->with('complaints',$complaints);
@@ -466,7 +467,8 @@ class EducatorController extends Controller
     public function createComplaint(Request $request){
         $complaint = $request->except('_token');
         $complaint['educator_id'] = auth()->id();
-        Complaint::create($complaint);
+        $new_complaint = Complaint::create($complaint);
+        $this->notifyAdmins(new NewComplaint($new_complaint));
         return redirect()->back()->with('success_message','Complaint created successfully');
     }
     public function overview(){

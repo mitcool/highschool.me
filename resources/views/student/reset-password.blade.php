@@ -30,7 +30,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('user.password.update') }}">
+                    <form method="POST" action="{{ route('user.password.update') }}" id="change-pass" class="confirm-first">
                         @csrf
 
                         {{-- Current Password --}}

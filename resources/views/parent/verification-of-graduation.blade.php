@@ -37,7 +37,7 @@
     <hr>
     <div class="d-flex justify-content-between align-items-center">
         <h5>Total Amount: <span style="color:#ee6123 !important" id="total">$30.00</span></h5>
-        <form action="{{ route('parent.request-verification-of-graduation-payment',$student->id) }}" id="verification-of-graduation-form">
+        <form action="{{ route('parent.request-verification-of-graduation-payment',$student->id) }}" id="verification-of-graduation-form" class="confirm-first">
             {{ csrf_field() }}
             <input type="hidden" name="total" id="total-amount-input" value="30">
             <input type="hidden" name="copies" id="copies-input" value="1">

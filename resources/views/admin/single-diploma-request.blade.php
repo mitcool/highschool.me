@@ -50,12 +50,26 @@
         </tr>
         <tr>
             <td><span class="font-weight-bold">Set Status:</span>
-                <select name="status" id="" class="form-control" form="change-status">
+                <select name="status" class="form-control" form="change-status">
                     @foreach ($statuses as $key => $status)
                         <option {{ $key == $request->status ? ' selected ' : '' }} value="{{ $key }}">{{ $status }}</option>
                     @endforeach
                 </select>
             </td>
+        </tr>
+        <tr>
+            @if($request->status == 0)
+            <td>
+                <span class="font-weight-bold">Tracking Number:</span>
+                <input type="text" class="form-control" name="tracking_number" required form="change-status">
+            </td>
+            @else
+                <td>
+                <span class="font-weight-bold">Tracking Number:</span>
+                <p>{{ $request->tracking_number }}</p>
+                </td>
+
+            @endif
         </tr>
         <tr>
             <td class="text-center">

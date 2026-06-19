@@ -22,7 +22,7 @@
                 <span id="timer"></span>
             </div>
         </div>
-        <form action="{{ route('submit-pre-exam-exam') }}" method="POST" enctype="multipart/form-data" id="exam-form">
+        <form action="{{ route('submit-pre-exam-exam') }}" method="POST" enctype="multipart/form-data" id="exam-form" class="confirm-first">
             {{ csrf_field() }}
             <input type="hidden" name="exam_id" value="{{ $exam->id }}">
             @foreach ($questions as $key => $question)

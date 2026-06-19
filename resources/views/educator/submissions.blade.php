@@ -5,7 +5,7 @@
 <div class="container wrapper shadow">    
 
     <div class="table-container mx-auto">
-        <h2 class="text-center blue-heading h2">Exam Submissions</h2>
+        <h2 class="text-center page-headings h2">Exam Submissions</h2>
         <div class="table-responsive">
             <table class="table course-table">
                 @if(count($exams) > 0)

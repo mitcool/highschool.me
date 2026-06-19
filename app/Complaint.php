@@ -18,5 +18,9 @@ class Complaint extends Model
         return $this->hasOne('App\User','id','student_id');
     }
 
+    public function educator(){
+        return $this->hasOne('App\User','id','educator_id');
+    }
+
     protected $fillable = ['educator_id','student_id','text','date'];
 }

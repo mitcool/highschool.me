@@ -4,8 +4,8 @@
 
 
 <div class="shadow container wrapper">
-    <h2 class="text-center font-weight-bold h2">Add complaint</h2>
-    <form action="{{ route('create-complaint') }}" method="POST">
+    <h2 class="text-center font-weight-bold h2 page-headings">Add complaint</h2>
+    <form action="{{ route('create-complaint') }}" method="POST" class="confirm-first" id="create-confirm">
         {{ csrf_field() }} 
         <label class="font-weight-bold mb-0 mt-1">Date</label>
         <input class="form-control" type="date" name="date" required>
@@ -37,7 +37,7 @@
             <tr>
                 <td>{{ $complaint->date->format('d.m.Y') }}</td>
                 <td>{{ $complaint->student->fullname() }}</td>
-                <td>{{ $complaint->educator->fullname() }}</td>
+                <td>{{ auth()->user()->fullname() }}</td>
                 <td>{{ $complaint->student->student_details->parent->fullname() }}</td>
                 <td data-target="#complaint-modal-{{ $complaint->id }}" data-toggle="modal" class="text-center" style="cursor: pointer">View</td>
                 <div class="modal fade" id="complaint-modal-{{ $complaint->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -61,6 +61,10 @@
             </tr>
         @endforeach
     </table>
+
+     <div class="d-flex justify-content-center">
+        {{ $complaints->links() }}
+    </div>
 </div>
 
 @endsection
