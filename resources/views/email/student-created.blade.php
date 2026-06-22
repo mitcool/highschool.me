@@ -102,8 +102,8 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                                         Below you will find their login credentials. Please take a moment to share these details with  {{$student->name}} directly, and ask them to log in and update their password as soon as possible. </br>
                                                     </p>
                                                     <p style="{{ $style['paragraph-black'] }}">
-                                                        Login email:  {{$student->email}} </br>
-                                                        Password: {{$password}} </br>
+                                                        <span style="{{$style['bold']}}">Login email:  {{$student->email}} </span></br>
+                                                        <span style="{{$style['bold']}}">Password: {{$password}} </span></br>
                                                     </p>
                                                     <p style="{{ $style['paragraph-black'] }}">
                                                         Please also let {{$student->name}} know that each time they log in — including the very first time — they will be asked to enter a PIN code sent to their registered phone number. This is a required security step at every login, so their phone should be nearby when they access the portal. </br>
