@@ -24,6 +24,7 @@ class User extends Authenticatable
         'email', 
         'password', 
         'role_id', 
+        'must_change_password',
         'surname', 
         'middlename',
         'confirmation_code', 
@@ -51,6 +52,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'date_of_birth' => 'datetime',
+        'must_change_password' => 'boolean',
     ];
 
     public function students(){
@@ -88,15 +90,27 @@ class User extends Authenticatable
     }
     
     public function student_id(){
-        $lenght = strlen($this->student_details->id);
-        $prefix = '';
-        $number = 4;
-        $date = $this->created_at->format('Ymd').$this->student_details->id;
-        for ($i=$lenght; $i < $number; $i++) { 
-           $prefix.= '0';
+        if (!$this->created_at) {
+            return null;
         }
-        $student_number = $date . $prefix . $this->student_details->id;
-        return $student_number;
+
+        // Use the registration date as the student ID prefix: yymmdd.
+        $date = $this->created_at->format('ymd');
+
+        // Count this student's position among students registered on the same day.
+        $dailySequence = self::where('role_id', 4)
+            ->whereDate('created_at', $this->created_at->toDateString())
+            ->where(function ($query) {
+                $query->where('created_at', '<', $this->created_at)
+                    ->orWhere(function ($query) {
+                        $query->where('created_at', $this->created_at)
+                            ->where('id', '<=', $this->id);
+                    });
+            })
+            ->count();
+
+        // Pad the daily sequence to 4 digits, for example 1 => 0001.
+        return $date . str_pad($dailySequence, 4, '0', STR_PAD_LEFT);
     
     }
 

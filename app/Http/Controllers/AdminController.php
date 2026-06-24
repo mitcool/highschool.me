@@ -1863,7 +1863,7 @@ class AdminController extends Controller
     }
 
     public function addSelfAssessmentQuestionPage() {
-        $courses = CurriculumCourse::get();
+        $courses = CurriculumCourse::with('course')->get();
         $questions = SelfAssessmentQuestion::with('course')->orderBy('id', 'desc')->paginate(10);
         return view('admin.add-self-assess-question')->with('courses', $courses)->with('questions', $questions);
     }

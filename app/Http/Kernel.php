@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'translateUrl' => \App\Http\Middleware\TranslateUrl::class,
         'parent' =>  \App\Http\Middleware\CheckParent::class,
         'student' =>  \App\Http\Middleware\CheckStudent::class,
+        'student.force_password_change' => \App\Http\Middleware\RequireStudentPasswordChange::class,
         'student.long_leave_restriction' => \App\Http\Middleware\RestrictStudentPagesDuringLongLeave::class,
         'educator' =>  \App\Http\Middleware\CheckEducator::class,
         'text' =>  \App\Http\Middleware\Text::class,

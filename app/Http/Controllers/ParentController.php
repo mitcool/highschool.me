@@ -345,6 +345,7 @@ class ParentController extends Controller
             'surname' => $user['surname'],
             'email' => $user['email'],
             'role_id' => $student_role_id,
+            'must_change_password' => 1,
             'password' => Hash::make($password),
             'date_of_birth' => $user['date_of_birth'],
             'confirmation_code' => Str::random(30),
@@ -1690,15 +1691,23 @@ class ParentController extends Controller
 
     public function enrollmentConfirmation($student_id){
         $student = User::find($student_id);
-        $pdf = Pdf::loadView('parent.enrollment-confirmation',['student' => $student])->set_option('isRemoteEnabled',true)->setPaper('a4','landscape');
+        $issueDate = ParentExtraService::where('student_id', $student_id)
+            ->whereIn('service_type', [1, 2])
+            ->latest('created_at')
+            ->first();
+
+        $pdf = Pdf::loadView('parent.enrollment-confirmation',[
+            'student' => $student,
+            'issueDate' => $issueDate,
+        ])->set_option('isRemoteEnabled',true)->setPaper('a4','landscape');
         return $pdf->stream();
     }
 
     #Phisical order of enrollment letter
     public function enrollmentConfirmationOrder($student_id){
-        $total_copies = Cookie::has('enrollment-letter-copies') ? Cookie::get('enrollment-letter-copies') : 1;
+        $total_copies = 1;
         $price_per_copy = 180;
-        $total_amount = $total_copies * $price_per_copy;
+        $total_amount = $price_per_copy;
         $student = User::find($student_id);
         return view('parent.request-enrollment-letter-copy')
             ->with('price_per_copy',$price_per_copy)
@@ -1707,22 +1716,12 @@ class ParentController extends Controller
             ->with('student',$student);
     }
 
-    public function enrollmentLetterCopiesChange($action){
-        $total_copies = Cookie::has('enrollment-letter-copies') ? Cookie::get('enrollment-letter-copies') : 1;
-        if($action == 'increase'){
-            $total_copies++;
-        }else{
-            $total_copies--;
-            if($total_copies < 1){
-                $total_copies = 1;
-            }
+    public function enrollmentConfirmationOrderPayment(Request $request,$student_id,$type){
+        $total_copies = (int) $request->input('copies', 1);
+        if ($total_copies < 1 || $total_copies > 5) {
+            $total_copies = 1;
         }
-        Cookie::queue('enrollment-letter-copies',$total_copies,60);
 
-        return redirect()->back();
-
-    }
-    public function enrollmentConfirmationOrderPayment($student_id,$type){
         if($type == 'digital'){
             $total = ParentExtraServiceType::find(1)->price;
             $stripe_description = 'Digital Enrollment Confirmation Letter';
@@ -1730,11 +1729,9 @@ class ParentController extends Controller
             $cancel_url = route('parent.student.profile',$student_id);
         }
         else{
-            $total_copies = Cookie::has('enrollment-letter-copies') ? Cookie::get('enrollment-letter-copies') : 1;
-            $price_per_copy = ParentExtraServiceType::find(2)->price;
-            $total = $total_copies *$price_per_copy;
+            $total = ParentExtraServiceType::find(2)->price;
             $stripe_description = 'Physical Enrollment Confirmation Letter';
-            $success_url = route('enrollment-confirmation-order-success',[$student_id,$type]);
+            $success_url = route('enrollment-confirmation-order-success',[$student_id,$type,$total_copies]);
             $cancel_url = route('parent.student.profile',$student_id);
         }
        
@@ -1761,12 +1758,15 @@ class ParentController extends Controller
         return redirect()->away($session->url);
     }
 
-    public function enrollmentConfirmationOrderSuccess($student_id,$type){
+    public function enrollmentConfirmationOrderSuccess($student_id,$type,$copies = 1){
        
         $service_type = $type == 'digital' ? 1 : 2 ;
         $student = User::find($student_id);
         $parent = auth()->user();
-        $total_copies = Cookie::has('enrollment-letter-copies') ? Cookie::get('enrollment-letter-copies') : 1;
+        $total_copies = (int) $copies;
+        if ($total_copies < 1 || $total_copies > 5) {
+            $total_copies = 1;
+        }
         $service = [
             'service_type' => $service_type,
             'student_id' => $student->id,
@@ -1775,18 +1775,16 @@ class ParentController extends Controller
 
         if($service_type == 2){
             $service['copies']= $total_copies;
-            $price = ParentExtraServiceType::find(7)->price;
-            $total = $price * $total_copies;
+            $total = ParentExtraServiceType::find(2)->price;
             $description = 'Physical Enrollment Letter (Copies: '.$total_copies. ')';
         }else{
-            $total = ParentExtraServiceType::find(6)->price;
+            $total = ParentExtraServiceType::find(1)->price;
             $description = 'Digital Enrollment Letter(digital)';
         }
 
         ParentExtraService::create($service);
 
-        if($service_type == 1){
-            Cookie::queue(Cookie::forget('enrollment-letter-copies'));
+        if($service_type == 2){
             try{
                 Mail::to($parent->email)->send(new EnrollementLetterPhysicalCopyRequestParent($student,$total_copies));
             }catch(\Exception $e){

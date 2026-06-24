@@ -39,10 +39,14 @@
                 <td>Website: https://highschool.me/</td>
                 <td  style="text-align:right">Enrolling Date: {{ $student->created_at->format('d.m.Y') }}</td>
             </tr>
+            <tr>
+                <td></td>
+                <td style="text-align:right">Date of Issue: {{ $issueDate ? $issueDate->created_at->format('d.m.Y') : 'N/A' }}</td>
+            </tr>
         </table>
      
-        <div style="margin-top:30px;text-align:center;">
-            <h1 style="margin-top:20px;font-size:2.2rem;">LETTER OF ENROLLMENT</h1>
+        <div style="margin-top:10px;text-align:center;">
+            <h1 style="margin-top:10px;font-size:2.2rem;">LETTER OF ENROLLMENT</h1>
             <h4>THIS LETTER IS TO CONFIRM THAT</h4>
             <h1 style="font-size:2rem;color:#E9580C;">{{ $student->fullname() }}</h1>
             <h4>has enrolled as a full-time student in ONSITES HIGH SCHOOL.</h4>

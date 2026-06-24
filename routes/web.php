@@ -76,9 +76,8 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	//Enrollment Confiramtion
 	Route::get('/enrollment-confirmation/{student_id}','ParentController@enrollmentConfirmation')->name('enrollment-confirmation');
 	Route::get('/enrollment-confirmation-order/{student_id}','ParentController@enrollmentConfirmationOrder')->name('enrollment-confirmation-order');
-	Route::post('enrollment-letter-copies/{type}',"ParentController@enrollmentLetterCopiesChange")->name('enrollment-letter-copies');
 	Route::post('enrollment-confirmation-order-payment/{student_id}/{type}','ParentController@enrollmentConfirmationOrderPayment')->name('enrollment-confirmation-order-payment');
-	Route::get('enrollment-confirmation-order-success/{student_id}/{type}','ParentController@enrollmentConfirmationOrderSuccess')->name('enrollment-confirmation-order-success');
+	Route::get('enrollment-confirmation-order-success/{student_id}/{type}/{copies?}','ParentController@enrollmentConfirmationOrderSuccess')->name('enrollment-confirmation-order-success');
 	//Graduation Verification
 	Route::get('/request-verification-of-graduation/{student_id}','ParentController@requestVerificationOfGraduation')->name('parent.request-verification-of-graduation');
 	Route::get('/request-verification-of-graduation/payment/{student_id}','ParentController@requestVerificationOfGraduationPayment')->name('parent.request-verification-of-graduation-payment');
@@ -93,47 +92,50 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 Route::get('/generate-pdf-diploma/{student_id}','StudentController@generatePdfDiploma')->name('student.generate-pdf-diploma');
 
 Route::group(['prefix' => 'student','middleware' => 'student'],function(){
-	Route::get('/dashboard', 'StudentController@dashboard')->name('student.dashboard');
 	Route::get('/reset-password', 'StudentController@resetPassPage')->name('student.reset.password.page');
-	Route::get('/ambassador-program', 'StudentController@ambassadorPage')->name('student.ambassador-program');
-	Route::get('/activities/{platform_id}', 'StudentController@getActivities')->name('student.get-activity');
-	Route::post('/store-activity', 'StudentController@storeActivity')->name('student.store-activity');
-	Route::post('/ambassador/redeem', 'StudentController@redeemRewards')->name('ambassador.redeem');
-	Route::get('/diplomas','StudentController@diplomas')->name('student.diplomas');
-	Route::post('/request-diploma-copy','StudentController@requestDiplomaCopy')->name('request-diploma-copy');
-    Route::get('/request-diploma-copy-success','StudentController@requestDiplomaCopySuccess')->name('request-diploma-copy-success');
-	
-	Route::get('/profile','StudentController@profile')->name('student.profile');
-	#notifications
-	Route::get('/all-notifications', 'StudentController@showNotifications')->name('student.notifications');
 
-	Route::middleware('student.long_leave_restriction')->group(function () {
-		Route::get('/my-courses', 'StudentController@myCoursesPage')->name('student.my-courses');
-		Route::get('/course/{course_id}','StudentController@singleCourse')->name('student.single-course');
-		Route::get('/course-material/{material_id}', 'StudentController@singleMaterial')->name('student.course-material');
-		Route::get('/course-video/{video_id}', 'StudentController@singleVideo')->name('student.course-video');
-		Route::get('/study-mentor','StudentController@studyMentor')->name('student.study-mentor');
-		Route::get('/study-mentor/{slug}','StudentController@singleStudyMentor')->name('student.single-study-mentor');
-		Route::get('/single-study-mentor-chat/{slug}','StudentController@singleStudyMentorChat')->name('student.single-study-mentor-chat');
-		# chat gpt Route::post('/study-mentor-chat','StudentController@singleStudyMentorChatPost')->name('student.study-mentor-chat-post');
-		Route::post('/study-mentor-chat','StudentController@claudeChat')->name('student.study-mentor-chat-post');
-		Route::get('/exams','StudentController@exams')->name('student.exams');
-		Route::get('/exams/{id}','StudentController@singleExam')->name('student.single-exam');
-		Route::get('/exams/result/{id}','StudentController@singleExamResults')->name('student.single-exam-results');
-		Route::post('/submit-exam/{exam_id}','StudentController@submitExam')->name('submit-exam');
-		Route::post('/fail-exam/{exam_id}','StudentController@failExam')->name('fail-exam');
-		Route::get('/self-assessment-test/{material_id}', 'StudentController@selfAssessmentTest')->name('student.self-assessment-test');
-		Route::post('/self-assessment-test-submit/{attempt}', 'StudentController@submitSelfAssessmentTest')->name('student.self-assessment-test-submit');
-		Route::get('/self-assessment-test-review', 'StudentController@selfAssessmentTestReview')->name('student.self-assessment-review');
-		Route::get('/pre-exam/{subject_id}','StudentController@preExam')->name('student.pre-exam');
-		Route::post('/submit-pre-exam','StudentController@submitPreExam')->name('submit-pre-exam-exam');
- 		Route::post('/record-fraud','StudentController@recordFraud')->name('record-fraud');
-		Route::get('/meetings','StudentController@meetings')->name('student.meetings');
-		Route::post('/book-group-session/{session_id}','ParentController@bookGroupSession')->name('book-group-session');
-		Route::post('/book-mentoring-session/{session_id}','ParentController@bookMentoringSession')->name('book-mentoring-session');
-		Route::post('/book-coaching-session/{session_id}','ParentController@bookCoachingSession')->name('book-coaching-session');
-		Route::get('/book-session-success','ParentController@bookSessionSuccess')->name('book-session-success');
-		Route::post('/book-session/{session_id}','StudentController@bookSession')->name('book-session');
+	Route::middleware('student.force_password_change')->group(function () {
+		Route::get('/dashboard', 'StudentController@dashboard')->name('student.dashboard');
+		Route::get('/ambassador-program', 'StudentController@ambassadorPage')->name('student.ambassador-program');
+		Route::get('/activities/{platform_id}', 'StudentController@getActivities')->name('student.get-activity');
+		Route::post('/store-activity', 'StudentController@storeActivity')->name('student.store-activity');
+		Route::post('/ambassador/redeem', 'StudentController@redeemRewards')->name('ambassador.redeem');
+		Route::get('/diplomas','StudentController@diplomas')->name('student.diplomas');
+		Route::post('/request-diploma-copy','StudentController@requestDiplomaCopy')->name('request-diploma-copy');
+    	Route::get('/request-diploma-copy-success','StudentController@requestDiplomaCopySuccess')->name('request-diploma-copy-success');
+		
+		Route::get('/profile','StudentController@profile')->name('student.profile');
+		#notifications
+		Route::get('/all-notifications', 'StudentController@showNotifications')->name('student.notifications');
+
+		Route::middleware('student.long_leave_restriction')->group(function () {
+			Route::get('/my-courses', 'StudentController@myCoursesPage')->name('student.my-courses');
+			Route::get('/course/{course_id}','StudentController@singleCourse')->name('student.single-course');
+			Route::get('/course-material/{material_id}', 'StudentController@singleMaterial')->name('student.course-material');
+			Route::get('/course-video/{video_id}', 'StudentController@singleVideo')->name('student.course-video');
+			Route::get('/study-mentor','StudentController@studyMentor')->name('student.study-mentor');
+			Route::get('/study-mentor/{slug}','StudentController@singleStudyMentor')->name('student.single-study-mentor');
+			Route::get('/single-study-mentor-chat/{slug}','StudentController@singleStudyMentorChat')->name('student.single-study-mentor-chat');
+			# chat gpt Route::post('/study-mentor-chat','StudentController@singleStudyMentorChatPost')->name('student.study-mentor-chat-post');
+			Route::post('/study-mentor-chat','StudentController@claudeChat')->name('student.study-mentor-chat-post');
+			Route::get('/exams','StudentController@exams')->name('student.exams');
+			Route::get('/exams/{id}','StudentController@singleExam')->name('student.single-exam');
+			Route::get('/exams/result/{id}','StudentController@singleExamResults')->name('student.single-exam-results');
+			Route::post('/submit-exam/{exam_id}','StudentController@submitExam')->name('submit-exam');
+			Route::post('/fail-exam/{exam_id}','StudentController@failExam')->name('fail-exam');
+			Route::get('/self-assessment-test/{material_id}', 'StudentController@selfAssessmentTest')->name('student.self-assessment-test');
+			Route::post('/self-assessment-test-submit/{attempt}', 'StudentController@submitSelfAssessmentTest')->name('student.self-assessment-test-submit');
+			Route::get('/self-assessment-test-review', 'StudentController@selfAssessmentTestReview')->name('student.self-assessment-review');
+			Route::get('/pre-exam/{subject_id}','StudentController@preExam')->name('student.pre-exam');
+			Route::post('/submit-pre-exam','StudentController@submitPreExam')->name('submit-pre-exam-exam');
+ 			Route::post('/record-fraud','StudentController@recordFraud')->name('record-fraud');
+			Route::get('/meetings','StudentController@meetings')->name('student.meetings');
+			Route::post('/book-group-session/{session_id}','ParentController@bookGroupSession')->name('book-group-session');
+			Route::post('/book-mentoring-session/{session_id}','ParentController@bookMentoringSession')->name('book-mentoring-session');
+			Route::post('/book-coaching-session/{session_id}','ParentController@bookCoachingSession')->name('book-coaching-session');
+			Route::get('/book-session-success','ParentController@bookSessionSuccess')->name('book-session-success');
+			Route::post('/book-session/{session_id}','StudentController@bookSession')->name('book-session');
+		});
 	});
 });
 
@@ -329,6 +331,9 @@ Route::get('/sitemap.xml','SitemapController@sitemap')->name('sitemap-xml');
 #resetPassword
 Route::middleware('auth')->group(function () {
     Route::post('/change-password', 'MainController@updatePassword')->name('user.password.update');
+});
+
+Route::middleware(['auth', 'student.force_password_change'])->group(function () {
 	Route::get('/help-desk','MainController@helpDesk')->name('help-desk');
 	Route::get('/help-desk/new/{slug?}','MainController@newHelpDesk')->name('new-help-desk');
 	Route::get('/single-help-desk/{slug}','MainController@singleHelpDesk')->name('single-help-desk');

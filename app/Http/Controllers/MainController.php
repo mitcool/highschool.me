@@ -384,9 +384,20 @@ class MainController extends Controller
     ]);
   }
 
+  $isFirstStudentPasswordChange = (int) $user->role_id === 4 && (int) $user->must_change_password === 1;
+
   // Update password
   $user->password = Hash::make($request->password);
+
+  if ($isFirstStudentPasswordChange) {
+    $user->must_change_password = 0;
+  }
+
   $user->save();
+
+  if ($isFirstStudentPasswordChange) {
+    return redirect()->route('student.dashboard')->with('success_message', 'Password changed successfully.');
+  }
 
   return back()->with('success_message', 'Password changed successfully.');
 }

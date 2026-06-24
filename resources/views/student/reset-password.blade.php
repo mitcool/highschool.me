@@ -12,9 +12,9 @@
                 <div class="card-body">
 
                     {{-- Success Message --}}
-                    @if(session('success'))
+                    @if(session('success_message'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
+                            {{ session('success_message') }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     @endif

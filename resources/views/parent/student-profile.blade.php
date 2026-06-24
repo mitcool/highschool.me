@@ -292,7 +292,7 @@
             <div class="d-flex">
 
                 @if(count($student->student_details->digitalEnrollmentVerification))
-                    <a href="{{ route('enrollment-confirmation',$student->id) }}" class="btn my-3 mr-3 blue-button-outline"><i class="fas fa-download"></i> Download Enrollment Verification</a>
+                    <a href="{{ route('enrollment-confirmation',$student->id) }}" class="btn my-3 mr-3 blue-button-outline"target="_blank"><i class="fas fa-download"></i> Download Enrollment Verification</a>
                 @else
                     <form action="{{ route('enrollment-confirmation-order-payment',[$student->id,'digital']) }}" method="POST" class="mr-3 confirm-first" id="enrollment-confirmation-order">
                         {{ csrf_field() }}
@@ -535,9 +535,11 @@
     @elseif($status == 4)
         <form action="{{ route('parent.reupload.document',$student->id) }}" method="POST" enctype="multipart/form-data" id="reupload-document" class="confirm-first">
             {{ csrf_field() }}
+            {{--
             @if($student->student_details->feedback)
                 <p class="text-danger">{{ $student->student_details->feedback }}</p>
             @endif
+            --}}
             @foreach ($student->documents as $document )
                 @if($document->is_approved == 2)
                 <div class="mb-3 d-flex  justify-content-between">
