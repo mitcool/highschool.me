@@ -21,11 +21,7 @@ class NewsletterEmail extends Mailable
 
     public function build()
     {
-        if($this->newsletter->receiver->lang == 0){
-            return $this->view('email.newsletter-german')
-            ->with('newsletter', $this->newsletter)
-            ->subject($this->newsletter->subject_de);
-        }
+
         return $this->view('email.newsletter')
             ->with('newsletter', $this->newsletter)
             ->subject($this->newsletter->subject);

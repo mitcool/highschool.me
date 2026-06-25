@@ -58,7 +58,7 @@
         </div>
     @endif
 
-    <form action="{{ route('store-pay-to-educator', $educator->id) }}" method="POST">
+    <form action="{{ route('store-pay-to-educator', $educator->id) }}" method="POST" id="pay-form" class="confirm-first">
         {{ csrf_field() }}
         <div class="form-row">
             <div class="form-group col-md-6">

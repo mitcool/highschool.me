@@ -26,7 +26,14 @@
                 <p class="mb-0 font-weight-bold mt-3">Please select your preferred Package:</p>
                  @foreach($plans as $key => $plan)
                     <div>
-                        <input class="plans" value="{{ $plan->id }}" type="radio" {{ $key == 0 ? ' checked ' : '' }} name="plan" data-price-per-year="{{ $plan->price_per_year }}" data-price-per-month="{{ $plan->price_per_month }}"> {{ $plan->name }} Package (${{ $plan->price_per_year() }})
+                        <input  
+                            class="plans" 
+                            value="{{ $plan->id }}" 
+                            type="radio" {{ $key == 0 ? ' checked ' : '' }} 
+                            name="plan" 
+                            data-price-per-year="{{ $plan->price_per_year }}" 
+                            data-price-per-month="{{ $plan->price_per_month }}"
+                        /> {{ $plan->name }} Package <span class="orange-price" {{ $key==0 ? 'style=color:#ee6123 ' : "" }}>(${{ $plan->price_per_month() }})</span>
                     </div> 
                 @endforeach
                 <p class="mb-0 font-weight-bold mt-3">Please select Monthly or Yearly Plan:</p>
@@ -40,7 +47,7 @@
                 <hr>
                 <div class="d-flex justify-content-between">
                     <div class="total">
-                        Total Fee:  <span id="total-transfer-program">$2200.00</span>
+                        Total Fee:  <span id="price" class="font-weight.bold">$190.00</span>
                     </div>
                     <button class="orange-button mt-3">Proceed to Payment</button>
                 </div>
@@ -50,5 +57,58 @@
         </div>
     </div>
 </div>
+
+@endsection
+
+
+@section('scripts')
+<script>
+    $('.plans').on('click',function(){
+        let type = $('.payment-type:checked').val();
+        let price = type == 0 
+            ? $(this).attr('data-price-per-month') 
+            : $(this).attr('data-price-per-year');
+        
+        const formatted_price = Number(price).toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        });
+
+        $('.orange-price').css('color','black');
+        $(this).closest('div').find('.orange-price').css('color','#ee6123 ')
+
+        $('#price').html(formatted_price)
+    });
+
+
+    $('.payment-type').on('click',function(){
+        let type = $(this).val();
+        let price = type == 0 
+            ? $('.plans:checked').attr('data-price-per-month') 
+            : $('.plans:checked').attr('data-price-per-year');
+        
+        const formatted_price = Number(price).toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        });
+
+        $('#price').html(formatted_price);
+
+        
+        $('.plans').each(function(){
+            let orange_price = type == 0 
+                ? $(this).attr('data-price-per-month') 
+                : $(this).attr('data-price-per-year');
+            
+            const formatted_orange_price = Number(orange_price).toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        });
+
+            $(this).closest('div').find('.orange-price').html(`(${formatted_orange_price})`)
+        })
+      
+    })
+</script>
 
 @endsection

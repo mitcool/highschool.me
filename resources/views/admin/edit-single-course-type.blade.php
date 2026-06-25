@@ -5,7 +5,7 @@
 <div class="jumbotron container shadow bg-white">
     <h1 class="text-center">Course Types</h1>
 
-    <form action="{{ route('course-type.update',$course->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('course-type.update',$course->id) }}" method="POST" enctype="multipart/form-data" class="confirm-first" id="course-type-edit">
         {{ csrf_field() }}
         <label for="" class="font-weight-bold my-2">Name</label>
         <input class="form-control" type="text" name="name" required value="{{ $course->name }}">
@@ -25,7 +25,7 @@
             {{ $course->name }}   
             <div class="d-flex">
                 <a class="btn btn-warning" href="{{ route('course-type.edit',$course->id) }}">Edit Course Type</a> &nbsp; 
-                <form action="{{ route('course-type.delete',$course->id) }}" class="confirm-first" method="POST">
+                <form action="{{ route('course-type.delete',$course->id) }}" class="confirm-first" method="POST" id="delete-course-type-{{ $course->id }}">
                     {{ csrf_field() }}
                      <button class="btn btn-danger">Delete Course Type</button>
                 </form>

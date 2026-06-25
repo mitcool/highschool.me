@@ -17,7 +17,7 @@
 	<hr>
 	<p class="text-right"><span class="text-danger ">* </span>Required fields</p>
 	<p class="text-right"><span class="text-danger ">All images must be with 468 pixels Width and 60 pixels Height</p>
-	<form id="subscribe_form" method="POST" action="{{ route('record-newsletter') }}" enctype="multipart/form-data" class="p-3">
+	<form id="subscribe_form"  method="POST" action="{{ route('record-newsletter') }}" enctype="multipart/form-data" class="p-3 confirm-first">
 		{{ csrf_field() }}
 		<div class="row">
 			

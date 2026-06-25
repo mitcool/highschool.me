@@ -249,55 +249,55 @@ class AdminController extends Controller
                 ->with('academic',$academic);
     }
 
-    public function uploadPartner(Request $request){
-        $request->validate([
-            'picture' => 'required|image|max:300',
+    // public function uploadPartner(Request $request){
+    //     $request->validate([
+    //         'picture' => 'required|image|max:300',
             
-        ]);
-        $input = $request->all();
-        if ($request->hasFile('picture')) {
-            $image = $request->file('picture');
-            $picture =$image->getClientOriginalName();
-            $partner_id =  Partner::insertGetId([
-                'created_at'=>Carbon::now(),
-            ]);
-            foreach(Config('languages') as $lang => $language) {
-                PartnerTranslation::insert([
-                    'text'=> $input['text_'.$lang],
-                    'name'=> $input['name_'.$lang],
-                    'partner_id'=>$partner_id,
-                    'locale' => $lang,
-                ]);
-            }
+    //     ]);
+    //     $input = $request->all();
+    //     if ($request->hasFile('picture')) {
+    //         $image = $request->file('picture');
+    //         $picture =$image->getClientOriginalName();
+    //         $partner_id =  Partner::insertGetId([
+    //             'created_at'=>Carbon::now(),
+    //         ]);
+    //         foreach(Config('languages') as $lang => $language) {
+    //             PartnerTranslation::insert([
+    //                 'text'=> $input['text_'.$lang],
+    //                 'name'=> $input['name_'.$lang],
+    //                 'partner_id'=>$partner_id,
+    //                 'locale' => $lang,
+    //             ]);
+    //         }
            
-            $destinationPath = public_path('/images');
-            $image->move($destinationPath, $picture);
+    //         $destinationPath = public_path('/images');
+    //         $image->move($destinationPath, $picture);
 
-            $nickname = 'partner-'.$partner_id;
-            $path ='/images/'.$picture;
-            $this->createImage($nickname, $path);
+    //         $nickname = 'partner-'.$partner_id;
+    //         $path ='/images/'.$picture;
+    //         $this->createImage($nickname, $path);
             
-            return redirect()->back()->with('success_message',"Successfully add a new partner to our website!");
-        }
-    }
+    //         return redirect()->back()->with('success_message',"Successfully add a new partner to our website!");
+    //     }
+    // }
 
-    public function editPartner(Request $request,$partner_id){
-        $input = $request->all();
-        foreach(Config('languages') as $lang => $language) {
-            PartnerTranslation::where('partner_id',$partner_id)->where('locale',$lang)->update([
-                'text'=> $input['text_'.$lang],
-                'name' => $input['name_'.$lang]
-            ]);
-        }
+    // public function editPartner(Request $request,$partner_id){
+    //     $input = $request->all();
+    //     foreach(Config('languages') as $lang => $language) {
+    //         PartnerTranslation::where('partner_id',$partner_id)->where('locale',$lang)->update([
+    //             'text'=> $input['text_'.$lang],
+    //             'name' => $input['name_'.$lang]
+    //         ]);
+    //     }
 
-        return redirect()->back()->with('success_message',"Successfully edited partner!");
-    }
-    public function deletePartner($id){
-       Partner::find($id)->delete();
-       PartnerTranslation::where('partner_id',$id)->delete();
-       $this->deleteImage('partner-'.$id);
-       return redirect()->back()->with('success_message','Successfuly deleted partner');
-    }
+    //     return redirect()->back()->with('success_message',"Successfully edited partner!");
+    // }
+    // public function deletePartner($id){
+    //    Partner::find($id)->delete();
+    //    PartnerTranslation::where('partner_id',$id)->delete();
+    //    $this->deleteImage('partner-'.$id);
+    //    return redirect()->back()->with('success_message','Successfuly deleted partner');
+    // }
 
     public function showAdminPublication(Request $request){
         $publications = Publication::all();
@@ -347,11 +347,11 @@ class AdminController extends Controller
         return redirect()->back()->with('success_message','The text was successfully updated');
     }
 
-    public function adminPartners(){
-        $partners = Partner::all();
-        return view('admin.partners')
-                ->with('partners',$partners);
-    }
+    // public function adminPartners(){
+    //     $partners = Partner::all();
+    //     return view('admin.partners')
+    //             ->with('partners',$partners);
+    // }
     
     public function deleteTutorial($tutorial_id){
         Tutorial::find($tutorial_id)->delete();
@@ -1421,12 +1421,13 @@ class AdminController extends Controller
 
     public function educators(){
         $new_category_requests = EducatorCategory::where('status',0)->get()->groupBy('educator_id');
-        $categories = SubjectArea::all();
+        $categories = CourseCategory::all();
         $countries = Country::orderBy('nicename')->get();
         $educators = User::where('role_id',5)->get();
         foreach($educators as $educator){
             $educator->array_educator_categories  = $educator->educator_categories->pluck('category_id')->toArray();
         }
+       
         return view('admin.educators')
             ->with('new_category_requests',$new_category_requests)
             ->with('educators',$educators)
@@ -1971,16 +1972,24 @@ class AdminController extends Controller
     public function transfer(Request $request){
         $course_id = $request->course_id;
         $student_id = $request->student_id;
-        StudentEnrolledCourse::insert([
-            'user_id' => $student_id,
-            'catalog_course_id' => $course_id,
-            'created_at' => Carbon::now(),
-            'status' => StudentEnrolledCourse::STATUS_COMPLETED
-        ]);
 
-        Notification::add($student_id,'Course transferred');
+        if(StudentEnrolledCourse::where('catalog_course_id',$course_id)->where('user_id',$student_id)->count() == 0){
+            StudentEnrolledCourse::insert([
+                'user_id' => $student_id,
+                'catalog_course_id' => $course_id,
+                'created_at' => Carbon::now(),
+                'status' => StudentEnrolledCourse::STATUS_COMPLETED
+            ]);
+             return 1;
+        }
+        else{
+             StudentEnrolledCourse::where('catalog_course_id',$course_id)->where('user_id',$student_id)->delete();
+             return 2;
+        }
 
-        return 1;
+        //Notification::add($student_id,'Course transferred');
+
+       
     }
     public function transferBack(Request $request){
         $course_id = $request->course_id;

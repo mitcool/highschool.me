@@ -23,6 +23,7 @@ class GraduationEmailParent extends Mailable
     public function build()
     {
         return $this->view('email.graduation-email-parent')
+            ->subject()
             ->with('parent',$this->parent)
             ->with('student',$this->student);
     }

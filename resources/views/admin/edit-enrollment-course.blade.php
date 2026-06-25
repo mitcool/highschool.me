@@ -58,7 +58,7 @@
                         $currentJobId = $currentJobId ?? null;
                     @endphp
 
-                    <form action="{{ route('admin.update-enrollment-course', $course->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.update-enrollment-course', $course->id) }}" method="POST" enctype="multipart/form-data" id="update-enrollment-course" class="confirm-first">
                         @csrf
 
                         {{-- STEP 1: Curriculum Type --}}

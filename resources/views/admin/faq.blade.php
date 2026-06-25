@@ -10,7 +10,7 @@
 
     <h2 class="text-center page-headings">Add New FAQ</h2>
     <hr/>
-     <form action="{{ route('add-faq') }}" method="post" >
+     <form action="{{ route('add-faq') }}" method="post" class="confirm-first" id="add-faq">
         {{ csrf_field() }}
         @foreach(Config::get('languages') as $lang => $language)
             <label class="font-weight-bold" for="">Question({{ $lang }})</label>

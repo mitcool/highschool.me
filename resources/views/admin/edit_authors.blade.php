@@ -7,7 +7,7 @@
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     <h1 class="page-headings">Add Author</h1>
     <div>
-        <form action="{{ route('add-author')}}" enctype="multipart/form-data" method="POST">
+        <form action="{{ route('add-author')}}" enctype="multipart/form-data" method="POST" id="add-authour" class="confirm-first">
             <input required type="text" name="name" class="form-control my-2" placeholder="Name">
             <textarea style="width:100%" required class="form-control" rows="5" name="description" placeholder="Description"></textarea> 
             <input required type="text" name="slug" class="form-control my-2" placeholder="Slug">

@@ -17,16 +17,16 @@
         </div>
        
         <div class="col-md-6 d-flex justify-content-end align-items-center">
-            <a href="{{ route('parent.student.sessions',$student->student_id) }}" class="orange-button btn mx-2">Buy Meetings</a>
-            <a href="{{ route('parent.student.meeting-list',$student->student_id) }}" class="btn-primary btn">List of Meetings</a> 
+            <a href="{{ route('parent.student.sessions',$student->student_id) }}" class="btn-lg orange-button btn mx-2 shadow">Buy Meetings</a>
+            <a href="{{ route('parent.student.meeting-list',$student->student_id) }}" class="btn-lg btn-primary btn shadow">List of Meetings</a> 
         </div>
     </div>
     @endforeach
     <div class="text-center">
         @if($family_consultation_permission)
-            <form action="{{ route('request-family-consultation')}}" class="orange-button btn confirm-first" id="request-family-consultation" method="POST">
+            <form action="{{ route('request-family-consultation')}}" class="btn confirm-first" id="request-family-consultation" method="POST">
                 {{ csrf_field() }}
-                <button class="btn text-white">Request family consultation</button>
+                <button class="btn-lg orange-button btn mx-2 shadow" value="">Request family consultation</button>
             </form>
         @endif
     </div>

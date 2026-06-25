@@ -2,10 +2,10 @@
 
 @section('content')
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
-		<form action="{{route('add-academic')}}" method="POST" enctype="multipart/form-data">
+		<form action="{{route('add-academic')}}" method="POST" enctype="multipart/form-data" class="confirm-first" id="add-academic">
 			{{csrf_field()}}
 
-					<h3 class="text-center">Add Academic</h3>	
+					<h3 class="text-center page-headings">Add Academic</h3>	
 					<div class="row">
 						
 						<div class="col-md-12 my-2">

@@ -71,7 +71,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('admin.update-password') }}">
+                    <form method="POST" action="{{ route('admin.update-password') }}" id="change-pass" class="confirm-first">
                         @csrf
 
                         <div class="form-group">

@@ -21,7 +21,7 @@
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">
     <h2 class="text-center page-headings">Create a "Press Releases" article</h2>
     <hr>
-    <form action="{{ route('press-release-create') }}" method="POST" enctype="multipart/form-data" id="create_news_form">
+    <form action="{{ route('press-release-create') }}" method="POST" enctype="multipart/form-data" id="create_news_form" class="confirm-first">
         {{ csrf_field() }}
         <div class="row mt-1">
             <div class="col-md-12">

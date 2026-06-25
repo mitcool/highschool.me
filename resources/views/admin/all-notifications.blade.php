@@ -117,7 +117,7 @@
         <div class="activity-title">Activity</div>
 
         <div class="activity-actions">
-            <form method="POST" action="{{ route('admin.delete-notifications') }}">
+            <form method="POST" action="{{ route('admin.delete-notifications') }}" id="remove-all-notif" class="confirm-first">
                 @csrf
                 <button type="submit" class="btn-remove-all">Remove all</button>
             </form>
@@ -139,7 +139,7 @@
                         <td class="col-time">{{ optional($n->created_at)->format('H:i') }}</td>
                         <td>{{ $n->message }}</td>
                         <td class="col-remove">
-                            <form method="POST" action="{{ route('admin.delete-single-notification', $n->id) }}">
+                            <form method="POST" action="{{ route('admin.delete-single-notification', $n->id) }}" class="confirm-first" id="delete-notif-{{ $n->id }}">
                                 @csrf
                                 <button type="submit" class="remove-link">Remove</button>
                             </form>

@@ -5,7 +5,7 @@
 <div class="jumbotron container">
     <h2 class="text-center">Edit Feature ({{ $feature->feature }})</h2>
     <p class="text-danger">* For showing icon in public page please write "Yes" or "No" for plans value</p>
-    <form action="{{ route('feature.update',$feature->id) }}" method="POST">
+    <form action="{{ route('feature.update',$feature->id) }}" method="POST" id="edit-feature" class="confirm-first">
         {{ csrf_field() }}
         <label for="" class="mb-0 font-weight-bold">Feature Name</label>
         <input type="text" name="feature" class="form-control my-2" required value="{{ $feature->feature }}">

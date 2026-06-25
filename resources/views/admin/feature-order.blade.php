@@ -6,7 +6,7 @@
     <h2 class="text-center page-headings">Define order of features in "Plans table" </h2>
     @foreach ($categories as $category )
         <h4 class="text-center">{{ $category->name }}</h4>
-        <form action="{{ route('features-reorder') }}" method="POST">
+        <form action="{{ route('features-reorder') }}" method="POST" id="edit-feature" class="confirm-first">
             {{ csrf_field() }}
              @foreach ($category->features as $feature )
                 <div class="row my-2">

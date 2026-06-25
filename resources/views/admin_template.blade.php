@@ -788,6 +788,26 @@
     </div>
     <x-footer />
     <x-scroll-top />
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirm_modal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content border-0 shadow-xl" style="border:none !important;border-radius:5px !important;padding:20px; ">
+            
+                <div class="modal-body">
+                    <h3 class="text-center text-dark font-weight-bold">Are you sure?</h3>
+                    <div class="d-flex justify-content-center" style="margin-top:40px;">
+                        <button type="button" class="mx-2 btn-lg btn blue-button-outline" data-dismiss="modal" id="no">
+                            Cancel
+                        </button>
+
+                        <button type="button" class="mx-2 btn-lg btn orange-button" id="yes">
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     @yield('scripts')
     <script type="text/javascript">
        $('#requests').on('click', function(){
@@ -800,22 +820,27 @@
        });
        
        let forms = document.querySelectorAll('.confirm-first');
-       for(let form of forms){
-        form.addEventListener('submit',function(e){
-            if(form.getAttribute('id')=='logout_form' ){
-                form.submit();
-            }
-            else if(form.getAttribute('id')=='create_news_form' ){
-                return;
-            }
-            else{
+
+        for(let form of forms){  
+            form.addEventListener('submit',function(e){
                 e.preventDefault();
-                if(confirm('Are you sure?')){
-                    form.submit();
-                };
-            }    
-        });
-       }
+                $('#confirm_modal').modal('show');
+                $('#yes').attr('data-id',form.getAttribute('id'))
+                
+            });
+        }
+
+       $('#yes').on('click',function(){
+            let id = $(this).attr('data-id');
+            $(`#${id}`).find('button').attr('disabled',true);
+            $('#confirm_modal').modal('hide');
+            $(`#${id}`).submit();
+       })
+       $('#no').on('click',function(){
+            let id = $(this).attr('data-id');
+            $(`#${id}`).find('button').attr('disabled',false);
+       })
+       
 
        const adminMobileMenu = document.getElementById('adminMobileMenu');
        const adminMobileMenuToggle = document.querySelector('.admin-mobile-panel-toggle');

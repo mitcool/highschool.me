@@ -234,7 +234,7 @@
     </div>
     @if($student->student_details->status != 4)
     <div class="d-flex justify-content-center my-3">
-        <form action="{{ route('graduate-student',$student->student_details->id) }}" method="POST">
+        <form action="{{ route('graduate-student',$student->student_details->id) }}" method="POST" class="confirm-first" id="graduate">
             {{ csrf_field() }}
             <button class="btn-info btn">
                 Graduate student
@@ -271,9 +271,19 @@
                             @endif
                         </td>
                         <td>
-                            @if($enrolled_course->status == 5) <a href="{{ route('exam-protocol',$enrolled_course->passed_exam->id) }}">View</a> @endif
+                            @if($enrolled_course->status == 5 && $enrolled_course->passed_exam) 
+                                <a href="{{ route('exam-protocol',$enrolled_course->passed_exam->id) }}">View</a> 
+                            @else
+                                N/a
+                            @endif
                         </td>
-                        <td>{{ $enrolled_course->status == 5 ?  $enrolled_course->passed_exam->grade : '' }}</td>
+                        <td>
+                            @if($enrolled_course->status == 5 && $enrolled_course->passed_exam) 
+                                {{ $enrolled_course->status == 5 ?  $enrolled_course->passed_exam->grade : '' }}
+                            @else
+                                Transferred subject
+                            @endif    
+                        </td>
                     </tr>
                 @endforeach
         </table>

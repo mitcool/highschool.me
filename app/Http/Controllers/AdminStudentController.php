@@ -70,7 +70,8 @@ class AdminStudentController extends Controller
 
         $response = [
             'document_id' => $document_id,
-            'count' => $count_approved_documents
+            'count' => $count_approved_documents,
+            'action' => $action
         ];
 
         //maybe here would be good to place notification 

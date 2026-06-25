@@ -44,7 +44,7 @@
                 
         @else
             @if($exam->type == 1)
-                <form method="POST" action="{{ route('evaluate-exam',$exam->id) }}">
+                <form method="POST" action="{{ route('evaluate-exam',$exam->id) }}" class="confirm-first" id="evaluate-{{ $exam->id }}">
                     @foreach ($answers as $key => $answer )
                         <div class="shadow p-2">
                             <h5 class="font-weight-bold mb-0" style="color: #045397">Question {{ $key + 1 }}</h5>
@@ -73,7 +73,7 @@
                 @foreach ($answers as $answer )
                     <p>Topic: {{ $exam->topic }}</p>
                     <a class="text-decoration-none btn btn-secondary" href="{{ asset('exams') }}/{{ $exam->id }}/{{ $answer->answer }}" target="_blank" download><i class="fas fa-download"></i> Download here</a>
-                    <form method="POST" action="{{ route('evaluate-exam',$exam->id) }}">
+                    <form method="POST" action="{{ route('evaluate-exam',$exam->id) }}" class="confirm-first" id="evaluate-{{ $exam->id }}">
                             <label for=""class="text-danger mb-0 mt-2">Grade</label>
                             <select name="grade" class="form-control" id="">
                                 <option value="" selected disabled>Please select</option>

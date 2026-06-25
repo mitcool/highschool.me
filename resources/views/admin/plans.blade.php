@@ -11,7 +11,7 @@
         <div class="col-md-4 text-center">
             <h2>{{ $plan->name }}</h2>
             <hr>
-            <form action="{{ route('plans.edit') }}" method="POST">
+            <form action="{{ route('plans.edit') }}" method="POST" class="confirm-first" id="plan-{{ $plan->id }}">
                 {{ csrf_field() }}
                 <label for="" class="mb-0 font-weight-bold">Plan name:</label>
                 <input type="text" name="name" required value="{{ $plan->name }}" class="form-control">

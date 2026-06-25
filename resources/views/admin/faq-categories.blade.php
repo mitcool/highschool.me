@@ -11,7 +11,7 @@
 
     @foreach($faq_categories as $category)
         <h2>Category: <span class="font-italic text-primary">{{ $category->key }}</span></h2>
-        <form action="{{ route('edit-faq-category',$category->id) }}" method="POST">
+        <form action="{{ route('edit-faq-category',$category->id) }}" method="POST"  class="confirm-first" id="category-{{ $category->id }}">
             {{ csrf_field() }}
           
             <label class="font-weight-bold" for="">Name</label>

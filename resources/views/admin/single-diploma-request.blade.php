@@ -4,6 +4,17 @@
 
 <div class=" container shadow bg-white" style="margin-top:50px;padding:20px;">    
     <h4 class="text-center" style="color:#045397;padding:10px 0;">{{ $request->type->name }} Request</h4>
+
+    <div class="text-right">
+        @if($request->service_type == 2)
+            <a href="{{ route('enrollment-confirmation',$request->student_id) }}" class="btn btn-secondary my-2"><i class="fas fa-print"></i> Print</a>
+        @elseif($request->service_type == 7)
+            <a href="{{ route('parent.request-verification-of-graduation-pdf',$request->student_id) }}" class="btn btn-secondary my-2"><i class="fas fa-print"></i> Print</a>
+        @elseif($request->service_type == 3 || $request->service_type == 4 || $request->service_type == 5 )
+            <a href="{{ route('student.generate-pdf-diploma',$request->student_id) }}" class="btn btn-secondary my-2"><i class="fas fa-print"></i> Print Diploma</a>
+            <a href="{{ route('student.generate-pdf-transcript',$request->student_id) }}" class="btn btn-secondary my-2"><i class="fas fa-print"></i> Print Transcript</a>
+        @endif
+    </div>
     <table class="table">
         <tr>
             <td><span class="font-weight-bold">Date of order:</span> {{ $request->created_at->format('d.m.Y') }}</td>
@@ -73,7 +84,7 @@
         </tr>
         <tr>
             <td class="text-center">
-                <form action="{{ route('admin.change-diploma-printing-status',$request->id) }}" id="change-status" method="POST">
+                <form action="{{ route('admin.change-diploma-printing-status',$request->id) }}" id="change-status" class="confirm-first" method="POST">
                     {{ csrf_field() }}
                     <button class="orange-button">Save Changes</button>
                 </form>

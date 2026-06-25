@@ -56,7 +56,7 @@
                         $cteJobs = collect($cteJobs ?? []);
                     @endphp
 
-                    <form action="{{ route('add-enrollment-course') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('add-enrollment-course') }}" method="POST" enctype="multipart/form-data" id="add-course" class="confirm-first">
                         @csrf
 
                         {{-- STEP 1: Curriculum Type --}}

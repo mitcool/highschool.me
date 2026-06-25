@@ -19,7 +19,7 @@
 <div class="shadow container wrapper">    
 	<h1 class="text-center">Create a new meeting</h1>
 
-    <form action="{{ route('meeting.add') }}" method="POST">
+    <form action="{{ route('meeting.add') }}" method="POST" id="add-meeting" class="confirm-first">
         {{ csrf_field() }} 
         <label class="font-weight-bold m-0" for="">Date</label>
         <input name="date" type="date" class="form-control">

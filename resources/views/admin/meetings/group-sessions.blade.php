@@ -16,7 +16,7 @@
 
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     <h2 class="text-center page-headings">Set sessions</h2>
-    <form action="{{ route('create-group-session') }}" method="POST">
+    <form action="{{ route('create-group-session') }}" method="POST" class="confirm-first" id="create-group-session">
         {{ csrf_field() }}
         
         <div class="row my-2 align-items-center w-100">

@@ -8,7 +8,7 @@
         <h1 class="text-center page-headings">Add new image</h1>
         <p class="text-danger text-center">*Please add image only after consultation with Web Developer</p>
         <hr>
-        <form action="{{ route('add-image') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('add-image') }}" method="POST" enctype="multipart/form-data" id="add-image" class="confirm-first">
             {{ csrf_field() }}
             <div class="row">
                 <div class="col-md-6">
@@ -46,7 +46,7 @@
         <div class="border text-center" style="margin:50px auto;padding:20px;">
             <x-image-component nickname="{{ $image->nickname }}"  class="w-25 shadow mx-auto"/>
             <h4 class="text-center">{{ $image->nickname }}</h4>
-            <form action="{{ route('edit-image', $image->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('edit-image', $image->id) }}" method="POST" enctype="multipart/form-data" id="edit-feature-{{ $image->id }}" class="confirm-first">
                 {{ csrf_field() }}
                 <div class="row text-center">
                     <div class="col-md-6">

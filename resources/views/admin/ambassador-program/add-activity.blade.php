@@ -12,7 +12,7 @@
         <h2 class="page-headings">Add Activity</h2>
     </div>
     <div>
-        <form method="POST" action="{{ route('admin.add-new-activity') }}">
+        <form method="POST" action="{{ route('admin.add-new-activity') }}" class="confirm-first" id="add-activity">
             @csrf
             <div class="row">
                 <div class="col-md-12">

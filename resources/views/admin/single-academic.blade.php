@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="shadow container wrapper">
-	<form action="{{route('edit-academic')}}" method="POST" enctype="multipart/form-data">
+	<form action="{{route('edit-academic')}}" method="POST" enctype="multipart/form-data" class="confirm-first" id="edit-academic">
 		{{csrf_field()}}
 		<div class="container" style="padding:30px;">
 			<h3 class="text-center">Edit Academic</h3>	

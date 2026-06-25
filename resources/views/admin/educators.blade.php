@@ -9,7 +9,7 @@
 <div class="container my-3 shadow bg-white p-3">
     <h1 class="text-center">Add New Educator</h1>
     <hr/>
-     <form action="{{ route('create-educator') }}" method="POST" class="educator-form">
+     <form action="{{ route('create-educator') }}" method="POST" class="educator-form confirm-first" id="add-eductator">
         {{ csrf_field() }}
         <label class="font-weight-bold mb-0" for="">First Name</label>
         <input required class="form-control" name="firstname" value="{{ old('firstname') }}"/><br>
@@ -106,7 +106,7 @@
                     <button class="btn btn-warning"  data-toggle="modal" data-target="#edit-modal-{{ $educator->id }}">Edit</button>
                 </td>
                 <td class="text-center">
-                    <form action="{{ route('delete-educator',$educator->id) }}" method="POST" class="confirm-first">
+                    <form action="{{ route('delete-educator',$educator->id) }}" method="POST" class="confirm-first" id="delete-educator-{{ $educator->id }}">
                         {{ csrf_field() }}
                         <button class="btn btn-danger">Remove</button>
                     </form>
@@ -126,7 +126,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('edit-educator') }}" method="POST" class="educator-form">
+                        <form action="{{ route('edit-educator') }}" method="POST" class="educator-form confirm-first" id="edit-educator-{{ $educator->id }}">
                             {{ csrf_field() }}
                             <label class="font-weight-bold mb-0" for="">First Name</label>
                             <input required class="form-control" name="firstname"  value="{{ $educator->name }}"/><br>
@@ -225,13 +225,13 @@
                             <td>{{ $category->educator->fullname() }}</td>
                             <td>{{ $category->category->name }}</td>
                             <td>
-                                <form action="{{ route('change-educator-category-status',['approve',$category->id]) }}" method="POST">
+                                <form action="{{ route('change-educator-category-status',['approve',$category->id]) }}" method="POST" id="approve-{{ $category->id }}" class="confirm-first">
                                     {{ csrf_field() }}
                                     <button class="btn-success btn">Approve</button>
                                 </form>
                             </td>
                             <td>
-                                <form action="{{ route('change-educator-category-status',['decline',$category->id]) }}" method="POST">
+                                <form action="{{ route('change-educator-category-status',['decline',$category->id]) }}" method="POST" id="reject-{{ $category->id }}" class="confirm-first">
                                     {{ csrf_field() }}
                                     <button class="btn-danger btn">Reject</button>
                                 </form>

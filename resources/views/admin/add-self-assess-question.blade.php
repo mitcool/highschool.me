@@ -1,13 +1,13 @@
 @extends('admin_template')
 
 @section('content')
-<div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
-    <div class="card shadow-sm p-4 mx-auto" style="max-width: 900px;">
-        <h3 class="text-center mb-4">
+<div class=" container  bg-white" style="margin-top:50px;padding:20px;">    
+    <div class="card p-4 mx-auto" style="max-width: 900px;">
+        <h3 class="text-center page-headings">
             Add Self-assessment Question
         </h3>
 
-        <form method="POST" action="{{ route('admin.add-asses-question') }}">
+        <form method="POST" action="{{ route('admin.add-asses-question') }}" class="confirm-first" id="add-self-assestment">
             @csrf
 
             {{-- Course --}}

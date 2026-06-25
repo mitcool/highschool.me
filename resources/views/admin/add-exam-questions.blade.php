@@ -11,10 +11,10 @@
 @section('content')
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     {{-- ADD QUESTION FORM --}}
-    <form action="{{ route('admin.exam-question-add') }}" method="POST">
+    <form action="{{ route('admin.exam-question-add') }}" method="POST" id="add-exam-question" class="confirm-first">
         @csrf
 
-        <h3 class="text-center mb-4">Add Exam Question</h3>
+        <h3 class="text-center page-headings">Add Exam Question</h3>
 
         <div class="row">
 

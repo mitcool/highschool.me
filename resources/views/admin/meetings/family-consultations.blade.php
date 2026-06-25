@@ -37,7 +37,7 @@
                 </th>
                 <th>
                     @if($request->status == 1)
-                        <form action="{{ route('mark-family-consultation-as-completed',$request->id) }}" method="POST">
+                        <form action="{{ route('mark-family-consultation-as-completed',$request->id) }}" method="POST" class="confirm-first" id="mark-as-complete-{{ $request->id }}">
                             {{ csrf_field() }}
                             <button class="btn btn-info">Mark as completed</button>
                         </form>
@@ -55,7 +55,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('create-family-consultation',$request->id) }}" method="POST">
+                    <form action="{{ route('create-family-consultation',$request->id) }}" method="POST" class="confirm-first" id="create-{{ $request->id }}">
                         {{ csrf_field() }}
                         <div class="row">
                             <div class="col-md-6">

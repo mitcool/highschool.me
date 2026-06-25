@@ -185,9 +185,9 @@
                 @endif --}}
             </div>
             @if(in_array($tpc->id,$enrolled_courses_ids))
-                <button class="btn btn-transfer-back" data-student-id="{{ $student->id }}" data-course-id="{{ $tpc->id }}">Transfer Back</button>
+                <button id="transfer-{{ $tpc->id }}" class="btn btn-transfer-back" data-student-id="{{ $student->id }}" data-course-id="{{ $tpc->id }}">Transfer Back</button>
             @else
-                <button class="btn btn-enroll btn-transfer" data-student-id="{{ $student->id }}" data-course-id="{{ $tpc->id }}">Transfer</button>
+                <button id="transfer-{{ $tpc->id }}" class="btn btn-enroll btn-transfer" data-student-id="{{ $student->id }}" data-course-id="{{ $tpc->id }}">Transfer</button>
             @endif
         </div>   
         @endforeach
@@ -300,9 +300,9 @@
                                                         @endif
                                                     </div>
                                                     @if(in_array($cc->id,$enrolled_courses_ids))
-                                                        <button data-student-id="{{ $student->id }}" data-course-id="{{ $cc->id }}" class="btn  btn-transfer-back">Transfer Back</button>
+                                                        <button id="transfer-{{ $cc->id }}" data-student-id="{{ $student->id }}" data-course-id="{{ $cc->id }}" class="btn  btn-transfer-back">Transfer Back</button>
                                                     @else
-                                                        <button data-student-id="{{ $student->id }}" data-course-id="{{ $cc->id }}" class="btn btn-enroll btn-transfer">Transfer</button>
+                                                        <button id="transfer-{{ $cc->id }}" data-student-id="{{ $student->id }}" data-course-id="{{ $cc->id }}" class="btn btn-enroll btn-transfer">Transfer</button>
                                                     @endif
                                                 </div>
                                             @endforeach
@@ -358,9 +358,9 @@
                                                     @endif
                                                 </div>
                                                 @if($student->status == 1)
-                                                    <button data-student-id="{{ $student->id }}" data-course-id="{{ $cc->id }}" class="btn btn-transfer-back">Transfer Back</button>                                         
+                                                    <button id="transfer-{{ $cc->id }}" data-student-id="{{ $student->id }}" data-course-id="{{ $cc->id }}" class="btn btn-transfer-back">Transfer Back</button>                                         
                                                 @else
-                                                    <button data-student-id="{{ $student->id }}" data-course-id="{{ $cc->id }}" class="btn btn-enroll btn-transfer">Transfer</button>
+                                                    <button id="transfer-{{ $cc->id }}" data-student-id="{{ $student->id }}" data-course-id="{{ $cc->id }}" class="btn btn-enroll btn-transfer">Transfer</button>
                                                 
                                                 @endif
                                             </div>
@@ -380,47 +380,78 @@
         @endforeach
     </div>
 </div>
-@endif
 
+
+@endif
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirm-transfer-modal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow-xl" style="border:none !important;border-radius:5px !important;padding:20px; ">
+        
+            <div class="modal-body">
+                <h3 class="text-center text-dark font-weight-bold">Are you sure?</h3>
+                <div class="d-flex justify-content-center" style="margin-top:40px;">
+                    <button type="button" class="mx-2 btn-lg btn blue-button-outline" data-dismiss="modal" id="transfer-no">
+                        Cancel
+                    </button>
+
+                    <button type="button" class="mx-2 btn-lg btn orange-button" id="transfer-yes">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
 
-        $(document).on('click','.btn-transfer',function(){
-          
-            let btn = $(this);
-            let student_id = $(this).attr('data-student-id');
-            let course_id = $(this).attr('data-course-id');
-            if( confirm('Are you sure')){
-                $.ajax({
-                    data: {student_id: student_id,course_id:course_id},
-                    method: "POST",
-                    url: "{{route('transfer')}}",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                }).done(function(courses) {
-                    btn.removeClass('btn-transfer').addClass('btn-enroll').addClass('btn-transfer-back').html('Transfer Back')
-                }); 
-            }
-            
-         });
+    $(document).on('click','.btn-transfer',function(){
+        let btn_id = $(this).attr('id');
+        let student_id = $(this).attr('data-student-id');
+        let course_id = $(this).attr('data-course-id');
+        $('#confirm-transfer-modal').modal('show')
+        $('#transfer-yes').attr('data-student-id',student_id).attr('data-course-id',course_id).attr('data-id',btn_id)     
+     });
 
-         $(document).on('click','.btn-transfer-back',function(){
-            let btn = $(this);
-            let student_id = $(this).attr('data-student-id');
-            let course_id = $(this).attr('data-course-id');
-            if(confirm('Are you sure')){
-                $.ajax({
-                    data: {student_id: student_id,course_id:course_id},
-                    method: "POST",
-                    url: "{{route('transfer-back')}}",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                }).done(function(courses) {
-                    btn.removeClass('btn-transfer-back').addClass('btn-transfer').addClass('btn-enroll').html('Transfer')
-                }); 
+    $(document).on('click','.btn-transfer-back',function(){
+        let btn_id = $(this).attr('id');
+        let student_id = $(this).attr('data-student-id');
+        let course_id = $(this).attr('data-course-id');
+        $('#confirm-transfer-modal').modal('show');
+        $('#transfer-yes').attr('data-student-id',student_id).attr('data-course-id',course_id).attr('data-id',btn_id);
+
+    });
+
+    $(document).on('click','#transfer-yes',function(){
+        
+        let student_id = $(this).attr('data-student-id');
+        let course_id = $(this).attr('data-course-id');
+        let btn = $(this).attr('data-id');
+        console.log(btn)
+        transfer(student_id,course_id,btn)
+    })
+
+    function transfer(student_id,course_id,btn){
+        //  url: "{{route('transfer-back')}}",
+        
+        $.ajax({
+            data: {student_id: student_id,course_id:course_id},
+            method: "POST",
+            url: "{{route('transfer')}}",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
-         })
-  
+        }).done(function(type) {
+            if(type == 1){
+                console.log(type)
+                $(`#${btn}`).removeClass('btn-transfer').addClass('btn-enroll').addClass('btn-transfer-back').html('Transfer Back')
+            }
+            else{
+                $(`#${btn}`).removeClass('btn-transfer-back').addClass('btn-enroll').addClass('btn-transfer').html('Transfer')
+            }
+            $('#confirm-transfer-modal').modal('hide')
+            
+        }); 
+    }
 
 </script>

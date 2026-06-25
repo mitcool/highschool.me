@@ -3,7 +3,7 @@
 @section('content')
     <div class="container shadow p-3 mt-3 text-center bg-light">
         <h2>Edit Author</h2>
-        <form action="{{ route('edit-author', $author->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('edit-author', $author->id) }}" method="POST" enctype="multipart/form-data" class="confirm-first" id="edit-single-author">
             <div class="form-group">
                 <label for="" class="font-weight-bold m-0">Name </label>
                 <input value="{{ $author->name }}" required type="text" name="name" class="form-control my-2" >
@@ -19,7 +19,7 @@
             <button class="btn btn-secondary">Edit Author</button>
 
         </form>
-        <form action="{{ route('delete-author', $author->id) }}" method="POST" class="text-right">
+        <form action="{{ route('delete-author', $author->id) }}" method="POST" class="text-right confirm-first" id="delete-single-author">
             {{ csrf_field() }}
             <button class="btn btn-danger">Delete Author</button>
         </form>

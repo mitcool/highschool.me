@@ -16,7 +16,7 @@
 @section('content')
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">    
     <h2 class="text-center">Edit Fact Hub</h2>
-    <form action="{{ route('facts-hub-update',$news->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('facts-hub-update',$news->id) }}" method="POST" enctype="multipart/form-data" class="confirm-first" id="fact-hub-edit">
         {{ csrf_field() }}
         <div class="row mt-2">
             <div class="col-md-12">

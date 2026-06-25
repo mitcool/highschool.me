@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container shadow mx-auto" style="padding:30px; margin-top:20px;">
-    <form action="{{ route('admin.edit-single-student-in-spotlight', $student->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.edit-single-student-in-spotlight', $student->id) }}" method="POST" enctype="multipart/form-data" id="single-student-in-spotlight" class="confirm-first">
         {{csrf_field()}}
         <h3 class="text-center">Edit Student in Spotlight</h3>   
         <div class="row">

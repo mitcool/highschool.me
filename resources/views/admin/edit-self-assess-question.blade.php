@@ -8,7 +8,7 @@
             Edit Self-assessment Question
         </h3>
 
-        <form method="POST" action="{{ route('admin.self-assessment-update', $question->id) }}">
+        <form method="POST" action="{{ route('admin.self-assessment-update', $question->id) }}" class="confirm-first" id="self-assetment">
             @csrf
 
             {{-- Course --}}

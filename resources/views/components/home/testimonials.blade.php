@@ -5,7 +5,7 @@
 		<div class="page-content ">
 			<p class="text-center">{{ $texts['testimonials-content'] }}</p>
 		</div>
-		<div class="d-flex w-100 justify-content-between" id="testimonial_box">
+		<div class="d-flex w-100 justify-content-between mt-3" id="testimonial_box">
 			<div class="video">
 				<video width="100%" height="auto" controls height="400">
 					<source src="{{ asset('videos/testimonials_video.mp4')}}" type="video/mp4" >

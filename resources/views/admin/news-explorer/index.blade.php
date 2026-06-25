@@ -21,7 +21,7 @@
 
     <h2 class="text-center page-headings">Add news</h2>
     <hr>
-    <form action="{{ route('dynamic-news-create') }}" method="POST" enctype="multipart/form-data" id="create_news_form">
+    <form action="{{ route('dynamic-news-create') }}" method="POST" enctype="multipart/form-data" id="create_news_form" class="confirm-first">
         {{ csrf_field() }}
         <div class="row mt-1">
             <div class="col-md-12">

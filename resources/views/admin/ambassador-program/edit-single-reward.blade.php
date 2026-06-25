@@ -18,7 +18,7 @@
 
     <div class="card form-card">
         <div class="card-body">
-            <form method="POST" action="{{ route('admin.edit-reward', $reward->id) }}">
+            <form method="POST" action="{{ route('admin.edit-reward', $reward->id) }}" class="confirm-first" id="edit-reward">
                 @csrf
                 <div class="row">
                     <div class="col-md-9">

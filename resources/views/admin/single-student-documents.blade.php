@@ -14,14 +14,14 @@
     <hr>
     <div class="row text-left" id="info">
         <div class="col-md-6">
-            <p class=" text-primary"> <span class="font-weight-bold text-dark">Student name:</span> <span class="font-italic">"{{ $student->student->fullname() }}"</span> </p>
+            <p class=" text-primary"> <span class="font-weight-bold text-dark">Student name:</span> <span class="">{{ $student->student->fullname() }}</span> </p>
             <p><span class="font-weight-bold">Email:</span> {{ $student->student->email }}</p>
             <p><span class="font-weight-bold">Born:</span> {{ $student->student->date_of_birth() }}</p>
             <p><span class="font-weight-bold">Track:</span> {{ $student->track_name() }}</p>
             <p><span class="font-weight-bold">Date of Submitions:</span> {{ $student->student->created_at->format('d.m.Y') }}</p>
         </div>
         <div class="col-md-6">
-            <p class="text-right text-primary"> <span class="font-weight-bold text-dark">Parent name:</span> <span class="font-italic">"{{ $student->parent->fullname() }}"</span> </p>
+            <p class="text-right text-primary"> <span class="font-weight-bold text-dark">Parent name:</span> <span>{{ $student->parent->fullname() }}</span> </p>
         </div>
 
         <div class="col-md-12" style="color:#737373;margin-top:40px;">
@@ -54,13 +54,12 @@
 
                 
         </table>
-      
-        <hr>
+        {{-- TRANSFER SUBJECTS --}}
+        <x-external-courses-table :student="$student->student"/>
+       
         <form action="{{ route('approve.student',$student->student_id) }}" method="POST" class="confirm-first text-center my-3 {{ $student->approved_documents_count() > 4 ? ' d-block ' : 'd-none' }} " id="approve-student-form">
             {{ csrf_field() }}
-            <div class="">
-                <input type="checkbox" name="is_disabled"> IEP / 504
-            </div>
+            
             <button class="btn btn-info mt-4">Approve Student</button>
         </form>
         
@@ -80,10 +79,6 @@
                 DELETE STUDENT FROM THE SYSTEM
             </button>
         </div>
-
-        {{-- TRANSFER SUBJECTS --}}
-        <x-external-courses-table :student="$student->student"/>
-
 </div>
 
 {{-- Reject modal --}}
@@ -111,42 +106,54 @@
         </div>
     </div>
 </div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirm-document" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow-xl" style="border:none !important;border-radius:5px !important;padding:20px; ">
+           
+            <div class="modal-body">
+                <h3 class="text-center text-dark font-weight-bold">Are you sure?</h3>
+                <div class="d-flex justify-content-center" style="margin-top:40px;">
+                    <button type="button" class="mx-2 btn-lg btn blue-button-outline" data-dismiss="modal" id="confirm-document-no">
+                        Cancel
+                    </button>
+
+                    <button type="button" class="mx-2 btn-lg btn orange-button" id="confirm-document-yes">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
 <script>
     $(".approve-button").on("click", function () {
         let document_id = $(this).attr('data-value');
+        $('#confirm-document').modal('show');
+        $('#confirm-document-yes').attr('data-action','approve').attr('data-document-id',document_id)
         
-        fetch("{{ route('approve-document','approve') }}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
-            },
-                body: JSON.stringify({
-                    document_id: document_id
-                })
-            })
-            .then(response => response.json())
-            .then(response => {
-                $(`.approve-button[data-value=${response.document_id}]`).removeClass('btn-secondary').addClass('btn-success').html('Approved')
-                $(`.reject-button[data-value=${response.document_id}]`).remove();
-                if(response.count > 4){
-                    $('#approve-student-form').removeClass('d-none');
-                    $('#wrong-document').addClass('d-none')
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
-      
     });
 
     $(".reject-button").on("click", function () {
         let document_id = $(this).attr('data-value');
+        $('#confirm-document').modal('show');
+        $('#confirm-document-yes').attr('data-action','reject').attr('data-document-id',document_id)
         
-        fetch("{{ route('approve-document','reject') }}", {
+    });
+
+    $(document).on('click','#confirm-document-yes',function(){
+        let document_id = ($(this).attr('data-document-id'));
+        let action = $(this).attr('data-action')
+        approveDocument(action,document_id);
+        $('#confirm-document').modal('hide');
+    });
+
+    function approveDocument(action,document_id){
+        fetch(`/admin/approve/document/${action}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -158,16 +165,27 @@
             })
             .then(response => response.json())
             .then(response => {
-                $(`.reject-button[data-value=${response.document_id}]`).removeClass('btn-secondary').addClass('btn-danger').html('Rejected')
-                $(`.approve-button[data-value=${response.document_id}]`).removeClass('btn-success').addClass('btn-secondary').html('Approve');
-                $('#wrong-document').removeClass('d-none')
-                $('#approve-student-form').addClass('d-none');
+                if(response.action == 'approve'){
+                    $(`.approve-button[data-value=${response.document_id}]`).removeClass('btn-secondary').addClass('btn-success').html('Approved')
+                    $(`.reject-button[data-value=${response.document_id}]`).remove();
+                    if(response.count > 4){
+                        $('#approve-student-form').removeClass('d-none');
+                        $('#wrong-document').addClass('d-none')
+                    }
+                }
+                else if(response.action == 'reject'){
+                    $(`.reject-button[data-value=${response.document_id}]`).removeClass('btn-secondary').addClass('btn-danger').html('Rejected')
+                    $(`.approve-button[data-value=${response.document_id}]`).removeClass('btn-success').addClass('btn-secondary').html('Approve');
+                    $('#wrong-document').removeClass('d-none')
+                    $('#approve-student-form').addClass('d-none');
+                }
+                
             })
             .catch(error => {
                 console.error("Error:", error);
             });
-      
-    });
+    }
 </script>
 
 @endsection
+

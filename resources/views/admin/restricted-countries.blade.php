@@ -5,7 +5,7 @@
 <div class="shadow container mx-auto wrapper">    
     <h2 class="text-center">Add a restricted country</h2>
     <hr>
-    <form action="{{ route('update-country') }}" method="POST" class="confirm-first">
+    <form action="{{ route('update-country') }}" method="POST" class="confirm-first" id="update-country">
         {{ csrf_field() }}
         <label for="" class="font-weight-bold mb-1">Country</label>
         <select name="country_id" id="" class="form-control">
@@ -30,7 +30,7 @@
     <tr>
         <td>{{ $country->nicename }}</td>
         <td class="text-right">
-            <form action="{{ route('update-country') }}" method="POST" class="confirm-first">
+            <form action="{{ route('update-country') }}" method="POST" class="confirm-first" id="update-{{ $country->id }}">
                 {{ csrf_field() }}
                 <input type="hidden" value="{{ $country->id }}" name="country_id">
                 <button class="btn btn-danger">Remove</button>

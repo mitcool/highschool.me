@@ -10,7 +10,7 @@
     <h2 class="text-center blue-heading h2">Add Exam</h2>
     <p class="text-danger text-center">Please enter the time in UTC timezone <span class="font-weight-bold">(UTC time now : {{ $utc_time }})</span></p>
     <hr/>
-     <form action="{{ route('create-exam') }}" method="POST" id="add-exam"  class="exam-form">
+     <form action="{{ route('create-exam') }}" method="POST" id="add-exam"  class="exam-form confirm-first">
         {{ csrf_field() }}
         <div class="row">
             <div class="col-md-6">
@@ -94,7 +94,7 @@
                     <button class="btn btn-link text-underline m-0 p-0" style="text-decoration: underline" data-toggle="modal" data-target="#edit-modal-{{ $exam->id }}">Edit</button>
                 </td>
                 <td class="text-center">
-                    <form action="{{ route('delete-exam',$exam->id) }}" method="POST" class="confirm-first ">
+                    <form action="{{ route('delete-exam',$exam->id) }}" method="POST" class="confirm-first" id="delete-exam-{{ $exam->id }}">
                         {{ csrf_field() }}
                         <button class="btn btn-link text-underline m-0 p-0" style="text-decoration: underline">Remove</button>
                     </form>
@@ -133,7 +133,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('edit-exam',$exam->id) }}" method="POST" id="edit-hour-{{ $exam->id }}" class="exam-form">
+                        <form action="{{ route('edit-exam',$exam->id) }}" method="POST" id="edit-hour-{{ $exam->id }}" class="exam-form confirm-first">
                             {{ csrf_field() }}
                             <label class="font-weight-bold mb-0" for="">Date</label>
                             <input  class="datepicker form-control" name="date" type="text" value="{{ $exam->datetime->format('d-m-Y') }}" required/><br>

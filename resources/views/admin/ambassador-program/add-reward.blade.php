@@ -12,7 +12,7 @@
         <h2 class="page-headings">Add Reward</h2>
     </div>
     <div>
-        <form method="POST" action="{{ route('admin.add-new-reward') }}">
+        <form method="POST" action="{{ route('admin.add-new-reward') }}" class="confirm-first" id="add-reward">
             @csrf
             <div class="row">
                 <div class="col-md-9">

@@ -21,7 +21,7 @@
 <div class=" container border bg-white" style="margin-top:50px;padding:20px;">
     <h2 class="text-center page-headings">Edit press release article</h2>
     <hr>
-    <form action="{{ route('press-release-update',$news->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('press-release-update',$news->id) }}" method="POST" enctype="multipart/form-data" class="confirm-first" id="create-news">
         {{ csrf_field() }}
         <div class="row mt-2">
             <div class="col-md-6">

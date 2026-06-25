@@ -6,7 +6,7 @@
 
     <h2 class="text-center page-headings">Course Types</h2>
 
-    <form action="{{ route('course-types.add') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('course-types.add') }}" method="POST" enctype="multipart/form-data" class="confirm-first" id="add-course">
         {{ csrf_field() }}
         <label for="" class="font-weight-bold my-2">Name</label>
         <input class="form-control" type="text" name="name" required>
@@ -28,7 +28,7 @@
             {{ $course->name }}   
             <div class="d-flex">
                 <a class="btn btn-warning" href="{{ route('course-type.edit',$course->id) }}">Edit Course Type</a> &nbsp; 
-                <form action="{{ route('course-type.delete',$course->id) }}" class="confirm-first" method="POST">
+                <form action="{{ route('course-type.delete',$course->id) }}" class="confirm-first" method="POST" id="delete-form-{{ $course->id }}">
                     {{ csrf_field() }}
                      <button class="btn btn-danger">Delete Course Type</button>
                 </form>

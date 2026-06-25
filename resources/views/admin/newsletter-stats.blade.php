@@ -26,7 +26,7 @@
           <h3 class="text-center">List of active subcribers:</h3>
           @foreach($subscribers as $subscriber)
               <li class="list-group-item d-flex justify-content-between align-items-center">{{ $subscriber->name }} ({{ $subscriber->email }}) 
-                <form action="{{ route('update-subscribtion', $subscriber->id) }}" class="d-inline" method="POST">
+                <form action="{{ route('update-subscribtion', $subscriber->id) }}" class="d-inline confirm-first" method="POST" id="edit-subscriber-{{ $subscriber->id }}">
                   {{ csrf_field() }}
                   <button class="btn btn-secondary">Unubscribe</button>
                 </form>
@@ -38,7 +38,7 @@
         <h3 class="text-center">List of unsubscribed users:</h3>
         @foreach($unsubscribed_users as $user)
             <li class="list-group-item d-flex justify-content-between align-items-center">{{ $user->name }} ({{ $user->email }}) 
-              <form action="{{ route('update-subscribtion', $user->id) }}" class="d-inline" method="POST">
+              <form action="{{ route('update-subscribtion', $user->id) }}" class="d-inline confirm-first" method="POST" id="edit-subscriber-{{ $user->id }}">
                 {{ csrf_field() }}
                 <button class="btn btn-warning">Subscribe</button>
               </form>
@@ -48,8 +48,8 @@
     </div>
     <div class="col-md-12">
       <hr>
-      <h2 class="text-center">Add subscriber</h2>
-      <form action="{{ route('add-subscriber') }}" method="POST">
+      <h2 class="text-center page-headings">Add subscriber</h2>
+      <form action="{{ route('add-subscriber') }}" method="POST" id="add-subscriber" class="confirm-first">
         {{ csrf_field() }}
         <input type="text" name="name" class="form-control my-2" required placeholder="Name">
         <input type="email" name="email" class="form-control my-2" required placeholder="Email">

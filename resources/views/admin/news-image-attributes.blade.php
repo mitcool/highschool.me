@@ -4,7 +4,7 @@
 
 @foreach($images as $image)
 
-<form action="{{ route('change-image-attributes',$image->id) }}" method="POST">
+<form action="{{ route('change-image-attributes',$image->id) }}" method="POST" id="edit-feature" class="confirm-first">
     {{ csrf_field() }}
     <div class="row">
         <div class="col-md-12 text-center">

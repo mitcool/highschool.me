@@ -13,7 +13,7 @@
 	@else
 		<iframe src="{{ route('welcome') }}" class="w-100" style="min-height: 400px;" frameborder="0"></iframe>
 	@endif
-	<form action=" {{route('change-text')}}" method="POST">
+	<form action=" {{route('change-text')}}" method="POST" class="confirm-first" id="change-text">
 	@csrf
 		<div class="row">
 			<div class="col-md-12 text-center">

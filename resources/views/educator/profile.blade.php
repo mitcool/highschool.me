@@ -268,7 +268,7 @@
 
             {{-- Teaching Qualifications --}}
             <div class="shadow section" >
-                <h3 class="font-weight-bold text-center">5. Teaching Qualifications & Certifications</h3>
+                <h3 class="font-weight-bold text-center">Teaching Qualifications & Certifications</h3>
                 <div id="teaching-qualifications">
                     @if(count(auth()->user()->certificates) > 0)
                         @foreach (auth()->user()->certificates as $key => $certificate )

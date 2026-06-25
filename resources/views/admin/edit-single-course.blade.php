@@ -8,7 +8,7 @@
 <div class="jumbotron container shadow bg-white">
     <h1 class="text-center">Courses</h1>
 
-    <form action="{{ route('course.update',$course->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('course.update',$course->id) }}" method="POST" enctype="multipart/form-data" class="confirm-first" id="update-course">
         {{ csrf_field() }}
         <label for="" class="font-weight-bold my-2">Name</label>
         <input class="form-control" type="text" name="name" required value="{{ $course->name }}">
@@ -29,7 +29,7 @@
             {{ $course->name }}   
             <div class="d-flex">
                 <a class="btn btn-warning" href="{{ route('course.edit',$course->id) }}">Edit Course</a> &nbsp; 
-                <form action="{{ route('course.delete',$course->id) }}" class="confirm-first">
+                <form action="{{ route('course.delete',$course->id) }}" class="confirm-first" id="delete-coure-{{ $course->id }}">
                     {{ csrf_field() }}
                      <button class="btn btn-danger">Delete Course</button>
                 </form>

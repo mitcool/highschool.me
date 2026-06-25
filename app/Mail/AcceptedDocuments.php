@@ -28,6 +28,7 @@ class AcceptedDocuments extends Mailable
      */
     public function build()
     {
-        return $this->view('email.accepted-documents')->subject('Documents has been accepted!');;
+        return $this->view('email.accepted-documents')
+            ->subject('Documents has been accepted!');;
     }
 }

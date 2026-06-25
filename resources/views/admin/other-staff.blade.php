@@ -6,7 +6,7 @@
         <div class="col-lg-10 shadow">
              <h2 class="text-center page-headings">Add Staff Member</h2>
              <hr/>
-            <form action="{{ route('other-staff-add') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('other-staff-add') }}" method="POST" enctype="multipart/form-data" id="other-staff" class="confirm-first">
                 {{ csrf_field() }}
                 <div class="row">
                     <div class="col-md-12 my-2">
@@ -63,7 +63,7 @@
                             <button class="btn-warning btn" data-toggle="modal" data-target="#other-staff-{{ $member->id }}">Edit</button>
                         </td>
                         <td class="text-center">
-                            <form action="{{ route('other-staff-delete') }}" method="POST" class="confirm-first">
+                            <form action="{{ route('other-staff-delete') }}" method="POST" class="confirm-first" id="delete-{{ $member->id }}">
                               {{ csrf_field() }}
                               <input type="hidden" value="{{ $member->id }}" name="id">
                               <button class="btn-danger btn">Delete</button>
@@ -80,7 +80,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="{{ route('other-staff-edit') }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('other-staff-edit') }}" method="POST" enctype="multipart/form-data" class="confirm-first" id="edit-{{ $member->id }}">
                                     {{ csrf_field() }}
                                     <div class="row">
                                         <div class="col-md-12 my-2">

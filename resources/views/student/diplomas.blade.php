@@ -197,7 +197,7 @@
                         </tr>
                     @else
                     <div class="page-content">
-                        <p class="text-center mb-0">No exams at the moment</p>
+                        <p class="text-center mb-0">No diplomas available at the moment</p>
                     </div>
                     @endif
                 </thead>

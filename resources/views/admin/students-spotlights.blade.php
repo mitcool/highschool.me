@@ -3,7 +3,7 @@
 @section('content')
 <div class="shadow container wrapper">    
 
-    <form action="{{ route('admin.add-student-in-spotlight') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.add-student-in-spotlight') }}" method="POST" enctype="multipart/form-data" class="confirm-first" id="add-student-in-spotlight">
         {{csrf_field()}}
         <h3 class="text-center">Add Student in Spotlight</h3>   
         <div class="row">

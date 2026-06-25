@@ -13,7 +13,7 @@
     @foreach($faqs as $faq)
         
         <hr>
-        <form action="{{ route('edit-faq',$faq->id) }}" method="POST">
+        <form action="{{ route('edit-faq',$faq->id) }}" method="POST" class="confirm-first" id="faq-{{$faq->id}}">
             {{ csrf_field() }}
             <input required  name="question" class="form-control" id="ckeditor-{{ $faq->id }}" value="{{$faq->question }}" />
             <label class="font-weight-bold" for="">Answer</label>
@@ -31,7 +31,7 @@
             </select>
             <button type="submit" class="btn btn-secondary my-2">SAVE</button>
         </form>
-        <form method="POST" action="{{ route('delete-faq', $faq->id) }}">
+        <form method="POST" action="{{ route('delete-faq', $faq->id) }}"  class="confirm-first" id="delete-faq-{{$faq->id}}">
             <button type="submit" class="btn btn-danger my-2">DELETE</button>
         </form>
         <hr style="border: 2px solid black;">

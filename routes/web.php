@@ -74,7 +74,7 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	Route::post('/update-plan/{student_id}','ParentController@updatePlan')->name('parent.update-plan');
 	Route::get('/update-plan-success/{student_id}/{requested_plan}/{type}','ParentController@updatePlanSuccess')->name('parent.update-plan-success');
 	//Enrollment Confiramtion
-	Route::get('/enrollment-confirmation/{student_id}','ParentController@enrollmentConfirmation')->name('enrollment-confirmation');
+	
 	Route::get('/enrollment-confirmation-order/{student_id}','ParentController@enrollmentConfirmationOrder')->name('enrollment-confirmation-order');
 	Route::post('enrollment-confirmation-order-payment/{student_id}/{type}','ParentController@enrollmentConfirmationOrderPayment')->name('enrollment-confirmation-order-payment');
 	Route::get('enrollment-confirmation-order-success/{student_id}/{type}/{copies?}','ParentController@enrollmentConfirmationOrderSuccess')->name('enrollment-confirmation-order-success');
@@ -82,7 +82,7 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	Route::get('/request-verification-of-graduation/{student_id}','ParentController@requestVerificationOfGraduation')->name('parent.request-verification-of-graduation');
 	Route::get('/request-verification-of-graduation/payment/{student_id}','ParentController@requestVerificationOfGraduationPayment')->name('parent.request-verification-of-graduation-payment');
 	Route::get('/verification-of-graduation-success/{student_id}/{type}/{copies?}','ParentController@verificationOfGraduationSuccess')->name('parent.verification-of-graduation-success');
-	Route::get('/request-verification-of-graduation-pdf/{student_id}','ParentController@requestVerificationOfGraduationPdf')->name('parent.request-verification-of-graduation-pdf');
+	
 	Route::get('/student/meeting-list/{student_id}','ParentController@meetingList')->name('parent.student.meeting-list');
 	#notifications
 	Route::get('/all-notifications', 'ParentController@showNotifications')->name('parent.notifications');
@@ -370,6 +370,10 @@ Route::post('/edit-exam/{exam_id}','AdminController@editExam')->name('edit-exam'
 Route::get('/exam-protocol/{exam_id}','StudentController@examProtocol')->name('exam-protocol');
 
 Route::post('/parent/update','ParentController@updateInfo')->name('parent.update-info');
+
+Route::get('/enrollment-confirmation/{student_id}','ParentController@enrollmentConfirmation')->name('enrollment-confirmation');
+
+Route::get('/request-verification-of-graduation-pdf/{student_id}','ParentController@requestVerificationOfGraduationPdf')->name('parent.request-verification-of-graduation-pdf');
 
 /*
 Route::get('/down', function() {

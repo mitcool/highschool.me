@@ -5,7 +5,7 @@
 <div class="shadow container wrapper">    
     <h2 class="text-center page-headings">Add Feature</h2>
     <p class="text-danger">* For showing icon in public page please write "Yes" or "No" for plans value</p>
-    <form action="{{ route('feature.add') }}" method="POST">
+    <form action="{{ route('feature.add') }}" method="POST" id="add-feature" class="confirm-first">
         {{ csrf_field() }}
         <label for="" class="mb-0 font-weight-bold">Feature Name</label>
         <input type="text" name="feature" class="form-control my-2" required>
@@ -41,7 +41,7 @@
              <li class="list-group-item d-flex w-100 align-center justify-content-between">{{ $feature->feature }}
                 <div class="d-flex">
                     <a class="btn btn-warning m-0" href="{{ route('feature.edit',$feature->id) }}">Edit Feature</a> &nbsp;
-                    <form class="m-0 text-right" action="{{ route('feature.delete',$feature->id) }}" method="POST">
+                    <form class="m-0 text-right" action="{{ route('feature.delete',$feature->id) }}" method="POST" id="delete-feature-{{ $feature->id }}" class="confirm-first">
                         <button class="btn btn-danger m-0" >Delete feature</button> 
                     </form>
                 </div>

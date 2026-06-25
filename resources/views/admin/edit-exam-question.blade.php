@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container shadow mx-auto" style="padding:30px;margin-top:20px;">
-	<form action="{{ route('admin.update-question-exam', $question->id) }}" method="POST" enctype="multipart/form-data">
+	<form action="{{ route('admin.update-question-exam', $question->id) }}" method="POST" enctype="multipart/form-data"  class="confirm-first" id="update-question">
 		{{csrf_field()}}
 		<div class="container" style="padding:30px;">
 			<h3 class="text-center">Edit Question</h3>	
@@ -24,7 +24,7 @@
 		</div>
 	</form>
 	<div class="col-md-8 offset-md-2 text-center my-2">
-		<form action="{{ route('admin.delete-exam-question') }}" method="POST">
+		<form action="{{ route('admin.delete-exam-question') }}" method="POST"  class="confirm-first" id="exam-question">
 			{{csrf_field()}}
 			<input type="hidden" name="id" value="{{$question->id}}">
 			<button class="btn btn-danger">Delete Question</button>

@@ -520,7 +520,9 @@
                                             @elseif($enrolled_course->status == 4)
                                                 <span class="course-pill course-pill-action-pending">Pending</span>
                                             @elseif($enrolled_course->status == 5)
-                                                <a href="{{ route('parent.student.exam-results', [$student->id, $course_exam_id]) }}" class="course-pill course-pill-action-results text-decoration-none">Exam Results</a>
+                                                @if($course_exam_id) 
+                                                    <a href="{{ route('parent.student.exam-results', [$student->id, $course_exam_id]) }}" class="course-pill course-pill-action-results text-decoration-none">Exam Results</a>
+                                                @endif
                                             @endif
                                         </td>
                                     </tr>
