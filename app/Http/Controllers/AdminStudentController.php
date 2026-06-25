@@ -35,7 +35,8 @@ class AdminStudentController extends Controller
     }
     public function approveDocuments(Request $request,$student_id){
         $approved_status = 2;
-        $is_disabled = $request->is_disabled ? 1 : 0;
+        $student = User::find($student_id);
+        $is_disabled = $student->documents->where('type',8)->where('is_approved',1)->count();
         $parent_student = ParentStudent::where('student_id',$student_id)->first();
         $parent_student->update([
             'status'=> $approved_status,
