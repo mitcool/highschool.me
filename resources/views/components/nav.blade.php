@@ -29,6 +29,7 @@
             <li><a class="dropdown-item" href="{{ route('credit-recovery') }}"> {{ $texts['credit-recovery'] }}</a></li> 
             <li><a class="dropdown-item" href="{{ route('credit-transfer') }}">{{ $texts['credit-transfer'] }} </a></li> 
             <li><a class="dropdown-item" href="{{ route('awards') }}">{{ $texts['awards'] }}</a></li> 
+            <li><a class="dropdown-item" href="{{ route('country-requirements') }}">International Diploma Recognition</a>
             <li><a class="dropdown-item" href="{{ route('international-students') }}"> {{ $texts['international-students'] }}</a></li>
             <li><a class="dropdown-item" href="{{ route('starter-kit') }}">{{ $texts['starter-kit'] }}</a>
          </ul>

@@ -52,6 +52,9 @@
                                    name="password"
                                    class="form-control @error('password') is-invalid @enderror"
                                    required>
+                            <span style="font-size:10px;color:red;">
+                                <strong>Must be at least 10 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special symbol.</strong>
+                            </span>
                             @error('password')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

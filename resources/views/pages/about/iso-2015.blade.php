@@ -52,6 +52,12 @@
 		<div class="col-md-10 col-lg-8 mb-4 text-center">
 			<h1 class="page-headings">{{ $texts['heading'] }}</h1>
 			<div class="page-content">
+				{!! $texts['teaser'] !!}
+			</div>
+			<div class="page-content text-center mt-5 mb-5">
+				<img src="{{asset('/images/recognition-pages/ISO_9001_2015.webp')}}" style="width:50%;">
+			</div>
+			<div class="page-content">
 				{!! $texts['content'] !!}
 			</div>
 		</div>

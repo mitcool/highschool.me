@@ -56,6 +56,9 @@
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                                <span style="font-size:10px;color:red;">
+                                    <strong>Must be at least 10 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special symbol.</strong>
+                                </span>
 
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback" role="alert">

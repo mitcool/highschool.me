@@ -51,7 +51,13 @@
 		</div>
 		<div class="col-md-10 col-lg-8 mb-4 text-center">
 			<h1>{{ $texts['heading'] }}</h1>
-			<div class="text-justify">
+			<div class="page-content">
+				{!! $texts['teaser'] !!}
+			</div>
+			<div class="page-content text-center mt-5 mb-5">
+				<img src="{{asset('/images/recognition-pages/ISO_21001_2018.webp')}}" style="width:50%;">
+			</div>
+			<div class="page-content">
 				{!! $texts['content'] !!}
 			</div>
 		</div>

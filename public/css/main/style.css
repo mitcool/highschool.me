@@ -689,6 +689,9 @@ a:hover {
 #about-wrapper p{
     margin-top:1rem !important;
 }
+#about-wrapper p:first-child{
+    margin-top:0rem !important;
+}
 .space {
     padding: 70px;
 }
@@ -1462,6 +1465,9 @@ a:hover {
     .blue-hr{
         width: auto!important;
     }
+    .space {
+        padding: 20px;
+    }
 }
 @media (min-width: 450px) and (max-width: 550px) {
     .logoFooter {
@@ -1621,12 +1627,12 @@ blockquote p::after {
 .white-hr {
     border: 2px solid #ffffff;
     width: 325px;
-    margin: 10px auto;
+    margin: 25px auto;
 }
 .blue-hr {
     border: 2px solid #045397;
     width: 325px;
-    margin: 10px auto;
+    margin: 25px auto;
 }
 
 .three-btn-container {
