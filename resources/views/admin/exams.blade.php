@@ -132,6 +132,9 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+                    <div class="d-flex justify-content-center">
+                        {{ $exam->links() }}
+                    </div>
                     <div class="modal-body">
                         <form action="{{ route('edit-exam',$exam->id) }}" method="POST" id="edit-hour-{{ $exam->id }}" class="exam-form confirm-first">
                             {{ csrf_field() }}

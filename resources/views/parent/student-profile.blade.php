@@ -302,6 +302,7 @@
                 
                 <a class="btn my-3 orange-button" href="{{ route('enrollment-confirmation-order',$student->id) }}" target="_blank">Order Enrollment Verification</a>
             </div>
+            <p>Please note that the fee for a digital enrollment verification is $30.00, while the fee for a physical enrollment verification is $180.00</p>
             
 
         @endif
