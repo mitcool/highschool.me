@@ -407,19 +407,19 @@ public function sendHelpDeskQustion(Request $request){
   $is_admin = $user->role_id == 1 ? 1 : 0; 
   $slug = $request->slug ? $request->slug : $this->setHelpDeskNumber($user->role_id);
   $prev_message = HelpDesk::where('slug',$slug)->first();
+  $is_educator = 0;
   if($user->role_id == 2){
     $is_parent = 1;
-    $is_educator = 0;
   }
   elseif($user->role_id == 4){
     $is_parent = 0;
-    $is_educator = 0;
   }
   elseif($user->role_id == 5){
     $is_parent = 0;
     $is_educator = 1;
   }
   else{
+    
      $is_parent = $prev_message->is_parent; //in case admin answer  
   }
   
