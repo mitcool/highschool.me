@@ -23,7 +23,7 @@
         <tbody>
            {{-- Group Sessions --}}
             <tr>
-                <th colspan="4">
+                <th colspan="5">
                     <h5>Group Mentoring Sessions</h5>
                 </th>
                 <th></th>
@@ -66,7 +66,7 @@
 
             {{-- Mentoring Sessions --}}
              <tr>
-                <th colspan="4">
+                <th colspan="5">
                     <h5 class="mb-0">Personal Mentoring Sessions</h5>
                 </th>
                 <th></th>
@@ -107,13 +107,13 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="4">At the moment, there are no personal sessions scheduled.</td>
+                    <td colspan="5">At the moment, there are no personal sessions scheduled.</td>
                 </tr>
             @endforelse
 
             {{-- Coaching Sessions --}}
             <tr>
-                <th colspan="4">
+                <th colspan="5">
                     <h5>College & Career Coaching</h5>
                 </th>
                 <th></th>
@@ -149,13 +149,13 @@
                 </tr>
                 @empty
                     <tr>
-                        <td colspan="4">At the moment, there are no coaching sessions scheduled.</td>
+                        <td colspan="5">At the moment, there are no coaching sessions scheduled.</td>
                     </tr>
             @endforelse
 
              {{-- Personal Tutoring Sessions --}}
             <tr>
-                <th colspan="4">
+                <th colspan="5">
                     <h5>Personal Tutoring Sessions</h5>
                 </th>
                 <th></th>
@@ -192,7 +192,7 @@
                 </tr>
                 @empty
                     <tr>
-                        <td colspan="4">At the moment, there are no coaching sessions scheduled.</td>
+                        <td colspan="5">At the moment, there are no coaching sessions scheduled.</td>
                     </tr>
             @endforelse
         </tbody>

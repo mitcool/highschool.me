@@ -1,0 +1,2 @@
+<h1 class="page-headings">Recognition of the U.S. High School Diploma in Bulgaria</h1>
+<p>Complete an accredited American high school fully online. NACID issues the recognition certificate within 1 month of a complete submission, opening the path to Bulgarian universities.</p>

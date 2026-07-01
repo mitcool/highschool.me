@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 use DB;
 use Mail;
@@ -43,6 +44,7 @@ use App\Meeting;
 use App\StudentMeeting;
 use App\Diploma;
 use App\SingleExamQuestion;
+use App\CourseCategory;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -483,25 +485,22 @@ class StudentController extends Controller
 
 
     public function studyMentor(){
-        
-        if(auth()->user()->student_details->track == 4){
-            $categories_ids = [];
-            foreach(auth()->user()->enrolled_courses as $enrolled_course){
-                $categories_ids[] = $enrolled_course->course->category_id;
-            }
-           
-            $study_mentors = StudyMentor::whereIn('category_id',$categories_ids)->get();
-        }
-        else{
-            $study_mentors = StudyMentor::all();
-        }
-        
+        $grouped_courses = CurriculumCourse::where('curriculum_type_id', '!=', 4)
+                ->get()
+                ->groupBy('curriculum_type_id')
+                ->map(function ($courses) {
+                    return $courses->groupBy('category_id');
+        });
+        $categories = CourseCategory::pluck('name','id');
+        $types= CurriculumType::pluck('code','id');
         return view('student.study-mentor')
-            ->with('study_mentors',$study_mentors);
+            ->with('categories',$categories)
+            ->with('types',$types)
+            ->with('grouped_courses',$grouped_courses);
     }
 
     public function singleStudyMentor($slug){
-        if(auth()->user()->student_details->status < 3){
+        if(auth()->user()->student_details->status != 3){
             return redirect()->route('student.dashboard')->with('error','Please complete your registration process to have access to STUDY MENTOR');
         }
         $mentor = StudyMentor::where('slug',$slug)->first();
@@ -967,8 +966,12 @@ class StudentController extends Controller
 
     public function generatePdfDiploma($student_id){
         $student = User::find($student_id);
+        $diploma = Diploma::where('student_id',$student_id)->first();
         $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
-        $pdf = Pdf::loadView('student.diploma-pdf',['student' => $student,'credits' => $credits])->set_option('isRemoteEnabled',true)->setPaper('a4','landscape');
+        $pdf = Pdf::loadView('student.diploma-pdf',[
+            'student' => $student,
+            'created_at' => $diploma->created_at,
+            'credits' => $credits])->set_option('isRemoteEnabled',true)->setPaper('a4','landscape');
         return $pdf->stream();
     }
     public function requestDiplomaCopy(){
@@ -1005,19 +1008,51 @@ class StudentController extends Controller
 
     public function digitalTransript($student_id){
         $student = User::with('student_details','exams')->find($student_id);
-        $exams = Exam::where('status',2)
+        $completed_exams = Exam::where('status',2)
             ->where('grade','>',1)
-            ->get()
-            ->groupBy(function ($item) {
-                return $item->datetime->format('Y'); // group by month
-            });
+            ->where('student_id',$student_id)
+            ->get();
+        $exams = $completed_exams->groupBy(function ($item) {
+            return $item->datetime->format('Y'); // group by month
+        });
+        
+        $transferred_courses = $student->enrolled_courses->where('is_transferred',1);
+        $grade_and_credits = ($this->calculateAverageGradeAndTotalCredits($completed_exams,$transferred_courses));
+        $grade = $grade_and_credits['average_grade'];
+        $credits = $grade_and_credits['total_credits'];
         $now = Carbon::now()->format('d.m.Y');
         $pdf = Pdf::loadView('student.transcript-pdf',[ 
                 'student'=> $student,
+                'transferred_courses' => $transferred_courses,
                 'exams' => $exams,
+                'grade' => $grade,
+                'credits' => $credits,
                 'now' => $now ])
                 ->set_option('isRemoteEnabled',true)->setPaper('a4');
         return $pdf->stream();
+    }
+
+    public function calculateAverageGradeAndTotalCredits($completed_exams,$transferred_courses){
+        $total_credits = 0;
+        $completed_courses = 0;
+        $total_grade = 0;
+        foreach($completed_exams as $exam){
+            $total_credits+=($exam->course->course->default_credits);
+            $completed_courses++;
+            $total_grade += $exam->grade;
+
+        }
+
+        foreach($transferred_courses as $course){
+            $total_credits+=($course->course->course->default_credits);
+            $completed_courses++;
+            $total_grade += $course->transferred_grade;
+        }
+        $response = [
+            'average_grade' => ($total_grade/$completed_courses),
+            'total_credits' => $total_credits
+        ];
+        return ($response);
     }
 
     public function showNotifications() {

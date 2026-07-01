@@ -119,6 +119,7 @@
                     </td>
                 @endif
             </tr>
+		
             <div class="modal fade" id="edit-modal-{{ $exam->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
@@ -131,9 +132,6 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        {{ $exam->links() }}
                     </div>
                     <div class="modal-body">
                         <form action="{{ route('edit-exam',$exam->id) }}" method="POST" id="edit-hour-{{ $exam->id }}" class="exam-form confirm-first">
@@ -178,13 +176,18 @@
                     </div>
                 </div>
             </div>
+		 
         @empty
             <tr>
                 <td colspan="4" class="text-center">No exams at the moment</td>
             </tr>
             
         @endforelse
+		 
       </table>
+	 <div class="d-flex justify-content-center">
+			  {{ $exams->links() }}
+		 </div>
 </div>
 @endsection
 

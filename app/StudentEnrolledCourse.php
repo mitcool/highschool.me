@@ -9,7 +9,7 @@ class StudentEnrolledCourse extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['status'];
+    protected $fillable = ['status','is_transferred','transferred_grade'];
 
     /**  */
     const STATUS_ENROLLED  = 0;

@@ -239,7 +239,7 @@
             <div class="row">
                 @foreach($grouped_countries as $group_country)
                     <div class="col-md-4 my-2">
-                        <a href="{{ route('single-country-requirements',$group_country->id) }}">
+                        <a href="{{ route('single-country-requirements',$group_country->slug) }}">
                            <div class="shadow-sm d-flex justify-content-start" style="padding:20px;border-radius:5px;">
                                 <img style="height: 30px;width:50px;" src="{{ asset('images/flags') }}/{{ $group_country->flag }}" alt="" class="border">
                                 <h5 class="ml-3 mb-0">{{ $group_country->nicename }}</h5> 

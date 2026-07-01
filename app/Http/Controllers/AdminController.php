@@ -1674,7 +1674,7 @@ class AdminController extends Controller
         $utc_time = Carbon::now('UTC')->format('d.m.Y H:i');
         $students = StudentEnrolledCourse::where('status',StudentEnrolledCourse::STATUS_READY_FOR_EXAM)->select('user_id')->distinct()->get();
         $courses = CurriculumCourse::all();
-        $exams = Exam::orderBy('created_at','desc')->get();
+        $exams = Exam::orderBy('datetime','desc')->paginate(15);
         $educators = User::where('role_id',5)->get();
         $all_courses = CurriculumCourse::all();
         return view('admin.exams')
@@ -1796,7 +1796,6 @@ class AdminController extends Controller
             $course->update(['status' => StudentEnrolledCourse::STATUS_READY_FOR_EXAM]);
         }
 
-        
 
         try{
             Mail::to($student->email)->send(new ExamResult($exam));
@@ -1969,16 +1968,19 @@ class AdminController extends Controller
             ->with('request',$request);
     }
 
-    public function transfer(Request $request){
+    public function transfer(Request $request){+
         $course_id = $request->course_id;
         $student_id = $request->student_id;
-
+        $grade = $request->grade;
         if(StudentEnrolledCourse::where('catalog_course_id',$course_id)->where('user_id',$student_id)->count() == 0){
             StudentEnrolledCourse::insert([
                 'user_id' => $student_id,
                 'catalog_course_id' => $course_id,
                 'created_at' => Carbon::now(),
-                'status' => StudentEnrolledCourse::STATUS_COMPLETED
+                'status' => StudentEnrolledCourse::STATUS_COMPLETED,
+                'is_transferred' =>1 ,
+                'transferred_grade' => $grade
+
             ]);
              return 1;
         }

@@ -389,7 +389,17 @@
         <div class="modal-content border-0 shadow-xl" style="border:none !important;border-radius:5px !important;padding:20px; ">
         
             <div class="modal-body">
-                <h3 class="text-center text-dark font-weight-bold">Are you sure?</h3>
+                
+                <h3 class="text-center text-dark font-weight-bold message"></h3>
+                <label for="" class="font-weight-bold grade-label mb-0 mt-3">Grade</label>
+                <select name="grade" class="form-control grade">
+                    <option value="" selected disabled>Please select</option>
+                    
+                    @for($i = 1; $i < 4.1; $i+= 0.1)
+                        <option value="{{ $i }}">{{ $i }}</option>
+                    @endfor
+                </select>
+                
                 <div class="d-flex justify-content-center" style="margin-top:40px;">
                     <button type="button" class="mx-2 btn-lg btn blue-button-outline" data-dismiss="modal" id="transfer-no">
                         Cancel
@@ -398,7 +408,7 @@
                     <button type="button" class="mx-2 btn-lg btn orange-button" id="transfer-yes">
                         Confirm
                     </button>
-                </div>
+                </div> 
             </div>
         </div>
     </div>
@@ -406,36 +416,62 @@
 <script>
 
     $(document).on('click','.btn-transfer',function(){
+        
         let btn_id = $(this).attr('id');
         let student_id = $(this).attr('data-student-id');
         let course_id = $(this).attr('data-course-id');
-        $('#confirm-transfer-modal').modal('show')
-        $('#transfer-yes').attr('data-student-id',student_id).attr('data-course-id',course_id).attr('data-id',btn_id)     
+        $('#confirm-transfer-modal').modal('show');
+        $('.grade').css('display','block')
+        $('.grade-label').css('display','block')
+        $('.message').html('Please enter grade and confirm')
+        $('#transfer-yes').attr('data-student-id',student_id)
+            .attr('data-course-id',course_id)
+            .attr('data-id',btn_id)
+            .attr('data-transfer','transfer')    
      });
 
     $(document).on('click','.btn-transfer-back',function(){
         let btn_id = $(this).attr('id');
         let student_id = $(this).attr('data-student-id');
         let course_id = $(this).attr('data-course-id');
+        $('.grade').css('display','none')
+        $('.grade-label').css('display','none')
         $('#confirm-transfer-modal').modal('show');
-        $('#transfer-yes').attr('data-student-id',student_id).attr('data-course-id',course_id).attr('data-id',btn_id);
+        $('.message').html('Are you sure')
+        $('#transfer-yes').attr('data-student-id',student_id)
+            .attr('data-course-id',course_id)
+            .attr('data-id',btn_id)
+            .attr('data-transfer','transfer-back')
 
     });
 
     $(document).on('click','#transfer-yes',function(){
+        let grade = $(this).closest('.modal-body').find('.grade').val();
+        
+        if($(this).attr('data-transfer') == 'transfer'){
+           
+            if(grade < 1 || grade > 5 || !grade){
+                
+                return;
+            };
+        }
         
         let student_id = $(this).attr('data-student-id');
         let course_id = $(this).attr('data-course-id');
         let btn = $(this).attr('data-id');
-        console.log(btn)
-        transfer(student_id,course_id,btn)
+       
+        transfer(student_id,course_id,grade,btn)
     })
 
-    function transfer(student_id,course_id,btn){
+    function transfer(student_id,course_id,grade,btn){
         //  url: "{{route('transfer-back')}}",
         
         $.ajax({
-            data: {student_id: student_id,course_id:course_id},
+            data: {
+                student_id: student_id,
+                course_id:course_id,
+                grade:grade
+            },
             method: "POST",
             url: "{{route('transfer')}}",
             headers: {

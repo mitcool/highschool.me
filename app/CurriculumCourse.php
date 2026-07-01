@@ -67,4 +67,8 @@ class CurriculumCourse extends Model
     {
         return $this->belongsTo(CteJob::class, 'job_id');
     }
+
+    public function study_mentor(){
+        return $this->hasOne(StudyMentor::class,'course_id','id');
+    }
 }

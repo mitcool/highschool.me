@@ -149,7 +149,7 @@
             <h5>Joined: {{ $student->created_at->format('d.m.Y') }}</h5>
             <div class="student-grade-control">
                 <label for="student-grade-select" class="font-weight-bold mb-1">Grade</label>
-                @if($student->student_details && $student->student_details->usesTransferProgramGradeRule())
+               @if($student->student_details && $student->student_details->usesTransferProgramGradeRule())
                     <select class="form-control" disabled>
                         <option selected>International Transfer Program</option>
                     </select>
@@ -165,9 +165,9 @@
                             <option value="{{ $grade_level }}" {{ (int) optional($student->student_details)->grade === $grade_level ? 'selected' : '' }}>
                                 {{ $grade_level }}th Grade
                             </option>
-                        @endforeach
+                        @endforeach 
                     </select>
-                @endif
+                @endif 
                 <div id="student-grade-feedback" class="student-grade-feedback"></div>
             </div>
         </div>
@@ -179,7 +179,9 @@
 	<hr>
     <a href="{{ route('admin.single-student-uploaded-documents', $student->id) }}">View Uploaded documents</a>
     <hr>
-    <h2 class="page-headings">Degrees and Courses</h2>
+	
+	@if($student->student_details->track != 4)
+   <h2 class="page-headings">Degrees and Courses</h2>
    <div class="card graduation-card p-4">
         <h2 class="text-center mb-4">Graduation Process</h2>
         <div class="position-relative mb-4">
@@ -222,17 +224,17 @@
                         <div class="d-flex flex-wrap badge-wrap">
                             @foreach($in_progress_courses as $in_progress_course)
                                 <span class="badge progress-pill">□ {{ $in_progress_course->course->course->title }}</span>
-                                {{-- <span class="badge progress-pill">□ Anatomy &amp; Physiology</span>
-                                <span class="badge progress-pill">□ World History</span>
-                                <span class="badge progress-pill">□ U.S. Government</span> --}}
-                            @endforeach
+                               
+                            @endforeach 
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @if($student->student_details->status != 4)
+	@endif
+
+   @if($student->student_details->status != 4)
     <div class="d-flex justify-content-center my-3">
         <form action="{{ route('graduate-student',$student->student_details->id) }}" method="POST" class="confirm-first" id="graduate">
             {{ csrf_field() }}
@@ -247,7 +249,7 @@
             Graduated
         </button>
     </div>
-    @endif
+    @endif 
     <h2 class="text-center my-4">Course list</h2>
         <table class="table">
             <tr>
@@ -285,13 +287,13 @@
                             @endif    
                         </td>
                     </tr>
-                @endforeach
+                @endforeach 
         </table>
 
         <div class="text-center">
             <a href="{{ route('admin-student-overview') }}" class="btn btn-outline-secondary me-2">Close</a>
         </div>
-</div>
+</div> 
 
 
 @endsection

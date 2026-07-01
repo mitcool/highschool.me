@@ -19,7 +19,7 @@
             <p style="color:#14213D">THIS CERTIFICATE IS PROUDLY PRESENTED TO</p>
              <h1 style="font-size:40px;margin-top:50px;color:#E9580C;">{{ $student->fullname() }}</h1>
              <p style="color:#14213D">for successfully completing the requirements prescribed for graduation</p>
-             <p style="color:#14213D">Given on {{ $credits['graduation_date'] }} </p>
+             <p style="color:#14213D">Given on {{ $created_at }} </p>
         </div>
         
         <div style="margin-top:50px;">

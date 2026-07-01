@@ -57,7 +57,9 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5"> No exams at the moment</td>
+                            <td colspan="5">
+                                <div class="page-content">No exams at the moment</div>  
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>

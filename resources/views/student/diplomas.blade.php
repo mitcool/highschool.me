@@ -188,32 +188,40 @@
         <div class="table-responsive">
             <table class="table course-table">
                 <thead>
-                    @if(count($diplomas))
-                        <tr class="text-center">
-                            <th >Date</th>
-                            <th>Digital Degree</th>
-                            <th>Diploma</th>
-                            <th>Transcript</th>
-                        </tr>
-                    @else
-                    <div class="page-content">
-                        <p class="text-center mb-0">No diplomas available at the moment</p>
-                    </div>
-                    @endif
+                   
+                    <tr class="text-center">
+                        <th >Date</th>
+                        <th>Digital Degree</th>
+                        <th>Diploma</th>
+                        <th>Transcript</th>
+                    </tr>
+                   
+
                 </thead>
                 <tbody class="text-center">
-                   @foreach ($diplomas as $diploma)
+                   @forelse ($diplomas as $diploma)
                         <tr class="text-center">
                             <td >{{ $diploma->created_at->format('d-m-Y') }}</td>
                             <td>{{ auth()->user()->student_details->track_name() }}</td>
                             <td>
-                                <a href="{{ route('student.generate-pdf-diploma',auth()->id()) }}">Link</a>
+                                <a href="{{ route('student.generate-pdf-diploma',auth()->id()) }}" target="_blank">Link</a>
                             </td>
                             <td>
-                                <a href="{{ route('student.generate-pdf-transcript',auth()->id()) }}">Link</a>
+                                <a href="{{ route('student.generate-pdf-transcript',auth()->id()) }}" target="_blank">Link</a>
                             </td>
                         </tr>
-                   @endforeach
+                    @empty
+                    <tr class="text-center">
+                            <td > - </td>
+                            <td>{{ auth()->user()->student_details->track_name() }}</td>
+                            <td>
+                                N/a
+                            </td>
+                            <td>
+                                <a href="{{ route('student.generate-pdf-transcript',auth()->id()) }}" target="_blank">Link</a>
+                            </td>
+                        </tr>
+                   @endforelse
                     
                 </tbody>
             </table>
