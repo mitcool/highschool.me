@@ -68,6 +68,10 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	#related to leaves
 	Route::get('/request-leave', 'ParentController@requestLeavePage')->name('parent.request-leave');
 	Route::post('/store-leave', 'ParentController@requestLeave')->name('parent.store-leave');
+	Route::get('/request-leave/{request_id}', 'ParentController@showLeaveRequest')->name('parent.leave-requests.show');
+	Route::get('/request-leave/{request_id}/edit', 'ParentController@editLeaveRequestPage')->name('parent.leave-requests.edit');
+	Route::patch('/request-leave/{request_id}', 'ParentController@updateLeaveRequest')->name('parent.leave-requests.update');
+	Route::delete('/request-leave/{request_id}', 'ParentController@deleteLeaveRequest')->name('parent.leave-requests.delete');
 	Route::get('/plans','ParentController@plans')->name('parent.plans');
 	Route::post('/terminate-plan/{plan_id}','ParentController@terminatePlan')->name('terminate-plan');
 	Route::get('/change-plan/{student_id}','ParentController@changePlan')->name('change-plan');

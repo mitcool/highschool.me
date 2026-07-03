@@ -2,11 +2,16 @@
 
 @section('headCss')
 <style>
-    tr,td{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 0;
+    .meetings-table th,
+    .meetings-table td {
+        vertical-align: middle;
+    }
+    .meetings-table .section-title-row th {
+        border-top: none;
+    }
+    .meetings-table .action-cell {
+        text-align: right;
+        white-space: nowrap;
     }
 </style>
 @endsection
@@ -19,19 +24,19 @@
    
     <h3 class="text-center">Sessions Schedules</h3>
 
-    <table class="table table-striped">
+    <table class="table table-striped meetings-table">
         <tbody>
            {{-- Group Sessions --}}
-            <tr>
+            <tr class="section-title-row">
                 <th colspan="5">
                     <h5>Group Mentoring Sessions</h5>
                 </th>
-                <th></th>
             </tr>
             @if(count($group_sessions) > 0)
                 <tr>
                     <th>Date</th>
                     <th>Educator</th>
+                    <th></th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -42,7 +47,7 @@
                     <td><span>{{ $session->educator->fullname() }}</span></td>
                     <td></td>
                     <td></td>
-                    <td class="text-right">
+                    <td class="action-cell">
                         @if(in_array($session->id,$already_booked_sessions))
                             <button class="btn-enrolled">Already Booked</button>
                         @elseif(count($session->students) > 9)
@@ -60,21 +65,21 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="3">At the moment, there are no group sessions scheduled.</td>
+                    <td colspan="5">At the moment, there are no group sessions scheduled.</td>
                 </tr>
             @endforelse
 
             {{-- Mentoring Sessions --}}
-             <tr>
+             <tr class="section-title-row">
                 <th colspan="5">
                     <h5 class="mb-0">Personal Mentoring Sessions</h5>
                 </th>
-                <th></th>
             </tr>
              @if(count($mentoring_sessions) > 0)
                 <tr>
                     <th>Date</th>
                     <th>Educator</th>
+                    <th></th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -89,7 +94,7 @@
                     </td>
                     <td></td>
                     <td></td>
-                    <td class="text-right">
+                    <td class="action-cell">
                         @if(in_array($session->id,$already_booked_sessions) && count($session->students) > 1)
                             <button class="btn-enrolled">Already Booked</button>
                         @elseif(count($session->students) >= 1)
@@ -112,16 +117,16 @@
             @endforelse
 
             {{-- Coaching Sessions --}}
-            <tr>
+            <tr class="section-title-row">
                 <th colspan="5">
                     <h5>College & Career Coaching</h5>
                 </th>
-                <th></th>
             </tr>
             @if(count($coaching_sessions) > 0)
                 <tr>
                     <th>Date</th>
                     <th>Educator</th>
+                    <th></th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -131,7 +136,8 @@
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
                     <td>{{ $session->educator->fullname() }}</td>
                     <td></td>
-                    <td class="text-right">
+                    <td></td>
+                    <td class="action-cell">
                         @if(in_array($session->id,$already_booked_sessions))
                             <button class="btn-enrolled">Already Booked</button>
                         @elseif(count($session->students) > 1)
@@ -154,11 +160,10 @@
             @endforelse
 
              {{-- Personal Tutoring Sessions --}}
-            <tr>
+            <tr class="section-title-row">
                 <th colspan="5">
                     <h5>Personal Tutoring Sessions</h5>
                 </th>
-                <th></th>
             </tr>
             @if(count($academic_hours) > 0)
                 <tr>
@@ -166,7 +171,7 @@
                     <th>Educator</th>
                     <th>Subject</th>
                     <th></th>
-                    
+                    <th></th>
                 </tr>
             @endif
             @forelse ($academic_hours as $session)
@@ -174,7 +179,8 @@
                     <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
                     <td>{{ $session->educator->fullname() }}</td>
                     <td>{{ $session->course->title }}</td>
-                    <td class="text-right">
+                    <td></td>
+                    <td class="action-cell">
                         @if(in_array($session->id,$already_booked_sessions))
                             <button class="btn-enrolled">Already Booked</button>
                         @elseif(count($session->students) > 1)

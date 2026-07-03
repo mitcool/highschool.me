@@ -69,6 +69,10 @@ class User extends Authenticatable
         return $this->hasOne('App\InvoiceDetail','user_id','id');
     }
 
+    public function guardian_profile(){
+        return $this->hasOne('App\ParentGuardianProfile', 'user_id', 'id');
+    }
+
     public function student_details(){
         return $this->hasOne('App\ParentStudent','student_id','id');
     }

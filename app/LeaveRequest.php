@@ -98,6 +98,14 @@ class LeaveRequest extends Model
         ][$this->status] ?? 'secondary';
     }
 
+    public function getTypeTextAttribute()
+    {
+        return [
+            self::TYPE_MEDICAL => 'Medical',
+            self::TYPE_PERSONAL => 'Personal',
+        ][(int) $this->type] ?? 'Unknown';
+    }
+
     public function student() {
         return $this->belongsTo(User::class, 'student_id');
     }

@@ -29,7 +29,7 @@
                         {{-- @if($diploma->verification_of_graduation)
                             <a href="{{ route('parent.request-verification-of-graduation-pdf',$diploma->student_id) }}" target="_blank">Link</a>
                         @else --}}
-                            <a href="{{ route('parent.request-verification-of-graduation',$diploma->student_id) }}">Link</a>
+                            <a href="{{ route('parent.request-verification-of-graduation',$diploma->student_id) }}" target="_blank">Link</a>
                         {{-- @endif --}}
                     </td>
                     <td class="text-center">
@@ -59,6 +59,8 @@
         </table>
         @if(count($diplomas) > 0)
             <p>* - The package includes a folder with a certified diploma with an apostille certified by the school principal.</p>
+        @else
+            <p class="page-content text-center">Your students don't have any diplomas yet</p>
         @endif
     </div>
 @endsection

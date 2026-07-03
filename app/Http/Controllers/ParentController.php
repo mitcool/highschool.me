@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -42,6 +43,7 @@ use App\DiplomaPrintingRequest;
 use App\StudentMeeting;
 use App\ParentExtraService;
 use App\ParentExtraServiceType;
+use App\ParentGuardianProfile;
 
 use App\Mail\NewDiplomaPrintingRequest;
 use App\Mail\StudentCreated;
@@ -1112,12 +1114,19 @@ class ParentController extends Controller
 
     public function profile(){
         $countries = Country::all();
+        $guardianProfile = null;
+
+        if (Schema::hasTable('parent_guardian_profiles')) {
+            $guardianProfile = auth()->user()->guardian_profile;
+        }
+
         return view('parent.profile')
-        ->with('countries',$countries);
+        ->with('countries',$countries)
+        ->with('guardianProfile', $guardianProfile);
     }
 
     public function updateInfo(Request $request){
-        $request->validate([
+        $rules = [
             "email" => 'required',
             'country_id'=> 'required',
             'city' => 'required',
@@ -1127,7 +1136,31 @@ class ParentController extends Controller
             "phone" => "required|regex:/^[0-9]\d{6,15}$/|min:6|max:15",
             "phone_code" => 'required|regex:/^\+[0-9]\d{0,3}$/',
             "avatar" => ['file', 'mimes:jpg,jpeg,webp,png,svg', 'max:2000']
-        ]);
+        ];
+
+        $isParent = (int) auth()->user()->role_id === 2;
+        $hasGuardianProfileTable = Schema::hasTable('parent_guardian_profiles');
+
+        if ($isParent) {
+            if (!$hasGuardianProfileTable) {
+                return redirect()->back()->withInput()->with(
+                    'error',
+                    'Parent guardian information table is missing. Please create it in MySQL first.'
+                );
+            }
+
+            $rules = array_merge($rules, [
+                'guardian_relationship' => ['required', Rule::in(['mother', 'father', 'legal_guardian', 'other'])],
+                'guardian_relationship_other' => 'nullable|string|max:255|required_if:guardian_relationship,other',
+                'can_make_educational_decisions' => ['required', Rule::in(['0', '1'])],
+                'has_other_guardian_with_rights' => ['required', Rule::in(['0', '1'])],
+                'other_guardian_full_name' => 'nullable|string|max:255|required_if:has_other_guardian_with_rights,1',
+                'other_guardian_email' => 'nullable|email|max:255|required_if:has_other_guardian_with_rights,1',
+                'other_guardian_phone' => ['nullable', 'string', 'max:50', 'regex:/^[0-9+\-\s\(\)]{6,50}$/', 'required_if:has_other_guardian_with_rights,1'],
+            ]);
+        }
+
+        $request->validate($rules);
         $email = $request->email;
         if(auth()->user()->email != $email){
             if(User::where('email',$email)->count() > 0){
@@ -1142,6 +1175,26 @@ class ParentController extends Controller
         $details = $request->only('city','address','address_two','zip','country_id','phone','phone_code','state');
         $details['user_id'] = auth()->id();
         InvoiceDetail::updateOrCreate(['user_id'=>auth()->user()->id],$details);
+
+        if ($isParent && $hasGuardianProfileTable) {
+            $hasOtherGuardian = (int) $request->has_other_guardian_with_rights === 1;
+
+            ParentGuardianProfile::updateOrCreate(
+                ['user_id' => auth()->id()],
+                [
+                    'relationship_type' => $request->guardian_relationship,
+                    'relationship_other' => $request->guardian_relationship === 'other'
+                        ? $request->guardian_relationship_other
+                        : null,
+                    'can_make_educational_decisions' => (int) $request->can_make_educational_decisions,
+                    'has_other_guardian_with_rights' => (int) $request->has_other_guardian_with_rights,
+                    'other_guardian_full_name' => $hasOtherGuardian ? $request->other_guardian_full_name : null,
+                    'other_guardian_email' => $hasOtherGuardian ? $request->other_guardian_email : null,
+                    'other_guardian_phone' => $hasOtherGuardian ? $request->other_guardian_phone : null,
+                ]
+            );
+        }
+
         Notification::add(auth()->id(),'Congratulations your details have been update successfully');
         return redirect()->back()->with('success_message','User info updated successfully');
     }
@@ -1431,8 +1484,15 @@ class ParentController extends Controller
 
     public function requestLeavePage() {
         $children = User::where('id', auth()->user()->id)->with('students')->get();
+        $studentIds = auth()->user()->students->pluck('student_id');
+        $leaveRequests = LeaveRequest::with('student')
+            ->whereIn('student_id', $studentIds)
+            ->orderByDesc('id')
+            ->paginate(10);
 
-        return view('parent.request-leave')->with('children', $children);
+        return view('parent.request-leave')
+            ->with('children', $children)
+            ->with('leaveRequests', $leaveRequests);
     }
 
     public function requestLeave(Request $request) {
@@ -1476,6 +1536,80 @@ class ParentController extends Controller
         $this->notifyAdmins(new NewLeaveRequest($leave_request));
 
         return redirect()->back()->with('success_message', 'Leave request submitted successfully!');
+    }
+
+    public function showLeaveRequest($request_id)
+    {
+        $leaveRequest = $this->parentLeaveRequest($request_id);
+
+        return view('parent.single-leave-request')->with('leaveRequest', $leaveRequest);
+    }
+
+    public function editLeaveRequestPage($request_id)
+    {
+        $leaveRequest = $this->parentLeaveRequest($request_id);
+        if ((int) $leaveRequest->status !== LeaveRequest::STATUS_PENDING) {
+            return redirect()
+                ->route('parent.request-leave')
+                ->with('error', 'Only pending leave requests can be edited.');
+        }
+
+        return view('parent.edit-leave-request')->with('leaveRequest', $leaveRequest);
+    }
+
+    public function updateLeaveRequest(Request $request, $request_id)
+    {
+        $leaveRequest = $this->parentLeaveRequest($request_id);
+        if ((int) $leaveRequest->status !== LeaveRequest::STATUS_PENDING) {
+            return redirect()
+                ->route('parent.request-leave')
+                ->with('error', 'Only pending leave requests can be edited.');
+        }
+
+        $request->validate([
+            'end_date' => 'required|date|after_or_equal:' . $leaveRequest->start_date->toDateString(),
+        ]);
+
+        $leaveRequest->update([
+            'end_date' => $request->end_date,
+            'status' => LeaveRequest::STATUS_PENDING,
+            'reason' => null,
+        ]);
+
+        Notification::add(auth()->id(), 'Leave request updated successfully!');
+        Notification::addForAdmins('A leave request was updated by a parent.');
+
+        return redirect()
+            ->route('parent.leave-requests.show', $leaveRequest->id)
+            ->with('success_message', 'Leave request updated successfully!');
+    }
+
+    public function deleteLeaveRequest($request_id)
+    {
+        $leaveRequest = $this->parentLeaveRequest($request_id);
+        if ((int) $leaveRequest->status !== LeaveRequest::STATUS_PENDING) {
+            return redirect()
+                ->route('parent.request-leave')
+                ->with('error', 'Only pending leave requests can be cancelled.');
+        }
+
+        $leaveRequest->delete();
+
+        Notification::add(auth()->id(), 'Leave request cancelled successfully!');
+
+        return redirect()
+            ->route('parent.request-leave')
+            ->with('success_message', 'Leave request cancelled successfully!');
+    }
+
+    private function parentLeaveRequest($request_id)
+    {
+        return LeaveRequest::with('student')
+            ->where('id', $request_id)
+            ->whereHas('student.student_details', function ($query) {
+                $query->where('parent_id', auth()->id());
+            })
+            ->firstOrFail();
     }
 
     public function showNotifications() {
