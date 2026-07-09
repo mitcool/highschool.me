@@ -45,6 +45,7 @@ use App\StudentMeeting;
 use App\Diploma;
 use App\SingleExamQuestion;
 use App\CourseCategory;
+use App\EducatorCourse;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -485,7 +486,9 @@ class StudentController extends Controller
 
 
     public function studyMentor(){
+        $enrolled_courses_ids = auth()->user()->enrolled_courses->pluck('catalog_course_id')->toArray();
         $grouped_courses = CurriculumCourse::where('curriculum_type_id', '!=', 4)
+                ->whereIn('id',$enrolled_courses_ids)
                 ->get()
                 ->groupBy('curriculum_type_id')
                 ->map(function ($courses) {
@@ -970,7 +973,7 @@ class StudentController extends Controller
         $credits = $this->calculateCredits($student->enrolled_courses,$student->student_details->track);
         $pdf = Pdf::loadView('student.diploma-pdf',[
             'student' => $student,
-            'created_at' => $diploma->created_at,
+            'created_at' => $diploma->created_at->format('d.m.Y'),
             'credits' => $credits])->set_option('isRemoteEnabled',true)->setPaper('a4','landscape');
         return $pdf->stream();
     }
@@ -1078,39 +1081,24 @@ class StudentController extends Controller
     }
 
     public function meetings(){
-         $now = Carbon::now();
-      
-         $group_sessions = Meeting::where('type',12)->where(function ($query) use ($now) {
-                $query->where('date', '>', $now->toDateString())
-                    ->orWhere(function ($q) use ($now) {
-                        $q->where('date', $now->toDateString())
-                            ->where('start', '>', $now->toTimeString());
-                    });
+        
+        $now = Carbon::now();
+        $group_sessions = StudentMeeting::with('meeting')->where('student_id',auth()->id())->whereHas('meeting', function ($query) use ($now){
+                $query->where('type',12)->where('start','>',$now);
         })->get();
 
-        $mentoring_sessions = Meeting::where('type',13)->where(function ($query) use ($now) {
-                $query->where('date', '>', $now->toDateString())
-                    ->orWhere(function ($q) use ($now) {
-                        $q->where('date', $now->toDateString())
-                            ->where('start', '>', $now->toTimeString());
-                    });
+        $mentoring_sessions =  StudentMeeting::with('meeting')->where('student_id',auth()->id())->whereHas('meeting', function ($query) use ($now){
+                $query->where('type',13)->where('start','>',$now);
         })->get();
        
-        $coaching_sessions = Meeting::where('type',14)->where(function ($query) use ($now) {
-                $query->where('date', '>', $now->toDateString())
-                    ->orWhere(function ($q) use ($now) {
-                        $q->where('date', $now->toDateString())
-                            ->where('start', '>', $now->toTimeString());
-                    });
+        $coaching_sessions = StudentMeeting::with('meeting')->where('student_id',auth()->id())->whereHas('meeting', function ($query) use ($now){
+                $query->where('type',14)->where('start','>',$now);
         })->get();
 
-        $academic_hours = Meeting::where('type',15)->where(function ($query) use ($now) {
-                $query->where('date', '>', $now->toDateString())
-                    ->orWhere(function ($q) use ($now) {
-                        $q->where('date', $now->toDateString())
-                            ->where('start', '>', $now->toTimeString());
-                    });
+        $academic_hours =StudentMeeting::with('meeting')->where('student_id',auth()->id())->whereHas('meeting', function ($query) use ($now){
+                $query->where('type',15)->where('start','>',$now);
         })->get();
+       
         $already_booked_sessions = StudentMeeting::where('student_id',auth()->id())->pluck('meeting_id')->toArray();
         $student_id = auth()->id();
         $permissions = $this->checkPermissionForSessionBooking($student_id);
@@ -1134,10 +1122,10 @@ class StudentController extends Controller
         
         */
         $permissions =  [
-                'coaching' => false,
-                'mentoring' => false,
-                'group' => false,
-                'academic' => false
+                12 => false,
+                13=> false,
+                14=> false,
+                15=> false
             ];    
         $plan = auth()->user()->active_plan;
         if(!$plan){
@@ -1146,39 +1134,38 @@ class StudentController extends Controller
         
         if($plan->plan_id == 2){
           
-            $permissions['group'] = StudentMeeting::whereHas('meeting', function ($query) {
-                $query->where('type',12)->where('date','>=',now()->subDays(7));
+            $permissions[12] = StudentMeeting::whereHas('meeting', function ($query) {
+                $query->where('type',12)->where('start','>=',now()->subDays(7));
             })->count() > 0 ? false : true;
-           
         }
         elseif($plan->plan_id == 3){
-            $permissions['group'] = StudentMeeting::whereHas('meeting', function ($query) {
-                $query->where('type',12)->where('date','>=',now()->subDays(7));
+            $permissions[12] = StudentMeeting::whereHas('meeting', function ($query) {
+                $query->where('type',12)->where('start','>=',now()->subDays(7));
             })->count() > 0 ? false : true;
-             $permissions['mentoring'] = StudentMeeting::whereHas('meeting', function ($query) {
-                $query->where('type',13)->where('date','>=',now()->subDays(7));
+             $permissions[13] = StudentMeeting::whereHas('meeting', function ($query) {
+                $query->where('type',13)->where('start','>=',now()->subDays(7));
             })->count() > 0 ? false : true;
-             $permissions['coaching'] = StudentMeeting::whereHas('meeting', function ($query) {
-                $query->where('type',14)->where('date','>=',now()->subDays(7));
+             $permissions[14] = StudentMeeting::whereHas('meeting', function ($query) {
+                $query->where('type',14)->where('start','>=',now()->subDays(7));
             })->count() > 0 ? false : true;
-             $permissions['academic'] = StudentMeeting::whereHas('meeting', function ($query) {
-                $query->where('type',15)->where('date','>=',now()->subDays(7));
+             $permissions[15] = StudentMeeting::whereHas('meeting', function ($query) {
+                $query->where('type',15)->where('start','>=',now()->subDays(7));
             })->count() > 2 ? false : true;
             
         }
 
         //This is check if they bought additional meetings from shop        
         if(AdditionalCourse::where('status',0)->where('student_id',$student_id)->where('course_type',14)->count() > 0){
-            $permissions['coaching'] = true;
+            $permissions[14] = true;
         }
         if(AdditionalCourse::where('status',0)->where('student_id',$student_id)->where('course_type',13)->count() > 0){
-            $permissions['mentoring'] = true;
+            $permissions[13] = true;
         }
         if(AdditionalCourse::where('status',0)->where('student_id',$student_id)->where('course_type',12)->count() > 0){
-            $permissions['group'] = true;
+            $permissions[12] = true;
         }
-        if(AdditionalCourse::where('status',0)->where('student_id',$student_id)->where('course_type',12)->count() > 0){
-            $permissions['academic'] = true;
+        if(AdditionalCourse::where('status',0)->where('student_id',$student_id)->where('course_type',15)->count() > 0){
+            $permissions[15] = true;
         }
        
         return $permissions;
@@ -1197,20 +1184,39 @@ class StudentController extends Controller
         ->with('countries',$countries);
     }
 
-    public function bookSession(Request $request,$meeting_id){
-        $meeting = Meeting::find($meeting_id);
+    public function bookSession(Request $request){
+       
+        $request->validate([
+            'type' => 'required',
+            'meeting_id' => 'required',
+
+        ]);
+        $meeting = Meeting::find($request->meeting_id);
         $student= auth()->user();
         $parent = $student->student_details->parent;
         $educator = $meeting->educator;
         $plan = auth()->user()->active_plan;
+
+        if(StudentMeeting::where('student_id',auth()->id())->where('meeting_id',$meeting->id)->count() > 0){
+            return redirect()->back()->with('error','You already booked this meeting');
+        }
         if($meeting->is_full()){
-            return redirect()->back()->with('error','This meeting is already booked');
+            return redirect()->back()->with('error','This meeting is already fully booked');
         }
         if(!$plan){
             return redirect()->back()->with('error','');
         }
+        
+        $meeting->update(['type' => $request->type]);
 
-        $this->bookSingleMeeting($meeting,$student->id);
+        StudentMeeting::insert([
+            'student_id' => auth()->id(),
+            'meeting_id' => $meeting->id
+        ]);
+
+        if(AdditionalCourse::where('student_id',auth()->id())->where('status',0)->count() > 0){
+            AdditionalCourse::where('student_id',auth()->id())->where('status',0)->delete();
+        }
 
         try{
             Mail::to($educator->email)->send(new MeetingConfirmationEducator($meeting));
@@ -1234,68 +1240,54 @@ class StudentController extends Controller
         return redirect()->back();
     }
 
-    public function bookSingleMeeting($meeting,$student_id){
-        $permissions = $this->checkPermissionForSessionBooking($student_id);
-        $meeting_permissions = [
-            12 => 'group',
-            13 => 'mentoring',
-            14 => 'coaching',
-            15 => 'academic'
-        ];
+  
 
-        # How many sessions are alowed per week depends of the plan
-        $allowed_meetings_per_week = [
-            2 => [ // Pro Plan
-                12 => 1  // Group Session
-            ],
-            3 => [  // Elite Plan
-                12 => 1, // Group Session
-                13 => 1, // Mentoring Session
-                14 => 1, // Coaching Session
-                15 => 3 // Personal Tutoring Session /
-            ]
-        ];
-       
-        $type = ($meeting_permissions[$meeting->type]);
-        $plan = auth()->user()->active_plan;
-        if($permissions[$type]){
-            $additional_sessions_bought = AdditionalCourse::where('status',0)
-                                                ->where('student_id',$student_id)
-                                                ->where('course_type',$meeting->type)
-                                                ->count();
-
-            if($plan->plan_id == 3){
-                $sessions_last_week_limit = StudentMeeting::whereHas('meeting', function ($query) use ($meeting) {
-                    $query->where('type',$meeting->type)->where('date','>=',now()->subDays(7));
-                })->count();
-                
-                if($sessions_last_week_limit >=$allowed_meetings_per_week[$plan->plan_id][$meeting->type] && $additional_sessions_bought > 0){
-                   AdditionalCourse::where('status',0)
-                    ->where('student_id',$student_id)
-                    ->where('course_type',$meeting->type)
-                    ->first()
-                    ->delete();
-                }
-                StudentMeeting::insert([
-                    'meeting_id' => $meeting->id,
-                    'student_id' => $student_id
-                ]);
-
-            }
-            else{
-                if($additional_sessions_bought > 0){
-                    AdditionalCourse::where('status',0)
-                        ->where('student_id',$student_id)
-                        ->where('course_type',$meeting->type)
-                        ->first()
-                        ->delete();
-                }
-                StudentMeeting::insert([
-                    'meeting_id' => $meeting->id,
-                    'student_id' => $student_id
-                ]);
-            }
+    public function bookMeetings(Request $request,$slug){
+        $type = CurriculumType::where('slug',$slug)->first() ?? abort(404);
+        $educators = Meeting::select('educator_id')->distinct()->get();
+        $permissions = $this->checkPermissionForSessionBooking(auth()->id());
+        $curriculum_courses = CurriculumCourse::all();
+        
+        if($request->course_id){
+            $educator_courses = EducatorCourse::where('course_id',$request->course_id)->pluck('educator_id')->toArray();
+            $educators = Meeting::whereIn('educator_id',$educator_courses)->select('educator_id')->distinct()->get();
         }
+        return view('student.book-meetings')
+            ->with('curriculum_courses',$curriculum_courses)
+            ->with('educators',$educators)
+            ->with('permissions',$permissions)
+            ->with('type',$type);
     }
-       
+
+    public function bookEducatorMeetings($slug,$educator_id){
+        $type = CurriculumType::where('slug',$slug)->first() ?? abort(404);
+        $permissions = $this->checkPermissionForSessionBooking(auth()->id());
+        $educator = User::find($educator_id);
+        return view('student.educator_meetings')
+            ->with('permissions',$permissions)
+            ->with('type',$type)
+            ->with('educator',$educator);
+    }
+
+    public function getEducatorMeetings(Request $request){
+        $request->validate([
+            'date' => 'required',
+            'educator_id' => 'required'
+        ]);
+
+        $educator_id = $request->educator_id;
+        $date = $request->date;
+        $date = Carbon::parse($date);
+
+        $meetings = Meeting::where('educator_id',$educator_id)->whereBetween('start', [
+            $date->startOfDay(),
+            $date->copy()->endOfDay(),
+        ])->get();
+
+        foreach($meetings as $meeting){
+            $meeting->is_full = $meeting->is_full();
+            $meeting->is_alredy_booked = $meeting->is_alredy_booked();
+        }
+        return $meetings;
+    }
 }

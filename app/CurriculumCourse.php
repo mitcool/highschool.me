@@ -69,6 +69,6 @@ class CurriculumCourse extends Model
     }
 
     public function study_mentor(){
-        return $this->hasOne(StudyMentor::class,'course_id','id');
+        return $this->hasOne(CourseMentor::class,'course_id','id');
     }
 }

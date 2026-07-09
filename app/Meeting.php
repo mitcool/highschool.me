@@ -4,12 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\StudentMeeting;
+use Carbon\Carbon;
 
 class Meeting extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['date','start','end','link','educator_id','type','subject_id'];
+    protected $fillable = ['start','link','educator_id','type','subject_id'];
 
      protected $casts = [
         'date' => 'datetime',
@@ -40,5 +42,17 @@ class Meeting extends Model
         else{
             return count($this->students) > 0;
         }
+    }
+
+    public function local_time(){
+        return Carbon::parse($this->start)->setTimezone(session('timezone'))->format('g:iA');
+    }
+
+    public function local_date(){
+        return Carbon::parse($this->start)->setTimezone(session('timezone'))->format('F d,Y');
+    }
+
+    public function is_alredy_booked(){
+        return StudentMeeting::where('meeting_id',$this->id)->where('student_id',auth()->id())->count()  > 0;
     }
 }

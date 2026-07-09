@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 
 use App\CurriculumCourse;
 use App\User;
@@ -35,6 +36,7 @@ use App\InvoiceDetail;
 use App\EducatorDetail;
 use App\EducatorQualificationDetail;
 use App\EducatorExperience;
+use App\EducatorCourse;
 
 use App\Mail\EducatorWorkingHours;
 use App\Mail\NewComplaint;
@@ -47,38 +49,13 @@ class EducatorController extends Controller
 
     public function meetings() {
         $now = Carbon::now();
-       
-        $group_sessions = Meeting::where('type',12)->where(function ($query) use ($now) {
-                $query->where('educator_id',auth()->id())->where('date', '>', $now->toDateString())
-                    ->orWhere(function ($q) use ($now) {
-                        $q->where('date', $now->toDateString())
-                            ->where('start', '>', $now->toTimeString());
-                    });
-        })->get();
+        $group_sessions = Meeting::where('educator_id',auth()->id())->where('type',12)->where('start','>',$now)->get();
 
-        $mentoring_sessions = Meeting::where('type',13)->where(function ($query) use ($now) {
-                $query->where('educator_id',auth()->id())->where('date', '>', $now->toDateString())
-                    ->orWhere(function ($q) use ($now) {
-                        $q->where('date', $now->toDateString())
-                            ->where('start', '>', $now->toTimeString());
-                    });
-        })->get();
+        $mentoring_sessions =  Meeting::where('educator_id',auth()->id())->where('type',13)->where('start','>',$now)->get();
        
-        $coaching_sessions = Meeting::where('type',14)->where(function ($query) use ($now) {
-                $query->where('educator_id',auth()->id())->where('date', '>', $now->toDateString())
-                    ->orWhere(function ($q) use ($now) {
-                        $q->where('date', $now->toDateString())
-                            ->where('start', '>', $now->toTimeString());
-                    });
-        })->get();
+        $coaching_sessions = Meeting::where('educator_id',auth()->id())->where('type',14)->where('start','>',$now)->get();
 
-        $academic_hours = Meeting::where('type',15)->where(function ($query) use ($now) {
-                $query->where('educator_id',auth()->id())->where('date', '>', $now->toDateString())
-                    ->orWhere(function ($q) use ($now) {
-                        $q->where('date', $now->toDateString())
-                            ->where('start', '>', $now->toTimeString());
-                    });
-        })->get();
+        $academic_hours = Meeting::where('educator_id',auth()->id())->where('type',15)->where('start','>',$now)->get();
         
     	return view('educator.meetings')
             ->with('academic_hours',$academic_hours)
@@ -87,13 +64,9 @@ class EducatorController extends Controller
             ->with('coaching_sessions', $coaching_sessions);
     }
     public function courses(){
-        $educator = auth()->user();
-        $categories = $educator->educator_categories->where('status',1)->pluck('category_id')->toArray();
-        $courses = CurriculumCourse::whereIn('category_id',$categories)->paginate(11);
-        $course_categories = CourseCategory::all();
+        $courses = EducatorCourse::where('educator_id',auth()->id())->where('status',1)->paginate(11);
         return view('educator.courses')
-            ->with('course_categories',$course_categories)
-            ->with('categories',$categories)
+          
             ->with('courses',$courses);
     }
     // public function exams(){
@@ -503,8 +476,28 @@ class EducatorController extends Controller
     public function addWorkingHour(Request $request){
         $working_hour = $request->except('_token');
         $working_hour['educator_id'] = auth()->id();
-        $start = Carbon::parse($working_hour['start']);
-        $end = Carbon::parse($working_hour['end']);
+        
+        $start = Carbon::createFromFormat('H:i', $working_hour['start']);
+        $end = Carbon::createFromFormat('H:i',  $working_hour['end']);
+
+
+        $period = CarbonPeriod::create($start, '1 hour', $end);
+        $times = iterator_to_array($period);
+
+        foreach ($period as $index => $time) {
+            if ($index === count($times) - 1) {
+                continue;
+            }
+            $meeting_start =  Carbon::parse($working_hour['date'].' '.$time->format('H:i'));
+
+            Meeting::create([
+                'start' =>$meeting_start,
+                'educator_id' => auth()->id(),
+            ]);
+            
+        }
+
+    
         if($start > $end){
             return redirect()->back()->with('error','Please enter  valid dates');
         }
@@ -692,6 +685,20 @@ class EducatorController extends Controller
             'internet_speed' => $request->internet_speed,
             'quiet_place' => $request->quiet_place,
             'platform_experience' => $request->platform_experience,
+        ]);
+
+        return redirect()->back()->with('success_message','Info update successfully');
+    }
+
+    public function newCourses(){
+        return view('educator.new-courses');
+    }
+
+    public function applyCourse($course_id){
+        EducatorCourse::insert([
+            'course_id' => $course_id,
+            'educator_id' => auth()->id(),
+            'status' => 0
         ]);
 
         return redirect()->back()->with('success_message','Info update successfully');

@@ -28,9 +28,9 @@ class AdminMeetingController extends Controller
     public function groupSessions(){
         $educators = User::where('role_id',5)->get();
         $catalog_courses = CatalogCourse::all();
-        // $types = CurriculumType::where('id','>',11)->get();
-        
+        $meetings = Meeting::whereNull('link')->whereNotNull('type')->get();
         return view('admin.meetings.group-sessions')
+            ->with('meetings',$meetings)
             ->with('catalog_courses',$catalog_courses)
             ->with('educators',$educators);
     }
@@ -109,5 +109,19 @@ class AdminMeetingController extends Controller
         $family_consultation_request = FamilyConsultationRequest::find($family_consultation_request_id);
         $family_consultation_request->update([ 'status' => 2]);
         return redirect()->back()->with('success_message','Family consultation marked as completed');
+    }
+
+    public function setMeetingLink(Request $request){
+
+        $request->validate([
+            "link" => 'required|url',
+            "meeting_id" =>  'required'
+        ]);
+        $meeting = Meeting::find($request->meeting_id);
+        $meeting->update([
+            'link' => $request->link
+        ]);
+
+        return redirect()->back()->with('success_message','Meeting set successfully');
     }
 }

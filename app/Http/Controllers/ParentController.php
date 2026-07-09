@@ -1647,11 +1647,28 @@ class ParentController extends Controller
 
     public function updatePlan(Request $request,$student_id){
         
+        $student = User::find($student_id);
         $requested_plan = $request->plan;
         $type  = $request->payment_type;
         $student = User::find($student_id);
         $plan = Plan::find($request->plan);
         $total = $type == 1 ? $plan->price_per_year : $plan->price_per_month;
+        $current_plan_id = $student->active_plan->plan_id;
+        $discount = 0;
+        if( (int)$requested_plan > $current_plan_id){
+            if($type < $student->active_plan->type){
+                return redirect()->route('change-plan',$student_id)->with('error','You can upgrade only yearly ');
+            }
+            $today  = Carbon::now();
+            $expiration_date = Carbon::parse($student->active_plan->expires_at);
+            $days = $today->diffInDays($expiration_date);
+            $days_this_year = Carbon::now()->daysInYear;
+            $percent = ($days/$days_this_year);
+            $plan_price =  ($student->active_plan->plan->price_per_year);
+            $discount  = (int) ($plan_price * $percent);
+        };
+
+        
          \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $session = \Stripe\Checkout\Session::create([
@@ -1662,13 +1679,13 @@ class ParentController extends Controller
                         'product_data' => [
                             'name' => 'Change of plan',
                         ],
-                        'unit_amount'  => $total*100, 
+                        'unit_amount'  => ($total-$discount)*100, 
                     ],
                     'quantity'   => 1,
                 ],
             ],
             'mode'        => 'payment',
-            'success_url' => route('parent.update-plan-success',[$student->id,$requested_plan,$type]),
+            'success_url' => route('parent.update-plan-success',[$student->id,$requested_plan,$type,($total-$discount)]),
             'cancel_url'  => route('change-plan',$student->id),
         ]);
 
@@ -1677,15 +1694,17 @@ class ParentController extends Controller
 
     }
 
-    public function updatePlanSuccess($student_id,$plan_id,$type){
+    public function updatePlanSuccess($student_id,$plan_id,$type,$total){
         $student = User::find($student_id);
         $active_plan = $student->active_plan;
         $expires_at = $type == 0  
-                ? Carbon::parse($active_plan->expires_at)->addMonths(1)->subDays(1) 
-                : Carbon::parse($active_plan->expires_at)->addYears(1)->subDays(1); // monthly or yearly
+                ? Carbon::now()->addMonths(1)->subDays(1) 
+                : Carbon::now()->addYears(1)->subDays(1); // monthly or yearly
         
         // upgrade
         if($plan_id > $student->active_plan->plan_id){
+
+         
            $student->active_plan->update([
                 'expires_at' => $expires_at,
                 'type' => $type,
@@ -1702,7 +1721,9 @@ class ParentController extends Controller
                 'type' => $type
             ]);
         }
-        ///TODO:: email and notification
+
+        $this->createInvoice($total,'Change of plan');
+        
         try{
 
         }catch(\Exception $e){

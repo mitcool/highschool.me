@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="shadow w-auto mx-auto wrapper">    
-    <h2 class="text-center">List of students</h2>
+    <h2 class="text-center page-headings">List of students</h2>
     <hr>
     <table class="table table-striped">
         <tr>
@@ -30,7 +30,7 @@
             <tr>
                 <td>{{ $student->created_at->format('d.m.Y') }}</td>
                 <td class="text-center">{{ $student->student_id() }}</td> 
-                <td class="text-center">{{ $student->fullname() }}</td>
+                <td class="text-center">{{  $student->fullname()  }} {!! $student->student_details->is_disabled == 1 ? '<sup class="text-danger">(IEP)</sup>' : '' !!}</td>
                 <td class="text-center">{{ $student->email }}</td>
                 <td class="text-center">{{ $student->student_details->status_name() }}</td>
                 <td class="text-center">

@@ -132,6 +132,8 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/add-coaching-session','AdminMeetingController@addCoachingSession')->name('add-coaching-session');
 	Route::post('/create-coaching-session','AdminMeetingController@createCoachingSession')->name('create-coaching-session');
 
+	Route::post('/set-meeting-link','AdminMeetingController@setMeetingLink')->name('set-meeting-link');
+
 	Route::get('/educators','AdminController@educators')->name('admin-educators');
 	Route::post('/educator/add','AdminController@createEducator')->name('create-educator');
 	Route::post('/educator/delete/{educator_id}','AdminController@deleteEducator')->name('delete-educator');
@@ -270,6 +272,8 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/profile','AdminController@profile')->name('admin.profile');
 
 	Route::get('/educator/details/{eductoror_id}','AdminController@educatorDetails')->name('admin.educator-details');
+
+
 
 
 });

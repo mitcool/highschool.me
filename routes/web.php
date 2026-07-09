@@ -76,7 +76,7 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	Route::post('/terminate-plan/{plan_id}','ParentController@terminatePlan')->name('terminate-plan');
 	Route::get('/change-plan/{student_id}','ParentController@changePlan')->name('change-plan');
 	Route::post('/update-plan/{student_id}','ParentController@updatePlan')->name('parent.update-plan');
-	Route::get('/update-plan-success/{student_id}/{requested_plan}/{type}','ParentController@updatePlanSuccess')->name('parent.update-plan-success');
+	Route::get('/update-plan-success/{student_id}/{requested_plan}/{type}/{total}','ParentController@updatePlanSuccess')->name('parent.update-plan-success');
 	//Enrollment Confiramtion
 	
 	Route::get('/enrollment-confirmation-order/{student_id}','ParentController@enrollmentConfirmationOrder')->name('enrollment-confirmation-order');
@@ -138,7 +138,10 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 			Route::post('/book-mentoring-session/{session_id}','ParentController@bookMentoringSession')->name('book-mentoring-session');
 			Route::post('/book-coaching-session/{session_id}','ParentController@bookCoachingSession')->name('book-coaching-session');
 			Route::get('/book-session-success','ParentController@bookSessionSuccess')->name('book-session-success');
-			Route::post('/book-session/{session_id}','StudentController@bookSession')->name('book-session');
+			Route::post('/book-session','StudentController@bookSession')->name('book-session');
+			Route::get('/book-meetings/{type}','StudentController@bookMeetings')->name('book-meetings');
+			Route::get('/book-educator-meetings/{type}/{educator_id}','StudentController@bookEducatorMeetings')->name('book-educator-meetings');
+			Route::post('get-educator-meetings','StudentController@getEducatorMeetings')->name('get-educator-meetings');
 		});
 	});
 });
@@ -178,9 +181,10 @@ Route::group(['prefix' => 'educator','middleware' => 'educator'],function(){
 	Route::post('/hours/add','EducatorController@addWorkingHour')->name('add-working-hour');
 	Route::get('help-desk','EducatorController@helpDesk')->name('educator.help-desk');
 	Route::post('/educator/update','EducatorController@updateInfo')->name('educator.update-info');
-
+	Route::get('/new-courses','EducatorController@newCourses')->name('educator.new-corses');
 	#notifications
 	Route::get('/all-notifications', 'EducatorController@showNotifications')->name('educator.notifications');
+	Route::post('/apply-course/{course_id}','EducatorController@applyCourse')->name('apply-course');
 
 });
 

@@ -105,6 +105,8 @@ use App\CteCourseProgram;
 use App\EducatorHour;
 use App\Complaint;
 use App\ParentExtraService;
+use App\EducatorCourse;
+use App\StudyMentor;
 
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
@@ -838,10 +840,11 @@ class AdminController extends Controller
         $cteCategories = CourseCategory::where('curriculum_type_id', 4)->get();
         $ctePrograms = CteProgram::orderBy('program_title')->get();
         $cteJobs = CteJob::orderBy('name')->get();
-
+        $study_mentors = StudyMentor::all();
         return view('admin.enrollment-courses')
             ->with('curriculumTypes', $curriculumTypes)
             ->with('categories', $categories)
+            ->with('study_mentors', $study_mentors)
             ->with('cteCategories', $cteCategories)
             ->with('ctePrograms', $ctePrograms)
             ->with('cteJobs', $cteJobs);
@@ -1420,7 +1423,7 @@ class AdminController extends Controller
     }
 
     public function educators(){
-        $new_category_requests = EducatorCategory::where('status',0)->get()->groupBy('educator_id');
+        $new_category_requests = EducatorCourse::where('status',0)->get()->groupBy('educator_id');
         $categories = CourseCategory::all();
         $countries = Country::orderBy('nicename')->get();
         $educators = User::where('role_id',5)->get();
@@ -1441,7 +1444,6 @@ class AdminController extends Controller
             'middlename' => 'nullable',
             'surname' => 'required',
             'email' => 'required|email:rfc,dns|unique:users,email',
-            'categories' => 'required',
             'employment_type' => 'required|in:0,1',
             'is_counsellor' => 'required|in:0,1',
             'country_id'=> 'required|exists:countries,id',
@@ -1453,11 +1455,11 @@ class AdminController extends Controller
             'phone_code' => 'required|regex:/^\+[0-9]\d{0,3}$/',
         ]);
         $educator_role_id = 5;
-        $categories = $request->categories;
+       
     
         $password  = Str::random(10);
         $confirmation_code = Str::random(30);
-        $educator = DB::transaction(function () use ($request, $educator_role_id, $password, $confirmation_code, $categories) {
+        $educator = DB::transaction(function () use ($request, $educator_role_id, $password, $confirmation_code) {
             $educator = User::create([
                 'name' => $request->firstname,
                 'surname' => $request->surname,
@@ -1481,14 +1483,6 @@ class AdminController extends Controller
                 'phone' => $request->phone,
                 'phone_code' => $request->phone_code,
             ]);
-
-            foreach($categories as $category_id){
-                EducatorCategory::insert([
-                    'educator_id' => $educator->id,
-                    'category_id' => $category_id,
-                    'status' => 1
-                ]);
-            }
 
             return $educator;
         });
@@ -1670,11 +1664,21 @@ class AdminController extends Controller
             ->with('template',$template);
     }
     
-    public function exams(){
+    public function exams(Request $request){
+        
         $utc_time = Carbon::now('UTC')->format('d.m.Y H:i');
         $students = StudentEnrolledCourse::where('status',StudentEnrolledCourse::STATUS_READY_FOR_EXAM)->select('user_id')->distinct()->get();
         $courses = CurriculumCourse::all();
         $exams = Exam::orderBy('datetime','desc')->paginate(15);
+        if($request->search){
+           $search = $request->search;
+           $exams = $exams->where('name','LIKE',"%{$search}%")->paginate(15);
+        }
+        if($request->date){
+            $datetime = Carbon::parse($request->date);
+            $exams = $exams->where('datetime',$datetime)->paginate(15);;
+        }
+    
         $educators = User::where('role_id',5)->get();
         $all_courses = CurriculumCourse::all();
         return view('admin.exams')
@@ -2147,7 +2151,7 @@ class AdminController extends Controller
     }
 
     public function changeEducatorCategoryStatus($action,$id){
-        $category = EducatorCategory::find($id);
+        $category = EducatorCourse::find($id);
         if(!$category){
             abort(404);
         }

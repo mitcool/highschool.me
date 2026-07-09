@@ -18,19 +18,21 @@
          <p>I also want to receive notarization and apostille (Optional)</p>
         @if(count($student->student_details->digitalVerificationOfGraduation) == 0)
             <div>
-                <input class="type" type="radio" value="1" checked name="type" form="verification-of-graduation-form" required>Verification of Graduation Letter(digital) <span style="color:#E9580C">($30.00)</span> 
+                <input class="type" type="radio" value="1" checked name="type" form="verification-of-graduation-form" required> Verification of Graduation Letter(digital) <span style="color:#E9580C">($30.00)</span> 
             </div>
         @endif
          <div>
-            <input class="type" type="radio" value="2" name="type" form="verification-of-graduation-form" required>Verification of Graduation Letter(physical) <span style="color:#E9580C">($180.00)</span> 
+            <input class="type" type="radio" value="2" name="type" form="verification-of-graduation-form" required> Verification of Graduation Letter(physical) <span style="color:#E9580C">($180.00)</span> 
         </div>
 
-        <div class="number-copies" style="display:none">
+        <div class="number-copies mt-3" style="display:none">
             <p class="mb-0">Number of copies</p>
             <div class="d-flex justify-content-start align-items-center">
-                <button class="btn minus">-</button>
-                <span class="total" id="copies">{{ $copies }}</span>
-                <button class="btn plus">+</button>
+               <select name="copies" id="" class="form-control">
+                    @for($i=1; $i<=5 ;$i++)
+                        <option>{{ $i }}</option>
+                    @endfor
+               </select>
             </div>
         </div>
     </div>
@@ -60,7 +62,7 @@
         else{
             $('.number-copies').css('display','block')
             let copies = $('#copies').html();
-            let total = copies * 180;
+            let total = 180;
             $('#total-amount-input').val(total);
             $('#total').html('$'+total.toFixed(2))
             $('#copies-input').val(copies)

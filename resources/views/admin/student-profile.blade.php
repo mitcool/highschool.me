@@ -143,7 +143,7 @@
 	<h2 class="text-center page-headings">Student Information</h2>
     <div class="row">
         <div class="col-md-6">
-            <h5>Student Name: <span style="color:#004c99;font-weight:bold">{{ $student->fullname() }}</span></h5>
+            <h5>Student Name: <span style="color:#004c99;font-weight:bold">{{ $student->fullname() }}</span> {!! $student->student_details->is_disabled == 1 ? '<sup class="text-danger">(IEP)</sup>' : '' !!}</h5>
             <h5>Email: <span style="color:#004c99;font-weight:bold">{{ $student->email }}</span></h5>
             <h5>Born: {{ $student->date_of_birth->format('d.m.Y') }}</h5>
             <h5>Joined: {{ $student->created_at->format('d.m.Y') }}</h5>

@@ -24,6 +24,10 @@
     input[type="number"] {
         -moz-appearance: textfield;
     }
+    form label{
+        font-weight: bold;
+        margin-bottom: 0;
+    }
 </style>
 @endsection
 
@@ -274,6 +278,24 @@
                                 class="form-control"
                                 placeholder="Any extra information for counselors / admins…"
                             >{{ old('notes') }}</textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="notes" class="form-label">
+                                Study Mentor
+                            </label>
+                            <select
+                                id="study-mentor"
+                                name="mentor_id"
+                                required
+                                class="form-control"
+                                
+                            >
+                                <option value="" selected disabled>-- Please select --</option>
+                                @foreach ($study_mentors as $study_mentor )
+                                    <option value="{{ $study_mentor->id }}">{{ $study_mentor->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         {{-- STEP 4: Type-specific sections --}}

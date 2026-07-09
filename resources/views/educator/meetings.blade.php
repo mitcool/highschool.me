@@ -26,9 +26,9 @@
             @endif
             @forelse ($group_sessions as $session)
                 <tr>
-                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
+                    <td>{{ $session->local_date() }} at {{ $session->local_time() }}</td>
                     <td class="text-right">
-                        {{ $session->link }}
+                        <a href="{{ $session->link }}" target="_blank">Link</a>
                     </td>
                     <td class="text-right">
                         <a data-toggle="modal" data-target="#hour-{{ $session->id }}">View</a>
@@ -74,9 +74,9 @@
             @endif
             @forelse ($mentoring_sessions as $session)
                 <tr>
-                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
+                    <td>{{ $session->local_date() }} at {{ $session->local_time() }}</td>
                     <td class="text-right">
-                        {{ $session->link }}
+                        <a href="{{ $session->link }}" target="_blank">Link</a>
                     </td>
                     <td class="text-right">
                         <a data-toggle="modal" data-target="#hour-{{ $session->id }}">View</a>
@@ -121,9 +121,9 @@
             @endif
             @forelse ($coaching_sessions as $session)
                  <tr>
-                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
+                    <td>{{ $session->local_date() }} at {{ $session->local_time() }}</td>
                     <td class="text-right">
-                        {{ $session->link }}
+                       <a href="{{ $session->link }}" target="_blank">Link</a>
                     </td>
                     <td class="text-right">
                         <a data-toggle="modal" data-target="#hour-{{ $session->id }}">View</a>
@@ -172,9 +172,9 @@
             {{-- Academic Hours --}}
             @forelse ($academic_hours as $session)
                  <tr>
-                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
+                    <td>{{ $session->local_date() }} at {{ $session->local_time() }}</td>
                     <td class="text-right">
-                        {{ $session->link }}
+                        <a href="{{ $session->link }}" target="_blank">Link</a>
                     </td>
                     <td class="text-right">
                         <a data-toggle="modal" data-target="#hour-{{ $session->id }}">View</a>

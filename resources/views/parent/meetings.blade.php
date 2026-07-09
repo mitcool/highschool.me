@@ -35,10 +35,10 @@
                 </tr>
                 @foreach ($meetings as $meeting)
                     <tr>
-                        <td>{{ $meeting->meeting->date->format('F d,Y') }} at {{ $meeting->meeting->start->format('g:iA') }}</td>
+                        <td>{{ $meeting->meeting->local_date() }} at {{ $meeting->meeting->local_time() }}</td>
                         <td>{{ $meeting->student->fullname() }}</td>
                         <td>{{ $meeting->meeting->educator->fullname() }}</td>
-                        <td class="text-right">{{ $meeting->meeting->link }}</td>
+                        <td class="text-right"><a target="_blank" href="{{ $meeting->meeting->link }}">URL</a></td>
                     </tr>
                 @endforeach
 

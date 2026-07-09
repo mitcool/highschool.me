@@ -72,7 +72,7 @@
         dateFormat: 'H:i',
         timepicker:true,
         datepicker:false,
-        step:30
+        //step:30
     });
 </script>
 @endsection

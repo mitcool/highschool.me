@@ -43,24 +43,12 @@
             @endif
             @forelse ($group_sessions as $session)
                 <tr>
-                    <td><span>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</span> </td>
-                    <td><span>{{ $session->educator->fullname() }}</span></td>
+                    <td><span>{{ $session->meeting->local_date() }} at {{ $session->meeting->local_time()}}</span> </td>
+                    <td><span>{{ $session->meeting->educator->fullname() }}</span></td>
                     <td></td>
                     <td></td>
                     <td class="action-cell">
-                        @if(in_array($session->id,$already_booked_sessions))
-                            <button class="btn-enrolled">Already Booked</button>
-                        @elseif(count($session->students) > 9)
-                            <button class="btn-enrolled">Already Booked</button>
-                        @else
-                            @if($permissions['group'])
-                                <form action="{{ route('book-session',$session->id) }}" method="POST" id="session-form-{{ $session->id }}" class="confirm-first">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" name="student_id" value="{{ $student_id }}">
-                                    <button class="btn-enroll" >Confirm Appointments</button>
-                                </form>
-                            @endif
-                        @endif
+                        <a target="_blank"  href="{{ $session->meeting->link }}">URL</a>
                     </td>
                 </tr>
             @empty
@@ -68,6 +56,11 @@
                     <td colspan="5">At the moment, there are no group sessions scheduled.</td>
                 </tr>
             @endforelse
+             <tr>
+                <td colspan="5">
+                    <a href="{{ route('book-meetings','group-sessions') }}" class="orange-button btn">Book a Session</a>
+                </td>
+            </tr>
 
             {{-- Mentoring Sessions --}}
              <tr class="section-title-row">
@@ -86,28 +79,14 @@
             @endif
             @forelse ($mentoring_sessions as $session)
                 <tr>
+                    <td><span>{{ $session->meeting->local_date() }} at {{ $session->meeting->local_time()}}</span> </td>
                     <td>
-                        <p class="mb-0">{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</p>
-                    </td>
-                    <td>
-                        <p class="mb-0">{{ $session->educator->fullname() }}</p>
+                        <p class="mb-0">{{ $session->meeting->educator->fullname() }}</p>
                     </td>
                     <td></td>
                     <td></td>
                     <td class="action-cell">
-                        @if(in_array($session->id,$already_booked_sessions) && count($session->students) > 1)
-                            <button class="btn-enrolled">Already Booked</button>
-                        @elseif(count($session->students) >= 1)
-                            <button class="btn-enrolled">Already Booked</button>
-                        @else
-                            @if($permissions['mentoring'])
-                                <form action="{{ route('book-session',$session->id) }}" method="POST" id="mentoring-session-form-{{ $session->id }}" class="confirm-first">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" name="student_id" value="{{ $student_id }}">
-                                    <button class="btn-enroll">Confirm Appointments</button>
-                                </form>
-                            @endif
-                        @endif
+                        <a target="_blank" href="{{ $session->meeting->link }}">URL</a>
                     </td>
                 </tr>
             @empty
@@ -115,6 +94,12 @@
                     <td colspan="5">At the moment, there are no personal sessions scheduled.</td>
                 </tr>
             @endforelse
+
+             <tr>
+                <td colspan="5">
+                    <a href="{{ route('book-meetings','personal-mentoring-sessions') }}" class="orange-button btn">Book a Session</a>
+                </td>
+            </tr>
 
             {{-- Coaching Sessions --}}
             <tr class="section-title-row">
@@ -133,24 +118,12 @@
             @endif
             @forelse ($coaching_sessions as $session)
                 <tr>
-                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
-                    <td>{{ $session->educator->fullname() }}</td>
+                    <td><span>{{ $session->meeting->local_date() }} at {{ $session->meeting->local_time()}}</span> </td>
+                    <td>{{ $session->meeting->educator->fullname() }}</td>
                     <td></td>
                     <td></td>
-                    <td class="action-cell">
-                        @if(in_array($session->id,$already_booked_sessions))
-                            <button class="btn-enrolled">Already Booked</button>
-                        @elseif(count($session->students) > 1)
-                            <button class="btn-enrolled">Already Booked</button>
-                        @else
-                            @if($permissions['coaching'])
-                                <form action="{{ route('book-session',$session->id) }}" method="POST" id="coaching-session-form-{{ $session->id }}" class="confirm-first">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" name="student_id" value="{{ $student_id }}">
-                                    <button class="btn-enroll">Confirm Appointments</button>
-                                </form>
-                           @endif
-                        @endif
+                     <td class="action-cell">
+                        <a target="_blank" href="{{ $session->meeting->link }}">URL</a>
                     </td>
                 </tr>
                 @empty
@@ -158,7 +131,11 @@
                         <td colspan="5">At the moment, there are no coaching sessions scheduled.</td>
                     </tr>
             @endforelse
-
+             <tr>
+                <td colspan="5">
+                    <a href="{{ route('book-meetings','career-coaching-sessions') }}" class="orange-button btn">Book a Session</a>
+                </td>
+            </tr>
              {{-- Personal Tutoring Sessions --}}
             <tr class="section-title-row">
                 <th colspan="5">
@@ -169,31 +146,20 @@
                 <tr>
                     <th>Date</th>
                     <th>Educator</th>
-                    <th>Subject</th>
+                    <th></th>
                     <th></th>
                     <th></th>
                 </tr>
             @endif
             @forelse ($academic_hours as $session)
                 <tr>
-                    <td>{{ $session->date->format('F d,Y') }} at {{ $session->start->format('g:iA') }}</td>
-                    <td>{{ $session->educator->fullname() }}</td>
-                    <td>{{ $session->course->title }}</td>
+                     <td><span>{{ $session->meeting->local_date() }} at {{ $session->meeting->local_time()}}</span> </td>
+                    <td>{{ $session->meeting->educator->fullname() }}</td>
+                    {{-- <td>{{ $session->meeting->course->title }}</td> --}}
+                    <td></td>
                     <td></td>
                     <td class="action-cell">
-                        @if(in_array($session->id,$already_booked_sessions))
-                            <button class="btn-enrolled">Already Booked</button>
-                        @elseif(count($session->students) > 1)
-                            <button class="btn-enrolled">Already Booked</button>
-                        @else
-                            @if($permissions['coaching'])
-                                <form action="{{ route('book-session',$session->id) }}" method="POST" id="coaching-session-form-{{ $session->id }}" class="confirm-first">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" name="student_id" value="{{ $student_id }}">
-                                    <button class="btn-enroll">Confirm Appointments</button>
-                                </form>
-                           @endif
-                        @endif
+                        <a target="_blank" href="{{ $session->meeting->link }}">URL</a>
                     </td>
                 </tr>
                 @empty
@@ -201,6 +167,11 @@
                         <td colspan="5">At the moment, there are no coaching sessions scheduled.</td>
                     </tr>
             @endforelse
+             <tr>
+                <td colspan="5">
+                    <a href="{{ route('book-meetings','personal-tutoring-sessions') }}" class="orange-button btn">Book a Session</a>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

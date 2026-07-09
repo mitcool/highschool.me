@@ -201,9 +201,7 @@ class Controller extends BaseController
         $credits['needed_credits'] = $core_credits + $elective_credits;
         if($credits['completed_credits'] >= $credits['needed_credits']){
             $credits['diploma'] = 1;
-            $credits['graduation_date'] = $student_enrolled_courses
-                                                    ->where('status',StudentEnrolledCourse::STATUS_COMPLETED)
-                                                    ->last()->passed_exam->passed_at->format('d.m.Y');
+            $credits['graduation_date'] = ""; // It is a legacy code
         }
         $credits['completed_courses'] = $completed_courses;
         $credits['average_grade'] = $average_grade;
@@ -214,13 +212,12 @@ class Controller extends BaseController
             if($credits['completed_credits'] >= $credits['needed_credits']){
                 $credits['diploma'] = 1;
                 
-                $credits['graduation_date'] = $student_enrolled_courses
-                    ->where('status',StudentEnrolledCourse::STATUS_COMPLETED)
-                    ->last()->passed_exam->passed_at->format('d.m.Y');
+                $credits['graduation_date'] = '';
                 $student = $student_enrolled_courses[0]->student;
                 $parent = $student->student_details->parent;
 
                 if($student->student_details->status !=  ParentStudent::GRADUATED){
+                  
                     try{
                         Mail::to($student->email)->send(new GraduationEmailStudent($student));
                     }catch(\Exception $e){

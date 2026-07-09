@@ -7,7 +7,7 @@
 @section('content')
 
 <div class="container my-3 shadow bg-white p-3">
-    <h1 class="text-center">Add New Educator</h1>
+    <h1 class="text-center page-headings">Add New Educator</h1>
     <hr/>
      <form action="{{ route('create-educator') }}" method="POST" class="educator-form confirm-first" id="add-eductator">
         {{ csrf_field() }}
@@ -69,22 +69,14 @@
                 <input required class="form-control" name="phone" value="{{ old('phone') }}"/>
             </div>
         </div>
-        <br>
-        <label class="font-weight-bold mb-0" for="">Categories</label>  
-        <div class="text-left row mt-2"> 
-            @foreach ($categories as $key => $category)
-                <div class="col-md-6">
-                    <input type="checkbox" class="educator-category-checkbox" name="categories[]" value="{{ $category->id }}" {{ is_array(old('categories')) && in_array($category->id, old('categories')) ? 'checked' : '' }}> {{ $category->name }} <br>
-                </div>
-            @endforeach
-        </div>
+        <br>       
         <div class="text-center my-3">
             <hr>
             <button type="submit" class="btn btn-info my-2">Add Educator</button>
         </div>
     </form>
     <hr>
-    <h2 class="text-center">List of educators</h2>
+    <h2 class="text-center page-headings">List of educators</h2>
     <table class="table">
         <tr>
             <th class="text-left">Name</th>
@@ -189,11 +181,7 @@
                             <br>
                             <label class="font-weight-bold mb-0" for="">Categories</label>  
                             <div class="text-left row mt-2"> 
-                                @foreach ($categories as $key => $category)
-                                    <div class="col-md-6">
-                                        <input type="checkbox" class="educator-category-checkbox" {{ $educator->array_educator_categories && in_array($category->id,$educator->array_educator_categories) ? ' checked ' : '' }} name="categories[]" value="{{ $category->id }}"> {{ $category->name }} <br>
-                                    </div>
-                                @endforeach
+                            
                             </div>
                             <div class="text-center my-3">
                                 <hr>
@@ -212,26 +200,26 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="request-category-modal-label">Please check if the educator is qualified for following categories:</h5>
+            <h5 class="modal-title" id="request-category-modal-label">Please check if the educator is qualified for following courese:</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <table class="table">
-                @foreach ($new_category_requests as $categories )
-                    @foreach($categories as $category)
+                @foreach ($new_category_requests as $educator_courses )
+                    @foreach($educator_courses as $educator_course)
                         <tr>
-                            <td>{{ $category->educator->fullname() }}</td>
-                            <td>{{ $category->category->name }}</td>
+                            <td>{{ $educator_course->educator->fullname() }}</td>
+                            <td>{{ $educator_course->course->course->title }}</td>
                             <td>
-                                <form action="{{ route('change-educator-category-status',['approve',$category->id]) }}" method="POST" id="approve-{{ $category->id }}" class="confirm-first">
+                                <form action="{{ route('change-educator-category-status',['approve',$educator_course->id]) }}" method="POST" id="approve-{{ $educator_course->id }}" class="confirm-first">
                                     {{ csrf_field() }}
                                     <button class="btn-success btn">Approve</button>
                                 </form>
                             </td>
                             <td>
-                                <form action="{{ route('change-educator-category-status',['decline',$category->id]) }}" method="POST" id="reject-{{ $category->id }}" class="confirm-first">
+                                <form action="{{ route('change-educator-category-status',['decline',$educator_course->id]) }}" method="POST" id="reject-{{ $educator_course->id }}" class="confirm-first">
                                     {{ csrf_field() }}
                                     <button class="btn-danger btn">Reject</button>
                                 </form>

@@ -6,11 +6,11 @@
 
 @section('content')
 
-<div class="shadow container wrapper">
+<div class="shadow container-fluid wrapper" >
     <h2 class="text-center blue-heading h2">Add Exam</h2>
     <p class="text-danger text-center">Please enter the time in UTC timezone <span class="font-weight-bold">(UTC time now : {{ $utc_time }})</span></p>
     <hr/>
-     <form action="{{ route('create-exam') }}" method="POST" id="add-exam"  class="exam-form confirm-first">
+     <form action="{{ route('create-exam') }}" method="POST" id="add-exam"  class="exam-form container confirm-first">
         {{ csrf_field() }}
         <div class="row">
             <div class="col-md-6">
@@ -61,6 +61,17 @@
      <h2 class="text-center blue-heading h2">Exams</h2>
      <table class="table">
         @if(count($exams) > 0)
+             <tr>
+            <th colspan="8" class="text-left">
+                <form action="{{ route('admin-exams') }}" class="d-flex">
+                    <input type="date" class="form-control mr-2" name="date" placeholder="Enter Date">
+                    <input type="text" class="form-control mr-2" name="search" placeholder="Search by name, date or subject">
+                    <div>
+                        <button class="btn btn-info">Search</button>
+                    </div>
+                </form>
+            </th>
+        </tr>
             <tr class="bg-light">
                 <th>
                     <span>Date</span>
@@ -77,8 +88,11 @@
                 <th>
                     <span>Exam Type</span>
                 </th>
+                 <th>
+                    <span>Result</span>
+                </th>
                 <th class="text-center" colspan="3">
-                    <span>Action</span>
+                    <span></span>
                 </th>
             </tr>
         @endif
@@ -90,18 +104,21 @@
                 <td>{{ $exam->student->fullname() }}</td>
                 <td>{{ $exam->type == 1 ? 'Open Exam' : 'Essay' }}</td>
                 @if($exam->status == 0)
-                <td class="text-center">
-                    <button class="btn btn-link text-underline m-0 p-0" style="text-decoration: underline" data-toggle="modal" data-target="#edit-modal-{{ $exam->id }}">Edit</button>
-                </td>
-                <td class="text-center">
-                    <form action="{{ route('delete-exam',$exam->id) }}" method="POST" class="confirm-first" id="delete-exam-{{ $exam->id }}">
-                        {{ csrf_field() }}
-                        <button class="btn btn-link text-underline m-0 p-0" style="text-decoration: underline">Remove</button>
-                    </form>
-                </td>
+                    <td class="text-center">
+                        Upcoming
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-link text-underline m-0 p-0" style="text-decoration: underline" data-toggle="modal" data-target="#edit-modal-{{ $exam->id }}">Edit</button>
+                    </td>
+                    <td class="text-center">
+                        <form action="{{ route('delete-exam',$exam->id) }}" method="POST" class="confirm-first" id="delete-exam-{{ $exam->id }}">
+                            {{ csrf_field() }}
+                            <button class="btn btn-link text-underline m-0 p-0" style="text-decoration: underline">Remove</button>
+                        </form>
+                    </td>
                 @elseif($exam->status==1)
                     <td class="text-center">
-                        Exam submitted 
+                        Submitted 
                     </td>
                     <td class="text-center">
                         <a href="{{ route('single-submission',$exam->id) }}" target="blank">Details...</a>
@@ -109,7 +126,7 @@
                     <td></td>
                 @else
                     <td class="text-center">
-                        Exam evaluated 
+                        {{ $exam->grade() }} 
                     </td>
                     <td class="text-center">
                         <a href="{{ route('single-submission',$exam->id) }}" target="blank">Details...</a>
