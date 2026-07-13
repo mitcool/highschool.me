@@ -5,4 +5,11 @@
 
 ----------------------------------------------------------------------
 ✔ If a child is disabled we must display it in the overview page @done(26-07-06 15:28)
-
+✔ Pricing logic change when they upgrade the plan @done(26-07-06 15:28)
+☐ Search functionality in meetings list by student name in admin panel
+☐ Display the list of the meetings in the admin panel
+☐ Check the upgrade and downgrade of plan logic
+✔ Request verification for graduation letter - the same logic should apply as with the enrollment verification @done(26-07-06 15:29)
+☐ When admin assigns a teacher - he should assign the subjects separately not the categories
+☐ The student and the parent must receive emails when the student fails on the exam
+✔ When transferring subjects - see what happens with the transcript @done(26-07-06 15:30)

@@ -5,7 +5,7 @@
 	<meta itemprop="description" name="description" content="{{ $texts['meta-description'] }}" />
 	<meta itemprop="title" property="og:title" content="{{ $texts['meta-title'] }}"/>
 	<meta property="og:type" content="website"/>
-	<meta itemprop="url" property="og:url" content="{{ route('accreditation') }}/en/accreditation-partners"/>
+	<meta itemprop="url" property="og:url" content="{{ route('accreditation') }}"/>
 	<meta property="og:description" content="{{ $texts['meta-description'] }}"/>
 	<x-meta-image itemprop="image" nickname="accreditation-cover"/>
 @endsection

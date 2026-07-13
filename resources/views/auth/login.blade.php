@@ -1,5 +1,14 @@
 @extends('template')
 
+@section('seo')
+	<title>Student Login Portal | ONSITES High School</title>
+	<meta itemprop="description" name="description" content="Access your ONSITES High School student account to manage coursework, track progress, and connect with educators through the secure online learning platform." />
+	<meta itemprop="title" property="og:title" content="Student Login Portal | ONSITES High School<"/>
+	<meta property="og:type" content="website"/>
+	<meta itemprop="url" property="og:url" content="{{ route('login') }}"/>
+	<meta property="og:description" content="Access your ONSITES High School student account to manage coursework, track progress, and connect with educators through the secure online learning platform."/>
+@endsection
+
 @section('headCSS')
 <style>
     body {

@@ -92,22 +92,22 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                             <tr>
                                                 <td>
                                                     <h1 style="{{ $style['header-1'] }}">
-                                                        Dear {{ $student->name }},
+                                                        Dear admin,
                                                     </h1>
-                                                       
-                                                        <p style="{{ $style['paragraph-black'] }}">Great news — a {{ $meeting->curriculum_type->name }} session is being arranged for you. To get it confirmed, all you need to do is log in to the student portal and select the time slot that works best for you.</p>
+                                                    <p style="{{ $style['paragraph-black'] }}">    A meeting request has been submitted and is waiting for your attention. The details are below. <br>
+                                                        Student: {{$student->fullname()}} <br>
+                                                        Educator: {{$educator->fullname()}} <br>
+                                                        Meeting type: {{$meeting->curriculum_type->name}} <br>
+                                                        Meeting time: {{$meeting->start->format('d.m.Y H:i')}} <br>
 
-                                                        <p style="{{ $style['paragraph-black'] }}">A set of available times has already been prepared and is waiting for you in the portal. Simply review the options and choose the slot that fits your schedule. There is no need to suggest your own hours — just pick from what is already there and the session will be confirmed from your end.</p>
+                                                     <p style="{{ $style['paragraph-black'] }}">Please log in to the admin panel to review the request and assign the appropriate educator. Once an educator has been assigned and a meeting time is confirmed, the student and parent will be notified automatically with the full details.</p>
 
-                                                        <p style="{{ $style['paragraph-black'] }}">Once you have made your selection, our team will finalize the booking and assign the right educator. You will receive a separate notification with all the confirmed details — date, time, meeting type, and session link — as soon as everything is locked in.</p>
+                                                     <p style="{{ $style['paragraph-black'] }}">Promptly handled meeting requests reflect the quality of personal support we offer at ONSITES High School. Families who take the initiative to request time with an educator deserve a timely and organized response. If coordination is needed before the meeting can be confirmed — for example, checking educator availability — please proceed as needed before finalizing the assignment.</p>
 
-                                                        <p style="{{ $style['paragraph-black'] }}">These sessions are designed to give you dedicated, focused support, and getting the most out of them starts with arriving at a time when you are not rushed or distracted. Take a moment to choose a slot that genuinely works for you and gives you the right headspace going in.</p>
+                                                    <p style="{{ $style['paragraph-black'] }}">→ Review Meeting Request: {{admin_portal_url}}</p>
 
-                                                        <p style="{{ $style['paragraph-black'] }}">→ Go to Student Portal: <a href="{{ route('login') }}">{{ route('login') }}</a></p>
+                                                    <p style="{{ $style['paragraph-black'] }}">Thank you for managing this with care and efficiency.</p>
 
-                                                        <p style="{{ $style['paragraph-black'] }}">If you have any questions about what the session will cover or how it works before making your selection, please reach out through the Help Desk. We are happy to help.
-                                                        </p>
-                                                   
                                                     <!-- Salutation -->
                                                     <p style="{{ $style['paragraph-black'] }}">
                                                         Kind regards,<br>ONSITES High School

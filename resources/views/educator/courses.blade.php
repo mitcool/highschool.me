@@ -13,16 +13,16 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($courses as $course)
+           @foreach ($courses as $course)
                 <tr>
-                    <td>{{ $course->course->fldoe_course_code }}</td>
-                    <td>{{ $course->course->title }}</td>
-                    <td>{{ $course->curriculumType->name }}</td>
+                    <td>{{ $course->course->course->fldoe_course_code }}</td>
+                    <td>{{ $course->course->course->title }}</td>
+                    <td>{{ $course->course->curriculumType->name }}</td> 
                     <td>
                         <a href="{{ route('educator.course-materials',$course->id) }}" target="_blank">Edit Materials</a>
                     </td>
                 </tr>
-            @endforeach
+            @endforeach 
         </tbody>
     </table>
 

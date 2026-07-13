@@ -58,7 +58,7 @@ use App\Mail\IntegrityViolation;
 use App\Mail\PreExamSubmittedParent;
 use App\Mail\AmbassadorRewardRedemptionRequest;
 use App\Mail\MeetingConfirmationEducator;
-use App\Mail\MeetingConfirmationParent;
+use App\Mail\MeetingConfirmationAdmin;
 use App\Mail\MeetingConfirmationStudent;
 
 use App\Services\ClaudeService;
@@ -1219,22 +1219,23 @@ class StudentController extends Controller
         }
 
         try{
-            Mail::to($educator->email)->send(new MeetingConfirmationEducator($meeting));
+            Mail::to($educator->email)->send(new MeetingConfirmationEducator($educator,$student,$meeting));
         }catch(\Exception $e){
             info($e->getMessage());
         }
 
         try{
-            Mail::to($educator->email)->send(new MeetingConfirmationStudent($meeting));
+            Mail::to($educator->email)->send(new MeetingConfirmationStudent($student,$meeting));
         }catch(\Exception $e){
             info($e->getMessage());
         }
 
-        try{
-            Mail::to($educator->email)->send(new MeetingConfirmationParent($meeting));
-        }catch(\Exception $e){
-            info($e->getMessage());
-        }
+        $this->notifyAdmins(new MeetingConfirmationAdmin($educator,$student,$meeting));
+        // try{
+        //     Mail::to($educator->email)->send();
+        // }catch(\Exception $e){
+        //     info($e->getMessage());
+        // }
 
 
         return redirect()->back();

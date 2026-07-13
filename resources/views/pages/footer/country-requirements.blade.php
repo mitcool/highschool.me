@@ -1,5 +1,17 @@
 @extends('template')
 
+@section('seo')
+	<title>{{  $texts['meta-title']  }}</title>
+	<meta itemprop="title" property="og:title" content="{{ $texts['meta-title'] }}"/>
+	<meta property="og:title" content="{{ $texts['meta-title'] }}"/>
+	<meta property="og:type" content="website"/>
+	<meta itemprop="url" property="og:url" content="{{ route('country-requirements') }}"/>
+	<meta itemprop="description" property="og:description" content="{{ $texts['meta-description'] }}"/>
+	<x-meta-image itemprop="image" nickname="contact-form-background"/>
+	<meta name="description" content="{{ $texts['meta-description'] }}" />
+	
+@endsection
+
 @section('headCSS')
 <style>
         .feature{

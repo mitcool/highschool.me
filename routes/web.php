@@ -207,11 +207,11 @@ Route::group(['middleware' => 'text'],function(){
 
 	Route::get('/contact','MainController@contact')->name('student-advisory-service');
 
-	Route::get('/academics','AboutController@showAcademics')->name('academics');
+	Route::get('/faculty-and-educators','AboutController@showAcademics')->name('academics');
 
-	Route::get('/academics/{acad_slug}', 'AboutController@singleAcademicPage')->name('single-academic');
+	Route::get('/faculty-and-educators/{acad_slug}', 'AboutController@singleAcademicPage')->name('single-academic');
 
-	Route::get('/accreditation','AboutController@showAccreditation')->name('accreditation');
+	Route::get('/recognition-and-quality-standards','AboutController@showAccreditation')->name('accreditation');
 
 	Route::get('/iso-9001-2015', 'AboutController@showFirstIso')->name('first-iso');
 
@@ -227,9 +227,9 @@ Route::group(['middleware' => 'text'],function(){
 
 	//Route::get('/american-college-test', 'AboutController@showACTpage')->name('american-college-test');
 
-	Route::get('/blog','MainController@showBlog')->name('blog');
+	Route::get('/news-explorer','MainController@showBlog')->name('blog');
 
-	Route::get('/blog/{slug}','MainController@showSingleBlog')->name('single-article');
+	Route::get('/news-explorer/{slug}','MainController@showSingleBlog')->name('single-article');
 
 	Route::get('/faq','FooterController@showFaq')->name('faq');
 
@@ -247,17 +247,17 @@ Route::group(['middleware' => 'text'],function(){
 
 	Route::get('/facts-hub/{slug}','MainController@showSingleFactsHub')->name('single-facts-hub');
 
-	Route::get('/press-releases','MainController@showPressRelease')->name('press-release');
+	Route::get('/press-release','MainController@showPressRelease')->name('press-release');
 
 	Route::get('/press-release/{slug}','MainController@showSinglePressRelease')->name('single-press-release');
 
-	Route::get('/accessibility','FooterController@accessibility')->name('accessibility');
+	Route::get('/accessibility-statement','FooterController@accessibility')->name('accessibility');
 
 	Route::get('/leadership','AboutController@showLeadership')->name('leadership');
 
 	Route::get('/partnership','AboutController@showPartnership')->name('partnership');
 
-	Route::get('/highschool-programs','AcademicsController@highSchoolPrograms')->name('highschool-programs');
+	Route::get('/diploma-tracks','AcademicsController@highSchoolPrograms')->name('highschool-programs');
 
 	Route::get('/graduation-requirements','AcademicsController@graduationRequirements')->name('graduation-requirements');
 
@@ -269,21 +269,21 @@ Route::group(['middleware' => 'text'],function(){
 
 	Route::get('/international-students','AcademicsController@internationalStudents')->name('international-students');
 
-	Route::get('/standard-high-school','CurriculumController@standardHighSchool')->name('standard-high-school');
+	Route::get('/standard-track','CurriculumController@standardHighSchool')->name('standard-high-school');
 
 	Route::get('/transfer-program','CurriculumController@transferProgram')->name('transfer-program');
 
 	Route::get('/transfer-program/{slug}','CurriculumController@showSingleTransferProgramCourse')->name('single-tranfer-program-course');
 
-	Route::get('/honors-high-school','CurriculumController@honorsHighSchool')->name('honors-high-school');
+	Route::get('/module-honors-courses','CurriculumController@honorsHighSchool')->name('honors-high-school');
 
 	Route::get('/advanced-placement','CurriculumController@advancedPlacement')->name('advanced-placement');
 
 	Route::get('/advanced-placement/{slug}','CurriculumController@showSingleApCourse')->name('single-ap-course');
 
-	Route::get('/psat','CurriculumController@psat')->name('psat');
+	Route::get('/psat-sat-prep','CurriculumController@psat')->name('psat');
 
-	Route::get('/act','CurriculumController@act')->name('act');
+	Route::get('/preact-act-prep','CurriculumController@act')->name('act');
 
 	Route::get('/cte','CurriculumController@cte')->name('cte');
 
@@ -293,7 +293,7 @@ Route::group(['middleware' => 'text'],function(){
 
 	Route::get('/esol','CurriculumController@esol')->name('esol'); #a.k.a english courses
 
-	Route::get('/learning-mentoring','CurriculumController@learningMentoring')->name('learning-mentoring');
+	Route::get('/sessions-and-coaching','CurriculumController@learningMentoring')->name('learning-mentoring');
 
 	Route::get('/admission-process','AdmissionController@admissionProcess')->name('admission-process');
 

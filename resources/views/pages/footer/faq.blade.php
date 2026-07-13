@@ -1,13 +1,15 @@
 @extends('template')
 
 @section('seo')
-	<title>{{trans('faq.meta-title')}}</title>
-	<meta itemprop="description" name="description" content="{{ trans('faq.meta-description') }}" />
-	<meta itemprop="title" property="og:title" content="{{trans('faq.meta-title')}}"/>
+	<title>{{  $texts['meta-title']  }}</title>
+	<meta itemprop="title" property="og:title" content="{{ $texts['meta-title'] }}"/>
+	<meta property="og:title" content="{{ $texts['meta-title'] }}"/>
 	<meta property="og:type" content="website"/>
-	<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/faq"/>
-	<meta property="og:description" content="{{ trans('faq.meta-description') }}"/>
-	<x-meta-image itemprop="image" nickname="faqs"/>
+	<meta itemprop="url" property="og:url" content="{{ route('faq') }}"/>
+	<meta itemprop="description" property="og:description" content="{{ $texts['meta-description'] }}"/>
+	<x-meta-image itemprop="image" nickname="contact-form-background"/>
+	<meta name="description" content="{{ $texts['meta-description'] }}" />
+	
 @endsection
 
 @section('headCSS')

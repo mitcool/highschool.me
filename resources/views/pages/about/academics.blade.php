@@ -3,7 +3,6 @@
 @section('seo')
 <title>{{ $texts['meta-title'] }}</title>
 <meta itemprop="description" name="description" content="{{ $texts['meta-description'] }}" />
-
 <meta itemprop="name" property="og:title" content="{{ $texts['meta-title'] }}"/>
 <meta property="og:type" content="website"/>
 <meta itemprop="url" property="og:url" content="{{ route('academics') }}"/>

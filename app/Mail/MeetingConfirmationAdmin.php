@@ -7,23 +7,26 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class MeetingConfirmationStudent extends Mailable
+class MeetingConfirmationAdmin extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $meeting;
+    public $educator;
     public $student;
 
-    public function __construct($student,$meeting)
+    public function __construct($educator,$student,$meeting)
     {
         $this->meeting = $meeting;
+        $this->educator = $educator;
         $this->student = $student;
     }
+
     public function build()
     {
-        return $this->view('email.meeting-confirmation-student')
-            ->subject('Your '.$this->meeting->curriculum_type->name.' Session Is Being Arranged — Please Select a Time')
+        return $this->view('email.meeting-confirmation-admin')
             ->with('student',$this->student)
+            ->with('educator',$this->educator)
             ->with('meeting',$this->meeting);
     }
 }

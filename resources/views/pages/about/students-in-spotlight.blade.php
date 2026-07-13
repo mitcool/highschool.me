@@ -2,22 +2,15 @@
 
 
 @section('seo')
-<title>{{ trans('about.meta-title') }}</title>
-<meta itemprop="description" name="description" content="{{ trans('about.meta-description') }}" />
+<title>{{ $texts['meta-title'] }}</title>
+<meta itemprop="description" name="description" content="{{ $texts['meta-description'] }}" />
 
-<meta itemprop="name" property="og:title" content="{{ trans('about.meta-title') }}"/>
+<meta itemprop="name" property="og:title" content="{{ $texts['meta-title'] }}"/>
 <meta property="og:type" content="website"/>
-@if(Session::get('applocale') == 'de')
-	<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/de/ueber-uns"/>
-@else
-	<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/en/about-us"/>
-@endif
-<meta property="og:description" content="{{ trans('about.meta-description') }}"/>
+<meta itemprop="url" property="og:url" content="{{ route('students-in-spotlight') }}"/>
+<meta property="og:description" content="{{ $texts['meta-description'] }}"/>
 <x-meta-image itemprop="image" nickname="about-cover"/>
 
-<link rel="alternate" href="{{ config('app.url') }}/en/about-us" hreflang="en" />
-<link rel="alternate" href="{{ config('app.url') }}/de/ueber-uns" hreflang="de" />
-<link rel="alternate" href="{{ config('app.url') }}/en/about-us" hreflang="x-default" />
 @endsection
 
 @section('content')

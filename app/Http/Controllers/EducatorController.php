@@ -477,8 +477,15 @@ class EducatorController extends Controller
         $working_hour = $request->except('_token');
         $working_hour['educator_id'] = auth()->id();
         
-        $start = Carbon::createFromFormat('H:i', $working_hour['start']);
-        $end = Carbon::createFromFormat('H:i',  $working_hour['end']);
+        $start = Carbon::createFromFormat(
+            'H:i', 
+            $working_hour['start'],
+            session()->get('timezone'));
+           
+        $end = Carbon::createFromFormat(
+            'H:i',  
+            $working_hour['end'],
+            session()->get('timezone'));
 
 
         $period = CarbonPeriod::create($start, '1 hour', $end);
@@ -488,7 +495,7 @@ class EducatorController extends Controller
             if ($index === count($times) - 1) {
                 continue;
             }
-            $meeting_start =  Carbon::parse($working_hour['date'].' '.$time->format('H:i'));
+            $meeting_start =  Carbon::parse($working_hour['date'].' '.$time->copy()->utc()->format('H:i'));
 
             Meeting::create([
                 'start' =>$meeting_start,
@@ -496,8 +503,8 @@ class EducatorController extends Controller
             ]);
             
         }
-
-    
+        
+       
         if($start > $end){
             return redirect()->back()->with('error','Please enter  valid dates');
         }

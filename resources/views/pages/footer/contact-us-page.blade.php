@@ -2,17 +2,13 @@
 
 @section('seo')
 	<title>HIGHSCHOOL.ME | Contact Us</title>
-	<meta itemprop="title" property="og:title" content="{{trans('contact-us.meta-title')}}"/>
-
-	<meta property="og:title" content="{{trans('contact-us.meta-title')}}"/>
+	<meta itemprop="title" property="og:title" content="{{ $texts['meta-title'] }}"/>
+	<meta property="og:title" content="{{ $texts['meta-title'] }}"/>
 	<meta property="og:type" content="website"/>
-	
-	<meta itemprop="url" property="og:url" content="{{ config('app.url') }}/contact"/>
-	
-	<meta itemprop="description" property="og:description" content="{{trans('contact-us.meta-title')}}"/>
+	<meta itemprop="url" property="og:url" content="{{ route('student-advisory-service') }}"/>
+	<meta itemprop="description" property="og:description" content="{{ $texts['meta-description'] }}"/>
 	<x-meta-image itemprop="image" nickname="contact-form-background"/>
-
-	<meta name="description" content="{{ trans('contact-us.meta-description') }}" />
+	<meta name="description" content="{{ $texts['meta-description'] }}" />
 	
 @endsection
 

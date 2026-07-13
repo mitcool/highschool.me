@@ -1,13 +1,13 @@
 @extends('template')
 
 @section('seo')
-<title>{{trans('promotion.meta-title')}}</title>
-<meta itemprop="description" name="description" content="{{ trans('promotion.meta-description') }}" />
+<title>{{ $texts['meta-title'] }}</title>
+<meta itemprop="description" name="description" content="{{ $texts['meta-description'] }}" />
 
-<meta itemprop="title" property="og:title" content="{{trans('promotion.meta-title')}}"/>
+<meta itemprop="title" property="og:title" content="{{ $texts['meta-title'] }}"/>
 <meta property="og:type" content="website"/>
 <meta itemprop="url" property="og:url" content="{{  route('starter-kit') }}"/>
-<meta property="og:description" content="{{ trans('promotion.meta-description') }}"/>
+<meta property="og:description" content="{{ $texts['meta-description'] }}"/>
 <x-meta-image itemprop="image" nickname="coaching"/>
 
 @endsection

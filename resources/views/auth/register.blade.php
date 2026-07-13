@@ -1,5 +1,14 @@
 @extends('template')
 
+@section('seo')
+	<title>Online Enrollment and Registration | ONSITES High School</title>
+	<meta itemprop="description" name="description" content="Begin your enrollment at ONSITES High School through the secure online portal. Submit your application, upload documents, and start your US diploma journey." />
+	<meta itemprop="title" property="og:title" content="Online Enrollment and Registration | ONSITES High School"/>
+	<meta property="og:type" content="website"/>
+	<meta itemprop="url" property="og:url" content="{{ route('register') }}"/>
+	<meta property="og:description" content="Begin your enrollment at ONSITES High School through the secure online portal. Submit your application, upload documents, and start your US diploma journey."/>
+@endsection
+
 @section('headCSS')
 <style>
     body {

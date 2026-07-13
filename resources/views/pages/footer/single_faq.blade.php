@@ -10,12 +10,8 @@
 	<meta property="og:description" content=""/>
 @endsection
 
-
-
 @section('content')
-@php
-    
-@endphp
+
 <div aria-label="breadcrumb" class="col-md-10 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-1">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
