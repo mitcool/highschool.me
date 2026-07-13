@@ -10,6 +10,8 @@
 <meta property="og:description" content=""/>
 <x-meta-image itemprop="image" nickname="academics-cover"/>
 
+<x-seo.web-page-schema :url="route('single-academic', $teacher->slug)" :name="$teacher->name" :description="strip_tags($teacher->single_page_description)" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => 'Academics', 'url' => route('academics')], ['name' => $teacher->name, 'url' => route('single-academic', $teacher->slug)]]" />
+
 @endsection
 
 @section('headCSS')

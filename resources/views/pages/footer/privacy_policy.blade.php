@@ -16,6 +16,7 @@
 	<link rel="alternate" href="{{ config('app.url') }}/en/privacy-policy" hreflang="en" />
 	<link rel="alternate" href="{{ config('app.url') }}/de/datenschutz" hreflang="de" />
 	<link rel="alternate" href="{{ config('app.url') }}/en/privacy-policy" hreflang="x-default" />
+	<x-seo.web-page-schema :url="url()->current()" :name="trans('privacy.heading')" :description="trans('privacy.meta-description')" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => trans('privacy.heading'), 'url' => url()->current()]]" />
 @endsection
 
 @section('language-switcher')

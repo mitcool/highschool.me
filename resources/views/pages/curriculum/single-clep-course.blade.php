@@ -9,6 +9,8 @@
 	<meta property="og:description" content="{{ trans('accreditation.meta-description') }}"/>
 	<x-meta-image itemprop="image" nickname="accreditation-cover"/>
 
+	<x-seo.web-page-schema :url="route('single-clep-course', $course->id)" :name="$course->course->title" :description="$course->course->title" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => $course->course->title, 'url' => route('single-clep-course', $course->id)]]" />
+
 @endsection
 
 

@@ -9,6 +9,7 @@
 	<meta itemprop="description" property="og:description" content="{{ $texts['meta-description'] }}"/>
 	<x-meta-image itemprop="image" nickname="contact-form-background"/>
 	<meta name="description" content="{{ $texts['meta-description'] }}" />
+	<x-seo.web-page-schema :url="route('student-advisory-service')" name="Contact Us" :description="$texts['meta-description']" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => 'Contact Us', 'url' => route('student-advisory-service')]]" />
 	
 @endsection
 

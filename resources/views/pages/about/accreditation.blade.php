@@ -8,6 +8,7 @@
 	<meta itemprop="url" property="og:url" content="{{ route('accreditation') }}"/>
 	<meta property="og:description" content="{{ $texts['meta-description'] }}"/>
 	<x-meta-image itemprop="image" nickname="accreditation-cover"/>
+	<x-seo.web-page-schema :url="route('accreditation')" :name="$texts['heading']" :description="$texts['meta-description']" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => $texts['heading'], 'url' => route('accreditation')]]" />
 @endsection
 
 @section('headCSS')

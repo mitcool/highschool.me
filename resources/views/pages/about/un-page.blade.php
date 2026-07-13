@@ -9,6 +9,46 @@
 	<meta property="og:description" content="{{ $texts['meta-description'] }}"/>
 	<x-meta-image itemprop="image" nickname="accreditation-cover"/>
 
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "WebPage",
+		"@id": "{{ route('united-nations') }}#webpage",
+		"url": "{{ route('united-nations') }}",
+		"name": @json($texts['heading']),
+		"description": @json($texts['meta-description']),
+		"isPartOf": {
+			"@type": "WebSite",
+			"@id": "{{ route('welcome') }}#website",
+			"url": "{{ route('welcome') }}",
+			"name": "ONSITES Graduate School"
+		},
+		"breadcrumb": {
+			"@type": "BreadcrumbList",
+			"itemListElement": [
+				{
+					"@type": "ListItem",
+					"position": 1,
+					"name": "Home",
+					"item": "{{ route('welcome') }}"
+				},
+				{
+					"@type": "ListItem",
+					"position": 2,
+					"name": "Recognition & Quality Standards",
+					"item": "{{ route('accreditation') }}"
+				},
+				{
+					"@type": "ListItem",
+					"position": 3,
+					"name": @json($texts['heading']),
+					"item": "{{ route('united-nations') }}"
+				}
+			]
+		}
+	}
+	</script>
+
 @endsection
 
 @section('headCSS')

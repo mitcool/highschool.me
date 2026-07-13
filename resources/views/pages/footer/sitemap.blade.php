@@ -6,6 +6,7 @@
 	<meta itemprop="description" name="description" content="{{ trans('sitemap.meta-description') }}" />
     <meta itemprop="url" property="og:url" content="{{ config('app.url') }}/sitemap"/>
 	<meta property="og:description" content="{{ trans('sitemap.meta-description') }}"/>
+	<x-seo.web-page-schema :url="route('sitemap')" name="Sitemap" :description="trans('sitemap.meta-description')" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => 'Sitemap', 'url' => route('sitemap')]]" />
 @endsection
 
 @section('headCSS')

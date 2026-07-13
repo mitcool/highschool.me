@@ -10,6 +10,8 @@
 	<meta property="og:description" content="{{ trans('imprint.meta-description') }}"/>
 	<x-meta-image itemprop="image" nickname="imprint"/>
 
+	<x-seo.web-page-schema :url="url()->current()" name="Imprint" :description="trans('imprint.meta-description')" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => 'Imprint', 'url' => url()->current()]]" />
+
 @endsection
 
 @section('content')

@@ -14,6 +14,7 @@
 	@endif
 	<meta property="og:description" content="{{ trans('imprint.meta-description') }}"/>
 	<x-meta-image itemprop="image" nickname="unsubscribe"/>
+	<x-seo.web-page-schema :url="url()->current()" name="Unsubscribe" :description="trans('imprint.meta-description')" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => 'Unsubscribe', 'url' => url()->current()]]" />
 
 	
 	<style>

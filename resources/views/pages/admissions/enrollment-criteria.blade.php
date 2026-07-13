@@ -7,6 +7,7 @@
 	<meta itemprop="url" property="og:url" content="{{ route('enrollment-criteria') }}"/>
 	<meta property="og:description" content="{{ $texts['meta-description']}}"/>
 	<x-meta-image itemprop="image" nickname="study_registration"/>
+	<x-seo.web-page-schema :url="route('enrollment-criteria')" :name="$texts['heading']" :description="$texts['meta-description']" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => $texts['heading'], 'url' => route('enrollment-criteria')]]" />
 @endsection
 @section('headCSS')
 <style>

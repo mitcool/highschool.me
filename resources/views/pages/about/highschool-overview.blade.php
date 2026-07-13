@@ -9,6 +9,7 @@
 	<meta itemprop="url" property="og:url" content="{{ route('school-overview')}}"/>
 	<meta property="og:description" content="{{ trans('digital-studies.meta-description')}}"/>
 	<x-meta-image itemprop="image" nickname="digital_studies"/>
+	<x-seo.web-page-schema :url="route('school-overview')" :name="$texts['heading']" :description="trans('digital-studies.meta-description')" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => $texts['heading'], 'url' => route('school-overview')]]" />
 @endsection
 
 @section('content')

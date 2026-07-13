@@ -8,6 +8,7 @@
 	<meta itemprop="url" property="og:url" content="{{ route('leadership') }}"/>
 	<meta property="og:description" content="{{ $texts['meta-description'] }}"/>
 	<x-meta-image itemprop="image" nickname="digital_studies"/>
+	<x-seo.web-page-schema :url="route('leadership')" :name="$texts['heading']" :description="$texts['meta-description']" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => $texts['heading'], 'url' => route('leadership')]]" />
 @endsection
 
 @section('headCSS')

@@ -9,6 +9,8 @@
 	<meta itemprop="url" property="og:url" content="{{ route('early-registration')}}"/>
 	<meta property="og:description" content="{{ $texts['meta-description'] }}"/>
 
+	<x-seo.web-page-schema :url="route('early-registration')" :name="$texts['heading']" :description="$texts['meta-description']" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => $texts['heading'], 'url' => route('early-registration')]]" />
+
 @endsection
 
 @section('headCSS')

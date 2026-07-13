@@ -9,6 +9,7 @@
 	<meta itemprop="url" property="og:url" content="{{ route('accessibility') }}"/>
 	<meta property="og:description" content="{{ $texts['meta-description'] }}"/>
 	<x-meta-image itemprop="image" nickname="study_registration"/>
+	<x-seo.web-page-schema :url="route('accessibility')" name="Accessibility" :description="$texts['meta-description']" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => 'Accessibility', 'url' => route('accessibility')]]" />
 @endsection
 
 @section('content')

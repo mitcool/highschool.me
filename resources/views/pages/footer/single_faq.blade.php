@@ -8,6 +8,7 @@
 	<meta property="og:type" content="website"/>
 	
 	<meta property="og:description" content=""/>
+	<x-seo.web-page-schema :url="url()->current()" name="FAQ" description="Frequently asked questions" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => 'FAQ', 'url' => url()->current()]]" />
 @endsection
 
 @section('content')

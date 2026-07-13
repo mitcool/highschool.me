@@ -150,6 +150,7 @@
 	<meta itemprop="url" property="og:url" content="{{ route('awards') }}"/>
 	<meta property="og:description" content="{{ $texts['meta-description'] }}"/>
 	{{-- <x-meta-image itemprop="image" nickname="study_registration"/> --}}
+	<x-seo.web-page-schema :url="route('country-requirements')" :name="$texts['breadcrumb']" :description="$texts['meta-description']" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => $texts['breadcrumb'], 'url' => route('country-requirements')]]" />
 @endsection
 
 @section('content')

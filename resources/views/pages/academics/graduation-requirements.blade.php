@@ -7,6 +7,8 @@
 <meta property="og:description" content="{{ $texts['meta-description']}}"/>
 <x-meta-image itemprop="image" nickname="study_registration"/>
 
+<x-seo.web-page-schema :url="route('graduation-requirements')" :name="$texts['heading']" :description="$texts['meta-description']" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => $texts['heading'], 'url' => route('graduation-requirements')]]" />
+
 @endsection
 
 

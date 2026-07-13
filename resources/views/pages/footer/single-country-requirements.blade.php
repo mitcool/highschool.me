@@ -1,5 +1,9 @@
 @extends('template')
 
+@section('seo')
+<x-seo.web-page-schema :url="url()->current()" :name="$country->nicename" :description="$country->nicename . ' country requirements'" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => 'Country Requirements', 'url' => route('country-requirements')], ['name' => $country->nicename, 'url' => url()->current()]]" />
+@endsection
+
 @section('headCSS')
 <style>
     .orange{

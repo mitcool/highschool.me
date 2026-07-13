@@ -10,6 +10,8 @@
 <meta property="og:description" content="{{ $texts['meta-description'] }}"/>
 <x-meta-image itemprop="image" nickname="coaching"/>
 
+<x-seo.web-page-schema :url="route('starter-kit')" :name="$texts['heading']" :description="$texts['meta-description']" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => $texts['heading'], 'url' => route('starter-kit')]]" />
+
 @endsection
 
 @section('headCSS')

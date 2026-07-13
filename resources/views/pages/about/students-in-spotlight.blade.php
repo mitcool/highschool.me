@@ -11,6 +11,40 @@
 <meta property="og:description" content="{{ $texts['meta-description'] }}"/>
 <x-meta-image itemprop="image" nickname="about-cover"/>
 
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "{{ route('students-in-spotlight') }}#webpage",
+    "url": "{{ route('students-in-spotlight') }}",
+    "name": "Students in Spotlight",
+    "description": @json($texts['meta-description']),
+    "isPartOf": {
+        "@type": "WebSite",
+        "@id": "{{ route('welcome') }}#website",
+        "url": "{{ route('welcome') }}",
+        "name": "ONSITES Graduate School"
+    },
+    "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "{{ route('welcome') }}"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Students in Spotlight",
+                "item": "{{ route('students-in-spotlight') }}"
+            }
+        ]
+    }
+}
+</script>
+
 @endsection
 
 @section('content')
