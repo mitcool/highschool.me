@@ -247,15 +247,15 @@ Route::group(['middleware' => 'text'],function(){
 
 	Route::get('/facts-hub/{slug}','MainController@showSingleFactsHub')->name('single-facts-hub');
 
-	Route::get('/press-release','MainController@showPressRelease')->name('press-release');
+	Route::get('/press-releases','MainController@showPressRelease')->name('press-release');
 
-	Route::get('/press-release/{slug}','MainController@showSinglePressRelease')->name('single-press-release');
+	Route::get('/press-releases/{slug}','MainController@showSinglePressRelease')->name('single-press-release');
 
 	Route::get('/accessibility-statement','FooterController@accessibility')->name('accessibility');
 
 	Route::get('/leadership','AboutController@showLeadership')->name('leadership');
 
-	Route::get('/partnership','AboutController@showPartnership')->name('partnership');
+	Route::get('/partnerships','AboutController@showPartnership')->name('partnership');
 
 	Route::get('/diploma-tracks','AcademicsController@highSchoolPrograms')->name('highschool-programs');
 
@@ -293,7 +293,7 @@ Route::group(['middleware' => 'text'],function(){
 
 	Route::get('/esol','CurriculumController@esol')->name('esol'); #a.k.a english courses
 
-	Route::get('/sessions-and-coaching','CurriculumController@learningMentoring')->name('learning-mentoring');
+	Route::get('/live-sessions-and-coaching','CurriculumController@learningMentoring')->name('learning-mentoring');
 
 	Route::get('/admission-process','AdmissionController@admissionProcess')->name('admission-process');
 

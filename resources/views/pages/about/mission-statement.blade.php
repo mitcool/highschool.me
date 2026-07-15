@@ -9,7 +9,8 @@
 <meta itemprop="url" property="og:url" content="{{ route('mission-statement')}}"/>
 <meta property="og:description" content="{{ $texts['meta-description'] }}"/>
 <x-meta-image itemprop="image" nickname="recognition_of_previous_achievemnts"/>
-<x-seo.web-page-schema :url="route('mission-statement')" :name="$texts['heading']" :description="$texts['meta-description']" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => $texts['heading'], 'url' => route('mission-statement')]]" />
+<x-seo.web-page-schema 
+	:url="route('mission-statement')" :name="$texts['heading']" :description="$texts['meta-description']" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => $texts['heading'], 'url' => route('mission-statement')]]" />
 @endsection
 
 @section('content')

@@ -10,16 +10,59 @@
 	<x-meta-image itemprop="image" nickname="main-image"/>
 
 	<script type="application/ld+json">
-		{
+	{
 		"@context": "https://schema.org",
-		"@type": "Organization",
-		"name": "ONSITES Graduate School",
-		"url": "{{ route('welcome') }}",
-		"logo": "{{ asset('images/onsites-graduate-school-logo.png') }}",
-		"sameAs": [
-			
+		"@graph": [
+			{
+				"@type": "EducationalOrganization",
+				"@id": "{{ route('welcome') }}#organization",
+				"name": "ONSITES High School",
+				"alternateName": "HIGHSCHOOL.ME",
+				"url": "{{ route('welcome') }}",
+				"logo": {
+					"@type": "ImageObject",
+					"url": "{{ asset('images/onsites-graduate-school-logo.png') }}"
+				},
+				"telephone": "+1-305-404-5125",
+				"address": {
+					"@type": "PostalAddress",
+					"streetAddress": "100 Southeast 2nd Street, Miami Tower, Suite 2000-1005",
+					"addressLocality": "Miami",
+					"addressRegion": "FL",
+					"postalCode": "33131",
+					"addressCountry": "US"
+				},
+				"contactPoint": {
+					"@type": "ContactPoint",
+					"telephone": "+1-305-404-5125",
+					"contactType": "customer service",
+					"availableLanguage": ["English"]
+				}
+			},
+			{
+				"@type": "WebSite",
+				"@id": "{{ route('welcome') }}#website",
+				"url": "{{ route('welcome') }}",
+				"name": "HIGHSCHOOL.ME",
+				"publisher": {
+					"@id": "{{ route('welcome') }}#organization"
+				}
+			},
+			{
+				"@type": "WebPage",
+				"@id": "{{ route('welcome') }}#webpage",
+				"url": "{{ route('welcome') }}",
+				"name": @json($texts['meta-title']),
+				"description": @json($texts['meta-description']),
+				"isPartOf": {
+					"@id": "{{ route('welcome') }}#website"
+				},
+				"about": {
+					"@id": "{{ route('welcome') }}#organization"
+				}
+			}
 		]
-		}
+	}
 	</script>
 @endsection
 

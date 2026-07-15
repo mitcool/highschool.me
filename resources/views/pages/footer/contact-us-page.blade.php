@@ -1,7 +1,7 @@
 @extends('template')
 
 @section('seo')
-	<title>HIGHSCHOOL.ME | Contact Us</title>
+	<title>{{ $texts['meta-title'] }}</title>
 	<meta itemprop="title" property="og:title" content="{{ $texts['meta-title'] }}"/>
 	<meta property="og:title" content="{{ $texts['meta-title'] }}"/>
 	<meta property="og:type" content="website"/>
