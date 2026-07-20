@@ -107,6 +107,7 @@ use App\Complaint;
 use App\ParentExtraService;
 use App\EducatorCourse;
 use App\StudyMentor;
+use App\CourseMentor;
 
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
@@ -851,7 +852,6 @@ class AdminController extends Controller
     }
 
     public function AddEnrollmentCourse(Request $request) {
-        
         // Get the curriculum type first so we know which extra fields are required
         $curriculumType = CurriculumType::findOrFail($request->input('curriculum_type_id'));
 
@@ -868,6 +868,9 @@ class AdminController extends Controller
             'required_flag' => ['nullable', 'boolean'],
             'requirement_text' => ['nullable', 'string', 'max:255'],
             'notes' => ['nullable', 'string'],
+            'mentor_id' => ['required'],
+           
+        
 
             //files
             'resource_files_labels'    => ['nullable', 'array'],
@@ -878,6 +881,13 @@ class AdminController extends Controller
             'video_titles.*'           => ['nullable', 'string', 'max:255'],
             'video_urls'               => ['nullable', 'array'],
             'video_urls.*'             => ['nullable', 'url', 'max:2048'],
+            //Mentor 
+            'mentor_video' =>[
+                'required',
+                'file',
+                'mimetypes:video/mp4',
+                'max:5120', // 5 MB (size is in KB)
+            ],
         ];
 
         //CTE-specific requirement
@@ -916,7 +926,7 @@ class AdminController extends Controller
         // Normalize some values
         $requiredFlag    = isset($data['required_flag']) ? (bool)$data['required_flag'] : false;
         $creditsOverride = $data['credits_override'] ?? null;
-        DB::transaction(function () use ($curriculumType, $data, $requiredFlag, $creditsOverride) {
+        DB::transaction(function () use ($curriculumType, $data, $requiredFlag, $creditsOverride,$request) {
             // 1) Create catalog course
             $course = CatalogCourse::create([
                 'fldoe_course_code' => $data['fldoe_course_code'] ?? null,
@@ -1023,6 +1033,14 @@ class AdminController extends Controller
                     ]);
                 }
             }
+            $path  = base_path()."/public/study-mentor-videos";
+            $mentor_video= $this->upload_file($request->file('mentor_video'),$path);
+            $mentor_id = $request->mentor_id;
+            CourseMentor::insert([
+                'course_id' => $curriculumCourse->id,
+                'video' => $mentor_video,
+                'mentor_id' => $mentor_id,
+            ]);
         });
 
         return redirect()
@@ -1037,7 +1055,7 @@ class AdminController extends Controller
         $cteCategories = CourseCategory::where('curriculum_type_id', 4)->get();
         $ctePrograms = CteProgram::orderBy('program_title')->get();
         $cteJobs = CteJob::orderBy('name')->get();
-
+        $study_mentors = StudyMentor::all();
         $pivot = $course->curriculumTypes->first()->pivot;
         
         return view('admin.edit-enrollment-course')
@@ -1054,6 +1072,7 @@ class AdminController extends Controller
             ->with('currentRequiredFlag', $pivot->required_flag)
             ->with('currentRequirementText', $pivot->requirement_text)
             ->with('courseFiles', $course->files)
+            ->with('study_mentors',$study_mentors)
             ->with('courseVideos', $course->videos);
     }
 
@@ -1089,6 +1108,13 @@ class AdminController extends Controller
             'video_titles.*'     => ['nullable', 'string', 'max:255'],
             'video_urls'         => ['nullable', 'array'],
             'video_urls.*'       => ['nullable', 'url', 'max:2048'],
+            'mentor_id' => ['required'],
+            'mentor_video' =>[
+                'nullable',
+                'file',
+                'mimetypes:video/mp4',
+                'max:5120', // 5 MB (size is in KB)
+            ],
         ];
 
         //CTE-specific requirement
@@ -1123,7 +1149,7 @@ class AdminController extends Controller
 
         $requiredFlag = isset($data['required_flag']) ? (bool) $data['required_flag'] : false;
 
-        DB::transaction(function () use ($course, $curriculumType, $data, $requiredFlag) {
+        DB::transaction(function () use ($course, $curriculumType, $data, $requiredFlag,$request) {
 
             /**
              * 1) Update CatalogCourse
@@ -1281,6 +1307,18 @@ class AdminController extends Controller
                         'position'  => $index,
                     ]);
                 }
+            }
+            
+            $mentor_id = $request->mentor_id;
+            
+            $curriculumCourse->study_mentor->update([
+                'course_id' => $curriculumCourse->id,
+                'mentor_id' => $mentor_id,
+            ]);
+            if($request->hasFile('mentor_video')){
+                $path  = base_path()."/public/study-mentor-videos";
+                $mentor_video= $this->upload_file($request->file('mentor_video'),$path);
+                $curriculumCourse->study_mentor->update(['video' => $mentor_video]);
             }
         });
 
@@ -2267,5 +2305,39 @@ class AdminController extends Controller
         $educator = User::find($educator_id);
         return view('admin.educator-details')
             ->with('educator',$educator);
+    }
+
+    public function studyMentor(){
+        $course_mentors = CourseMentor::all();
+        $mentors = StudyMentor::all();
+        return view('admin.study-mentor')
+        ->with('course_mentors',$course_mentors)
+            ->with('mentors',$mentors)
+            ->with('course_mentors',$course_mentors);
+    }
+
+    public function updateStudyMentorVideo(Request $request){
+        $request->validate([
+            'course_id' => 'required',
+            'id' => 'required',
+            'video' => [
+                'required',
+                'file',
+                'mimetypes:video/mp4',
+                'max:5120', // 5 MB (size is in KB)
+            ],
+        ]);
+        $path  = base_path()."/public/study-mentor-videos";
+        $study_mentor  = $request->only('course_id');
+        $study_mentor['video'] = $this->upload_file($request->file('video'),$path);
+        $mentor = CourseMentor::find($request->id);
+         try{
+           unlink(base_path()."/public/study-mentor-videos/".$mentor->video);      
+        }catch(\Exception $e){
+            info($e->getMessage());
+        }
+        $mentor->update($study_mentor);
+       
+        return redirect()->back()->with('success_message','Mentor Video Updated Successfully');
     }
 }

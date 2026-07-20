@@ -503,9 +503,9 @@ class StudentController extends Controller
     }
 
     public function singleStudyMentor($slug){
-        if(auth()->user()->student_details->status != 3){
-            return redirect()->route('student.dashboard')->with('error','Please complete your registration process to have access to STUDY MENTOR');
-        }
+        // if(auth()->user()->student_details->status != 3){
+        //     return redirect()->route('student.dashboard')->with('error','Please complete your registration process to have access to STUDY MENTOR');
+        // }
         $mentor = StudyMentor::where('slug',$slug)->first();
         return view('student.single-study-mentor')
             ->with('mentor',$mentor);

@@ -298,6 +298,13 @@
                             </select>
                         </div>
 
+                         <div class="mb-4">
+                            <label for="notes" class="form-label d-block mb-1">
+                                Study Mentor Video
+                            </label>
+                            <input type="file" required name="mentor_video" />
+                        </div>
+
                         {{-- STEP 4: Type-specific sections --}}
                         <hr>
                         <h6 class="text-uppercase text-muted mb-3">Program-Specific Details</h6>

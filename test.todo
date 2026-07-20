@@ -1,0 +1,59 @@
+Missing Email:
+
+    ☐ Family Consultation Request - to admin
+    ☐ Family Consultation Confirmation - to parent
+    ☐ New Complaint -> to admin
+    ☐ Enrollement Letter - physical ->  to parent and admin
+    ☐ Verification of Graduation -> to parent and admin
+    ☐ All documents has been accepted! -> when all documents and student is approved -> to parent
+    ☐ AdditionalDiplomaService --> Diploma package to admin 
+    ☐ When additional course has been bought -> to parent
+    ☐ Course enrolled student ???
+    ☐ Subscribtion Expired - When subscribstion expired  -to parent
+    ☐ Subscribtion Expiration Reminder -> 10 days before subscribstion expire  -to parent
+    ☐ Session Reminder -> Reminder to student that they have a session
+    ☐ Parent Reupload rejected document again -> to admin
+
+
+TEST ISSUES: 
+    ☐ Trasferred subjects in admin student profile "Course list"
+    ☐ Може би да е отворен In progress Courses вместо Completed Courses
+    ☐ Student My Courses => type TP може да се напише CORE
+    ✔ Със звездичка да се напише Verification of Enrollment Цената @done(26-06-29 12:01)
+    ✔ My exams => Текста на No exams at the moment =>add page content class @done(26-06-29 13:32)
+    ✔ Transcript -> Open in new tab @done(26-06-29 13:32)
+    ✔ Diploma ->  Open in new tab @done(26-06-29 13:32)
+    ☐ Parent Dashboard When Student is graduate ???  
+    ✔ Send Help Desk => admin error 500 @done(26-06-30 14:12)
+    ✔ Meetings => table columns colspan = 5 @done(26-07-02 09:41)
+    ✔ Server error on student-profile page on admin dash @done(26-07-01 16:58)
+    ✔ Transcript-a да се вижда постоянно @done(26-07-02 09:41)
+    ✔ File size and file and approved _by admin name @done(26-06-30 14:07)
+    ✔ Да се направи транфера на курс с оценка - колона is_transferred @done(26-07-02 09:41)
+    ☐ Graduate Student - somehow prevent from clicking
+    ☐ Точката на No pending requet - student/documents
+    ☐ Formatting on price on plan select pages
+    ☐ Educators - heading is black
+    ☐ Error in email course-enrolled-student
+    ☐ Educator page 
+    ☐ Invoices table parent dashboard
+    ☐ Exams table -> passed/failed
+    ☐ Verification of graduation - new logic
+    ☐ Educator -> course_connect
+    ☐ На ресет пас бутона е зелен
+    ☐ Датата на дипломата
+    ☐ Restrictions for student study mentor
+    ☐ If a child is disabled we must display it in the overview page
+    ☐ Search functionality in meetings list by student name in admin panel
+    ☐ Display the list of the meetings in the admin panel
+    ☐ Задачата на Васко
+Email Accounts: 
+    
+    ✔ educator@development.biz 9uXnYPdn7D1Hew,8hqOX 
+    ✔ transfer_student@development.biz B7RbnORifo/qzMadfG6j 
+    ✔ parent@development.biz ubvRQ:pqqGk6WbjozGFL
+    ✔ random_student@development.biz zDYb5SkWz4_zqaexc8Fq 
+    ✔ 24track_student@development.biz NTrf0nVm@0m7XGtMGc61 
+    ✔ educator2@development.biz 8imyZ4_ZeYpGNdrfbeVF 
+
+

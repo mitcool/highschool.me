@@ -123,12 +123,20 @@
 	<div class="container shadow  wrapper">
 		<h2 class="text-center h2 page-headings">{{ $mentor->name }}</h2>
         <div class="page-content mt-3 text-justify">
-            <p>{{ $mentor->description }}</p>
+           {!! $mentor->description !!}
         </div>
 		<div class="mx-auto">
             <div class="card-body">
                  <div class="video mt-3">
-                    <iframe height="600" width="100%" src="{{ $mentor->video }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <video
+						controls
+						preload="none"
+						width="100%"
+						poster="{{ asset('images/message_email.jpg') }}"
+					>
+						<source src="{{ asset('study-mentor-videos') }}/{{ $mentor->course_mentor->video }}" type="video/mp4">
+						Your browser does not support the video tag.
+					</video>
                 </div>
                 <div class="page-content mt-3">
                      <p></p>

@@ -1,5 +1,26 @@
 @extends('parent.dashboard')
 
+@section('css')
+    <style>
+        @media only screen and (max-width: 768px) {
+            .buttons{
+                flex-direction: column;
+
+                a{
+                    margin-top:10px;
+                    font-size:1.1rem;
+                }
+            }  
+            .names{
+                text-align: center
+            }
+            .family-counsult-btn{
+                font-size:1.1rem;
+            }
+        }
+    </style>
+@endsection
+
 @section('content')
 <div class="shadow container wrapper">
     <h1 class="text-center h2 page-headings" >Your Meetings</h1>
@@ -10,13 +31,13 @@
     <p class="font-weight-bold">Please select student to view or schedule meetings or sessions.</p>
     @foreach ($students as $student )
     <div class="row my-3">
-        <div class="col-md-6 justify-content-center align-items-center ">
+        <div class="col-lg-6 justify-content-center align-items-center names">
             <div class="" style="text-decoration: none;">
                 {{ $student->student->fullname() }}
             </div>
         </div>
        
-        <div class="col-md-6 d-flex justify-content-end align-items-center">
+        <div class="col-lg-6 d-flex justify-content-end align-items-center buttons">
             <a href="{{ route('parent.student.sessions',$student->student_id) }}" class="btn-lg orange-button btn mx-2 shadow">Buy Meetings</a>
             <a href="{{ route('parent.student.meeting-list',$student->student_id) }}" class="btn-lg btn-primary btn shadow">List of Meetings</a> 
         </div>
@@ -26,7 +47,7 @@
         @if($family_consultation_permission)
             <form action="{{ route('request-family-consultation')}}" class="btn confirm-first" id="request-family-consultation" method="POST">
                 {{ csrf_field() }}
-                <button class="btn-lg orange-button btn mx-2 shadow" value="">Request family consultation</button>
+                <button class="btn-lg orange-button btn mx-2 shadow family-counsult-btn" value="">Request family consultation</button>
             </form>
         @endif
     </div>

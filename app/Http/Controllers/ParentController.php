@@ -2121,8 +2121,10 @@ class ParentController extends Controller
         if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
             abort(403);
         }
-
         $student_meetings = StudentMeeting::where('student_id',$student_id)
+            ->whereHas('meeting',function($query){
+                 $query->where('start', '>', Carbon::now());
+            })
             ->get()
             ->groupBy(fn ($meeting) => $meeting->meeting->type);
         $family_consultations = FamilyConsultation::where('parent_id',auth()->id())->where('date','>',Carbon::now())->get();

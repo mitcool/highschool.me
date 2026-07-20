@@ -9,7 +9,15 @@ class CourseMentor extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['course_id','mentor_id','video'];
+
+    public $timestamps = false;
+
     public function mentor(){
         return $this->hasOne('App\StudyMentor','id','mentor_id');
+    }
+
+    public function course(){
+         return $this->hasOne('App\CurriculumCourse','id','course_id');
     }
 }

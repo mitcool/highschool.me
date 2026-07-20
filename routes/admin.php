@@ -166,13 +166,9 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/add-family-consultation/{request_id}','AdminMeetingController@addFamilyConsultation')->name('add-family-consultation');
 	Route::post('/create-family-consultation/{request_id}','AdminMeetingController@createFamilyConsultation')->name('create-family-consultation');
 	Route::post('/mark-family-consultation-as-completed/{request_id}','AdminMeetingController@markFamilyConsultationAsCompleted')->name('mark-family-consultation-as-completed');
-	
-	// //Courses
-	// Route::get('/courses','AdminController@courses')->name('admin-courses');
-	// Route::post('/courses/add','AdminController@addCourse')->name('course.add');
-	// Route::get('/course/edit/{course_id}','AdminController@editCourse')->name('course.edit');
-	// Route::post('/courses/update/{course_id}','AdminController@updateCourse')->name('course.update');
-	// Route::post('/courses/delete','AdminController@deleteCourse')->name('course.delete');
+
+	Route::get('/study-mentor','AdminController@studyMentor')->name('admin.study-mentor');
+	Route::post('update-study-mentor-video','AdminController@updateStudyMentorVideo')->name('update-study-mentor-video');
 
 	//Public Courses
 	Route::get('/courses-types','AdminController@courseTypes')->name('admin-courses-types');
