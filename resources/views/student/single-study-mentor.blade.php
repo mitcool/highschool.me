@@ -139,7 +139,7 @@
 					</video>
                 </div>
                 <div class="page-content mt-3">
-                     <p></p>
+                     <p>{{ $mentor->course_mentor->description }}</p>
                 </div>
             </div>
         </div>

@@ -398,32 +398,6 @@
                             }
                         @endphp
 
-                        
-                        <div class="mb-4">
-                            <label for="notes" class="form-label">
-                                Study Mentor
-                            </label>
-                            <select
-                                id="study-mentor"
-                                name="mentor_id"
-                                required
-                                class="form-control"
-                                
-                            >
-                                <option value="" selected disabled>-- Please select --</option>
-                                @foreach ($study_mentors as $study_mentor )
-                                    <option value="{{ $study_mentor->id }}" {{ $study_mentor->id == $course->curriculumCourses[0]->study_mentor->mentor_id ? 'selected' : '' }}>{{ $study_mentor->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                         <div class="mb-4">
-                            <label for="notes" class="form-label d-block mb-1">
-                                Study Mentor Video (if you want to change it)
-                            </label>
-                            <input type="file" name="mentor_video" />
-                        </div>
-
 
                         {{-- FILES --}}
                         <div class="card border-0 mb-3">

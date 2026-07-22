@@ -868,10 +868,7 @@ class AdminController extends Controller
             'required_flag' => ['nullable', 'boolean'],
             'requirement_text' => ['nullable', 'string', 'max:255'],
             'notes' => ['nullable', 'string'],
-            'mentor_id' => ['required'],
            
-        
-
             //files
             'resource_files_labels'    => ['nullable', 'array'],
             'resource_files_labels.*'  => ['nullable', 'string'],
@@ -881,13 +878,7 @@ class AdminController extends Controller
             'video_titles.*'           => ['nullable', 'string', 'max:255'],
             'video_urls'               => ['nullable', 'array'],
             'video_urls.*'             => ['nullable', 'url', 'max:2048'],
-            //Mentor 
-            'mentor_video' =>[
-                'required',
-                'file',
-                'mimetypes:video/mp4',
-                'max:5120', // 5 MB (size is in KB)
-            ],
+           
         ];
 
         //CTE-specific requirement
@@ -1033,14 +1024,7 @@ class AdminController extends Controller
                     ]);
                 }
             }
-            $path  = base_path()."/public/study-mentor-videos";
-            $mentor_video= $this->upload_file($request->file('mentor_video'),$path);
-            $mentor_id = $request->mentor_id;
-            CourseMentor::insert([
-                'course_id' => $curriculumCourse->id,
-                'video' => $mentor_video,
-                'mentor_id' => $mentor_id,
-            ]);
+          
         });
 
         return redirect()
@@ -1055,7 +1039,6 @@ class AdminController extends Controller
         $cteCategories = CourseCategory::where('curriculum_type_id', 4)->get();
         $ctePrograms = CteProgram::orderBy('program_title')->get();
         $cteJobs = CteJob::orderBy('name')->get();
-        $study_mentors = StudyMentor::all();
         $pivot = $course->curriculumTypes->first()->pivot;
         
         return view('admin.edit-enrollment-course')
@@ -1072,7 +1055,6 @@ class AdminController extends Controller
             ->with('currentRequiredFlag', $pivot->required_flag)
             ->with('currentRequirementText', $pivot->requirement_text)
             ->with('courseFiles', $course->files)
-            ->with('study_mentors',$study_mentors)
             ->with('courseVideos', $course->videos);
     }
 
@@ -1108,13 +1090,7 @@ class AdminController extends Controller
             'video_titles.*'     => ['nullable', 'string', 'max:255'],
             'video_urls'         => ['nullable', 'array'],
             'video_urls.*'       => ['nullable', 'url', 'max:2048'],
-            'mentor_id' => ['required'],
-            'mentor_video' =>[
-                'nullable',
-                'file',
-                'mimetypes:video/mp4',
-                'max:5120', // 5 MB (size is in KB)
-            ],
+           
         ];
 
         //CTE-specific requirement
@@ -1309,17 +1285,6 @@ class AdminController extends Controller
                 }
             }
             
-            $mentor_id = $request->mentor_id;
-            
-            $curriculumCourse->study_mentor->update([
-                'course_id' => $curriculumCourse->id,
-                'mentor_id' => $mentor_id,
-            ]);
-            if($request->hasFile('mentor_video')){
-                $path  = base_path()."/public/study-mentor-videos";
-                $mentor_video= $this->upload_file($request->file('mentor_video'),$path);
-                $curriculumCourse->study_mentor->update(['video' => $mentor_video]);
-            }
         });
 
         return redirect()
@@ -2317,25 +2282,35 @@ class AdminController extends Controller
     }
 
     public function updateStudyMentorVideo(Request $request){
-        $request->validate([
+        $rules = [
             'course_id' => 'required',
             'id' => 'required',
-            'video' => [
+            'description' => 'required',
+        ];
+        if($request->hasFile('video')){
+            $rules['video']  = [
                 'required',
                 'file',
                 'mimetypes:video/mp4',
-                'max:5120', // 5 MB (size is in KB)
-            ],
-        ]);
-        $path  = base_path()."/public/study-mentor-videos";
-        $study_mentor  = $request->only('course_id');
-        $study_mentor['video'] = $this->upload_file($request->file('video'),$path);
-        $mentor = CourseMentor::find($request->id);
-         try{
-           unlink(base_path()."/public/study-mentor-videos/".$mentor->video);      
-        }catch(\Exception $e){
-            info($e->getMessage());
+                'max:5120', 
+            ];
         }
+
+        $request->validate($rules);
+        $study_mentor  = $request->only('course_id','description');
+         $mentor = CourseMentor::find($request->id);
+        if($request->hasFile('video')){
+            
+            $path  = base_path()."/public/study-mentor-videos";
+            $study_mentor['video'] = $this->upload_file($request->file('video'),$path);
+           
+            try{
+            unlink(base_path()."/public/study-mentor-videos/".$mentor->video);      
+            }catch(\Exception $e){
+                info($e->getMessage());
+            }
+        }
+       
         $mentor->update($study_mentor);
        
         return redirect()->back()->with('success_message','Mentor Video Updated Successfully');

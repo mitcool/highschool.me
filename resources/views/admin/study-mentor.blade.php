@@ -1,31 +1,38 @@
 @extends('admin_template')
 
 @section('content')
-<div class="shadow container wrapper">    
+<div class="shadow  wrapper mx-auto" style="width: 80%">    
     <h2 class="text-center">List of study mentors</h2>
     <hr>
     <ul class="list-group">
         <div class="row p-2 border bg-light font-weight-bold">
-            <div class="col-md-2">
+            <div class="col-md-1">
                 Study Mentor
             </div>
-            <div class="col-md-5">
+            <div class="col-md-3">
                Course
+            </div>
+             <div class="col-md-4">
+               Description
             </div>
             <div class="col-md-3">
                 Current Video
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
                 Edit
             </div>
         </div>
         @foreach ($course_mentors as $course_mentor )
             <div class="row p-2 align-items-center border">
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <p class="mb-0">{{ $course_mentor->mentor->name }} </p>
                 </div>
-                <div class="col-md-5">
-                     <p class="mb-0">{{ $course_mentor->course->course->title }} </p>
+              
+                <div class="col-md-3">
+                     <p class="mb-0">{{ $course_mentor->course->course->title }} {{ $course_mentor->course->curriculumType->code }}</p>
+                </div>
+                   <div class="col-md-4">
+                     <p class="mb-0">{{ $course_mentor->description}} </p>
                 </div>
                 <div class="col-md-3">
                     @if($course_mentor->video)
@@ -34,8 +41,8 @@
                         N/a
                     @endif
                 </div>
-                <div class="col-md-2">
-                    <button class="orange-button btn" data-toggle="modal" data-target="#course-mentor-modal-{{ $course_mentor->id }}">Edit</button>
+                <div class="col-md-1">
+                    <button class="orange-button btn" data-toggle="modal" data-target="#course-mentor-modal-{{ $course_mentor->id }}">...</button>
                 </div>
             </div>
             <div class="modal fade" id="course-mentor-modal-{{ $course_mentor->id }}" tabindex="-1" aria-labelledby="edit-modal-label" aria-hidden="true">
@@ -57,9 +64,11 @@
                                         <option {{ $mentor->id == $course_mentor->mentor_id ? ' selected ' : '' }} value="{{ $mentor->id }}">{{ $mentor->name }}</option>
                                     @endforeach
                                 </select>
+                                 <label class="font-weight-bold mb-0 d-block" for="">Description</label>
+                                <textarea class="form-control" rows="10" name="description">{{ $course_mentor->description }}</textarea>
                                 <input type="hidden" value="{{ $course_mentor->id }}" name="id">
                                 <label class="font-weight-bold mb-0 d-block" for="">Video</label>
-                                <input required class="form-control" type="file" name="video"  /><br>
+                                <input class="form-control" type="file" name="video"  /><br>
                                 <button class="btn orange-button">Change Video</button>
                             </form>
                         </div>

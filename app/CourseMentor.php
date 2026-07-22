@@ -9,7 +9,7 @@ class CourseMentor extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['course_id','mentor_id','video'];
+    protected $fillable = ['course_id','mentor_id','video','description'];
 
     public $timestamps = false;
 
