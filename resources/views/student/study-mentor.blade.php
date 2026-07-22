@@ -27,7 +27,7 @@
                     <div class="w-100 courses {{ $loop->first ? ' d-block ' : ' d-none ' }}">
                         @foreach ($category_courses as $course)
                             <div class=" my-1 w-100" >
-                                <a href="{{ route('student.single-study-mentor',$course->study_mentor->mentor->slug) }}" style="text-decoration: none;color:black;">
+                                <a href="{{ route('student.single-study-mentor',[$course->id,$course->study_mentor->mentor->slug]) }}" style="text-decoration: none;color:black;">
                                     <div class="shadow text-center text-capitalize" style="border-radius:5px;padding:15px;background: #045397;color:white">
                                         <h6 class="mb-0">{{ $course->course->title }}</h6>
                                     </div>

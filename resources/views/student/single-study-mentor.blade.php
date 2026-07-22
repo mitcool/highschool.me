@@ -121,9 +121,9 @@
 
 @section('content')
 	<div class="container shadow  wrapper">
-		<h2 class="text-center h2 page-headings">{{ $mentor->name }}</h2>
+		<h2 class="text-center h2 page-headings">{{ $course_mentor->mentor->name }}</h2>
         <div class="page-content mt-3 text-justify">
-           {!! $mentor->description !!}
+           {{-- {!! $course_mentor->description !!} --}}
         </div>
 		<div class="mx-auto">
             <div class="card-body">
@@ -134,19 +134,19 @@
 						width="100%"
 						poster="{{ asset('images/message_email.jpg') }}"
 					>
-						<source src="{{ asset('study-mentor-videos') }}/{{ $mentor->course_mentor->video }}" type="video/mp4">
+						<source src="{{ asset('study-mentor-videos') }}/{{ $course_mentor->video }}" type="video/mp4">
 						Your browser does not support the video tag.
 					</video>
                 </div>
                 <div class="page-content mt-3">
-                     <p>{{ $mentor->course_mentor->description }}</p>
+                     <p>{{ $course_mentor->description }}</p>
                 </div>
             </div>
         </div>
-        <div style="margin:50px 0;">
-			@if(auth()->user()->student_details->status == 3 || auth()->user()->student_details->status == 4 )
-				<a href="{{ route('student.single-study-mentor-chat',$mentor->slug) }}" class="orange-button mt-4" style="text-decoration: none;">Start now</a>
-			@endif
+        <div style="margin:50px 0;" class="text-center">
+			{{-- @if(auth()->user()->student_details->status == 3 || auth()->user()->student_details->status == 4 ) --}}
+				<a href="{{ route('student.single-study-mentor-chat',[$course_mentor->course_id,$course_mentor->mentor->slug]) }}" class="orange-button mx-auto mt-4" style="text-decoration: none;">Start now</a>
+			{{-- @endif --}}
 		</div>
 	</div>
 @endsection

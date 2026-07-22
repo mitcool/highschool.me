@@ -118,8 +118,8 @@ Route::group(['prefix' => 'student','middleware' => 'student'],function(){
 			Route::get('/course-material/{material_id}', 'StudentController@singleMaterial')->name('student.course-material');
 			Route::get('/course-video/{video_id}', 'StudentController@singleVideo')->name('student.course-video');
 			Route::get('/study-mentor','StudentController@studyMentor')->name('student.study-mentor');
-			Route::get('/study-mentor/{slug}','StudentController@singleStudyMentor')->name('student.single-study-mentor');
-			Route::get('/single-study-mentor-chat/{slug}','StudentController@singleStudyMentorChat')->name('student.single-study-mentor-chat');
+			Route::get('/study-mentor/{course_id}/{slug}','StudentController@singleStudyMentor')->name('student.single-study-mentor');
+			Route::get('/single-study-mentor-chat/{course_id}/{slug}','StudentController@singleStudyMentorChat')->name('student.single-study-mentor-chat');
 			# chat gpt Route::post('/study-mentor-chat','StudentController@singleStudyMentorChatPost')->name('student.study-mentor-chat-post');
 			Route::post('/study-mentor-chat','StudentController@claudeChat')->name('student.study-mentor-chat-post');
 			Route::get('/exams','StudentController@exams')->name('student.exams');

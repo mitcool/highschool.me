@@ -46,6 +46,7 @@ use App\Diploma;
 use App\SingleExamQuestion;
 use App\CourseCategory;
 use App\EducatorCourse;
+use App\CourseMentor;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -502,17 +503,19 @@ class StudentController extends Controller
             ->with('grouped_courses',$grouped_courses);
     }
 
-    public function singleStudyMentor($slug){
+    public function singleStudyMentor($course_id,$mentor_slug){
         // if(auth()->user()->student_details->status != 3){
         //     return redirect()->route('student.dashboard')->with('error','Please complete your registration process to have access to STUDY MENTOR');
         // }
-        $mentor = StudyMentor::where('slug',$slug)->first();
+        $mentor = StudyMentor::where('slug',$mentor_slug)->first() ?? abort(404);
+        $course_mentor = CourseMentor::where('course_id',$course_id)->where('mentor_id',$mentor->id)->first() ?? abort(404);
         return view('student.single-study-mentor')
-            ->with('mentor',$mentor);
+            ->with('course_mentor',$course_mentor);
     }
 
-    public function singleStudyMentorChat($slug){
-        $mentor = StudyMentor::where('slug',$slug)->first();
+    public function singleStudyMentorChat($course_id,$mentor_slug){
+        $mentor = StudyMentor::where('slug',$mentor_slug)->first() ?? abort(404);
+        $course_mentor = CourseMentor::where('course_id',$course_id)->where('mentor_id',$mentor->id)->first() ?? abort(404);
         session()->forget('conversation');
         return view('student.single-study-mentor-chat')
             ->with('mentor',$mentor);
