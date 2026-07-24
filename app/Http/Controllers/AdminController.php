@@ -2292,12 +2292,12 @@ class AdminController extends Controller
                 'required',
                 'file',
                 'mimetypes:video/mp4',
-                'max:5120', 
+                'max:51200', 
             ];
         }
 
         $request->validate($rules);
-        $study_mentor  = $request->only('course_id','description');
+        $study_mentor  = $request->only('course_id','description','mentor_id');
          $mentor = CourseMentor::find($request->id);
         if($request->hasFile('video')){
             

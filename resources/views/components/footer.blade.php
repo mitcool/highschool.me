@@ -12,7 +12,7 @@
 						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; margin-top: 0px!important; cursor: context-menu;">{{ $texts['address-4'] }}</li>
 						<li class="footer-company-address-detail" style="cursor: context-menu;">{{ $texts['phone'] }}</li>
 					</ul>
-					<div class="d-flex align-items-center" style="gap:10px;margin-top:8px;">
+					<div class="d-flex align-items-center" id="footer-share-div" style="gap:10px;margin-top:8px;">
 						<a href="/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" style="color:#045397;">
 							<i class="fab fa-facebook-f" style="font-size:20px;"></i>
 						</a>
@@ -30,7 +30,7 @@
 				<div class="col-md">
 					<ul class="footer-ul">
 						<h6 class="text-uppercase mt-2">{{ $texts['about'] }}</h6>
-						<div style="margin-top: 30px;">
+						<div class="footer-ul-wrapper">
 							<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('school-overview') }}">
 								{{ $texts['school-overview'] }}
 							</a></li>
@@ -59,7 +59,7 @@
 				<div class="col-md">
 					<ul class="footer-ul">
 						<h6 class="text-uppercase mt-2">{{ $texts['academics-point'] }}</h6>
-						<div style="margin-top: 30px;">
+						<div class="footer-ul-wrapper">
 							<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('highschool-programs'
 							)}}">
 								{{ $texts['highschool-programs'] }} 
@@ -93,7 +93,7 @@
 				<div class="col-md">  
 					<ul class="footer-ul px-0">
 						<h6 class="text-uppercase mt-2">{{ $texts['curriculum'] }}</h6>
-						<div style="margin-top: 30px;">
+						<div class="footer-ul-wrapper">
 							<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('standard-high-school')}}">
 								{{ $texts['standard-high-school'] }}
 							</a></li>
@@ -133,7 +133,7 @@
 				<div class="col-md">  
 					<ul class="footer-ul px-0">
 						<h6 class="text-uppercase mt-2">{{ $texts['admission'] }}</h6>
-						<div style="margin-top: 30px;">
+						<div class="footer-ul-wrapper">
 							<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('admission-process') }}">
 								{{ $texts['admission-process'] }}
 							</a></li>
@@ -158,7 +158,7 @@
 				<div class="col-md">
 					<ul class="footer-ul">
 						<h6 class="text-uppercase mt-2">{{ $texts['resources'] }}</h6>
-						<div style="margin-top: 30px;">
+						<div class="footer-ul-wrapper">
 							<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('faq'
 							)}}">
 								{{ $texts['faq'] }}

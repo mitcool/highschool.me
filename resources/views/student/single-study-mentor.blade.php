@@ -121,18 +121,20 @@
 
 @section('content')
 	<div class="container shadow  wrapper">
-		<h2 class="text-center h2 page-headings">{{ $course_mentor->mentor->name }}</h2>
+		<h2 class="text-center h2 page-headings">Hi, I'm {{ $course_mentor->mentor->name }} </h2>
+		<h2 class="text-center h4">Welcome to {{ $course_mentor->course->course->title }}</h2>
         <div class="page-content mt-3 text-justify">
            {{-- {!! $course_mentor->description !!} --}}
         </div>
 		<div class="mx-auto">
             <div class="card-body">
-                 <div class="video mt-3">
+                 <div class="video mt-3 text-center">
                     <video
 						controls
-						preload="none"
-						width="100%"
-						poster="{{ asset('images/message_email.jpg') }}"
+						{{-- preload="none"
+						    poster="{{ asset('images/onsites-graduate-school-logo.png') }}" --}}
+						width="75%"
+					   
 					>
 						<source src="{{ asset('study-mentor-videos') }}/{{ $course_mentor->video }}" type="video/mp4">
 						Your browser does not support the video tag.

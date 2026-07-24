@@ -59,7 +59,7 @@
                                 <input type="hidden" name="course_id" value="{{ $course_mentor->course_id }}">
                                 {{ csrf_field() }}
                                  <label class="font-weight-bold mb-0 d-block" for="">Mentor</label>
-                                <select required class="form-control" type="file" name="video">
+                                <select required class="form-control" type="file" name="mentor_id">
                                     @foreach ($mentors as $mentor)
                                         <option {{ $mentor->id == $course_mentor->mentor_id ? ' selected ' : '' }} value="{{ $mentor->id }}">{{ $mentor->name }}</option>
                                     @endforeach

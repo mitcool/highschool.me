@@ -19,6 +19,25 @@
 	@yield('footerScripts')
 	
 	<script>
+		window.addEventListener('resize', () => {
+			if(window.innerWidth > 768){
+				$('.footer-ul li').css('display','block');
+			}
+			else{
+				$('.footer-ul li').css('display','none')
+			}
+		});
+		$('.footer-ul h6').on('click',function(){ 
+			if(screen.width < 768){
+				if($(this).closest('.footer-ul').find('li').css('display') == 'none'){
+					$(this).closest('.footer-ul').find('li').css('display','block')	
+				}
+				else{
+					$(this).closest('.footer-ul').find('li').css('display','none')
+				}
+			}
+		})
+
 		$('#program-page-link-mobile,#program-page-link').on('click', function(){
 			let lang = location.pathname.split('/')[1];
 			let redirect = lang == 'en' ? '/en/online-degrees' : '/de/online-studiengaenge';

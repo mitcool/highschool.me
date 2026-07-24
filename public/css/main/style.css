@@ -24,6 +24,9 @@ ul {
     margin:20px 0;
     height: 100%;
 }
+.footer-ul-wrapper{
+    margin-top: 30px;
+}
  #main-image-mobile{
     display: none;
  }
@@ -1297,7 +1300,16 @@ a:hover {
         cursor: pointer;
         transition: 0.3s;
         font-size: 1rem !important;
-        text-align: left;
+        text-align: center;
+        display: none;
+    }
+    .footer-ul h6 {
+       text-align: center;
+       background-color: #045397;
+       color: #ffffff;
+       padding: 10px;
+       border-radius: 10px;
+       
     }
     #settings_modal .col-md-4 {
         max-width: 100% !important;
@@ -1467,6 +1479,13 @@ a:hover {
     }
     .space {
         padding: 20px;
+    }
+    #footer-share-div{
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    .footer-ul{
+        text-align: center;
     }
 }
 @media (min-width: 450px) and (max-width: 550px) {
@@ -1798,5 +1817,15 @@ blockquote p::after {
         bottom: 15px;
         width: 44px;
         height: 44px;
+    }
+    .footer-ul-wrapper{
+        margin-top: 5px;
+    }
+    #footer .row .col-md-12.col-lg-10{
+        margin-right:15px;
+        
+    }
+    .scroll-to-top.is-visible{
+        background-color: rgba(0,0,0,0.5);
     }
 }
