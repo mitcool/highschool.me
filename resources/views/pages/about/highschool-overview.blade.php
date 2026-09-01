@@ -31,7 +31,7 @@
 				<h1 class="page-headings text-center">{{ $texts['heading'] }}</h1>
 				{!! $texts['content'] !!}
 			</section>
-			<x-three-buttons/>
+			
 			
 			{{-- <div class="d-flex justify-content-center">
 				<iframe width="800" height="450" src="https://www.youtube.com/embed/TZRz1KtPfN8?si=1SCyQX_SWoWm-MfL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -39,6 +39,6 @@
 		</div>
 	</div>
 </div>
+<x-three-buttons/>
 
-<br>
 @endsection

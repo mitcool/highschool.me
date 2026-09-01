@@ -132,7 +132,7 @@
 @section('content')
 <div class="container wrapper">
     @if(auth()->user()->student_details->track == 1 || auth()->user()->student_details->track == 2 || auth()->user()->student_details->track == 3 )
-     <h2 class="text-center h2 page-headings">Graduation Process</h2>
+     <h2 class="text-center h2 page-headings">Graduation Process </h2>
     <div class="card graduation-card p-4">
        
         <div class="position-relative mb-4">

@@ -15,6 +15,9 @@
 
 @section('headCSS')
 <style>
+    .custom-padding{
+        padding:30px;
+    }
     .feature{
         background-color:#045397;
         color: white;
@@ -133,6 +136,11 @@
             flex-direction: column-reverse;
         }
     }
+     @media(max-width:768px){
+        .custom-padding{
+            padding:10px;
+        }
+    }
 </style>
 @endsection
 
@@ -161,34 +169,32 @@
 
 <div class="container-fluid page-content">
     <div class="row text-white" style="background: #045397;opacity:0.8;">
-        <div class="col-md-2"></div>
-        <div class="col-md-3" style="padding:30px;">
+        <div class="col-xl-2"></div>
+        <div class="col-xl-3 custom-padding">
             <img src="{{ asset('images/glasses.png') }}" alt="" class="w-100">
         </div>
-        <div class="col-md-5" style="padding:30px;">{!! $texts['track-1'] !!}</div>
-        <div class="col-md-2"></div>
+        <div class="col-xl-5 custom-padding">{!! $texts['track-1'] !!}</div>
+        <div class="col-xl-2"></div>
     </div>
     <div class="row text-white reverse" style="background:#045397;opacity:0.9">
-        <div class="col-md-2"></div>
-        <div class="col-md-5" style="padding:30px;"> {!! $texts['track-2'] !!}</div>
-        <div class="col-md-3" style="padding:30px;">
+        <div class="col-xl-2"></div>
+        <div class="col-xl-5 custom-padding"> {!! $texts['track-2'] !!}</div>
+        <div class="col-xl-3 custom-padding">
             <img src="{{ asset('images/glasses.png') }}" alt="" class="w-100">
         </div>
-        <div class="col-md-2"></div>
+        <div class="col-xl-2"></div>
     </div>
     <div class="row text-white" style="background:#045397">
-        <div class="col-md-2"></div>
-        <div class="col-md-3" style="padding:30px;">
+        <div class="col-xl-2"></div>
+        <div class="col-xl-3 custom-padding" >
             <img src="{{ asset('images/glasses.png') }}" alt="" class="w-100">
         </div>
-        <div class="col-md-5" style="padding:30px;"> {!! $texts['track-3'] !!}</div>
-        <div class="col-md-2"></div>
+        <div class="col-xl-5 custom-padding" > {!! $texts['track-3'] !!}</div>
+        <div class="col-xl-2"></div>
     </div>
 </div>
 
-<div class="mb-3">
-    <x-three-buttons />
-</div>
+<x-three-buttons />
 
 @endsection
 

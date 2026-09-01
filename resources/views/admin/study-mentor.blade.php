@@ -6,42 +6,52 @@
     <hr>
     <ul class="list-group">
         <div class="row p-2 border bg-light font-weight-bold">
-            <div class="col-md-1">
+            <div class="col-md">
                 Study Mentor
             </div>
-            <div class="col-md-3">
+            <div class="col-md">
                Course
             </div>
-             <div class="col-md-4">
+            <div class="col-md">
                Description
             </div>
-            <div class="col-md-3">
-                Current Video
+            <div class="col-md">
+               Video(Mentor Page)
             </div>
-            <div class="col-md-1">
+             <div class="col-md">
+               Video(Course Page)
+            </div>
+            <div class="col-md">
                 Edit
             </div>
         </div>
         @foreach ($course_mentors as $course_mentor )
             <div class="row p-2 align-items-center border">
-                <div class="col-md-1">
+                <div class="col-md">
                     <p class="mb-0">{{ $course_mentor->mentor->name }} </p>
                 </div>
               
-                <div class="col-md-3">
+                <div class="col-md">
                      <p class="mb-0">{{ $course_mentor->course->course->title }} {{ $course_mentor->course->curriculumType->code }}</p>
                 </div>
-                   <div class="col-md-4">
+                <div class="col-md">
                      <p class="mb-0">{{ $course_mentor->description}} </p>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md">
                     @if($course_mentor->video)
                         <a href="{{ asset('study-mentor-videos') }}/{{ $course_mentor->video }}" target="_blank">View</a>
                     @else
                         N/a
                     @endif
                 </div>
-                <div class="col-md-1">
+                <div class="col-md">
+                    @if($course_mentor->course_video)
+                        <a href="{{ asset('study-mentor-videos') }}/{{ $course_mentor->course_video }}" target="_blank">View</a>
+                    @else
+                        N/a
+                    @endif
+                </div>
+                <div class="col-md">
                     <button class="orange-button btn" data-toggle="modal" data-target="#course-mentor-modal-{{ $course_mentor->id }}">...</button>
                 </div>
             </div>
@@ -67,8 +77,10 @@
                                  <label class="font-weight-bold mb-0 d-block" for="">Description</label>
                                 <textarea class="form-control" rows="10" name="description">{{ $course_mentor->description }}</textarea>
                                 <input type="hidden" value="{{ $course_mentor->id }}" name="id">
-                                <label class="font-weight-bold mb-0 d-block" for="">Video</label>
+                                <label class="font-weight-bold mb-0 d-block" for="">Video(Mentor Page)</label>
                                 <input class="form-control" type="file" name="video"  /><br>
+                                <label class="font-weight-bold mb-0 d-block" for="">Video(Course Page)</label>
+                                <input class="form-control" type="file" name="course_video"  /><br>
                                 <button class="btn orange-button">Change Video</button>
                             </form>
                         </div>

@@ -140,14 +140,14 @@
 						Your browser does not support the video tag.
 					</video>
                 </div>
-                <div class="page-content mt-3">
+                <div class="page-content mx-auto  w-75" style="margin-top:50px">
                      <p>{{ $course_mentor->description }}</p>
                 </div>
             </div>
         </div>
         <div style="margin:50px 0;" class="text-center">
 			{{-- @if(auth()->user()->student_details->status == 3 || auth()->user()->student_details->status == 4 ) --}}
-				<a href="{{ route('student.single-study-mentor-chat',[$course_mentor->course_id,$course_mentor->mentor->slug]) }}" class="orange-button mx-auto mt-4" style="text-decoration: none;">Start now</a>
+				<a href="{{ route('student.single-study-mentor-chat',[$course_mentor->course_id,$course_mentor->mentor->slug]) }}" class="orange-button mx-auto mt-4" style="text-decoration: none;">Start chat now</a>
 			{{-- @endif --}}
 		</div>
 	</div>

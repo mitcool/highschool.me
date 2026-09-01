@@ -175,7 +175,7 @@
 	
 </div>
 <div class="row col-md-8 mx-auto mb-0 pt-5 pb-5">
-	<div class="col-md-6">
+	<div class="col-xl-6">
 		<form action="/send-email-modal" method="POST"  id="contact-form">
   		{{csrf_field()}}
 			<div class="row">
@@ -222,7 +222,7 @@
 			</div>
 		</form>
 	</div>
-	<div class="col-md-6 w-100" id="phone">
+	<div class="col-xl-6 w-100" id="phone">
 		<div class="d-flex justify-content-center align-items-center flex-column w-100">
 			<h2 class="mb-3 text-center" style="color: #025297;">{{ $texts['phone-heading'] }}</h2>
 			<p class="text-center">

@@ -2292,20 +2292,41 @@ class AdminController extends Controller
                 'required',
                 'file',
                 'mimetypes:video/mp4',
-                'max:51200', 
+                'max:151200', 
+            ];
+        }
+
+        if($request->hasFile('course_video')){
+            $rules['course_video']  = [
+                'required',
+                'file',
+                'mimetypes:video/mp4',
+                'max:151200', 
             ];
         }
 
         $request->validate($rules);
         $study_mentor  = $request->only('course_id','description','mentor_id');
-         $mentor = CourseMentor::find($request->id);
+        $mentor = CourseMentor::find($request->id);
         if($request->hasFile('video')){
             
             $path  = base_path()."/public/study-mentor-videos";
             $study_mentor['video'] = $this->upload_file($request->file('video'),$path);
            
             try{
-            unlink(base_path()."/public/study-mentor-videos/".$mentor->video);      
+                unlink(base_path()."/public/study-mentor-videos/".$mentor->video);      
+            }catch(\Exception $e){
+                info($e->getMessage());
+            }
+        }
+
+        if($request->hasFile('course_video')){
+            
+            $path  = base_path()."/public/study-mentor-videos";
+            $study_mentor['course_video'] = $this->upload_file($request->file('course_video'),$path);
+           
+            try{
+                unlink(base_path()."/public/study-mentor-videos/".$mentor->course_video);      
             }catch(\Exception $e){
                 info($e->getMessage());
             }
@@ -2314,5 +2335,17 @@ class AdminController extends Controller
         $mentor->update($study_mentor);
        
         return redirect()->back()->with('success_message','Mentor Video Updated Successfully');
+    }
+
+    public function countryRequirements(){
+        $countries = Country::where('informational_page',1)->get();
+        return view('admin.country-requirements')
+            ->with('countries',$countries);
+    }
+
+    public function singleCountryRequirements($slug){
+        $country = Country::where('slug',$slug)->first() ?? abort(404);
+        return view('admin.single-country-requirements')
+            ->with('country',$country);
     }
 }

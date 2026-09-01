@@ -5,6 +5,7 @@
         <div class="page-content text-center">
             <p>{{ $texts['contact-content'] }}</p>
         </div>
-        <x-three-buttons />
+    
     </div>
 </section>
+<x-three-buttons />

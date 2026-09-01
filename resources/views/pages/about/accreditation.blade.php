@@ -29,6 +29,9 @@
 			.reverse{
 				flex-direction: column-reverse;
 			}
+			.page-content{
+				text-align: center;
+			}
 		}
 	</style>
 @endsection

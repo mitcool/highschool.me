@@ -18,6 +18,19 @@ input::-webkit-inner-spin-button {
 ul {
     padding-left: 20px !important;
 }
+.three-buttons-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;;
+    margin: 30px auto;
+    width:100%;
+}
+.three-buttons-wrapper a{
+   padding-left: 30px; 
+    padding-right: 30px; 
+    font-weight: 600;
+}
+
 .wrapper{
     background-color: white;
     padding:20px;
@@ -1309,6 +1322,7 @@ a:hover {
        color: #ffffff;
        padding: 10px;
        border-radius: 10px;
+       font-size: 1.2rem;
        
     }
     #settings_modal .col-md-4 {
@@ -1434,6 +1448,7 @@ a:hover {
     }
     .page-content {
         font-size: 16px;
+        padding:10px;
     }
     .logoMainPage {
         width: 150%;
@@ -1827,5 +1842,15 @@ blockquote p::after {
     }
     .scroll-to-top.is-visible{
         background-color: rgba(0,0,0,0.5);
+    }
+    .company-details li{
+		display:block;
+	}
+    .three-buttons-wrapper {
+        flex-direction: column;
+        margin-top:10px;
+        div{
+            margin-top:10px;
+        }
     }
 }

@@ -674,6 +674,10 @@
                             <i class="fas fa-globe"></i>
                             <span>Restricted countries</span>
                         </a>
+                        <a class="nav-link collapsed" href="{{route('admin.country-requirements')}}">
+                            <i class="fas fa-globe"></i>
+                            <span>Country Requirements</span>
+                        </a>
                         <a class="nav-link collapsed" href="{{route('admin.study-mentor')}}">
                             <i class="fas fa-globe"></i>
                             <span>Study Mentor</span>

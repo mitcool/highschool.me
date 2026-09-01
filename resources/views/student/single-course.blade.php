@@ -126,7 +126,9 @@
 @section('content')
 <div class="container my-5">
     <h2 class="text-center mb-4 page-headings">{{ $enrolled_course->course->course->title }}</h2>
-
+    <video class="w-100" controls> 
+        <source src="{{ asset('study-mentor-videos/course/') }}/{{ $enrolled_course->course->id }}/{{ $enrolled_course->course->study_mentor->welcome_video }}"  type="video/mp4" />
+    </video>
     <div class="materials-card">
         <div class="materials-title">Materials</div>
         <div class="materials-desc">
