@@ -55,21 +55,23 @@
                     </div>
                 </a>
             </div>
+             @foreach($country->languages as $language)
             <div class="my-2">
-                <a href="{{ route('single-country-translated-requirements',[$country->iso,$country->english_slug]) }}">
+                <a href="{{ route('single-country-translated-requirements',[$language->language->iso,$language->country->slug]) }}">
                     <div class="shadow-sm d-flex justify-content-start" style="padding:10px;border-radius:15px;margin-left:20px;border:1px solid #045397"">
-                        <img style="height: 30px;width:50px;" src="{{ asset('images/flags') }}/{{ $country->flag }}" alt="" class="border">
-                        <h5 class="ml-3 mb-0">{{ $country->nicename }}</h5> 
+                        <img style="height: 30px;width:50px;" src="{{ asset('images/flags') }}/{{ $language->language->flag }}" alt="" class="border">
+                        <h5 class="ml-3 mb-0">{{ $language->language->nicename }}</h5> 
                     </div>
                 </a>
             </div>
+            @endforeach
         </div>
-        <x-country.intro />
+        <x-country.intro :country="$country"/>
     </div>
     <x-image-component nickname="country-requirements" class="imprint-images main-pictures-pages" loading="eager"/>
 </div>
 
-<x-country.recognition />
+<x-country.recognition :country="$country"/>
 
 <x-country.steps />
 
@@ -78,6 +80,8 @@
 <x-country.inside />
 
 <x-country.faq />
+
+<x-country.sources />
 
 <x-three-buttons />
 
@@ -102,12 +106,15 @@
         if($(this).find('.service-action').hasClass('d-none')){
              $(this).find('.service-action').removeClass('d-none')
              $(this).find('.service-icon').removeClass('fa-chevron-down')
-             $(this).find('.service-icon').addClass('fa-chevron-up')
+             $(this).find('.service-icon').addClass('fa-times');
+             $(this).find('.service-icon').removeClass('fa-plus')
+
         }
         else{
              $(this).find('.service-action').addClass('d-none')
              $(this).find('.service-icon').removeClass('fa-chevron-up')
-             $(this).find('.service-icon').addClass('fa-chevron-down')
+             $(this).find('.service-icon').addClass('fa-plus')
+             $(this).find('.service-icon').removeClass('fa-times')
         }
     })
 </script>

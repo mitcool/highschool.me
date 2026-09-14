@@ -7,9 +7,11 @@
         margin-bottom: 0;
         margin-top:10px;
     }
+    form input[type=checkbox]{
+        width:20px;
+        height: 20px;
+    }
 </style>
-
-<script src="https://cdn.ckeditor.com/4.12.1/full/ckeditor.js"></script>
 @endsection
 @section('content')
 
@@ -18,31 +20,26 @@
     <h2 class="text-center font-weight-bold h2" style="margin-top:40px;"><img style="height: 30px;width:50px;" src="{{ asset('images/flags') }}/{{ $country->flag }}" alt="" class="border">
         {{ $country->nicename }} - Country Requirements  </h2>
 
-    <form action="" class="row">
+    <form action="{{ route('add-country-languages') }}" class="row" method="POST">
         {{ csrf_field() }}
-        <div class="col-md-4">
-            <label for="meta_title">Meta title</label>
-            <input id="meta_title" name="meta_title" type="text" class="form-control">
-        </div>
-        <div class="col-md-4">
-            <label for="meta_description">Meta description</label>
-            <input id="meta_description" name="meta_description" type="text" class="form-control">
-        </div>
-        <div class="col-md-4">
-            <label for="slug">Slug</label>
-            <input id="slug" name="slug" type="text" class="form-control">
+        
+        <div class="col-md-12">
+            <label for="cover">Cover</label>
+            <input id="cover" name="cover" type="file" class="form-control">
         </div>
         <div class="col-md-12">
-            <label for="processing-time">Intro</label>
-            <textarea name="intro" class="ckeditor" id="" cols="30" rows="10"></textarea>
-        </div>
-        <div class="col-md-12">
-            <label for="fee">Cover</label>
-            <input id="fee" name="cover" type="file" class="form-control">
-        </div>
-        <div class="col-md-12">
-            <label for="required-documents">Required documents</label>
-            <input id="required-documents" name="required_documents" type="text" class="form-control">
+            <label for="required-documents">Select Languges <span class="text-danger">*(English Language is add by default)</span></label>
+            <div class="row">
+                @foreach ($all_countries as $c)
+                    <div class="col-md-3 my-2 d-flex">
+                        <input {{ in_array($c->id,$country_languages_array) ? ' checked ' : '' }} name="language_ids[]" class="m-0" type="checkbox" value="{{ $c->id }}">&nbsp;<span>{{ $c->nicename }}</span> 
+                    </div>
+                @endforeach
+            </div>
+             <div class="text-center">
+                <input type="hidden" name="country_id" value="{{ $country->id }}">
+                <button class="btn btn-info">Save Changes</button>
+             </div>
         </div>
     </form>
 </div>

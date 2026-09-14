@@ -257,6 +257,11 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 
 	Route::get('/country-requirements','AdminController@countryRequirements')->name('admin.country-requirements');
 	Route::get('/country-requirements/{slug}','AdminController@singleCountryRequirements')->name('admin.single-country-requirements');
+	Route::post('/add-country-languages','AdminController@addCountryLanguages')->name('add-country-languages');
+	Route::get('single-country-intro/{country_id}','AdminController@singleCountryIntro')->name('single-country-intro');
+	Route::post('/add-country-intro/{country_id}','AdminController@addCountryIntro')->name('add-country-intro');
+	Route::get('single-country-recognition/{country_id}','AdminController@singleCountryRecognition')->name('single-country-recognition');
+	Route::post('/add-country-recognition/{country_id}','AdminController@addCountryRecognitions')->name('add-country-recognition');
 
 	#Other Staff
 	Route::get('/other-staff','AdminController@otherStaff')->name('admin-other-staff');

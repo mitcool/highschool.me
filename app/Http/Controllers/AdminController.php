@@ -108,6 +108,9 @@ use App\ParentExtraService;
 use App\EducatorCourse;
 use App\StudyMentor;
 use App\CourseMentor;
+use App\CountryLanguage;
+use App\CountryIntro;
+use App\CountryRecognition;
 
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
@@ -2345,7 +2348,75 @@ class AdminController extends Controller
 
     public function singleCountryRequirements($slug){
         $country = Country::where('slug',$slug)->first() ?? abort(404);
+        $country_languages_array = $country->languages->pluck('language_id')->toArray();
+        $all_countries = Country::where('id','!=',$country->id)->get();
         return view('admin.single-country-requirements')
+            ->with('all_countries',$all_countries)
+            ->with('country_languages_array',$country_languages_array)
             ->with('country',$country);
+    }
+
+    public function addCountryLanguages(Request $request){
+        $request->validate([
+
+        ]);
+        $country_id = $request->country_id;
+        CountryLanguage::where('country_id',$country_id)->delete(); 
+        $languages_ids = $request->language_ids;
+         
+        foreach($languages_ids as $language_id){
+            CountryLanguage::insert([
+                'language_id' => $language_id,
+                'country_id' => $country_id
+            ]);
+        }
+        return redirect()->route('single-country-intro',$country_id);
+    }
+
+    public function singleCountryIntro($country_id){
+        $country = Country::find($country_id);
+        return view('admin.country-requirements.intro')
+            ->with('country',$country);
+    }
+
+    public function addCountryIntro(Request $request,$country_id){
+        $languages = $request->language;
+        $meta_titles = $request->meta_title;
+        $meta_descriptions = $request->meta_description;
+        $intros = $request->intro;
+        CountryIntro::where('country_id',$country_id)->delete();
+        foreach($languages as $key => $language){
+            CountryIntro::insert([
+                'country_id' => $country_id,
+                'meta_title' => $meta_titles[$key],
+                'meta_description' => $meta_descriptions[$key],
+                'intro' => $intros[$key],
+                'language' => $language
+            ]);
+        }
+
+        return redirect()->route('single-country-recognition',$country_id);
+    }
+
+    public function singleCountryRecognition($country_id){
+        $country = Country::find($country_id);
+        return view('admin.country-requirements.recognition')
+            ->with('country',$country);
+    }
+
+    public function addCountryRecognitions(Request $request,$country_id){
+        $label = $request->label;
+        $text = $request->text;
+        $language = $request->language;
+        CountryRecognition::where('country_id',$country_id)->delete();
+        foreach($language as $key => $lang){
+            CountryRecognition::insert([
+                'label' => $label[$key],
+                'text' => $text[$key],
+                'language' => $language[$key],
+                'country_id' => $country_id
+            ]);
+        }
+        return redirect()->back();
     }
 }
