@@ -262,6 +262,12 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/add-country-intro/{country_id}','AdminController@addCountryIntro')->name('add-country-intro');
 	Route::get('single-country-recognition/{country_id}','AdminController@singleCountryRecognition')->name('single-country-recognition');
 	Route::post('/add-country-recognition/{country_id}','AdminController@addCountryRecognitions')->name('add-country-recognition');
+	Route::get('single-country-steps/{country_id}','AdminController@singleCountrySteps')->name('single-country-steps');
+	Route::post('/add-country-steps/{country_id}','AdminController@addCountrySteps')->name('add-country-steps');
+	Route::get('single-country-diploma/{country_id}','AdminController@singleCountryDiploma')->name('single-country-diploma');
+	Route::post('/add-country-diploma/{country_id}','AdminController@addCountryDiploma')->name('add-country-diploma');
+	Route::get('single-country-inside/{country_id}','AdminController@singleCountryInside')->name('single-country-inside');
+	Route::post('/add-country-inside/{country_id}','AdminController@addCountryInside')->name('add-country-inside');
 
 	#Other Staff
 	Route::get('/other-staff','AdminController@otherStaff')->name('admin-other-staff');

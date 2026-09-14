@@ -111,6 +111,8 @@ use App\CourseMentor;
 use App\CountryLanguage;
 use App\CountryIntro;
 use App\CountryRecognition;
+use App\CountryStep;
+use App\CountryDiploma;
 
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
@@ -2417,6 +2419,61 @@ class AdminController extends Controller
                 'country_id' => $country_id
             ]);
         }
-        return redirect()->back();
+        return redirect()->route('single-country-steps',$country_id);
+    }
+
+    public function singleCountrySteps($country_id){
+       $country = Country::find($country_id);
+        return view('admin.country-requirements.steps')
+            ->with('country',$country);
+    }
+
+     public function addCountrySteps(Request $request,$country_id){
+        $text = $request->text;
+        $language = $request->language;
+        CountryStep::where('country_id',$country_id)->delete();
+        foreach($language as $key => $lang){
+            CountryStep::insert([
+                'text' => $text[$key],
+                'language' => $language[$key],
+                'country_id' => $country_id
+            ]);
+        }
+        return redirect()->route('single-country-diploma',$country_id);
+    }
+
+    public function singleCountryDiploma($country_id){
+       $country = Country::find($country_id);
+        return view('admin.country-requirements.diploma')
+            ->with('country',$country);
+    }
+
+    public function addCountryDiploma(Request $request, $country_id){
+        $first_section = $request->first_section;
+        $second_section = $request->second_section;
+        $third_section = $request->third_section;
+        $fourth_section = $request->fourth_section;
+        $fifth_section = $request->fifth_section;
+        $languages = $request->language;
+        CountryDiploma::where('country_id',$country_id)->delete();
+        foreach($languages as $key => $language){
+            CountryDiploma::insert([
+                'first_section'=> $first_section[$key],
+                'second_section'=> $second_section[$key],
+                'third_section'=> $third_section[$key],
+                'fourth_section'=> $fourth_section[$key],
+                'fifth_section'=> $fifth_section[$key],
+                'country_id' => $country_id,
+                'language' => $languages[$key]
+            ]);     
+        }
+
+         return redirect()->route('single-country-inside',$country_id);
+    }
+
+    public function singleCountryInside($country_id){
+        $country = Country::find($country_id);
+        return view('admin.country-requirements.inside')
+            ->with('country',$country);     
     }
 }

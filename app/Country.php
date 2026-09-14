@@ -33,4 +33,12 @@ class Country extends Model
         return $this->hasMany('App\CountryRecognition','country_id','id')->where('language',$language);
     }
 
+     public function steps(){
+        $language = request()->segment(2);
+        if(strlen($language) != 2){
+            $language = 'en';
+        }
+        return $this->hasMany('App\CountryStep','country_id','id')->where('language',$language);
+    }
+
 }

@@ -16,39 +16,33 @@
 @section('content')
 <div class="shadow container wrapper">   
     <h2 class="text-center font-weight-bold page-headings">Add Country Page Inside Table</h2>
-    <form action="{{ route('add-country-intro',$country->id) }}" method="POST">
+    <form action="{{ route('add-country-inside',$country->id) }}" method="POST">
         {{ csrf_field() }}
         <div class="text-center mb-5 mt-4 row">
             <div class="col-md-6">
-                <div>
-                    <label for="">Meta title({{ 'en' }})</label>
-                    <textarea name="meta_title[]" class="form-control"></textarea>
-                </div>
-                <div>
-                    <label for="">Meta description({{ 'en' }})</label>
-                    <textarea name="meta_description[]" class="form-control"></textarea>
-                </div>
-                <div>
-                    <label for="">Intro({{ 'en' }})</label>
-                    <textarea name="intro[]" class="ckeditor"></textarea>
-                </div>
-                <input type="hidden" name="language[]" value="en">
+                @for ($i = 0; $i < 8; $i++)
+                    <div>
+                        <label for="">Icon {{ $i+1 }}({{ 'en' }})</label>
+                        <input name="icon" class="form-control">
+                        <label for="">Box {{ $i+1 }}({{ 'en' }})</label>
+                        <textarea name="text[]" class="ckeditor"></textarea>
+                    </div>
+                    <input type="hidden" name="language[]" value="en">
+                @endfor
             </div>
+           
+            
             @foreach ($country->languages as $language )
                 <div class="col-md-6">
-                    <div>
-                        <label for="">Meta title({{ $language->language->iso }})</label>
-                        <textarea name="meta_title[]" class="form-control"></textarea>
-                    </div>
-                    <div>
-                        <label for="">Meta description({{ $language->language->iso }})</label>
-                        <textarea name="meta_description[]" class="form-control"></textarea>
-                    </div>
-                    <div>
-                        <label for="">Intro({{ $language->language->iso }})</label>
-                        <textarea name="intro[]" class="ckeditor"></textarea>
-                    </div>
-                    <input type="hidden" name="language[]" value="{{ $language->language->iso }}">
+                     @for ($i = 0; $i < 8; $i++)
+                        <div>
+                            <label for="">Icon {{ $i+1 }}({{ $language->language->iso }})</label>
+                            <input name="icon" class="form-control">
+                            <label for="">Box {{ $i+1 }}({{ $language->language->iso }})</label>
+                            <textarea name="text[]" class="ckeditor"></textarea>
+                        </div>
+                        <input type="hidden" name="language[]" value="{{ $language->language->iso }}">
+                   @endfor
                 </div>
             @endforeach
         </div>

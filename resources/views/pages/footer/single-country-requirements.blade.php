@@ -73,17 +73,17 @@
 
 <x-country.recognition :country="$country"/>
 
-<x-country.steps />
+<x-country.steps :country="$country"/>
 
-<x-country.diploma />
+<x-country.diploma :country="$country"/>
 
-<x-country.inside />
+<x-country.inside :country="$country"/>
 
-<x-country.faq />
+<x-country.faq :country="$country"/>
 
-<x-country.sources />
+<x-country.sources :country="$country"/>
 
-<x-three-buttons />
+<x-three-buttons :country="$country" />
 
 @endsection
 
