@@ -19,22 +19,22 @@
     <form action="{{ route('add-country-intro',$country->id) }}" method="POST">
         {{ csrf_field() }}
         <div class="text-center mb-5 mt-4 row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div>
                     <label for="">Meta title({{ 'en' }})</label>
-                    <textarea name="meta_title[]" class="form-control"></textarea>
+                    <textarea name="meta_title[]" class="form-control">{{ $country->intro->meta_title }}</textarea>
                 </div>
                 <div>
                     <label for="">Meta description({{ 'en' }})</label>
-                    <textarea name="meta_description[]" class="form-control"></textarea>
+                    <textarea name="meta_description[]" class="form-control">{{ $country->intro->meta_description }}</textarea>
                 </div>
                 <div>
                     <label for="">Intro({{ 'en' }})</label>
-                    <textarea name="intro[]" class="ckeditor"></textarea>
+                    <textarea name="intro[]" class="ckeditor">{{ $country->intro->intro }}</textarea>
                 </div>
                 <input type="hidden" name="language[]" value="en">
             </div>
-            @foreach ($country->languages as $language )
+            {{-- @foreach ($country->languages as $language )
                 <div class="col-md-6">
                     <div>
                         <label for="">Meta title({{ $language->language->iso }})</label>
@@ -50,7 +50,7 @@
                     </div>
                     <input type="hidden" name="language[]" value="{{ $language->language->iso }}">
                 </div>
-            @endforeach
+            @endforeach --}}
         </div>
         <div class="text-center">
             <button class="btn-info btn">Add Intro</button>

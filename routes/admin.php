@@ -258,16 +258,20 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/country-requirements','AdminController@countryRequirements')->name('admin.country-requirements');
 	Route::get('/country-requirements/{slug}','AdminController@singleCountryRequirements')->name('admin.single-country-requirements');
 	Route::post('/add-country-languages','AdminController@addCountryLanguages')->name('add-country-languages');
-	Route::get('single-country-intro/{country_id}','AdminController@singleCountryIntro')->name('single-country-intro');
+	Route::get('/single-country-intro/{country_id}','AdminController@singleCountryIntro')->name('single-country-intro');
 	Route::post('/add-country-intro/{country_id}','AdminController@addCountryIntro')->name('add-country-intro');
-	Route::get('single-country-recognition/{country_id}','AdminController@singleCountryRecognition')->name('single-country-recognition');
+	Route::get('/single-country-recognition/{country_id}','AdminController@singleCountryRecognition')->name('single-country-recognition');
 	Route::post('/add-country-recognition/{country_id}','AdminController@addCountryRecognitions')->name('add-country-recognition');
-	Route::get('single-country-steps/{country_id}','AdminController@singleCountrySteps')->name('single-country-steps');
+	Route::get('/single-country-steps/{country_id}','AdminController@singleCountrySteps')->name('single-country-steps');
 	Route::post('/add-country-steps/{country_id}','AdminController@addCountrySteps')->name('add-country-steps');
-	Route::get('single-country-diploma/{country_id}','AdminController@singleCountryDiploma')->name('single-country-diploma');
+	Route::get('/single-country-diploma/{country_id}','AdminController@singleCountryDiploma')->name('single-country-diploma');
 	Route::post('/add-country-diploma/{country_id}','AdminController@addCountryDiploma')->name('add-country-diploma');
-	Route::get('single-country-inside/{country_id}','AdminController@singleCountryInside')->name('single-country-inside');
+	Route::get('/single-country-inside/{country_id}','AdminController@singleCountryInside')->name('single-country-inside');
 	Route::post('/add-country-inside/{country_id}','AdminController@addCountryInside')->name('add-country-inside');
+	Route::get('/single-country-faq/{country_id}','AdminController@singleCountryFaq')->name('single-country-faq');
+	Route::post('/add-country-faq/{country_id}','AdminController@addCountryFaq')->name('add-country-faq');
+	Route::get('/single-country-sources/{country_id}','AdminController@singleCountrySources')->name('single-country-sources');
+	Route::post('/add-country-sources/{country_id}','AdminController@addCountrySources')->name('add-country-sources');
 
 	#Other Staff
 	Route::get('/other-staff','AdminController@otherStaff')->name('admin-other-staff');

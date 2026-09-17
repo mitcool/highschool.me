@@ -15,26 +15,26 @@
 
 @section('content')
 <div class="shadow container wrapper">   
-    <h2 class="text-center font-weight-bold page-headings">Add Country Page Inside Table</h2>
+    <h2 class="text-center font-weight-bold page-headings">Add Country Page Recognition Section</h2>
     <hr>
     <form action="{{ route('add-country-recognition',$country->id) }}" method="POST">
         {{ csrf_field() }}
         <div class="text-center mb-5 mt-4 row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 @for ($i = 1; $i <= 10; $i++)
                     <div>
                         <label for="">Row {{ $i }} orange label({{ 'en' }})</label>
-                        <textarea name="label[]" class="form-control"></textarea>
+                        <textarea name="label[]" class="form-control">{{ $country->recogniton[$i-1]->label }}</textarea>
                     </div>
                     <div>
                         <label for="">Row {{ $i }} text({{ 'en' }})</label>
-                        <textarea name="text[]" class="ckeditor"></textarea>
+                        <textarea name="text[]" class="ckeditor">{{ $country->recogniton[$i-1]->text }}</textarea>
                         <input type="hidden" name="language[]" value="en">
                     </div>
                  @endfor
                
             </div>
-            @foreach ($country->languages as $language )
+            {{-- @foreach ($country->languages as $language )
                 <div class="col-md-6">
                     @for ($i = 1; $i <= 10; $i++)
                         <div>
@@ -49,7 +49,7 @@
                     @endfor
                    
                 </div>
-            @endforeach
+            @endforeach --}}
         </div>
         <div class="text-center">
             <button class="btn-info btn">Add Intro</button>

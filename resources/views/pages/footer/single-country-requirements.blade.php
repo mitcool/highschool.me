@@ -1,7 +1,10 @@
 @extends('template')
 
 @section('seo')
-<x-seo.web-page-schema :url="url()->current()" :name="$country->nicename" :description="$country->nicename . ' country requirements'" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => 'Country Requirements', 'url' => route('country-requirements')], ['name' => $country->nicename, 'url' => url()->current()]]" />
+
+<title>{{ $country->intro->meta_title }}</title>
+<meta name="description" content="{{ $country->intro->meta_description }}">
+<x-seo.web-page-schema :url="url()->current()" :name="$country->nicename" :description="$country->nicename . ' country requirements'" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => 'International Diploma Recognition', 'url' => route('country-requirements')], ['name' => $country->nicename, 'url' => url()->current()]]" />
 @endsection
 
 @section('headCSS')
@@ -39,14 +42,14 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item" aria-current="page"><a href="{{ route('country-requirements') }}">Country Requirements</a></li>
+		<li class="breadcrumb-item" aria-current="page"><a href="{{ route('country-requirements') }}">International Diploma Recognition</a></li>
         <li class="breadcrumb-item active" aria-current="page">{{ $country->nicename }}</li>
 	</ol>
 </div>
 
 <div class="container-fluid bg-light">
     <div class="container page-content">
-        <div class="d-flex">
+        {{-- <div class="d-flex">
             <div class="my-2">
                 <a href="{{ route('single-country-requirements',$country->english_slug) }}">
                     <div class="shadow-sm d-flex justify-content-start w-auto" style="padding:10px;border-radius:15px;border:1px solid #045397">
@@ -65,10 +68,10 @@
                 </a>
             </div>
             @endforeach
-        </div>
+        </div> --}}
         <x-country.intro :country="$country"/>
     </div>
-    <x-image-component nickname="country-requirements" class="imprint-images main-pictures-pages" loading="eager"/>
+    <x-image-component nickname="country-{{ $country->id }}" class="imprint-images main-pictures-pages" loading="eager"/>
 </div>
 
 <x-country.recognition :country="$country"/>
@@ -105,6 +108,7 @@
     $('.service-wrapper').on('click',function(){
         if($(this).find('.service-action').hasClass('d-none')){
              $(this).find('.service-action').removeClass('d-none')
+             $(this).find('.service-action').addClass('d-flex')
              $(this).find('.service-icon').removeClass('fa-chevron-down')
              $(this).find('.service-icon').addClass('fa-times');
              $(this).find('.service-icon').removeClass('fa-plus')
@@ -112,6 +116,7 @@
         }
         else{
              $(this).find('.service-action').addClass('d-none')
+             $(this).find('.service-action').removeClass('d-flex')
              $(this).find('.service-icon').removeClass('fa-chevron-up')
              $(this).find('.service-icon').addClass('fa-plus')
              $(this).find('.service-icon').removeClass('fa-times')

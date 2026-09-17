@@ -113,6 +113,10 @@ use App\CountryIntro;
 use App\CountryRecognition;
 use App\CountryStep;
 use App\CountryDiploma;
+use App\CountryInside;
+use App\CountryFaq;
+use App\CountrySource;
+use App\CountryStepsIntro;
 
 use App\Mail\StudentCredentials;
 use App\Mail\LeaveRequestAnswer;
@@ -2359,18 +2363,15 @@ class AdminController extends Controller
     }
 
     public function addCountryLanguages(Request $request){
-        $request->validate([
-
-        ]);
         $country_id = $request->country_id;
-        CountryLanguage::where('country_id',$country_id)->delete(); 
-        $languages_ids = $request->language_ids;
-         
-        foreach($languages_ids as $language_id){
-            CountryLanguage::insert([
-                'language_id' => $language_id,
-                'country_id' => $country_id
-            ]);
+        if($request->hasFile('cover')){
+            $cover = $request->file('cover');
+            $pictureName = $cover->getClientOriginalName();
+            $destinationPath = public_path('/images/countries/');       
+            $cover->move($destinationPath, $pictureName);
+            $nickname = 'country-'.$country_id;
+            $path = '/images/countries/'.$pictureName;
+            $this->createImage($nickname,$path);
         }
         return redirect()->route('single-country-intro',$country_id);
     }
@@ -2431,6 +2432,10 @@ class AdminController extends Controller
      public function addCountrySteps(Request $request,$country_id){
         $text = $request->text;
         $language = $request->language;
+        $intro = $request->intro;
+        
+        CountryStepsIntro::updateOrCreate(['country_id' =>$country_id],['text' => $intro,'language' => 'en']);
+
         CountryStep::where('country_id',$country_id)->delete();
         foreach($language as $key => $lang){
             CountryStep::insert([
@@ -2476,4 +2481,69 @@ class AdminController extends Controller
         return view('admin.country-requirements.inside')
             ->with('country',$country);     
     }
+
+    public function addCountryInside(Request $request,$country_id){
+        $text = $request->text;
+        $icon = $request->icon;
+        $heading = $request->heading;
+        $languages = $request->language;
+        CountryInside::where('country_id',$country_id)->delete();
+        foreach($languages as $key => $language){
+            CountryInside::insert([
+                'text' => $text[$key],
+                'icon'=> $icon[$key],
+                'heading' => $heading[$key],
+                'country_id' => $country_id,
+                'language' => $languages[$key]
+            ]);     
+        }
+        return redirect()->route('single-country-faq',$country_id);
+    }
+
+    public function singleCountryFaq($country_id){
+        $country = Country::find($country_id);
+        return view('admin.country-requirements.faq')
+            ->with('country',$country);     
+    }
+
+    public function addCountryFaq(Request $request,$country_id){
+        $question = $request->question;
+        $answer = $request->answer;
+        $languages = $request->language;
+        CountryFaq::where('country_id',$country_id)->delete();
+        foreach($languages as $key => $language){
+            CountryFaq::insert([
+                'question' => $question[$key],
+                'answer' => $answer[$key],
+                'country_id' => $country_id,
+                'language' => $languages[$key]
+            ]);
+        }
+
+        return redirect()->route('single-country-sources',$country_id);
+    }
+
+    public function singleCountrySources($country_id){
+        $country = Country::find($country_id);
+        return view('admin.country-requirements.sources')
+            ->with('country',$country);   
+    }
+
+    public function addCountrySources(Request $request,$country_id){
+        $languages = $request->language;
+        $text = $request->text;
+        $intro = $request->intro;
+        CountrySource::where('country_id',$country_id)->delete();
+        foreach($languages as $key => $language){
+            CountrySource::insert([
+                'country_id' => $country_id,
+                'text' => $text[$key],
+                'intro' => $intro[$key],
+                'language' => $languages[$key]
+            ]);
+        }
+
+        return redirect()->route('admin.country-requirements');
+    }
+
 }

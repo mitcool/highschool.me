@@ -6,14 +6,10 @@ use Illuminate\View\Component;
 
 class Diploma extends Component
 {
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $country;
+    public function __construct($country)
     {
-        //
+        $this->country = $country;
     }
 
     /**
