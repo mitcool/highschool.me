@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="container page-content">
-        {!! $country->sources->intro !!}
-        {!! $country->sources->text !!}
+        {!! $country->sources?->intro !!}
+        {!! $country->sources?->text !!}
         <div class="row shadow" style="padding:20px;">
             <div class="col-md-2">
                  <img src="{{ asset('images/mathias-kunze.png') }}" alt="">

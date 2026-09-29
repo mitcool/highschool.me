@@ -23,11 +23,11 @@
                 @for ($i = 0; $i < 8; $i++)
                     <div>
                         <label for="">Icon {{ $i+1 }}({{ 'en' }})</label>
-                        <input name="icon[]" class="form-control" value="{{ $country->inside[$i]->icon }}">
+                        <input name="icon[]" class="form-control" value="{{ count($country->inside) > 0 ? $country->inside[$i]->icon : '' }}">
                         <label for="">Orange Heading {{ $i+1 }}({{ 'en' }})</label>
-                        <input name="heading[]" class="form-control" value="{{ $country->inside[$i]->heading }}">
+                        <input name="heading[]" class="form-control" value="{{ count($country->inside) ? $country->inside[$i]->heading : '' }}">
                         <label for="">Box Text {{ $i+1 }}({{ 'en' }})</label>
-                        <textarea name="text[]" class="ckeditor">{!! $country->inside[$i]->text !!}</textarea>
+                        <textarea name="text[]" class="ckeditor">{!! count($country->inside) ? $country->inside[$i]->text : '' !!}</textarea>
                     </div>
                     <input type="hidden" name="language[]" value="en">
                 @endfor

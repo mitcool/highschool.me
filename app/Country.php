@@ -25,7 +25,7 @@ class Country extends Model
         return $this->hasOne('App\CountryIntro','country_id','id')->where('language',$language);
     }
 
-    public function recogniton(){
+    public function recognition(){
         $language = request()->segment(2);
         if(strlen($language) != 2){
             $language = 'en';

@@ -9,7 +9,7 @@ class CountryStepsIntro extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['text'];
+    protected $fillable = ['text','language','country_id'];
 
     public $timestamps = false;
 }

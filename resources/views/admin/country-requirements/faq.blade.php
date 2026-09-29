@@ -20,15 +20,27 @@
         {{ csrf_field() }}
         <div class="text-center mb-5 mt-4 row">
             <div class="col-md-12">
-                @for ($i = 0; $i < 8; $i++)
-                    <div>
-                        <label for="">Question {{ $i+1 }}({{ 'en' }})</label>
-                        <input name="question[]" class="form-control" value="{{ $country->faqs[$i]->question }}">
-                        <label for="">Answer {{ $i+1 }}({{ 'en' }})</label>
-                        <textarea name="answer[]" class="ckeditor">{{ $country->faqs[$i]->answer }}</textarea>
-                    </div>
-                    <input type="hidden" name="language[]" value="en">
-                @endfor
+                @if(count($country->faqs) > 0)
+                    @foreach ($country->faqs as $i => $faq)
+                        <div>
+                            <label for="">Question {{ $i+1 }}({{ 'en' }})</label>
+                            <input name="question[]" class="form-control" value="{{ $faq->question }}">
+                            <label for="">Answer {{ $i+1 }}({{ 'en' }})</label>
+                            <textarea name="answer[]" class="ckeditor">{{ $faq->answer }}</textarea>
+                        </div>
+                        <input type="hidden" name="language[]" value="en">
+                    @endforeach
+                @else
+                    @for ($i = 0; $i < 8; $i++)
+                        <div>
+                            <label for="">Question {{ $i+1 }}({{ 'en' }})</label>
+                            <input name="question[]" class="form-control">
+                            <label for="">Answer {{ $i+1 }}({{ 'en' }})</label>
+                            <textarea name="answer[]" class="ckeditor"></textarea>
+                        </div>
+                        <input type="hidden" name="language[]" value="en">
+                    @endfor
+                @endif
             </div>
            
             

@@ -2356,8 +2356,10 @@ class AdminController extends Controller
         $country = Country::where('slug',$slug)->first() ?? abort(404);
         $country_languages_array = $country->languages->pluck('language_id')->toArray();
         $all_countries = Country::where('id','!=',$country->id)->get();
+        $cover = Image::where('nickname','country-'.$country->id)->first();
         return view('admin.single-country-requirements')
             ->with('all_countries',$all_countries)
+            ->with('cover',$cover)
             ->with('country_languages_array',$country_languages_array)
             ->with('country',$country);
     }
@@ -2434,7 +2436,10 @@ class AdminController extends Controller
         $language = $request->language;
         $intro = $request->intro;
         
-        CountryStepsIntro::updateOrCreate(['country_id' =>$country_id],['text' => $intro,'language' => 'en']);
+        CountryStepsIntro::updateOrCreate(['country_id' =>$country_id],[
+            'country_id' => $country_id,
+            'text' => $intro,
+            'language' => 'en']);
 
         CountryStep::where('country_id',$country_id)->delete();
         foreach($language as $key => $lang){

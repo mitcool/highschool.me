@@ -21,12 +21,12 @@
         {{ csrf_field() }}
         <div class="text-center mb-5 mt-4 row">
             <div class="col-md-12" id="steps-container">
-                <div class="step-row">
+                <div>
                     <label for="">Intro</label>
                     <textarea name="intro" class="ckeditor">{{ $country->steps_intro?->text }}</textarea>
                 </div>
 
-                @php $stepCount = min(count($country->steps), 5); $stepCount = $stepCount > 0 ? $stepCount : 1; @endphp
+                @php $stepCount = min(count($country->steps), count($country->steps) > 0 ? count($country->steps) : 5); $stepCount = $stepCount > 0 ? $stepCount : 1; @endphp
                 @for ($i = 1; $i <= $stepCount; $i++)
                     <div class="step-row">
                         <label for="">Row {{ $i }} text({{ 'en' }})</label>

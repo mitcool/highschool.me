@@ -1,7 +1,6 @@
 <div class="container-fluid bg-light">
      <div class="container page-content">
-        <h2 class="font-weight-bold text-dark"  style="margin:20px 0;padding:20px 0;">How the Recognition Process Works, Step by Step</h2>
-        <p>Five steps separate the American diploma from the Bulgarian recognition certificate. Two take place in the United States, three in Bulgaria, and all of them can be arranged remotely.</p>
+        {!! $country->steps_intro->text !!}
     
         @foreach($country->steps as $key => $step)
             <div class="row">

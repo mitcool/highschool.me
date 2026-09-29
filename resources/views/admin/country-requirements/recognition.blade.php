@@ -20,19 +20,22 @@
     <form action="{{ route('add-country-recognition',$country->id) }}" method="POST">
         {{ csrf_field() }}
         <div class="text-center mb-5 mt-4 row">
-            <div class="col-md-12">
-                @for ($i = 1; $i <= 10; $i++)
-                    <div>
-                        <label for="">Row {{ $i }} orange label({{ 'en' }})</label>
-                        <textarea name="label[]" class="form-control">{{ $country->recogniton[$i-1]->label }}</textarea>
-                    </div>
-                    <div>
-                        <label for="">Row {{ $i }} text({{ 'en' }})</label>
-                        <textarea name="text[]" class="ckeditor">{{ $country->recogniton[$i-1]->text }}</textarea>
-                        <input type="hidden" name="language[]" value="en">
+            <div class="col-md-12" id="steps-container">
+                @php $stepCount = $country->recognition ? min(count($country->recognition), 10) : 0; $stepCount = $stepCount > 0 ? $stepCount : 1; @endphp
+                @for ($i = 1; $i <= $stepCount; $i++)
+                    <div class="step-row">
+                        <div>
+                            <label for="">Row {{ $i }} orange label({{ 'en' }})</label>
+                            <textarea name="label[]" class="form-control">{{ $country->recognition ? ($country->recognition[$i-1]->label ?? '') : '' }}</textarea>
+                        </div>
+                        <div>
+                            <label for="">Row {{ $i }} text({{ 'en' }})</label>
+                            <textarea name="text[]" id="step-text-{{ $i }}" class="ckeditor">{{ $country->recognition ? ($country->recognition[$i-1]->text ?? '') : '' }}</textarea>
+                            <input type="hidden" name="language[]" value="en">
+                        </div>
                     </div>
                  @endfor
-               
+
             </div>
             {{-- @foreach ($country->languages as $language )
                 <div class="col-md-6">
@@ -47,9 +50,13 @@
                         </div>
                          <input type="hidden" name="language[]" value="{{ $language->language->iso }}">
                     @endfor
-                   
+
                 </div>
             @endforeach --}}
+        </div>
+        <div class="text-center mb-4">
+            <button type="button" id="add-step" class="btn-info btn">Add step</button>
+            <button type="button" id="remove-step" class="btn-danger btn">Remove step</button>
         </div>
         <div class="text-center">
             <button class="btn-info btn">Add Intro</button>
@@ -63,11 +70,69 @@
 @section('scripts')
 	<script src="https://cdn.ckeditor.com/4.12.1/full/ckeditor.js"></script>
 
-	<script>   
+	<script>
+    var MAX_STEPS = 15;
+    var stepCount = $('#steps-container .step-row').length;
+
+    function updateStepButtons(){
+        $('#add-step').prop('disabled', stepCount >= MAX_STEPS);
+        $('#remove-step').prop('disabled', stepCount <= 1);
+    }
+
+    function addStep(){
+        if (stepCount >= MAX_STEPS) {
+            return;
+        }
+
+        stepCount++;
+
+        var html = '<div class="step-row">'
+            + '<div>'
+            + '<label for="">Row ' + stepCount + ' orange label(en)</label>'
+            + '<textarea name="label[]" class="form-control"></textarea>'
+            + '</div>'
+            + '<div>'
+            + '<label for="">Row ' + stepCount + ' text(en)</label>'
+            + '<textarea name="text[]" id="step-text-' + stepCount + '" class="ckeditor"></textarea>'
+            + '<input type="hidden" name="language[]" value="en">'
+            + '</div>'
+            + '</div>';
+
+        $(html).appendTo('#steps-container');
+
+        CKEDITOR.replace('step-text-' + stepCount);
+
+        updateStepButtons();
+    }
+
+    function removeStep(){
+        if (stepCount <= 1) {
+            return;
+        }
+
+        var $lastRow = $('#steps-container .step-row').last();
+        var textareaId = $lastRow.find('textarea.ckeditor').attr('id');
+
+        if (CKEDITOR.instances[textareaId]) {
+            CKEDITOR.instances[textareaId].destroy(true);
+        }
+
+        $lastRow.remove();
+
+        stepCount--;
+
+        updateStepButtons();
+    }
+
     $(document).ready(function(){
         $('.ckeditor').each(function(){
-            CKEDITOR.replace($(this).attr('id'),);
+            CKEDITOR.replace($(this).attr('id'));
         });
+
+        updateStepButtons();
+
+        $('#add-step').on('click', addStep);
+        $('#remove-step').on('click', removeStep);
     });
 	</script>
 @endsection

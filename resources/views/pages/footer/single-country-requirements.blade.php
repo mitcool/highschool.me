@@ -35,6 +35,18 @@
         -webkit-box-shadow: 0px 0px 20px -5px rgba(0,0,0,0.55); 
         box-shadow: 0px 0px 20px -5px rgba(0,0,0,0.55);
     }
+    .text-wrapper{
+        padding:15px;
+    }
+    div h1{
+        color:#045397;
+        margin:20px 0;
+    }
+    div h2{
+        margin:20px 0;
+        padding:20px 0;
+        color:#343a40 !important;
+    }
 </style>
 @endsection
 @section('content')
@@ -47,7 +59,7 @@
 	</ol>
 </div>
 
-<div class="container-fluid bg-light">
+<div class="container-fluid bg-light px-0">
     <div class="container page-content">
         {{-- <div class="d-flex">
             <div class="my-2">

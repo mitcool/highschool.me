@@ -22,9 +22,9 @@
         <div class="text-center mb-5 mt-4 row">
             <div class="col-md-12">
                 <label for="">Intro({{ 'en' }})</label>
-                <textarea name="intro[]" class="ckeditor">{!! $country->sources->intro !!}</textarea>
+                <textarea name="intro[]" class="ckeditor">{!! $country->sources?->intro !!}</textarea>
                 <label for="">Text({{ 'en' }})</label>
-                <textarea name="text[]" class="ckeditor">{!! $country->sources->text !!}</textarea>
+                <textarea name="text[]" class="ckeditor">{!! $country->sources?->text !!}</textarea>
                 <input type="hidden" name="language[]" value="en">
                     
             </div>

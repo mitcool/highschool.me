@@ -6,7 +6,7 @@
                <div class="col-md-3 mb-2">
                     
                     <div class="shadow h-100 p-3" style="border-radius: 10px;">
-                        <span class="orange"> {!! $inside_text->icon !!}</span>
+                        <span class="orange" style="font-size:1.5rem"> {!! $inside_text->icon !!}</span>
                         <p class="orange font-weight-bold">{{ $inside_text->heading }}</p>
                         <p>{!! $inside_text->text !!}</p>
                     </div>

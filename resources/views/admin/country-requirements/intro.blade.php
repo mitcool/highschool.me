@@ -22,15 +22,15 @@
             <div class="col-md-12">
                 <div>
                     <label for="">Meta title({{ 'en' }})</label>
-                    <textarea name="meta_title[]" class="form-control">{{ $country->intro->meta_title }}</textarea>
+                    <textarea name="meta_title[]" class="form-control">{{ $country->intro?->meta_title }}</textarea>
                 </div>
                 <div>
                     <label for="">Meta description({{ 'en' }})</label>
-                    <textarea name="meta_description[]" class="form-control">{{ $country->intro->meta_description }}</textarea>
+                    <textarea name="meta_description[]" class="form-control">{{ $country->intro?->meta_description }}</textarea>
                 </div>
                 <div>
                     <label for="">Intro({{ 'en' }})</label>
-                    <textarea name="intro[]" class="ckeditor">{{ $country->intro->intro }}</textarea>
+                    <textarea name="intro[]" class="ckeditor">{{ $country->intro?->intro }}</textarea>
                 </div>
                 <input type="hidden" name="language[]" value="en">
             </div>

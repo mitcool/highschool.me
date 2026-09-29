@@ -20,8 +20,9 @@
     <h2 class="text-center font-weight-bold h2" style="margin-top:40px;"><img style="height: 30px;width:50px;" src="{{ asset('images/flags') }}/{{ $country->flag }}" alt="" class="border">
         {{ $country->nicename }} - Diploma Recognition  </h2>
     
+     @if($cover)
      <x-image-component nickname="country-{{ $country->id }}" class="w-100"/>
-    
+     @endif
     {{-- Change in the conception - in the past languages had to be selected from here --}}
     <form action="{{ route('add-country-languages') }}" class="row" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}

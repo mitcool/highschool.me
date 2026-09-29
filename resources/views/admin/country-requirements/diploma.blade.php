@@ -22,23 +22,23 @@
             <div class="col-md-12">
                 <div>
                     <label for="">First Section({{ 'en' }})</label>
-                    <textarea name="first_section[]" class="ckeditor">{{ $country->diploma->first_section }}</textarea>
+                    <textarea name="first_section[]" class="ckeditor">{{ $country->diploma?->first_section }}</textarea>
                 </div>
                 <div>
                     <label for="">Second Section({{ 'en' }})</label>
-                    <textarea name="second_section[]" class="ckeditor">{{ $country->diploma->second_section }}</textarea>
+                    <textarea name="second_section[]" class="ckeditor">{{ $country->diploma?->second_section }}</textarea>
                 </div>
                 <div>
                     <label for="">Third Section({{ 'en' }})</label>
-                    <textarea name="third_section[]" class="ckeditor">{{ $country->diploma->third_section }}</textarea>
+                    <textarea name="third_section[]" class="ckeditor">{{ $country->diploma?->third_section }}</textarea>
                 </div>
                  <div>
                     <label for="">Fourth Section({{ 'en' }})</label>
-                    <textarea name="fourth_section[]" class="ckeditor">{{ $country->diploma->fourth_section }}</textarea>
+                    <textarea name="fourth_section[]" class="ckeditor">{{ $country->diploma?->fourth_section }}</textarea>
                 </div>
                  <div>
                     <label for="">Fifth Section({{ 'en' }})</label>
-                    <textarea name="fifth_section[]" class="ckeditor">{{ $country->diploma->fifth_section }}</textarea>
+                    <textarea name="fifth_section[]" class="ckeditor">{{ $country->diploma?->fifth_section }}</textarea>
                 </div>
                 <input type="hidden" name="language[]" value="en">
             </div>
