@@ -25,18 +25,18 @@
         <div class="row" style="margin:30px 0;">
             <div class="col-md"></div>
             <div class="col-md-3">
-                 <div class="shadow p-2" style="border-radius: 10px;">
-                    <p class="font-weight-bold">FLDOE School Code 5115</p>
+                 <div class="shadow p-2 text-center" style="border-radius: 10px;">
+                    <p class="font-weight-bold mb-0">FLDOE School Code 5115</p>
                 </div>
             </div>
             <div class="col-md-3">
-                 <div class="shadow p-2" style="border-radius: 10px;">
-                    <p class="font-weight-bold">ISO 9001:2015</p>
+                 <div class="shadow p-2 text-center" style="border-radius: 10px;">
+                    <p class="font-weight-bold mb-0">ISO 9001:2015</p>
                 </div>
             </div>
             <div class="col-md-3">
-                 <div class="shadow p-2" style="border-radius: 10px;">
-                    <p class="font-weight-bold">ISO 21001:2018</p>
+                 <div class="shadow p-2 text-center" style="border-radius: 10px;">
+                    <p class="font-weight-bold mb-0">ISO 21001:2018</p>
                 </div>
             </div>
             <div class="col-md"></div>
