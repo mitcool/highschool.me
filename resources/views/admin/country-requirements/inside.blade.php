@@ -48,11 +48,13 @@
                 </div>
             @endforeach --}}
         </div>
-        <div class="text-center">
-            <button class="btn-info btn">Add Intro</button>
+        <div class="text-right">
+            <button class="btn-info btn">Save & Continue</button>
         </div>
     </form>
-    
+    <div class="text-left py-4">
+        <a href="{{ route('single-country-diploma',$country->id) }}" class="btn btn-secondary">&larr; Back</a>
+    </div>
 </div>
 
 @endsection

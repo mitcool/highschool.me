@@ -42,7 +42,7 @@
             </div> --}}
              <div class="text-center my-2">
                 <input type="hidden" name="country_id" value="{{ $country->id }}">
-                <button class="btn btn-info">Save Changes</button>
+                <button class="btn btn-info">Save & Continue</button>
              </div>
         </div>
     </form>

@@ -14,7 +14,7 @@
 @endsection
 
 @section('content')
-<div class="shadow container wrapper">   
+<div class="shadow container wrapper">
     <h2 class="text-center font-weight-bold page-headings">Add Country Page Intro</h2>
     <form action="{{ route('add-country-intro',$country->id) }}" method="POST">
         {{ csrf_field() }}
@@ -52,11 +52,13 @@
                 </div>
             @endforeach --}}
         </div>
-        <div class="text-center">
-            <button class="btn-info btn">Add Intro</button>
+        <div class="text-right">
+            <button class="btn-info btn">Save & Continue</button>
         </div>
     </form>
-    
+    <div class="text-left py-4">
+        <a href="{{ route('admin.single-country-requirements',$country->slug) }}" class="btn btn-secondary">&larr; Back</a>
+    </div>
 </div>
 
 @endsection
