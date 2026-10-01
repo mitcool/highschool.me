@@ -167,7 +167,7 @@
 			@foreach($last_three_articles as $news)
 			<div class="col-lg-4 news_wrapper">
 					<div class="news_container h-100 shadow">
-					  	<img class="news-image w-100" src="{{ asset('images/fact-hub') }}/{{ $news->image }}" />
+					  	<img class="news-image w-100" style="height: 200px; object-fit: cover;" src="{{ asset('images/fact-hub') }}/{{ $news->image }}" />
 					  	<div class="news-body">
 						    <h2 class="news-heading mt-2 text-center font-weight-bold h6">{{ $news->sections[0]->content }}</h2>
 							<div class="minutes">
@@ -179,12 +179,12 @@
 									<input type="hidden" name="author" value="{{ $news->author->slug}}">
 										<button class="btn p-0 btn-link text-left text-dark font-weight-bold">
 											{{ $news->author->name }} <br/>
-											{{ $news->author->occupation }} <br/>
+											{{ $news->author->occupation }}
 										</button>
 									</form>
 								</div>
 								<div class="text-center mt-auto">
-									<hr/>
+									<hr class="my-2"/>
 									<a href="{{ route('single-facts-hub',$news->slug) }}" class="btn read-more">{{ trans('welcome.read-more') }}</a>
 								</div>  
 							</div> 
