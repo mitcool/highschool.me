@@ -243,7 +243,7 @@ Route::group(['middleware' => 'text'],function(){
 
 	Route::get('/newsletter','MainController@showNewsletter')->name('newsletter');
 
-	Route::get('/fact-hub','MainController@showFactsHub')->name('facts-hub');
+	Route::get('/facts-hub','MainController@showFactsHub')->name('facts-hub');
 
 	Route::get('/facts-hub/{slug}','MainController@showSingleFactsHub')->name('single-facts-hub');
 

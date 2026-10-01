@@ -452,7 +452,7 @@ input:checked + .slider:before {
     font-size: 1.4rem;
 }
 .welcome-icon {
-    height: 100px;
+    height: 70px;
     margin-bottom: 15px;
 }
 .welcome-icon-big {

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\DynamicNews;
+use App\FactHub;
 
 class DynamicNewsAuthor extends Model
 {
@@ -27,6 +28,11 @@ class DynamicNewsAuthor extends Model
 
     public function total_articles(){
         $total_articles = DynamicNews::where('author_id',$this->id)->count();
+        return $total_articles;
+    }
+
+    public function total_facts_hub(){
+        $total_articles = FactHub::where('author_id',$this->id)->count();
         return $total_articles;
     }
 }

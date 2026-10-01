@@ -62,7 +62,7 @@ use App\PaymentPeriod;
 use App\StudyPeriod;
 use App\DynamicNews;
 use App\DynamicNewsTranslation;
-use App\DynamicNewsAuthorTranslation;
+use App\DynamicNewsAuthor;
 use App\DynamicNewsCategoryTranslation;
 use App\DynamicNewsCategory;
 use App\FactHub;
@@ -250,8 +250,9 @@ class MainController extends Controller
   public function showFactsHub(Request $request){
     $texts = $request->all()['texts'];
     $news = FactHub::orderBy('id','desc')->paginate(6);
+    
     if($request->has('author')){
-      $author_id = DynamicNewsAuthorTranslation::where('locale',request()->segment(1))->where('slug',$request->get('author'))->first()->author_id ?? abort(404);
+      $author_id = DynamicNewsAuthor::where('slug',$request->get('author'))->first()->id ?? abort(404);
       $news = FactHub::orderBy('id','desc')->where('author_id',$author_id)->paginate(6);
     }
      

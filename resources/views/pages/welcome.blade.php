@@ -83,6 +83,8 @@
 
 		<x-home.facts />
 
+		<x-home.leadership />
+
 		<x-home.recognition />
 
 		<x-home.tracks />

@@ -42,21 +42,19 @@
 @endsection
 
 @section('content')
-@php
-    $breadcrumb_title = strtok(strip_tags($article->meta_title), '|');
-@endphp
+
 <div aria-label="breadcrumb" class="col-md-6 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-1">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
 		<li class="breadcrumb-item"><a href="{{ route('blog') }}">Fact Hub</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb_title }}</li>
+		<li class="breadcrumb-item active" aria-current="page">{{ $article->sections[0]->content }}</li>
 	</ol>
 </div>
 <div class="container-fluid">
 	<div itemscope itemtype="https://schema.org/Article" class="row p-2">
 		<div class="col-lg-3">
 			<div id="toc_wrapper" >
-				<p id="toc_wrapper_heading" class="mb-0" style="font-size: 1.75rem;">{{ trans('single-blog.table-of-content') }}</p>
+				<p id="toc_wrapper_heading" class="mb-0" style="font-size: 1.75rem;">Table of content</p>
 				<div id="toc"></div>
 				<div style="margin-top:20px;" id="social-icons" class="d-flex justify-content-around">
 					<a href="https://www.facebook.com/sharer/sharer.php?u={{Request::url()}}&display=popup" rel="nofollow"><i  widthh="17.02px" height="35px" href="" target="_blank" class="text-primary fab fa-facebook-f"></i></a>
@@ -132,13 +130,13 @@
 					<x-image-component itemprop="image" nickname="author-{{ $article->author_id }}" class="imprint-images main-pictures-pages" loading="eager"/>
 				</div>
 				<div class="col-sm-10 author-description-container">
-					<form action="{{ route('blog') }}">
+					<form action="{{ route('facts-hub') }}">
 							<input type="hidden" name="author" value="{{ $article->author->slug}}">
 							<button class="btn btn-link text-left">
 							<span itemprop="name" itemscope itemtype="https://schema.org/Person">
 								<span class="font-weight-bold">{{ $article->author->name }}</span> <br/>
 								<span>{{ $article->author->occupation }}</span> <br/>
-								{{ $article->author->total_articles() }} {{ trans('single-blog.articles') }}
+								{{ $article->author->total_facts_hub() }} Articles 
 							</button>
 					</form>
 					
@@ -152,8 +150,8 @@
 					
 				</div>
 				<div class="col-lg-12 d-flex justify-content-between" style="margin-top:40px">
-					@if($prev) <a style="text-decoration:none" href="{{route('single-facts-hub', $prev->slug)}}"><h3 style="color: #EA580D;"> &#8592; {{ trans('single-blog.previous') }} </h3> </a> @endif
-					@if($next) <a style="text-decoration:none" href="{{route('single-facts-hub', $next->slug)}}"><h3 style="color: #EA580D;"> {{ trans('single-blog.next') }}  &#8594;    </h3> </a> @endif
+					@if($prev) <a style="text-decoration:none" href="{{route('single-facts-hub', $prev->slug)}}"><h3 style="color: #EA580D;"> &#8592; Previous</h3> </a> @endif
+					@if($next) <a style="text-decoration:none" href="{{route('single-facts-hub', $next->slug)}}"><h3 style="color: #EA580D;"> Next  &#8594;    </h3> </a> @endif
 				</div>
 			</div>
 		</div>
@@ -164,12 +162,12 @@
 <div class="row">
 	<div class="col-lg-3"></div>
 	<div id="latest_news" class="col-lg-6 centered">
-		<h2 class="text-center article_heading pt-5">{!! trans('single-blog.all-news-heading') !!}</h2>
+		<h2 class="text-center article_heading pt-5">Facts Hub</h2>
 		<div id="blog" class="row m-0">
 			@foreach($last_three_articles as $news)
 			<div class="col-lg-4 news_wrapper">
 					<div class="news_container h-100 shadow">
-					  	<img class="news-image w-100" src="{{ asset('news_images') }}/{{ $news->image }}" />
+					  	<img class="news-image w-100" src="{{ asset('images/fact-hub') }}/{{ $news->image }}" />
 					  	<div class="news-body">
 						    <h2 class="news-heading mt-2 text-center font-weight-bold h6">{{ $news->sections[0]->content }}</h2>
 							<div class="minutes">
@@ -177,7 +175,7 @@
 								</div>
 							<div>
 								<div>
-									<form action="{{ route('blog') }}">
+									<form action="{{ route('facts-hub') }}">
 									<input type="hidden" name="author" value="{{ $news->author->slug}}">
 										<button class="btn p-0 btn-link text-left text-dark font-weight-bold">
 											{{ $news->author->name }} <br/>
@@ -198,7 +196,7 @@
 	</div>
 	<div class="col-lg-3"></div>
 	<div class="text-center my-5 col-lg-12">
-		<a class="btn w-auto orange-button" href="{{route('facts-hub')}}">{{trans('single-blog.all-news-button')}}</a>
+		<a class="btn w-auto orange-button" href="{{route('facts-hub')}}">Facts Hub</a>
 	</div>
 </div>
 @endsection

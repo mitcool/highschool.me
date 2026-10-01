@@ -20,57 +20,12 @@
     <hr>
     <form action="{{ route('facts-hub-create') }}" method="POST" enctype="multipart/form-data" id="create_news_form" class="confirm-first"> 
         {{ csrf_field() }}
-        <div class="row mt-1">
-             <div class="col-md-6"></div>
-            <div class="col-md-12">
-                <label for="" class="font-weight-bold">Author:</label>
-                <select name="author_id" id=""  required class="form-control">
-                    <option value="" disabled selected>Please select an author</option>
-                    @foreach ($authors as $author) 
-                        <option {{ old('author_id') == $author->id ? ' selected ' : '' }} value="{{ $author->id }}">{{ $author->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-           
-            <div class="col-md-12">
-                <label for="" class="font-weight-bold mb-0">Slug</label>
-                <input type="text" value="{{ old('slug') }}" name="slug" class="form-control" required />
-            </div>
-        
-            <div class="col-md-12">
-                <label for="" class="font-weight-bold mb-0">Key Facts</label>
-                <textarea  name="key_facts" class="form-control ckeditor">{{ old('key_facts') }}</textarea>
-            </div>
-            
-			<div class="col-md-12">
-                <label for="" class="font-weight-bold mb-0">Meta title</label>
-				<textarea  name="meta_title"  class="form-control" required >{{ old('meta_title') }}</textarea>
-            </div>
-           
-			<div class="col-md-12">
-                <label for="" class="font-weight-bold mb-0">Meta description </label>
-                <textarea  name="meta_description" class="form-control" required >{{ old('meta_description') }}</textarea>
-            </div>
-           
-            <div class="col-md-12">
-                <label for="" class="font-weight-bold mb-0">Min to read</label>
-                <input type="number" name="minutes" class="form-control" required value="{{ old('minutes') }}" />
-            </div>
-        </div>
-        <hr>
-         <div class="col-md-12">
-                <h4>Main Image*</h4>
-            </div>
-            <div class="col-md-12">
-                <label class="m-0 font-weight-bold">File</label>
-                <input type="file" name="image" required>
-            </div>
-        <div class="section row">
+
+         <div class="section row">
             <div class="col-md-12">
                 <h4>Headline(h1)*</h4>
             </div>
             <div class="col-md-12">
-                <label class="m-0 font-weight-bold">Content</label>
                 <textarea class="form-control" name="content[]"></textarea>
             </div>
             <input type="hidden" name="type[]" value="1" />
@@ -84,6 +39,50 @@
             </div>
             <input type="hidden" name="type[]" value="1" />
         </div>
+        <div class="row section mt-1">
+            <div class="col-md-12">
+                <label for="" class="font-weight-bold">Author:</label>
+                <select name="author_id" id=""  required class="form-control">
+                    <option value="" disabled selected>Please select an author</option>
+                    @foreach ($authors as $author) 
+                        <option {{ old('author_id') == $author->id ? ' selected ' : '' }} value="{{ $author->id }}">{{ $author->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+           
+            <div class="col-md-12 mt-1">
+                <label for="" class="font-weight-bold mb-0">Key Facts</label>
+                <textarea  name="key_facts" class="form-control ckeditor">{{ old('key_facts') }}</textarea>
+            </div>
+
+             <div class="col-md-12 mt-1">
+                <label for="" class="font-weight-bold mb-0">Slug</label>
+                <input type="text" value="{{ old('slug') }}" name="slug" class="form-control" required />
+            </div>
+			<div class="col-md-12 mt-1">
+                <label for="" class="font-weight-bold mb-0">Meta title</label>
+				<textarea  name="meta_title"  class="form-control" required >{{ old('meta_title') }}</textarea>
+            </div>
+           
+			<div class="col-md-12 mt-1">
+                <label for="" class="font-weight-bold mb-0">Meta description </label>
+                <textarea  name="meta_description" class="form-control" required >{{ old('meta_description') }}</textarea>
+            </div>
+           
+            <div class="col-md-12 mt-1">
+                <label for="" class="font-weight-bold mb-0">Min to read</label>
+                <input type="number" name="minutes" class="form-control" required value="{{ old('minutes') }}" />
+            </div>
+        </div>
+        <hr>
+         <div class="col-md-12">
+                <h4>Main Image*</h4>
+            </div>
+            <div class="col-md-12">
+                <label class="m-0 font-weight-bold">File</label>
+                <input type="file" name="image" required>
+            </div>
+       
         
         <div id="news_content">
 
