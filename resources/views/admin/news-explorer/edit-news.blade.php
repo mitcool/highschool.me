@@ -1,3 +1,4 @@
+
 @extends('admin_template')
 
 @section('css')
@@ -9,14 +10,6 @@
     }
     .selected-image{
         border:3px solid rgb(85, 146, 215) !important;
-    }
-    .drag-handle{
-        cursor:move;
-        color:rgb(120, 120, 120);
-    }
-    .sortable-ghost{
-        opacity:0.4;
-        background:rgb(232, 240, 250);
     }
 </style>
 @endsection
@@ -79,8 +72,10 @@
         </div>
 
         <hr>
-        <h4>Sections</h4>
-        <p class="text-muted mb-0">Drag sections by <i class="fas fa-grip-vertical"></i> to change their order.</p>
+        <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Sections</h4>
+            <button type="button" class="btn btn-outline-secondary btn-sm" id="toggle_reorder">Reorder sections</button>
+        </div>
 
         <div id="sections_list">
             @foreach($news->sections->slice(2) as $section)
@@ -95,6 +90,8 @@
                             @endif
                         </h5>
                     </div>
+                    <div class="section-preview"></div>
+                    <div class="section-body">
                     @if($section->type == 1)
                         <textarea  name="content[{{ $section->id }}]" id="section-{{ $section->id }}" class="ckeditor" required >{{ $section->content}}</textarea>
                     @elseif($section->type == 2)
@@ -104,6 +101,7 @@
                         <label for="" class="font-weight-bold mb-0 mt-2">Video URL</label>
                         <input type="url" name="content[{{ $section->id }}]" value="{{ $section->content }}" class="form-control" required />
                     @endif
+                    </div>
                     <input type="hidden" name="order[]" value="{{ $section->id }}">
                 </div>
                 @endif
@@ -152,91 +150,5 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdn.ckeditor.com/4.12.1/full/ckeditor.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
-    <script>
-        $(document).on('click','.close-section', function(){
-            $(this).closest('.section').find('textarea.ckeditor').each(function(){
-                if(CKEDITOR.instances[this.id]){
-                    CKEDITOR.instances[this.id].destroy();
-                }
-            });
-            $(this).closest('.section').remove();
-        });
-
-        $(document).ready(function(){
-            let new_section_count = 0;
-
-            // CKEditor's iframe loses its content when moved in the DOM,
-            // so editors in the grabbed section are torn down while it is dragged.
-            new Sortable(document.getElementById('sections_list'), {
-                handle: '.drag-handle',
-                animation: 150,
-                ghostClass: 'sortable-ghost',
-                onChoose: function(evt){
-                    $(evt.item).find('textarea.ckeditor').each(function(){
-                        if(CKEDITOR.instances[this.id]){
-                            CKEDITOR.instances[this.id].destroy();
-                        }
-                    });
-                },
-                onUnchoose: function(evt){
-                    $(evt.item).find('textarea.ckeditor').each(function(){
-                        if(!CKEDITOR.instances[this.id]){
-                            CKEDITOR.replace(this.id);
-                        }
-                    });
-                }
-            });
-
-            $('.options').on('click', function(){
-                $('.options').removeClass('selected-image');
-                $(this).addClass('selected-image');
-                $('#type').val($(this).attr('data-value'));
-            });
-
-            $('#add_section').on('click', function(){
-                let type = $('#type').val();
-                let ref = ++new_section_count;
-                let title = '';
-                let body = '';
-
-                if(type == 1){
-                    title = 'Text section';
-                    body = `<textarea class="ckeditor" id="new-section-${ref}" name="new_sections[${ref}][content]"></textarea>`;
-                }
-                else if(type == 2){
-                    title = 'Image section';
-                    body = `<input type="file" name="new_sections[${ref}][file]" required>`;
-                }
-                else if(type == 5){
-                    title = 'Video section';
-                    body = `<label class="m-0 font-weight-bold">Video URL (YouTube, Vimeo or direct .mp4 link)</label>
-                            <input type="url" class="form-control" name="new_sections[${ref}][content]" placeholder="https://www.youtube.com/watch?v=..." required />`;
-                }
-                else{
-                    alert('Please select a category first');
-                    return;
-                }
-
-                $('#sections_list').append(`<div class="section sortable-section">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0"><i class="fas fa-grip-vertical drag-handle mr-2"></i>${title} <span class="badge badge-info">new</span></h5>
-                            <span style="font-size:30px;cursor:pointer" class="close-section">&times;</span>
-                        </div>
-                        ${body}
-                        <input type="hidden" name="new_sections[${ref}][type]" value="${type}">
-                        <input type="hidden" name="order[]" value="new_${ref}">
-                    </div>`);
-
-                if(type == 1){
-                    CKEDITOR.replace(`new-section-${ref}`);
-                }
-
-                $('#type_modal').modal('hide');
-                $('.options').removeClass('selected-image');
-                $('#type').val('');
-            });
-        });
-    </script>
+    @include('admin.partials.section-sorting')
 @endsection

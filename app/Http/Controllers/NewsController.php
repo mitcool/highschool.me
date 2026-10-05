@@ -88,6 +88,7 @@ class NewsController extends Controller
         $news = DynamicNews::find($news_id);
 
         $contents = $request->content ?? [];
+         
         foreach($contents as $id => $content){
             $section = DynamicNewsSection::where('news_id', $news_id)->find($id);
             if(!$section){
@@ -107,7 +108,7 @@ class NewsController extends Controller
                 $section->update(['content'=>trim($content)]);
             }
         }
-
+      
         // Sections added on the edit page, keyed by a client-side reference used in order[]
         $new_ids = [];
         foreach($request->input('new_sections', []) as $ref => $new_section){
@@ -128,10 +129,11 @@ class NewsController extends Controller
             $new_ids[$ref] = DynamicNewsSection::insertGetId([
                 'content' => $content,
                 'type' => $type,
-                'news_id' => $news_id
+                'news_id' => $news_id,
+                'position' => 0
             ]);
         }
-
+       
         // order[] lists the sections below the headline and teaser in their new order
         foreach($request->input('order', []) as $index => $ref){
             $id = strpos($ref, 'new_') === 0 ? ($new_ids[substr($ref, 4)] ?? null) : (int) $ref;
