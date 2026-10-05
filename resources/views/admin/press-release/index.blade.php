@@ -141,7 +141,13 @@
             <div class="col-md-6 p-2">
                 <img src="{{ asset('images/admin/table.png') }}"  class="w-100 border options" data-value="4"/>
                 <p class="font-weight-bold text-center">Table</p>
-            </div>         
+            </div>
+            <div class="col-md-6 p-2">
+                <div class="w-100 border options d-flex align-items-center justify-content-center bg-light" data-value="5" style="height:200px;cursor:pointer;">
+                    <i class="fas fa-video" style="font-size:80px;color:rgb(77, 76, 74);"></i>
+                </div>
+                <p class="font-weight-bold text-center">Video</p>
+            </div>
             <div class="col-md-12 p-2 text-center">
                 <hr>
                 <button class="btn btn-info" id="add_section">Add section</button>    
@@ -266,6 +272,24 @@
                             </div>
                           
                             <input type="hidden" name="type[]" value="4">
+                        </div>`;
+                $('#type_modal').modal('hide');
+                $('.options').removeClass('selected-image');
+                $('#type').val('');
+            }
+            else if(type == 5){
+                html = `<div class="section row video-section">
+                            <div class="col-md-12">
+                                <div class="text-right">
+                                    <span style="font-size:30px;cursor:pointer" class="close-section">&times;</span>
+                                </div>
+                                <h4>Video section:</h4>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="m-0 font-weight-bold">Video URL (YouTube, Vimeo or direct .mp4 link)</label>
+                                <input type="url" class="form-control" name="content[]" placeholder="https://www.youtube.com/watch?v=..." required />
+                            </div>
+                            <input type="hidden" name="type[]" value="5" />
                         </div>`;
                 $('#type_modal').modal('hide');
                 $('.options').removeClass('selected-image');

@@ -5,12 +5,13 @@ namespace App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\HasVideoEmbed;
 
 class FactHubSection extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory,SoftDeletes,HasVideoEmbed;
 
-    protected $fillable = ['content','news_id','type'];
+    protected $fillable = ['content','news_id','type','position'];
     
     public function all_translations(){
         return $this->hasMany('App\FactHubSectionTranslation','section_id','id');

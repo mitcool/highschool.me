@@ -42,19 +42,22 @@
                     <h1 class="text-center page-headings">{{ $texts['heading'] }}</h1>
                     <hr class="white-hr">
                     <div class="w-100 centered text-center mx-auto mb-5">
-                        
+                        <img src="{{ asset('images/mathias-kunze-leadership.png') }}" class="w-100" alt="">
                     </div>
-                    <div class="video mt-3 mb-5">
+                      {!! $texts['content'] !!}
+                    <div class="video mt-3 mb-5 w-75 mx-auto">
                         <iframe height="600" width="100%" src="https://www.youtube.com/embed/a025DL3Zep0?si=aMjbEH8fGRilDVns" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
-                    {!! $texts['content'] !!}
+                    {!! $texts['content-bottom'] !!}
+
+
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<section class="row" style="background-color: #045397;padding:50px;">
+{{-- <section class="row" style="background-color: #045397;padding:50px;">
     <div class="col-md-10 offset-md-1" >
         <!-- <div class="d-flex" id="benefit_wrapper"> -->
 
@@ -89,5 +92,5 @@
             </div>
         </div>
     </div>
-</section>
+</section> --}}
 @endsection

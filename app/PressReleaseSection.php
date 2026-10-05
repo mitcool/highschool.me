@@ -4,12 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasVideoEmbed;
 
 class PressReleaseSection extends Model
 {
-    use HasFactory;
+    use HasFactory,HasVideoEmbed;
 
-    private $SECTION_TYPES = ['text','image','blockquote','table'];
+    private $SECTION_TYPES = ['text','image','blockquote','table','video'];
 
 
     public function details(){

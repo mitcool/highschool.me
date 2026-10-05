@@ -11,7 +11,7 @@ class PressRelease extends Model
 
     protected $fillable = ['author_id','slug','key_facts','meta_title','meta_description','minutes','heading','teaser','pdf'];
      public function sections(){
-        return $this->hasMany('App\PressReleaseSection','news_id','id');
+        return $this->hasMany('App\PressReleaseSection','news_id','id')->orderBy('position')->orderBy('id');
     }
 
     public function main_image(){

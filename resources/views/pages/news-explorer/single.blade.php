@@ -118,8 +118,24 @@
 									<div class="col news-box">{{ $box->content }}</div>
 								@endforeach
 							</div>
-							
+
 						</div>
+					@elseif($section->type == 5)
+						@if($section->video_embed_url())
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe
+									class="embed-responsive-item"
+									src="{{ $section->video_embed_url() }}"
+									title="Video"
+									frameborder="0"
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+									allowfullscreen
+									loading="lazy"
+								></iframe>
+							</div>
+						@else
+							<video src="{{ $section->content }}" class="w-100" controls preload="metadata"></video>
+						@endif
 					@endif
 				</div>
 				

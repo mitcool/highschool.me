@@ -15,7 +15,7 @@ class FactHub extends Model
     protected $fillable = ['author_id','slug','key_facts','minutes','meta_title','meta_description','image'];
 
     public function sections(){
-        return $this->hasMany('App\FactHubSection','news_id','id');
+        return $this->hasMany('App\FactHubSection','news_id','id')->orderBy('position')->orderBy('id');
     }
 
     public function author(){

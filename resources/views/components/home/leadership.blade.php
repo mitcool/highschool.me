@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-md-6 col-sm-6 mt-3">
                     <div class="text-center">
-                        <img src="{{ asset('images/success_mail.jpg') }}" alt="" class="w-100">
+                        <img src="{{ asset('images/mathias-kunze-home.png') }}" alt="" class="w-100">
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-6 mt-3 ">
