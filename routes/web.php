@@ -24,6 +24,7 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	Route::post('/update-track/{student_id}','ParentController@updateTrack')->name('parent.update-student-track');
 	Route::get('/student/documents/{student_id}','ParentController@studentDocuments')->name('parent.student.documents');
 	Route::post('/student/documents/submit','ParentController@studentDocumentsSubmit')->name('parent.student.documents.submit');
+	Route::post('/reupload/document/{student_id}','ParentController@reuploadDocuments')->name('parent.reupload.document');
 	Route::get('/student/module/courses/{student_id}','ParentController@studentModuleCourses')->name('parent.student.module.courses');
 	Route::get('/student/sessions/{student_id}','ParentController@studentSessions')->name('parent.student.sessions');
 	Route::get('/payments','ParentController@payments')->name('parent.payments');
@@ -69,6 +70,7 @@ Route::group(['prefix' => 'parent','middleware' => 'parent'],function(){
 	Route::get('/request-leave', 'ParentController@requestLeavePage')->name('parent.request-leave');
 	Route::post('/store-leave', 'ParentController@requestLeave')->name('parent.store-leave');
 	Route::get('/request-leave/{request_id}', 'ParentController@showLeaveRequest')->name('parent.leave-requests.show');
+	Route::get('/request-leave/{request_id}/file', 'ParentController@leaveRequestFile')->name('parent.leave-requests.file');
 	Route::get('/request-leave/{request_id}/edit', 'ParentController@editLeaveRequestPage')->name('parent.leave-requests.edit');
 	Route::patch('/request-leave/{request_id}', 'ParentController@updateLeaveRequest')->name('parent.leave-requests.update');
 	Route::delete('/request-leave/{request_id}', 'ParentController@deleteLeaveRequest')->name('parent.leave-requests.delete');
@@ -322,8 +324,6 @@ Route::group(['middleware' => 'text'],function(){
 });
 
 Route::post('/early-registration','MainController@earlyRegistrationSubmit')->name('early-registration-submit');
-
-Route::post('/parent/reupload/document/{student_id}','ParentController@reuploadDocuments')->name('parent.reupload.document');
 
 // Route::get('/iso','AdmissionController@iso')->name('iso');
 

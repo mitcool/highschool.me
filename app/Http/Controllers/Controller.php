@@ -37,7 +37,15 @@ class Controller extends BaseController
         $request_file->move($path, $filename);
         return $filename;
     }
-   
+
+    // Saves under a random name whose extension is guessed from the file's contents,
+    // so the uploader can't pick the name (overwriting other files) or the extension (e.g. .php).
+    public function upload_file_safely($request_file,$path){
+        $filename = $request_file->hashName();
+        $request_file->move($path, $filename);
+        return $filename;
+    }
+
     public function unique_code($limit){
         return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $limit);
     }

@@ -171,7 +171,12 @@
 @endsection
 
 @section('content')
-
+<div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
+    <ol class="bg-white breadcrumb mb-0 p-0">
+        <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ ucwords(str_replace('-', ' ', request()->segment(1))) }}</li>
+    </ol>
+</div>
 <x-image-component nickname="freshman-kit-cover" class="digital_studies-images main-pictures-pages"/>
 <div class="mb-5">
     <div class="container">

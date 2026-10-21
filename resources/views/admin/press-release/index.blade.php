@@ -126,23 +126,15 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="row m-0">
-            <div class="col-md-6 p-2">
+            <div class="col-md-4 p-2">
                 <img src="{{ asset('images/admin/text.png') }}"  class="w-100 border options" data-value="1"/> 
                 <p class="font-weight-bold text-center">Text</p>  
             </div>
-            <div class="col-md-6 p-2">
+            <div class="col-md-4 p-2">
                 <img src="{{ asset('images/admin/image.jpg') }}" class="w-100 border options" data-value="2" />
                 <p class="font-weight-bold text-center">Image</p>
             </div> 
-            <div class="col-md-6 p-2">
-                <img src="{{ asset('images/admin/blockquote.png') }}" class="w-100 border options" data-value="3" />
-                <p class="font-weight-bold text-center">Blockquote</p>
-            </div> 
-            <div class="col-md-6 p-2">
-                <img src="{{ asset('images/admin/table.png') }}"  class="w-100 border options" data-value="4"/>
-                <p class="font-weight-bold text-center">Table</p>
-            </div>
-            <div class="col-md-6 p-2">
+            <div class="col-md-4 p-2">
                 <div class="w-100 border options d-flex align-items-center justify-content-center bg-light" data-value="5" style="height:200px;cursor:pointer;">
                     <i class="fas fa-video" style="font-size:80px;color:rgb(77, 76, 74);"></i>
                 </div>

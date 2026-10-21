@@ -48,6 +48,9 @@ use App\Image;
 use App\ImageAttribute;
 use App\DynamicNewsAuthor;
 use App\DynamicNewsAuthorTranslation;
+use App\DynamicNews;
+use App\FactHub;
+use App\PressRelease;
 use App\Newsletter;
 use App\NewsletterSubscriber;
 use App\Subscriber;
@@ -524,7 +527,7 @@ class AdminController extends Controller
     
     public function editAuthorNews(Request $request,$author_id){
         $author = $request->only('name','description','slug');
-        DynamicNewsAuthor::find($author_id)->update($author);
+        DynamicNewsAuthor::findOrFail($author_id)->update($author);
         return redirect()->back()->with('success_message','Author edited successfully!');
     }
 
@@ -534,14 +537,21 @@ class AdminController extends Controller
         ]);
         $path  = base_path()."/public/images";
         $author = $request->only('name','description','slug');
-        $author['avatar'] = $this->upload_file($request->file('picture'),$path);
+        $author['avatar'] = $request->hasFile('picture') ? $this->upload_file($request->file('picture'),$path) : '';
         DynamicNewsAuthor::create($author);
         return redirect()->back()->with('success_message','Author added successfully!');
     }
 
     public function deleteAuthor($id){
-        $author = DynamicNewsAuthor::find($id);      
-        DynamicNewsAuthor::where('id',$id)->delete();
+        $author = DynamicNewsAuthor::findOrFail($id);
+        // Articles render the author's name, so an author still in use cannot be removed
+        $articles = DynamicNews::where('author_id',$id)->count()
+            + FactHub::where('author_id',$id)->count()
+            + PressRelease::where('author_id',$id)->count();
+        if($articles > 0){
+            return redirect()->back()->with('error','This author has '.$articles.' article(s). Reassign or delete them before deleting the author.');
+        }
+        $author->delete();
         return redirect()->route('edit-authors')->with('success_message','Author deleted successfully');
     }
 
@@ -771,7 +781,7 @@ class AdminController extends Controller
      }
 
      public function addCourseType(Request $request){
-      
+    
         $course = $request->only('name','description','price');
         $course['type'] = 0;
         $course = CourseType::create($course);
@@ -2026,6 +2036,15 @@ class AdminController extends Controller
         $leaveRequest = LeaveRequest::where('id', $request_id)->first();
 
         return view('admin.leaves.single-leave-request')->with('leaveRequest', $leaveRequest);
+    }
+
+    public function leaveRequestFile($request_id) {
+        $leaveRequest = LeaveRequest::findOrFail($request_id);
+        if (!$leaveRequest->file || !file_exists($leaveRequest->filePath())) {
+            abort(404);
+        }
+
+        return response()->file($leaveRequest->filePath());
     }
 
     public function approveLeaveRequest(Request $request, $request_id) {

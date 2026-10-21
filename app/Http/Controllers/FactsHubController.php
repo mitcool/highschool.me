@@ -17,7 +17,11 @@ use App\FactHubImageAttribute;
 
 class FactsHubController extends Controller
 {
-    public string $path = 'images/fact-hub';
+    public $path;
+
+    public function __construct(){
+        $this->path = public_path('images/fact-hub');
+    }
 
     public function index(){
         $authors = DynamicNewsAuthor::all();
@@ -76,7 +80,7 @@ class FactsHubController extends Controller
     }
 
     public function show($news_id){
-       $news = FactHub::with('sections')->find($news_id);
+       $news = FactHub::with('sections')->findOrFail($news_id);
        $authors = DynamicNewsAuthor::all();
        return view('admin.facts-hub.edit')
             ->with('authors', $authors)
@@ -85,7 +89,7 @@ class FactsHubController extends Controller
 
     public function update(Request $request,$news_id){
         $news_input = $request->only('author_id','minutes','slug','key_facts','meta_title','meta_description');
-        $news = FactHub::find($news_id);
+        $news = FactHub::findOrFail($news_id);
         $contents = $request->content ?? [];
         foreach($contents as $id => $content){
             $section = FactHubSection::where('news_id', $news_id)->find($id);
@@ -127,7 +131,8 @@ class FactsHubController extends Controller
             $new_ids[$ref] = FactHubSection::insertGetId([
                 'content' => $content,
                 'type' => $type,
-                'news_id' => $news_id
+                'news_id' => $news_id,
+                'position' => 0
             ]);
         }
 
@@ -149,10 +154,10 @@ class FactsHubController extends Controller
     }   
 
     public function destroy($news_id){
-        //News
-        FactHub::find($news_id)->delete();
+        //Facts hub
+        FactHub::findOrFail($news_id)->delete();
         FactHubSection::where('news_id', $news_id)->delete();
-        return redirect()->route('dynamic-news')->with('success_message','Article deleted successfully');;
+        return redirect()->route('admin-facts-hub')->with('success_message','Article deleted successfully');
     }
 }
 

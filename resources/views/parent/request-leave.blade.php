@@ -167,7 +167,7 @@
             <div class="form-group">
                 <label for="leaveFile">File</label>
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="leaveFile" name="file" required>
+                    <input type="file" class="custom-file-input" id="leaveFile" name="file" accept=".pdf,.jpg,.jpeg,.png" required>
                     <label class="custom-file-label" for="leaveFile">Choose file</label>
                 </div>
             </div>
@@ -225,7 +225,7 @@
                                 <td>{{ optional($leaveRequest->end_date)->format('d.m.Y') }}</td>
                                 <td>
                                     @if($leaveRequest->file)
-                                        <a class="leave-link" href="{{ asset('/documents/leave_requests/'.$leaveRequest->file) }}" target="_blank">View</a>
+                                        <a class="leave-link" href="{{ route('parent.leave-requests.file', $leaveRequest->id) }}" target="_blank">View</a>
                                     @else
                                         <span class="text-muted">N/A</span>
                                     @endif

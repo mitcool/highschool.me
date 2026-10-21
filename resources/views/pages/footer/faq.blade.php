@@ -19,8 +19,8 @@
 		background-color: #EE6123 !important;
 		color:white;
 		display:block;
-		width: 50%;
-		padding:10px;
+		width: 75%;
+		padding:17px;
 		margin:10px auto;
 		border-radius: 10px;
 	}
@@ -59,7 +59,7 @@
 			<h1 class="page-headings">{{trans('faq.heading')}}</h1><br>
 			@foreach($faqcategories as $category)
 				<a class="faq-heading" href="{{route('single-faq-category',[$category->slug])}}">
-					<h2 data-toggle="collapse" data-target="#collapseExample_faq" aria-expanded="false" aria-controls="collapseExample" class="pl-2 m-0" style="font-size:1.5rem;">{{$category->key}}</h2>
+					<h2 data-toggle="collapse" data-target="#collapseExample_faq" aria-expanded="false" aria-controls="collapseExample" class="pl-2 m-0" style="font-size:1.3rem;">{{$category->key}}</h2>
 				</a>
 			@endforeach
 		</div>

@@ -97,7 +97,7 @@
             <div class="col-md-12">
                 @if($leaveRequest->file)
                     <a class="btn btn-outline-blue"
-                    href="{{ asset('/documents/leave_requests/'.$leaveRequest->file) }}"
+                    href="{{ route('admin.leave_requests.file', $leaveRequest->id) }}"
                     target="_blank">
                         Open Attached documentation
                     </a>

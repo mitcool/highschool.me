@@ -94,7 +94,7 @@
 					</div>
 				@endif
 
-				{!! $article->teaser !!}
+				<div>{!! $article->teaser !!}</div>
 			
 				@foreach ($article->sections as $section )
 	
@@ -102,7 +102,7 @@
 						<div id="section_{{$section->id}}">{!! $section->content !!}</div>
 					@elseif($section->type == 2)
 						<img 
-							src="{{ asset('news_images') }}/{{ $section->image_src->content ?? $section->content }}" 
+							src="{{ asset('news_images') }}/{{ $section->content }}" 
 							class="w-100" 
 							alt=""
 							title=""
@@ -143,7 +143,7 @@
 					@endif
 				</div>
 			@endforeach
-			<table class="table">
+			<table class="table container">
 				<tr>
 					<th>Media</th>
 					<th>Date</th>

@@ -445,6 +445,9 @@ class ParentController extends Controller
         ];
 
         $student_id = $request->id;
+        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+            abort(403);
+        }
         $student = User::find($student_id);
 
         #!!! Only track 1 and 2 needs grade 
@@ -468,42 +471,42 @@ class ParentController extends Controller
 
         $parentStudent->update($gradeUpdate);
 
-        $path = base_path()."/public/documents/".$student->id;
+        $path = StudentDocument::directory($student->id);
         #Parent Id (document 1) required
-        $parent_id_name = $this->upload_file($request->file('parent_id'),$path);
+        $parent_id_name = $this->upload_file_safely($request->file('parent_id'),$path);
         StudentDocument::insert(['file'=>$parent_id_name,'type'=>1,'student_id'=>$student->id,'is_approved' => 0]);
         
         #custody_document (document 2) optional - !!! before it was optional 
         if($request->hasFile('custody_document')){
-            $custody_document_name = $this->upload_file($request->file('custody_document'),$path); 
+            $custody_document_name = $this->upload_file_safely($request->file('custody_document'),$path); 
             StudentDocument::insert(['file'=>$custody_document_name,'type'=>2,'student_id'=>$student->id,'is_approved' => 0]);
         }
 
         #proof_of_residence (document 3) required
-        $proof_of_residence_name =  $this->upload_file($request->file('proof_of_residence'),$path); 
+        $proof_of_residence_name =  $this->upload_file_safely($request->file('proof_of_residence'),$path); 
         StudentDocument::insert(['file'=>$proof_of_residence_name,'type'=>3,'student_id'=>$student->id,'is_approved' => 0]);
 
         #student id (document 4) required
-        $student_id_name =  $this->upload_file($request->file('student_id'),$path); 
+        $student_id_name =  $this->upload_file_safely($request->file('student_id'),$path); 
         StudentDocument::insert(['file'=>$student_id_name,'type'=>4,'student_id'=>$student->id,'is_approved' => 0]);
 
         #birth certificete (document 5) required
-        $birth_certificate_name =    $this->upload_file($request->file('birth_certificate'),$path); 
+        $birth_certificate_name =    $this->upload_file_safely($request->file('birth_certificate'),$path); 
         StudentDocument::insert(['file'=>$birth_certificate_name,'type'=>5,'student_id'=>$student->id,'is_approved' => 0]);
 
         #school transcript (document 6) required
-        $school_transcript_name =$this->upload_file($request->file('school_transcript'),$path); 
+        $school_transcript_name =$this->upload_file_safely($request->file('school_transcript'),$path); 
         StudentDocument::insert(['file'=>$school_transcript_name,'type'=>6,'student_id'=>$student->id,'is_approved' => 0]);
 
         #withdrawal_confirmation (document 7) optinal
         if($request->hasFile('withdrawal_confirmation')){
-            $withdrawal_confirmation_name =  $this->upload_file($request->file('withdrawal_confirmation'),$path); 
+            $withdrawal_confirmation_name =  $this->upload_file_safely($request->file('withdrawal_confirmation'),$path); 
             StudentDocument::insert(['file'=>$withdrawal_confirmation_name,'type'=>7,'student_id'=>$student->id,'is_approved' => 0]);
         }
         
          #iep (document 8) optinal
         if($request->hasFile('iep')){
-            $iep_name =  $this->upload_file($request->file('iep'),$path); 
+            $iep_name =  $this->upload_file_safely($request->file('iep'),$path); 
             StudentDocument::insert(['file'=>$iep_name,'type'=> 8,'student_id'=>$student->id,'is_approved' => 0]);
         }
         Notification::add(auth()->id(),'Congratulations documents submitted successfully');
@@ -1135,7 +1138,8 @@ class ParentController extends Controller
             'zip' => 'required',
             "phone" => "required|regex:/^[0-9]\d{6,15}$/|min:6|max:15",
             "phone_code" => 'required|regex:/^\+[0-9]\d{0,3}$/',
-            "avatar" => ['file', 'mimes:jpg,jpeg,webp,png,svg', 'max:2000']
+            // No svg: it can carry scripts that run when the image is opened directly.
+            "avatar" => ['file', 'mimes:jpg,jpeg,webp,png', 'max:2000']
         ];
 
         $isParent = (int) auth()->user()->role_id === 2;
@@ -1168,7 +1172,7 @@ class ParentController extends Controller
             }
         }
         if($request->hasFile('avatar')){
-            $avatar = $this->upload_file($request->file('avatar'),'images/avatars/'.auth()->id());
+            $avatar = $this->upload_file_safely($request->file('avatar'),'images/avatars/'.auth()->id());
             auth()->user()->update(['avatar'=> $avatar]);
         }
     
@@ -1200,21 +1204,33 @@ class ParentController extends Controller
     }
 
     public function reuploadDocuments(Request $request,$student_id){
-        
+        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+            abort(403);
+        }
+        $request->validate([
+            'documents'   => ['required', 'array'],
+            'documents.*' => ['required', 'file', 'mimetypes:application/pdf', 'max:5120'],
+            'types'       => ['required', 'array'],
+            'types.*'     => ['required', 'integer'],
+        ],[
+            'documents.*.mimetypes' => 'All documents must be valid PDF files.',
+            'documents.*.max'       => 'Each document must not exceed 5MB.',
+        ]);
+
         $student = User::find($student_id);
         $documents = $request->documents;
         $types = $request->types;
-        $path = base_path()."/public/documents/".$student->id;
-       
+        $path = StudentDocument::directory($student->id);
+
         foreach($documents as $key => $document){
-             $old_document = StudentDocument::where('type',$types[$key])->where('student_id',$student_id)->first();
+             $old_document = StudentDocument::where('type',$types[$key] ?? null)->where('student_id',$student_id)->firstOrFail();
              try{
-                unlink($path.'/'.$old_document->file);
+                unlink($old_document->filePath());
              }catch(\Exception $e){
                 info($e->getMessage());
              }
              $old_document->delete();
-             $filename = $this->upload_file($document,$path);
+             $filename = $this->upload_file_safely($document,$path);
              StudentDocument::insert([
                 'file'=>$filename,
                 'type'=> $types[$key],
@@ -1508,14 +1524,13 @@ class ParentController extends Controller
                 LeaveRequest::TYPE_MEDICAL,
                 LeaveRequest::TYPE_PERSONAL,
             ])],
-            'file' => 'required|file|max:2048',
+            'file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'message' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
         ]);
 
-        $path = base_path()."/public/documents/leave_requests/";
-        $file = $this->upload_file($request->file('file'), $path);
+        $file = $this->upload_file_safely($request->file('file'), LeaveRequest::directory());
 
         $leave_request = LeaveRequest::create([
             'student_id' => $request->student_id,
@@ -1543,6 +1558,16 @@ class ParentController extends Controller
         $leaveRequest = $this->parentLeaveRequest($request_id);
 
         return view('parent.single-leave-request')->with('leaveRequest', $leaveRequest);
+    }
+
+    public function leaveRequestFile($request_id)
+    {
+        $leaveRequest = $this->parentLeaveRequest($request_id);
+        if (!$leaveRequest->file || !file_exists($leaveRequest->filePath())) {
+            abort(404);
+        }
+
+        return response()->file($leaveRequest->filePath());
     }
 
     public function editLeaveRequestPage($request_id)

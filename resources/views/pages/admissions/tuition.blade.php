@@ -113,6 +113,45 @@
         background-color: #045397;
         color: white;
     }
+        table {
+        width: 100%;
+        border-collapse: collapse;
+      
+        font-size: 1.1rem;
+        color: #222;
+        border: 1px solid #ccc;
+    }
+
+    table th,
+    td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+        vertical-align: middle;
+      
+    }
+    table th p,
+    table td p {
+      margin-bottom:0;	
+    }
+    table thead th {
+        background-color: #5282b9;
+        color: #fff;
+        font-weight: bold;
+        padding: 10px;
+    }
+
+    table tbody tr:nth-child(odd) {
+        background-color: #e9f1f9;
+    }
+
+    table tbody tr:nth-child(even) {
+        background-color: #fff;
+    }
+
+    table tbody tr:hover {
+        background-color: #d9e7f5;
+    }
 </style>
 @endsection
 
@@ -120,7 +159,7 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
     <ol class="bg-white breadcrumb mb-0 p-0">
         <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
+        <li class="breadcrumb-item active" aria-current="page">{{ ucwords(str_replace('-', ' ', request()->segment(1))) }}</li>
     </ol>
 </div>
 
@@ -141,7 +180,7 @@
             <div class="shadow p-2 {{ strtolower($plan->name) }} mb-4">
                 <div class="plan-name"><span class="font-weight-bold">{{ $plan->name }}</span> Package</div>
                 <div style="text-align:justify;">
-                    <p>Promovieren sind nicht nur akademische Meilensteine – sie sind Herausforderungen, die von intensiver Forschung, kreativem Denken und strategischer Planung geprägt sind. Um Dir diese Herausforderung so effizient und produktiv wie möglich zu gestalten, stellen wir Dir das kostenfreie Empowerment-Kit zur Verfügung. Dieses Kit umfasst innovative Tools, um Dir den Weg zu einem erfolgreichen Studienabschluss oder zu einer erfolgreichen Promotion erheblich zu verkürzen und zu erleichtern. </p>
+                    {!! $plan->info !!}
                 </div>
             </div>
         @endforeach

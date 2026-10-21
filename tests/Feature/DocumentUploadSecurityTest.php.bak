@@ -1,0 +1,305 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\LeaveRequest;
+use App\StudentDocument;
+use App\User;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Schema;
+use Tests\TestCase;
+
+/**
+ * Parent-uploaded student documents and leave attachments: who may upload them,
+ * what file types are accepted, and who may open them afterwards.
+ */
+class DocumentUploadSecurityTest extends TestCase
+{
+    private string $storage;
+    private User $parent;
+    private User $otherParent;
+    private User $student;
+    private User $admin;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Keep uploads out of the real storage/ folder.
+        $this->storage = sys_get_temp_dir().'/doc-upload-test-'.uniqid();
+        $this->app->useStoragePath($this->storage);
+
+        Schema::create('users', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('surname')->nullable();
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->integer('role_id');
+            $table->string('avatar')->nullable();
+            $table->rememberToken();
+            $table->timestamps();
+        });
+        // CheckParent redirects parents without complete invoice details.
+        Schema::create('invoice_details', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id');
+            $table->string('city')->nullable();
+            $table->string('address')->nullable();
+            $table->string('zip')->nullable();
+            $table->string('phone')->nullable();
+        });
+        Schema::create('parent_students', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('parent_id');
+            $table->integer('student_id');
+            $table->integer('track')->nullable();
+            $table->integer('grade')->nullable();
+            $table->integer('status')->default(0);
+            $table->timestamps();
+        });
+        Schema::create('student_documents', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('student_id');
+            $table->integer('type');
+            $table->string('file');
+            $table->boolean('is_approved')->default(0);
+        });
+        Schema::create('leave_requests', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('student_id');
+            $table->integer('type');
+            $table->string('file')->nullable();
+            $table->text('message');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->integer('status');
+            $table->string('reason')->nullable();
+            $table->timestamp('created_at')->nullable();
+        });
+        Schema::create('notifications', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id');
+            $table->string('message');
+            $table->boolean('is_read')->default(0);
+            $table->timestamps();
+        });
+
+        Mail::fake();
+
+        $this->admin = $this->makeUser(1, 'admin@example.com');
+        $this->parent = $this->makeUser(2, 'parent@example.com');
+        $this->otherParent = $this->makeUser(2, 'other@example.com');
+        $this->student = $this->makeUser(3, 'student@example.com');
+
+        DB::table('parent_students')->insert([
+            'parent_id' => $this->parent->id,
+            'student_id' => $this->student->id,
+            'track' => 3,
+        ]);
+    }
+
+    protected function tearDown(): void
+    {
+        File::deleteDirectory($this->storage);
+        parent::tearDown();
+    }
+
+    private function makeUser(int $role, string $email): User
+    {
+        $user = User::forceCreate([
+            'name' => 'Test',
+            'email' => $email,
+            'password' => 'x',
+            'role_id' => $role,
+        ]);
+        DB::table('invoice_details')->insert([
+            'user_id' => $user->id, 'city' => 'Sofia', 'address' => 'Street 1', 'zip' => '1000', 'phone' => '123456',
+        ]);
+
+        return $user;
+    }
+
+    private function pdf(string $name = 'scan.pdf'): UploadedFile
+    {
+        return UploadedFile::fake()->createWithContent($name, "%PDF-1.4\n%%EOF\n");
+    }
+
+    private function phpFile(): UploadedFile
+    {
+        return UploadedFile::fake()->createWithContent('shell.php', '<?php echo "pwned"; ?>');
+    }
+
+    private function leaveData(array $overrides = []): array
+    {
+        return array_merge([
+            'student_id' => $this->student->id,
+            'leave_type' => LeaveRequest::TYPE_MEDICAL,
+            'file' => $this->pdf('medical.pdf'),
+            'message' => 'Sick',
+            'start_date' => '2026-10-01',
+            'end_date' => '2026-10-03',
+        ], $overrides);
+    }
+
+    private function existingDocument(): StudentDocument
+    {
+        $dir = StudentDocument::directory($this->student->id);
+        File::ensureDirectoryExists($dir);
+        file_put_contents($dir.'/old.pdf', "%PDF-1.4\n");
+        DB::table('student_documents')->insert([
+            'student_id' => $this->student->id, 'type' => 1, 'file' => 'old.pdf', 'is_approved' => 0,
+        ]);
+
+        return StudentDocument::first();
+    }
+
+    private function existingLeaveRequest(): LeaveRequest
+    {
+        File::ensureDirectoryExists(LeaveRequest::directory());
+        file_put_contents(LeaveRequest::directory().'/note.pdf', "%PDF-1.4\n");
+
+        return LeaveRequest::create([
+            'student_id' => $this->student->id,
+            'type' => LeaveRequest::TYPE_MEDICAL,
+            'file' => 'note.pdf',
+            'message' => 'Sick',
+            'start_date' => '2026-10-01',
+            'end_date' => '2026-10-03',
+            'status' => LeaveRequest::STATUS_PENDING,
+        ]);
+    }
+
+    // --- Re-uploading rejected documents ---
+
+    public function test_reupload_requires_login()
+    {
+        $document = $this->existingDocument();
+
+        $response = $this->post(route('parent.reupload.document', $this->student->id), [
+            'documents' => [$this->pdf()],
+            'types' => [1],
+        ]);
+
+        $response->assertForbidden();
+        $this->assertSame('old.pdf', $document->fresh()->file);
+    }
+
+    public function test_parent_cannot_reupload_for_another_parents_student()
+    {
+        $document = $this->existingDocument();
+
+        $response = $this->actingAs($this->otherParent)->post(route('parent.reupload.document', $this->student->id), [
+            'documents' => [$this->pdf()],
+            'types' => [1],
+        ]);
+
+        $response->assertForbidden();
+        $this->assertSame('old.pdf', $document->fresh()->file);
+    }
+
+    public function test_reupload_rejects_non_pdf()
+    {
+        $this->existingDocument();
+
+        $response = $this->actingAs($this->parent)->post(route('parent.reupload.document', $this->student->id), [
+            'documents' => [$this->phpFile()],
+            'types' => [1],
+        ]);
+
+        $response->assertSessionHasErrors('documents.0');
+        $this->assertSame('old.pdf', StudentDocument::first()->file);
+    }
+
+    public function test_reupload_replaces_document_in_private_storage()
+    {
+        $this->existingDocument();
+
+        $this->actingAs($this->parent)->post(route('parent.reupload.document', $this->student->id), [
+            'documents' => [$this->pdf('scan.pdf')],
+            'types' => [1],
+        ])->assertSessionHasNoErrors();
+
+        $document = StudentDocument::first();
+        $this->assertNotSame('scan.pdf', $document->file);
+        $this->assertStringEndsWith('.pdf', $document->file);
+        $this->assertFileExists(StudentDocument::directory($this->student->id).'/'.$document->file);
+        $this->assertFileDoesNotExist(StudentDocument::directory($this->student->id).'/old.pdf');
+    }
+
+    // --- Submitting documents ---
+
+    public function test_parent_cannot_submit_documents_for_another_parents_student()
+    {
+        $response = $this->actingAs($this->otherParent)->post(route('parent.student.documents.submit'), [
+            'id' => $this->student->id,
+        ]);
+
+        $response->assertForbidden();
+        $this->assertSame(0, StudentDocument::count());
+    }
+
+    // --- Leave requests ---
+
+    public function test_leave_request_rejects_php_file()
+    {
+        $response = $this->actingAs($this->parent)->post(route('parent.store-leave'), $this->leaveData([
+            'file' => $this->phpFile(),
+        ]));
+
+        $response->assertSessionHasErrors('file');
+        $this->assertSame(0, LeaveRequest::count());
+        $this->assertDirectoryDoesNotExist(LeaveRequest::directory());
+    }
+
+    public function test_leave_request_file_is_stored_privately_under_random_name()
+    {
+        $this->actingAs($this->parent)->post(route('parent.store-leave'), $this->leaveData())
+            ->assertSessionHasNoErrors();
+
+        $leave = LeaveRequest::first();
+        $this->assertNotSame('medical.pdf', $leave->file);
+        $this->assertStringEndsWith('.pdf', $leave->file);
+        $this->assertFileExists(LeaveRequest::directory().'/'.$leave->file);
+        $this->assertFileDoesNotExist(public_path('documents/leave_requests/'.$leave->file));
+    }
+
+    // --- Opening files ---
+
+    public function test_parent_can_open_own_leave_attachment()
+    {
+        $leave = $this->existingLeaveRequest();
+
+        $this->actingAs($this->parent)->get(route('parent.leave-requests.file', $leave->id))->assertOk();
+    }
+
+    public function test_other_parent_cannot_open_leave_attachment()
+    {
+        $leave = $this->existingLeaveRequest();
+
+        $this->actingAs($this->otherParent)->get(route('parent.leave-requests.file', $leave->id))->assertNotFound();
+    }
+
+    public function test_admin_can_open_leave_attachment_and_student_document()
+    {
+        $leave = $this->existingLeaveRequest();
+        $document = $this->existingDocument();
+
+        $this->actingAs($this->admin)->get(route('admin.leave_requests.file', $leave->id))->assertOk();
+        $this->actingAs($this->admin)->get(route('admin.student-document.file', $document->id))->assertOk();
+    }
+
+    public function test_non_admin_cannot_open_admin_file_routes()
+    {
+        $leave = $this->existingLeaveRequest();
+        $document = $this->existingDocument();
+
+        $this->get(route('admin.student-document.file', $document->id))->assertForbidden();
+        $this->actingAs($this->parent)->get(route('admin.student-document.file', $document->id))->assertForbidden();
+        $this->actingAs($this->parent)->get(route('admin.leave_requests.file', $leave->id))->assertForbidden();
+    }
+}

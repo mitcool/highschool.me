@@ -1,16 +1,20 @@
 @extends('template')
+@php
+    $meta_title = ($texts['meta-title'] ?? null) ?: (($texts['heading'] ?? null) ?: 'Facts Hub');
+    $meta_description = ($texts['meta-description'] ?? null) ?: $meta_title;
+@endphp
 
 @section('seo')
-		<meta itemprop="title" property="og:title" content="{{ trans('blog.meta-title') }}"/>
-		<meta property="og:description" content="{{ trans('blog.meta-description') }}"/>
-		<meta itemprop="url" property="og:url" content="{{  route('blog') }}"/>
+		<meta itemprop="title" property="og:title" content="{{ $meta_title }}"/>
+		<meta property="og:description" content="{{ $meta_description }}"/>
+		<meta itemprop="url" property="og:url" content="{{ route('facts-hub') }}"/>
 		
 		@if(request()->page)
-			<title>{{ trans('blog.meta-title') }} | {{request()->segment(1) =='de' ? 'Seite' :  'Page'}} {{request()->page}}</title>
-			<meta itemprop="description" name="description" content="{{ trans('blog.meta-description') }} | {{request()->segment(1) =='de' ? 'Seite' :  'Page'}} {{request()->segment(1)}}" />
+			<title>{{ $meta_title }} | {{request()->segment(1) =='de' ? 'Seite' :  'Page'}} {{request()->page}}</title>
+			<meta itemprop="description" name="description" content="{{ $meta_description }} | {{request()->segment(1) =='de' ? 'Seite' :  'Page'}} {{request()->segment(1)}}" />
 		@else
-			<title>{{ trans('blog.meta-title') }}</title>
-			<meta itemprop="description" name="description" content="{{ trans('blog.meta-description') }}" />
+			<title>{{ $meta_title }}</title>
+			<meta itemprop="description" name="description" content="{{ $meta_description }}" />
 		@endif
 		
 	<meta property="og:type" content="website"/>
@@ -69,7 +73,7 @@
 @endsection
 @section('content')
 	@php
-	    $breadcrumb_title = strtok(trans('blog.meta-title'), '|');
+	    $breadcrumb_title = strtok($meta_title, '|');
 	@endphp
 	<div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 		<ol class="bg-white breadcrumb mb-0 p-0">

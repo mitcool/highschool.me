@@ -37,7 +37,7 @@
             @foreach ($student->student->documents as $document )
                 <tr>
                     <td class="font-weight-bold">{{ $document->document_type->name }}:</td> 
-                    <td><a target="_blank" href="{{ asset('documents') }}/{{ $student->student_id }}/{{ $document->file }}">Open</a></td>
+                    <td><a target="_blank" href="{{ route('admin.student-document.file', $document->id) }}">Open</a></td>
                     <td class="text-center"> 
                         <button 
                             class="approve-button btn  @if($document->is_approved == 1) btn-success @else btn-secondary @endif"  

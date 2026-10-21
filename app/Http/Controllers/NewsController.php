@@ -76,7 +76,7 @@ class NewsController extends Controller
     }
 
     public function show($news_id){
-       $news = DynamicNews::with('sections')->find($news_id);
+       $news = DynamicNews::with('sections')->findOrFail($news_id);
        $authors = DynamicNewsAuthor::all();
        return view('admin.news-explorer.edit-news')
             ->with('authors', $authors)
@@ -85,7 +85,7 @@ class NewsController extends Controller
 
      public function update(Request $request,$news_id){
         $news_input = $request->only('author_id','minutes','slug','key_facts','meta_title','meta_description');
-        $news = DynamicNews::find($news_id);
+        $news = DynamicNews::findOrFail($news_id);
 
         $contents = $request->content ?? [];
          
@@ -152,7 +152,7 @@ class NewsController extends Controller
 
     public function destroy($news_id){
         //News
-        DynamicNews::find($news_id)->delete();
+        DynamicNews::findOrFail($news_id)->delete();
         DynamicNewsSection::where('news_id', $news_id)->delete();
         return redirect()->route('dynamic-news')->with('success_message','Article deleted successfully');;
     }

@@ -33,6 +33,13 @@ class AdminStudentController extends Controller
         return view('admin.single-student-documents')
             ->with('student',$student);
     }
+    public function studentDocumentFile($document_id){
+        $document = StudentDocument::findOrFail($document_id);
+        if(!file_exists($document->filePath())){
+            abort(404);
+        }
+        return response()->file($document->filePath());
+    }
     public function approveDocuments(Request $request,$student_id){
         $approved_status = 2;
         $student = User::find($student_id);

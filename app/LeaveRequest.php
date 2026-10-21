@@ -36,6 +36,22 @@ class LeaveRequest extends Model
     const STATUS_APPROVED = 1;
     const STATUS_DENIED   = 2;
 
+    // Outside public/ so attachments are only reachable through authorized routes.
+    public static function directory()
+    {
+        return storage_path('app/documents/leave_requests');
+    }
+
+    public function filePath()
+    {
+        $path = self::directory().'/'.basename($this->file);
+        if (file_exists($path)) {
+            return $path;
+        }
+        // Uploaded before attachments were moved out of public/
+        return base_path('public/documents/leave_requests/'.basename($this->file));
+    }
+
     public function durationInDaysInclusive(): int
     {
         if (!$this->start_date || !$this->end_date) {

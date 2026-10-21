@@ -148,7 +148,7 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
     <ol class="bg-white breadcrumb mb-0 p-0">
         <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
+        <li class="breadcrumb-item active" aria-current="page">{{ ucwords(str_replace('-', ' ', request()->segment(1))) }}</li>
     </ol>
 </div>
 
@@ -162,7 +162,7 @@
             <div class="page-content">{!! $texts['intro'] !!}</div>
         </div>
     
-        <div class="col-md-8" style="margin: 0 auto;">{!! $texts['intro-2'] !!}</div>
+        <div class="col-md-8 page-content" style="margin: 0 auto;">{!! $texts['intro-2'] !!}</div>
     
     </div>
 </div>
@@ -190,6 +190,14 @@
             <img src="{{ asset('images/glasses.png') }}" alt="" class="w-100">
         </div>
         <div class="col-xl-5 custom-padding" > {!! $texts['track-3'] !!}</div>
+        <div class="col-xl-2"></div>
+    </div>
+    <div class="row text-white reverse" style="background:#045397;opacity:0.9">
+        <div class="col-xl-2"></div>
+        <div class="col-xl-5 custom-padding"> {!! $texts['track-4'] !!}</div>
+        <div class="col-xl-3 custom-padding">
+            <img src="{{ asset('images/glasses.png') }}" alt="" class="w-100">
+        </div>
         <div class="col-xl-2"></div>
     </div>
 </div>

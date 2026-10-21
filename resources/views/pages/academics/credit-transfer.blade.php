@@ -42,7 +42,7 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
+		<li class="breadcrumb-item active" aria-current="page">{{ ucwords(str_replace('-', ' ', request()->segment(1))) }}</li>
 	</ol>
 </div>
 
@@ -50,10 +50,9 @@
 
 <div class="container-fluid bg-white">	
 	<div class="row justify-content-center" >		
-		<div class="col-lg-8 text-justify" style="margin: 0 auto;">
+		<div class="col-lg-8 text-justify page-content" style="margin: 0 auto;">
 			<div class="text-center mb-5">
-				<h1 class="text-center font-weight-bold page-headings">{{ $texts['heading'] }}</h1>
-				<h3>{{ $texts['subheading'] }}</h3>
+				<h1 class="text-center font-weight-bold page-headings">{{  $texts['heading'] }}</h1>
 			</div>
 			{!! $texts['content'] !!}
 			<x-three-buttons/>

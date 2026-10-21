@@ -64,9 +64,47 @@
       border-top: 1px solid #ddd;
     }
 
-    h2 {
-      color: white!important;
+		
+    table {
+        width: 100%;
+        border-collapse: collapse;
+      
+        font-size: 1.1rem;
+        color: #222;
+        border: 1px solid #ccc;
     }
+
+    table th,
+    td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+        vertical-align: middle;
+      
+    }
+    table th p,
+    table td p {
+      margin-bottom:0;	
+    }
+    table thead th {
+        background-color: #5282b9;
+        color: #fff;
+        font-weight: bold;
+        padding: 10px;
+    }
+
+    table tbody tr:nth-child(odd) {
+        background-color: #e9f1f9;
+    }
+
+    table tbody tr:nth-child(even) {
+        background-color: #fff;
+    }
+
+    table tbody tr:hover {
+        background-color: #d9e7f5;
+    }
+
 	</style>
 @endsection
 
@@ -74,7 +112,7 @@
 	<div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 		<ol class="bg-white breadcrumb mb-0 p-0">
 			<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-			<li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
+			<li class="breadcrumb-item active" aria-current="page">{{ ucwords(str_replace('-', ' ', request()->segment(1))) }}</li>
 		</ol>
 	</div>
 
@@ -82,20 +120,10 @@
 
 	<div class="container page-content">
 		<h1 class="text-center page-headings">{{ $texts['heading'] }}</h1>
-    <h4 class="text-center">{{ $texts['subheading'] }}</h4>
+   
     <p class="mt-5">{{ $texts['intro'] }}</p>
 	</div>
-  <div class="container page-content">
-      <section class="requirements-section">
-        {!! $texts['requirement-1'] !!}
-	    </section>
-      <section class="requirements-section">
-         {!! $texts['requirement-2'] !!}
-	    </section>
-      <section class="requirements-section">
-          {!! $texts['requirement-3'] !!}
-	    </section>
-  </div>
+
   <div class="container page-content">
     {!! $texts['last-paragraph'] !!}
   </div>

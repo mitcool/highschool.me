@@ -21,7 +21,6 @@ class FooterController extends Controller
   public function getSingleFaqCategory(Request $request,$slug){
     $texts = $request->all()['texts'];
     $faq_category_id = FaqCategory::where('slug', $slug)->value('id');
-    Log::info($faq_category_id);
     $faq_category_questions = Faq::where('category_id', $faq_category_id)->get();
 
     return view('pages.footer.single_faq',compact('faq_category_questions','texts'));

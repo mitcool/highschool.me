@@ -55,17 +55,13 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/facts-hub/edit/{news_id}','FactsHubController@show')->name('edit-facts-hub');
 	Route::post('/facts-hub/delete/{news_id}','FactsHubController@destroy')->name('delete-facts-hub');
 	Route::post('/facts-hub/update/{news_id}','FactsHubController@update')->name('facts-hub-update');
-	Route::get('/facts-hub/images/attributes','FactsHubController@getImagesAttributes')->name('facts-hub-images-attributes');
-	Route::post('/facts-hub/images/attributes/{image_id}','FactsHubController@changeImageAttributes')->name('change-facts-hub-attributes');
 
-	//Facts hub
+	//Press releases
 	Route::get('/press-release','PressReleaseController@index')->name('admin-press-release');
 	Route::post('/press-release/create','PressReleaseController@store')->name('press-release-create');
 	Route::get('/press-release/edit/{news_id}','PressReleaseController@show')->name('edit-press-release');
 	Route::post('/press-release/delete/{news_id}','PressReleaseController@destroy')->name('delete-press-release');
 	Route::post('/press-release/update/{news_id}','PressReleaseController@update')->name('press-release-update');
-	Route::get('/press-release/images/attributes','PressReleaseController@getImagesAttributes')->name('press-release-images-attributes');
-	Route::post('/press-release/images/attributes/{image_id}','PressReleaseController@changeImageAttributes')->name('change-press-release-attributes');
 
 	//Authors
 	Route::get('/authors','AdminController@showAuthors')->name('edit-authors');
@@ -188,6 +184,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::get('/students/documents','AdminStudentController@studentDocuments')->name('admin-student-documents');
 	Route::get('/student/documents/{student_id}','AdminStudentController@singleStudentDocument')->name('single-student-documents');
 	Route::post('/students/documents/{student_id}','AdminStudentController@approveDocuments')->name('approve.student');
+	Route::get('/student-document/{document_id}/file','AdminStudentController@studentDocumentFile')->name('admin.student-document.file');
 	Route::post('/approve/document/{action}','AdminStudentController@approveSingleDocument')->name('approve-document');
 	Route::post('/approve/document','AdminStudentController@wrongDocument')->name('wrong-document');
 	Route::post('/delete-student/{student_id}','AdminStudentController@deleteStudent')->name('delete-student');
@@ -234,6 +231,7 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	//Student leaves functionality
 	Route::get('/all-requested-leaves', 'AdminController@requestedLeavesPage')->name('admin.all-requested-leaves');
 	Route::get('/single-leave-reuqest/{request_id}', 'AdminController@singleLeaveRequestPage')->name('admin.single-leave-reuqest');
+	Route::get('/leave-requests/{request_id}/file', 'AdminController@leaveRequestFile')->name('admin.leave_requests.file');
 	Route::patch('/leave-requests/approve/{request_id}', 'AdminController@approveLeaveRequest')->name('admin.leave_requests.approve');
     Route::patch('/leave-requests/deny/{request_id}', 'AdminController@denyLeaveRequest')->name('admin.leave_requests.deny');
 

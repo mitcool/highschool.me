@@ -17,7 +17,7 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
+		<li class="breadcrumb-item active" aria-current="page">{{ ucwords(str_replace('-', ' ', request()->segment(1))) }}</li>
 	</ol>
 </div>
 
@@ -29,7 +29,7 @@
 		<div class="col-md-10 col-lg-8 bg-white">
 			<section>
 				<h1 class="page-headings text-center">{{ $texts['heading'] }}</h1>
-				{!! $texts['content'] !!}
+				<div class="page-content">{!! $texts['content'] !!}</div>
 			</section>
 			
 			

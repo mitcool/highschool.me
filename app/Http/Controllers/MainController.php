@@ -283,11 +283,12 @@ class MainController extends Controller
   
   }
 
-  public function showPressRelease (){
+  public function showPressRelease (Request $request){
     $news = PressRelease::orderBy('id','desc')->paginate(5);
 
     return view('pages.press-release.all')
-        ->with('news',$news);
+        ->with('news',$news)
+        ->with('texts',$request->all()['texts'] ?? []);
   }
   public function showSinglePressRelease($slug){
      

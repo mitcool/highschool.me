@@ -591,8 +591,11 @@ class EducatorController extends Controller
                 return redirect()->back()->with('error','Email has already been taken');
             }
         }
+        $request->validate([
+            'avatar' => ['nullable', 'file', 'mimes:jpg,jpeg,webp,png', 'max:2000'],
+        ]);
         if($request->hasFile('avatar')){
-            $avatar = $this->upload_file($request->file('avatar'),'images/avatars/'.auth()->id());
+            $avatar = $this->upload_file_safely($request->file('avatar'),'images/avatars/'.auth()->id());
             auth()->user()->update(['avatar'=> $avatar]);
         }
         $user = $request->only('name','middlename','surname','email');

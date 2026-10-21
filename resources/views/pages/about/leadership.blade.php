@@ -17,20 +17,20 @@
 			.benefit-wrapper{
 				margin-top:15px;
 			}
-            .video iframe{
-                height:300px;
-            }
+		}
+		.video iframe{
+			width:100%;
+			height:auto;
+			aspect-ratio:16 / 9;
 		}
 	</style>
 @endsection
-
-
 
 @section('content')
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
+		<li class="breadcrumb-item active" aria-current="page">{{ ucwords(str_replace('-', ' ', request()->segment(1))) }}</li>
 	</ol>
 </div>
 
@@ -44,53 +44,14 @@
                     <div class="w-100 centered text-center mx-auto mb-5">
                         <img src="{{ asset('images/mathias-kunze-leadership.png') }}" class="w-100" alt="">
                     </div>
-                      {!! $texts['content'] !!}
-                    <div class="video mt-3 mb-5 w-75 mx-auto">
-                        <iframe height="600" width="100%" src="https://www.youtube.com/embed/a025DL3Zep0?si=aMjbEH8fGRilDVns" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <div class="video mt-1 mb-5 w-75 mx-auto">
+                        <iframe width="100%" src="https://www.youtube.com/embed/a025DL3Zep0?si=aMjbEH8fGRilDVns" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
                     </div>
-                    {!! $texts['content-bottom'] !!}
-
-
+                       {!! $texts['content'] !!}
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-{{-- <section class="row" style="background-color: #045397;padding:50px;">
-    <div class="col-md-10 offset-md-1" >
-        <!-- <div class="d-flex" id="benefit_wrapper"> -->
-
-        <div class="row col-md-12 ml-0 mr-0" >
-            <div class="col-xl-3 benefit-wrapper  text-center ">
-                <div class="benefit-box">
-                    <img src="{{ asset('images/icons/badge.png') }}" alt="" class="welcome-icon-big">
-                    <h3 style="font-size:1.25rem;color:#045397;min-height:40px;">{{ $texts['first-box-heading'] }}</h3>
-                    <p>{{ $texts['first-box-content'] }}</p>
-                </div>
-            </div>
-            <div class="col-xl-3 benefit-wrapper text-center ">
-                <div class="benefit-box">
-                    <img src="{{ asset('images/icons/idea.png') }}" alt="" class="welcome-icon-big">
-                    <h3 style="font-size:1.25rem;color:#045397;min-height:40px;">{{ $texts['second-box-heading'] }}</h3>
-                    <p>{{ $texts['second-box-content'] }}</p>
-                </div>
-            </div>
-            <div class="col-xl-3 benefit-wrapper text-center ">
-                <div class="benefit-box">
-                     <img src="{{ asset('images/icons/commitment.png') }}" alt="" class="welcome-icon-big">
-                    <h3 style="font-size:1.25rem;color:#045397;min-height:40px;">{{ $texts['third-box-heading'] }}</h3>
-                    <p>{{ $texts['third-box-content'] }}</p>
-                </div>
-            </div>
-             <div class="col-xl-3 benefit-wrapper text-center  ">
-                <div class="benefit-box">
-                    <img src="{{ asset('images/icons/open-book.png') }}" alt="" class="welcome-icon-big">
-                    <h3 style="font-size:1.25rem;color:#045397;min-height:40px;">{{ $texts['fourth-box-heading'] }}</h3>
-                    <p>{{ $texts['fourth-box-content'] }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> --}}
 @endsection

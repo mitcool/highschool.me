@@ -134,7 +134,7 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">Contact Us</li>
+		<li class="breadcrumb-item active" aria-current="page">Contact</li>
 	</ol>
 </div>
 
@@ -156,6 +156,7 @@
 		<h2 class="text-white text-center mt-3 mb-4">
 			{{ $texts['topics'] }}
 		</h2>
+		<div class="text-white page-content">{!! $texts['topics-intro'] !!}</div>
 		<div class="row text-center mb-5">
 			@foreach($categories as $cat)
 			<div class="col-md-4 category-container">
@@ -163,8 +164,11 @@
 					<div class="category-icon-frame mt-3">
 						<img src="{{ asset('/images/contact-page') }}/{{ $cat->icon }}" class="category-icon" alt="{{ $cat->topic }}">
 					</div>
+					
 					<p class="mt-3 category-topic">{{ $cat->topic }}</p>
-					<p class="category-description">{{ $cat->description }}</p>
+						<div class="page-content">
+							<p class="category-description">{{ $cat->description }}</p>
+						</div>
 				</div>
 			</div>
 			@endforeach
@@ -175,6 +179,9 @@
 	
 </div>
 <div class="row col-md-8 mx-auto mb-0 pt-5 pb-5">
+	<div class="col-xl-12 page-content mb-3">
+		{!! $texts['last-section-text'] !!}
+	</div>
 	<div class="col-xl-6">
 		<form action="/send-email-modal" method="POST"  id="contact-form">
   		{{csrf_field()}}

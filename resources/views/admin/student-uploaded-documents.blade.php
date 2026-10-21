@@ -81,7 +81,7 @@
 
                 <div class="col-md-4 text-end">
                     @if(isset($uploaded_documents[$type]))
-                        <a href="{{ asset('documents/' . $uploaded_documents[$type]->student_id . '/' . $uploaded_documents[$type]->file) }}"
+                        <a href="{{ route('admin.student-document.file', $uploaded_documents[$type]->id) }}"
                            target="_blank"
                            class="open-link">
                             Open

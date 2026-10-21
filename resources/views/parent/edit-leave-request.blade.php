@@ -91,7 +91,7 @@
         <div class="leave-edit-label">File</div>
         <div class="leave-edit-value">
             @if($leaveRequest->file)
-                <a href="{{ asset('/documents/leave_requests/'.$leaveRequest->file) }}" target="_blank" class="text-primary">
+                <a href="{{ route('parent.leave-requests.file', $leaveRequest->id) }}" target="_blank" class="text-primary">
                     {{ $leaveRequest->file }}
                 </a>
             @else

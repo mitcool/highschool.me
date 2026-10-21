@@ -9,21 +9,18 @@ use App\PressRelease;
 use App\PressReleaseCitation;
 use App\PressReleaseSection;
 use App\DynamicNewsAuthor;
-use App\PressReleaseSectionDetail;
-use App\PressReleaseSectionTranslation;
-use App\PressReleaseSectionDetailTranslation;
-use App\PressReleaseCategory;
-use App\PressReleaseImageAttribute;
 use App\Image;
 
 class PressReleaseController extends Controller
 {
 
     public $path;
+    public $pdf_path;
 
     public function __construct(){
-        $this->path  = '/images/press_release';
-        $this->pdf_path = '/images/press_release/pdf';
+        $this->path  = public_path('images/press-release');
+        // Citation PDFs are downloaded from images/pdf on the public page
+        $this->pdf_path = public_path('images/pdf');
     }
     public function index(){
         $authors = DynamicNewsAuthor::all();
@@ -44,10 +41,11 @@ class PressReleaseController extends Controller
             'heading'=> 'required',
             'teaser' => 'required',
             'media_name' => 'required',
-            'pdf_file' => 'required'
+            'pdf_file' => 'required',
+            'picture' => 'required|image'
         ]);
         $types = $request->type;
-        $contents = $request->content;
+        $contents = $request->content ?? [];
         $data = $request->only('author_id','slug','key_facts','meta_title','meta_description','minutes','heading','teaser');
         $pdf_files = $request->file('pdf_file');
         $media_name = $request->media_name;
@@ -60,7 +58,7 @@ class PressReleaseController extends Controller
         
         Image::create([
             'nickname' => 'press-release-'.$press_release->id,
-            'src' => $this->path.'/'.$picture_name,
+            'src' => '/images/press-release/'.$picture_name,
             'alt' => '',
             'title'=>''
         ]);
@@ -97,39 +95,6 @@ class PressReleaseController extends Controller
                     'content' => trim($content),
                 ]);
             }
-            else if($types[$key] == 3){
-
-                $section_id =PressReleaseSection::insertGetId([
-                    'news_id' => $press_release->id,
-                    'type' => $types[$key],
-                    'content' => $content,
-                ]);
-                
-                
-                foreach($details[$key+1] as $index => $content ){
-
-                    $detail_id =PressReleaseSectionDetail::insertGetId([
-                        'section_id' => $section_id,
-                        'content' => $content,
-                    ]);           
-                }
-            }
-            else if($types[$key] == 4){
-                $section_id = PressReleaseSection::insertGetId([
-                    'news_id' => $press_release->id,
-                    'content' => $content,
-                    'type' => $types[$key]
-                ]);
-                
-                
-                foreach($details[$key+1] as $index => $content ){
-
-                    $detail_id = PressReleaseSectionDetail::insertGetId([
-                        'section_id' => $section_id,
-                        'content' => $content,
-                    ]);
-                }
-            }
         }
 
         foreach($pdf_files as $key => $pdf_file){
@@ -149,7 +114,7 @@ class PressReleaseController extends Controller
     }
 
     public function show($news_id){
-       $news = PressRelease::with('sections')->find($news_id);
+       $news = PressRelease::with('sections')->findOrFail($news_id);
        $authors = DynamicNewsAuthor::all();
        return view('admin.press-release.edit')
             ->with('authors', $authors)
@@ -202,7 +167,8 @@ class PressReleaseController extends Controller
             $new_ids[$ref] = PressReleaseSection::insertGetId([
                 'content' => $content,
                 'type' => $type,
-                'news_id' => $news_id
+                'news_id' => $news_id,
+                'position' => 0
             ]);
         }
 
@@ -214,7 +180,7 @@ class PressReleaseController extends Controller
             }
         }
 
-        return redirect()->back()->with('success_message','Facts hub article updated successfully');
+        return redirect()->back()->with('success_message','Press release updated successfully');
     }   
 
     public function destroy($news_id){
@@ -227,36 +193,6 @@ class PressReleaseController extends Controller
         $press_release->delete();
 
         return redirect()->back()->with('success_message','Press release deleted successfully');
-    }
-
-    public function getImagesAttributes(){
-        $images = DynamicNewsSection::with('all_translations')->where('type',2)->get(); //we take only the images section from Blog structure
-        return view('admin.news-image-attributes')
-            ->with('images',$images);
-    }
-
-    public function changeImageAttributes(Request $request,$image_id){
-
-        if(DynamicNewsImageAttribute::where('image_id',$image_id)->count() == 0){
-                DynamicNewsImageAttribute::insert([
-                'alt_en' => $request->alt_en,
-                'alt_de' => $request->alt_de,
-                'title_en' => $request->title_en,
-                'title_de' => $request->title_de,
-                'image_id' => $image_id
-                ]);
-
-        }
-        else{
-            DynamicNewsImageAttribute::where('image_id',$image_id)->update([
-                'alt_en' => $request->alt_en,
-                'alt_de' => $request->alt_de,
-                'title_en' => $request->title_en,
-                'title_de' => $request->title_de,
-            ]);
-        }
-       
-        return redirect()->back();
     }
 }
 

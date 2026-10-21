@@ -61,11 +61,12 @@ ul {
 
 .page-content li {
     list-style: none;
-    padding: 10px 30px;
+    padding: 0 30px;
     background-image: url("/images/orange-checkmark.webp");
     background-repeat: no-repeat;
-    background-position: left center;
+    background-position: left top;
     background-size: 30px;
+    margin-bottom: 10px;
 }
 textarea.form-control:focus,
 input[type="text"]:focus,

@@ -9,6 +9,9 @@
    Header set Access-Control-Allow-Origin "*"
 </FilesMatch>
     RewriteEngine On
+
+    # Private student documents and leave attachments: only served through authorized routes
+    RewriteRule ^documents/ - [R=404,L,NC]
 	
 	# Strip www from domain name
 	RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
