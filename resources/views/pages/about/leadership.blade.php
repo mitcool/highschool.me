@@ -42,7 +42,7 @@
                     <h1 class="text-center page-headings">{{ $texts['heading'] }}</h1>
                     <hr class="white-hr">
                     <div class="w-100 centered text-center mx-auto mb-5">
-                        <img src="{{ asset('images/mathias-kunze-leadership.png') }}" class="w-100" alt="">
+                        <img src="{{ asset('images/mathias-kunze-leadership.webp') }}" class="w-100" alt="">
                     </div>
                     <div class="video mt-1 mb-5 w-75 mx-auto">
                         <iframe width="100%" src="https://www.youtube.com/embed/a025DL3Zep0?si=aMjbEH8fGRilDVns" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>

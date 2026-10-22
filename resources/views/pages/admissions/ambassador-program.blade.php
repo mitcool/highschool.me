@@ -44,7 +44,9 @@
             <li class="breadcrumb-item active" aria-current="page">{{ $texts['breadcrumb'] }}</li>
         </ol>
     </div>
-    
+    <div class="page-content">
+
+   
     <div class="container-fluid bg-white box">
         <div class="container">
             <div class="text-center">
@@ -115,6 +117,7 @@
     </div>
 
     <x-three-buttons/>
+     </div>
 @endsection
 
 @section('footerScripts')

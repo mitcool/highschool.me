@@ -144,7 +144,7 @@
 
 <x-image-component nickname="library-corridor-tall-bookshelves" class="w-100" loading="eager"/>
 
-<div class="container-fluid bg-white box pl-0 pr-0 page-content">
+<div class="container-fluid bg-white  pl-0 pr-0 page-content">
     <div class="container">
         <div class="text-center">
             <h1 class="page-headings">{{ $texts['heading'] }}</h1>
@@ -161,7 +161,7 @@
 				<div class="step-num">
 					<span class="n">1.</span>
 				</div>
-				<div class="step-content">
+				<div class="step-content text-white">
 					{!! $texts['step-1'] !!}
 				</div>
 			</div>
@@ -172,18 +172,18 @@
 				<div class="step-num">
 					<span class="n">2.</span>
 				</div>
-				<div class="step-content">
+				<div class="step-content text-white">
 					{!! $texts['step-2'] !!}
 				</div>
 			</div>
 		</div>
 
-		<div class="step-strip" style="background:var(--c3);">
+		<div class="step-strip " style="background:var(--c3);">
 			<div class="step-inner">
 				<div class="step-num">
-					<span class="n">3.</span>
+					<span class="n text-white">3.</span>
 				</div>
-				<div class="step-content">
+				<div class="step-content text-white">
 					{!! $texts['step-3'] !!}
 				</div>
 			</div>
@@ -194,7 +194,7 @@
 				<div class="step-num">
 					<span class="n">4.</span>
 				</div>
-				<div class="step-content">
+				<div class="step-content text-white">
 					{!! $texts['step-4'] !!}
 				</div>
 			</div>

@@ -96,12 +96,10 @@
 		margin-top: 20px;
 	}
 	.category-topic {
-		font-size: 19px;
 		font-weight: 600;
 		height: 60px;
 	}
 	.category-description {
-		font-size: 14px;
 		margin-bottom: 0;
 	}
 	.category-icon-frame {
@@ -165,10 +163,10 @@
 						<img src="{{ asset('/images/contact-page') }}/{{ $cat->icon }}" class="category-icon" alt="{{ $cat->topic }}">
 					</div>
 					
-					<p class="mt-3 category-topic">{{ $cat->topic }}</p>
-						<div class="page-content">
-							<p class="category-description">{{ $cat->description }}</p>
-						</div>
+					<h5 class="mt-3 category-topic">{{ $cat->topic }}</h5>
+					<div class="page-content">
+						<p class="category-description" style="font-size:1rem">{{ $cat->description }}</p>
+					</div>
 				</div>
 			</div>
 			@endforeach

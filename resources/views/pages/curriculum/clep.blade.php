@@ -135,7 +135,6 @@
 
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
     <h1 class="text-center page-headings">{{ $texts['heading'] }}</h1> <br>
-    <h2 class="text-center font-weight-bold" style="margin-bottom:20px;">{{ $texts['subheading'] }}</h2>
     <div class="page-content">{!! $texts['intro'] !!}</div>
     <hr>
 </div>

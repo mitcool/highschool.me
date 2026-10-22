@@ -17,7 +17,7 @@
 @section('headCSS')
 <style>
     .small-text {
-        font-size: 14px;
+        /* font-size: 14px; */
         line-height: 1.7;
         color: #8a8a8a;
     }
@@ -48,7 +48,6 @@
     }
     .feature-label {
         color: #111;
-        font-size: 1.02rem;
         font-weight: 600;
         line-height: 1.35;
         margin: 0;
@@ -89,19 +88,16 @@
         align-items: center;
         gap: 12px;
         color: #111;
-        font-size: 1.12rem;
         font-weight: 700;
         line-height: 1.35;
         margin-bottom: 16px;
     }
     .freshman-kit-card-title i {
         color: #111;
-        font-size: 1rem;
         flex-shrink: 0;
     }
     .freshman-kit-card-text {
         color: #2f2f2f;
-        font-size: 1.02rem;
         line-height: 1.45;
         margin: 0;
     }
@@ -158,14 +154,14 @@
         .freshman-kit-card-body {
             padding: 22px 18px;
         }
-        .freshman-kit-card-title {
+        /* .freshman-kit-card-title {
             font-size: 1rem;
             gap: 10px;
             margin-bottom: 14px;
         }
         .freshman-kit-card-text {
             font-size: .98rem;
-        }
+        } */
     }
 </style>
 @endsection
@@ -178,7 +174,7 @@
     </ol>
 </div>
 <x-image-component nickname="freshman-kit-cover" class="digital_studies-images main-pictures-pages"/>
-<div class="mb-5">
+<div class="mb-5 page-content">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-9 text-center">
