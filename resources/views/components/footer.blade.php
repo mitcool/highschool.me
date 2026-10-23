@@ -172,6 +172,13 @@
 							<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('terms-and-conditions')}}">
 								{{ $texts['terms'] }}
 							</a></li>
+							<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('privacy-policy')}}">
+								{{ $texts['privacy-policy'] }}
+							</a></li>
+							<li onmouseover="mousein(event)" onmouseout="mouseout(event)"><a href="{{ route('imprint')}}">
+								{{ $texts['imprint'] }}
+							</a></li>
+							
 							<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
 								<a href="{{ route('blog')}}">
 								{{ $texts['news-explorer'] }}

@@ -72,4 +72,16 @@ class FooterController extends Controller
     return view('pages.footer.single-country-requirements')
       ->with('country',$country);
   }
+
+  public function imprint(Request $request){
+    $texts = $request->all()['texts'];
+    return view('pages.footer.imprint')
+      ->with('texts',$texts);
+  }
+
+  public function privacy(Request $request){
+    $texts = $request->all()['texts'];
+    return view('pages.footer.privacy-policy')
+      ->with('texts',$texts);
+  }
 }

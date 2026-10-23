@@ -22,6 +22,7 @@
 			width:100%;
 			height:auto;
 			aspect-ratio:16 / 9;
+			border: 6px solid #045397;
 		}
 	</style>
 @endsection

@@ -313,6 +313,12 @@ Route::group(['middleware' => 'text'],function(){
 
 	Route::get('/terms-and-conditions', 'FooterController@terms')->name('terms-and-conditions');
 
+	Route::get('/imprint', 'FooterController@imprint')->name('imprint');
+
+	Route::get('/privacy-policy', 'FooterController@privacy')->name('privacy-policy');
+
+	Route::get('/terms-and-conditions', 'FooterController@terms')->name('terms-and-conditions');
+
 	Route::get('/country-requirements','FooterController@countryRequirements')->name('country-requirements');
 
 	Route::get('/country-requirements/{country_id}','FooterController@singleCountryRequirements')->name('single-country-requirements');
