@@ -170,8 +170,8 @@
 <div class="container-fluid page-content">
     <div class="row text-white" style="background: #045397;opacity:0.8;">
         <div class="col-xl-2"></div>
-        <div class="col-xl-3 custom-padding">
-            <img src="{{ asset('images/glasses.png') }}" alt="" class="w-100">
+        <div class="col-xl-3 custom-padding d-flex align-items-center justify-content-center">
+            <img src="{{ asset('images/track1.webp') }}" alt="" class="w-100">
         </div>
         <div class="col-xl-5 custom-padding">{!! $texts['track-1'] !!}</div>
         <div class="col-xl-2"></div>
@@ -179,15 +179,15 @@
     <div class="row text-white reverse" style="background:#045397;opacity:0.9">
         <div class="col-xl-2"></div>
         <div class="col-xl-5 custom-padding"> {!! $texts['track-2'] !!}</div>
-        <div class="col-xl-3 custom-padding">
-            <img src="{{ asset('images/glasses.png') }}" alt="" class="w-100">
+        <div class="col-xl-3 custom-padding d-flex align-items-center justify-content-center">
+            <img src="{{ asset('images/track2.webp') }}" alt="" class="w-100">
         </div>
         <div class="col-xl-2"></div>
     </div>
     <div class="row text-white" style="background:#045397">
         <div class="col-xl-2"></div>
-        <div class="col-xl-3 custom-padding" >
-            <img src="{{ asset('images/glasses.png') }}" alt="" class="w-100">
+        <div class="col-xl-3 custom-padding d-flex align-items-center justify-content-center">
+            <img src="{{ asset('images/track3.webp') }}" alt="" class="w-100">
         </div>
         <div class="col-xl-5 custom-padding" > {!! $texts['track-3'] !!}</div>
         <div class="col-xl-2"></div>
@@ -195,8 +195,8 @@
     <div class="row text-white reverse" style="background:#045397;opacity:0.9">
         <div class="col-xl-2"></div>
         <div class="col-xl-5 custom-padding"> {!! $texts['track-4'] !!}</div>
-        <div class="col-xl-3 custom-padding">
-            <img src="{{ asset('images/glasses.png') }}" alt="" class="w-100">
+        <div class="col-xl-3 custom-padding d-flex align-items-center justify-content-center">
+            <img src="{{ asset('images/track4.webp') }}" alt="" class="w-100">
         </div>
         <div class="col-xl-2"></div>
     </div>
