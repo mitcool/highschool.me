@@ -319,11 +319,11 @@ Route::group(['middleware' => 'text'],function(){
 
 	Route::get('/terms-and-conditions', 'FooterController@terms')->name('terms-and-conditions');
 
-	Route::get('/country-requirements','FooterController@countryRequirements')->name('country-requirements');
+	Route::get('/international-diploma-recognition','FooterController@countryRequirements')->name('country-requirements');
 
-	Route::get('/country-requirements/{country_id}','FooterController@singleCountryRequirements')->name('single-country-requirements');
+	Route::get('/international-diploma-recognition/{country_id}','FooterController@singleCountryRequirements')->name('single-country-requirements');
 
-	Route::get('/country-requirements/{lang}/{country_id}','FooterController@singleTranslatedCountryRequirements')->name('single-country-translated-requirements');
+	Route::get('/international-diploma-recognition/{lang}/{country_id}','FooterController@singleTranslatedCountryRequirements')->name('single-country-translated-requirements');
 
 
 	Route::get('/sitemap','SitemapController@showSitemapHTML')->name('sitemap');

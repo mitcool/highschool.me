@@ -7,7 +7,7 @@
 		</div>
 		<div class="d-flex w-100 justify-content-between mt-5" id="testimonial_box">
 			<div class="video">
-				<video width="100%" height="auto" controls height="400">
+				<video width="100%" height="auto" controls height="400" style="border: 6px solid #045397;">
 					<source src="{{ asset('videos/testimonials_video.mp4')}}" type="video/mp4" >
 					Your browser does not support the video tag.
 				</video>

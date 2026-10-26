@@ -134,6 +134,7 @@
 						{{-- preload="none"
 						    poster="{{ asset('images/onsites-graduate-school-logo.png') }}" --}}
 						width="75%"
+						style="border: 6px solid #045397;"
 					   
 					>
 						<source src="{{ asset('study-mentor-videos') }}/{{ $course_mentor->video }}" type="video/mp4">

@@ -121,7 +121,7 @@
 	<div class="container page-content">
 		<h1 class="text-center page-headings">{{ $texts['heading'] }}</h1>
    
-    <p class="mt-5">{{ $texts['intro'] }}</p>
+    {{-- <p class="mt-5">{{ $texts['intro'] }}</p> --}}
 	</div>
 
   <div class="container page-content">
