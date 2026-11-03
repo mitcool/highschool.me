@@ -2,10 +2,10 @@
 
 
 @section('seo')
-	<title>{{trans('sitemap.meta-title')}}</title>
-	<meta itemprop="description" name="description" content="{{ trans('sitemap.meta-description') }}" />
-    <meta itemprop="url" property="og:url" content="{{ config('app.url') }}/sitemap"/>
-	<meta property="og:description" content="{{ trans('sitemap.meta-description') }}"/>
+	<title></title>
+	<meta itemprop="description" name="description" content="" />
+    <meta itemprop="url" property="og:url" content="{{ route('sitemap')}}" />
+	<meta property="og:description" content=""/>
 	<x-seo.web-page-schema :url="route('sitemap')" name="Sitemap" :description="trans('sitemap.meta-description')" :breadcrumbs="[['name' => 'Home', 'url' => route('welcome')], ['name' => 'Sitemap', 'url' => route('sitemap')]]" />
 @endsection
 
@@ -77,7 +77,7 @@
                 <a href="{{ route('accreditation') }}">Accreditation</a>
                 <a href="{{ route('leadership') }}">Leadership</a>
                 <a href="{{ route('academics') }}">Faculty & Educators</a>
-                <a href="{{ route('academics') }}">Students in Spotlight</a>
+                <a href="{{ route('students-in-spotlight') }}">Students in Spotlight</a>
                 <a href="{{ route('partnership') }}">Partnerships</a>
             </div>
         </div>
@@ -131,6 +131,8 @@
                 <a href="{{ route('code-of-ethics')}}">Code of Ethics</a>
                 <a href="{{ route('accessibility')}}">Accessibility</a>
                 <a href="{{ route('terms-and-conditions')}}">Terms and Conditions</a>
+                <a href="{{ route('privacy-policy')}}">Privacy Policy</a>
+                <a href="{{ route('imprint')}}">Imprint</a>
                 <a href="{{ route('blog')}}">News Explorer</a>
                 <a href="{{ route('facts-hub')}}">Fact Hub</a>
                 <a href="{{ route('press-release')}}">Press Release</a>
