@@ -200,7 +200,7 @@
                                     required
                                 >
                                 <label class="form-check-label" for="terms">
-                                    I agree to the <a href="/" target="_blank">Terms & Conditions</a>
+                                    I agree to the <a href="{{ route('terms-and-conditions') }}" target="_blank">Terms & Conditions</a>
                                 </label>
                             </div>
                             <span class="checkbox-details">

@@ -21,7 +21,7 @@
 			"@type": "WebSite",
 			"@id": "{{ route('welcome') }}#website",
 			"url": "{{ route('welcome') }}",
-			"name": "ONSITES Graduate School"
+			"name": "ONSITES High School"
 		},
 		"breadcrumb": {
 			"@type": "BreadcrumbList",

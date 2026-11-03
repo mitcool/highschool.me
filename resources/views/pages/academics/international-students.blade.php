@@ -52,7 +52,7 @@
 				{!! $texts['intro'] !!}
 				<div class="row">
 					<div class="col-md-6">
-						<img src="{{ asset('images/international-students.png') }}" alt="" class="w-100"/> 
+						<img src="{{ asset('images/international-students.webp') }}" alt="" class="w-100"/> 
 					</div>
 					<div class="col-md-6">
 						{!! $texts['content'] !!}

@@ -307,7 +307,7 @@ Route::group(['middleware' => 'text'],function(){
 
 	Route::get('/tuition-assistance','AdmissionController@tuitionAssistance')->name('tuition-assistance');
 
-	Route::get('/apply','AdmissionController@apply')->name('apply');
+	//Route::get('/apply','AdmissionController@apply')->name('apply');
 
 	Route::get('/ambassador-program','AdmissionController@ambassadorProgram')->name('ambassador-program');
 

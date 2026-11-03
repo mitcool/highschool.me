@@ -269,6 +269,10 @@
                     <i class="fas fa-clipboard-list"></i>
                     <span>Features order</span>
                 </a>
+                <a class="admin-mobile-menu-link" href="{{ route('admin.discounts') }}">
+                    <i class="fas fa-tags"></i>
+                    <span>Discounts</span>
+                </a>
 
                 <div class="admin-mobile-menu-section">Meetings</div>
                 <a class="admin-mobile-menu-link" href="{{ route('admin-group-sessions') }}">
@@ -488,6 +492,12 @@
                         <a class="nav-link collapsed" href="{{route('admin-features-order')}}">
                             <i class="fas fa-clipboard-list"></i>
                             <span>Features order</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="{{route('admin.discounts')}}">
+                            <i class="fas fa-tags"></i>
+                            <span>Discounts</span>
                         </a>
                     </li>
 

@@ -127,7 +127,7 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
                                     <td style="{{ $fontFamily }} {{ $style['email-footer_cell'] }}">
                                         <p style="{{ $style['paragraph-sub'] }}">
                                             &copy; 
-                                            GRADUATE.ME
+                                            HIGHSCHOOL.ME
                                         </p>
                                     </td>
                                 </tr>

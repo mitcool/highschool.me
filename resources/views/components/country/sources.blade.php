@@ -4,7 +4,7 @@
         {!! $country->sources?->text !!}
         <div class="row shadow" style="padding:20px;">
             <div class="col-md-2">
-                 <img src="{{ asset('images/mathias-kunze.png') }}" alt="">
+                 <img src="{{ asset('images/mathias-kunze.webp') }}" alt="">
             </div>
            <div class="col-md-10">
                 <h5>Dr. Mathias Kunze, LL.M.</h5>

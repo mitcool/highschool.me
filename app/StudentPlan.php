@@ -11,7 +11,7 @@ class StudentPlan extends Model
 {
     use HasFactory;
 
-    protected $fillable  = ['student_id','plan_id','expires_at','type'];
+    protected $fillable  = ['student_id','plan_id','expires_at','type','discount_code'];
     
     public function plan(){
         return $this->hasOne('App\Plan','id','plan_id');

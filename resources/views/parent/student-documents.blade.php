@@ -165,7 +165,11 @@
 
         <p><span class="text-danger">*</span> Required fields</p>
         <hr>
-        <input type="radio" checked readonly style="accent-color: #E9580C; "> Documentation Approval Fee <span style="color:#E9580C">($150.00)</span>
+        @if($student->student_details->discount_code)
+            <input type="radio" checked readonly style="accent-color: #E9580C; "> Documentation Approval Fee <span style="color:#E9580C">(&euro;100.00)</span>
+        @else
+            <input type="radio" checked readonly style="accent-color: #E9580C; "> Documentation Approval Fee <span style="color:#E9580C">($150.00)</span>
+        @endif
         <div class="text-center">
             <input type="hidden" value="{{ $student->id }}" name="id" />
             <button class="shadow orange-button">Proceed</button>

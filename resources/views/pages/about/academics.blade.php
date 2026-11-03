@@ -94,7 +94,7 @@
 						<div class="educator-box">
 							<a class="row p-4 educator-box-inside" href="{{ route('single-academic', $academic->slug) }}">
 								<div class="col-md-4">
-									<x-image-component nickname="academic-{{$academic->id}}" class="w-100" style="display:block;" id="test"/>
+									<x-image-component nickname="academic-{{$academic->id}}" class="w-100" style="display:block;"/>
 								</div>
 								<div class="col-md-8">
 									<h5 class="name" style="color:#035397;font-weight-bold;">{{ $academic->name }}</h5>
@@ -108,10 +108,4 @@
 		</div>	
 	</div>
 </div>
-@endsection
-
-@section('footerScripts')
-<script>
-	
-</script>
 @endsection

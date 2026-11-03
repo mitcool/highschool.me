@@ -199,8 +199,8 @@ class CronjobController extends Controller
         $checked = 0;
         $sent = 0;
         $now = Carbon::now();
-        $absenceThreshold = $now->copy()->subDays(15);
-        $absenceWindowStart = $now->copy()->subDays(16);
+        $absenceThreshold = $now->copy()->subDays(7);
+        $absenceWindowStart = $now->copy()->subDays(8);
 
         $students = User::with(['student_details.parent'])
             ->where('role_id', 4)

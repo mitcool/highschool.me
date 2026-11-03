@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html>
 
 <head>
@@ -172,4 +172,4 @@ $fontFamily1 = "font-family:'Montserrat', sans-serif;";
         </tr>
     </table>
 </body>
-</html>
+</html> --}}

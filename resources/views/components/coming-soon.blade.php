@@ -63,7 +63,7 @@
     <div class="coming-soon-card">
         <x-image-component nickname="cartoon-character-tools-gears-maintenance" loading="eager" />
 
-        <h2 class="coming-soon-title">Coming soon</h2>
+        <h1 class="coming-soon-title h2">Coming soon</h1>
 
         {{-- <p class="coming-soon-text">Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros. Maecenas fringilla elit in nibh efficitur placerat. Nulla sed felis neque. Aenean suscipit lorem ac orci ultricies, ac gravida tellus pretium. Vivamus vitae nisi a dolor aliquet varius in a eros.</p> --}}
 

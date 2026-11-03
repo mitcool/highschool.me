@@ -408,6 +408,23 @@
             <p class="mb-0 font-weight-bold mt-3">You must pay mandatory Enrolment Fee:</p>
             <form action="{{ route('parent.pay.plan',$student->id) }}" method="POST" id="plan-pay" class="confirm-first">
                 {{ csrf_field() }}
+                @if($student->student_details->discount_code)
+                <input type="radio" checked readonly class="radio"> Enrolment Fee <span style="color:#E9580C">(&euro;100.00)</span> 
+                <p class="mb-0 font-weight-bold mt-3">Please select your preferred Package:</p>
+              
+                <div>
+                    <input class="plans" value="{{ $plans[0]->id }}" type="radio" checked  name="plan" data-price-per-year="1200" data-price-per-month="120"> {{ $plans[0]->name }} Package <span class="price">&euro;120.00</span>
+                </div> 
+              
+                <p class="mb-0 font-weight-bold mt-3">Please select Monthly or Yearly Plan:</p>
+                <div>
+                    <input type="radio" checked name="payment_type" class="payment-type" value="0"> Monthly Fee 
+                </div>
+                <div>
+                    <input type="radio" name="payment_type" class="payment-type" value="1"> Yearly Fee 
+                </div>
+                
+                @else
                 <input type="radio" checked readonly class="radio"> Enrolment Fee <span style="color:#E9580C">($300.00)</span> 
                 <p class="mb-0 font-weight-bold mt-3">Please select your preferred Package:</p>
                 @foreach($plans as $key => $plan)
@@ -422,6 +439,8 @@
                 <div>
                     <input type="radio" name="payment_type" class="payment-type" value="1"> Yearly Fee 
                 </div>
+              
+                @endif
                 <p class="mb-0 font-weight-bold mt-3">You can find more information about the Payment Plans <a target="_blank" href="{{ route('standard-high-school') }}">HERE.</a></p>
                 <hr>
                 <div class="d-flex justify-content-between">

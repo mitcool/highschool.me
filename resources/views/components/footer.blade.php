@@ -13,16 +13,16 @@
 						<li class="footer-company-address-detail" style="cursor: context-menu;">{{ $texts['phone'] }}</li>
 					</ul>
 					<div class="d-flex align-items-center" id="footer-share-div" style="gap:10px;margin-top:8px;">
-						<a href="/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" style="color:#045397;">
+						<a href="https://www.facebook.com/profile.php?id=61577086239035" target="_blank" rel="noopener noreferrer" aria-label="Facebook" style="color:#045397;">
 							<i class="fab fa-facebook-f" style="font-size:20px;"></i>
 						</a>
-						<a href="/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style="color:#045397;">
+						<a href="https://www.instagram.com/onsites.high.school/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style="color:#045397;">
 							<i class="fab fa-instagram" style="font-size:20px;"></i>
 						</a>
-						<a href="/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" style="color:#045397;">
+						<a href="https://www.linkedin.com/company/onsites-high-school/posts/?feedView=all" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" style="color:#045397;">
 							<i class="fab fa-linkedin-in" style="font-size:20px;"></i>
 						</a>
-						<a href="/" target="_blank" rel="noopener noreferrer" aria-label="YouTube" style="color:#045397;">
+						<a href="https://www.youtube.com/@OnsitesHighSchool" target="_blank" rel="noopener noreferrer" aria-label="YouTube" style="color:#045397;">
 							<i class="fab fa-youtube" style="font-size:20px;"></i>
 						</a>
 					</div>
@@ -192,9 +192,10 @@
 								{{ $texts['press-release'] }}
 							</a></li>
 							<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
-								<a href="#" data-toggle="modal" data-target="#cookie_modal">
-								{{ $texts['cookies'] }}
-							</a></li>
+								<span data-toggle="modal" data-target="#cookie_modal">
+									{{ $texts['cookies'] }}
+								</span>
+							</li>
 							<li onmouseover="mousein(event)" onmouseout="mouseout(event)">
 								<a href="{{ route('sitemap') }}">
 								{{ $texts['sitemap'] }}

@@ -44,6 +44,7 @@ use App\StudentMeeting;
 use App\ParentExtraService;
 use App\ParentExtraServiceType;
 use App\ParentGuardianProfile;
+use App\Discount;
 
 use App\Mail\NewDiplomaPrintingRequest;
 use App\Mail\StudentCreated;
@@ -84,7 +85,7 @@ class ParentController extends Controller
         return $invoice_number;
     }
 
-    private function createInvoice($amount,$description){
+    private function createInvoice($amount,$description,$discount = false){
         /**
          * Column `street` in invoices table == `address`
          * Column `street number` == `address two`
@@ -106,6 +107,7 @@ class ParentController extends Controller
             'ZIPcode' => auth()->user()->invoice_details->zip,
             'country_id' => auth()->user()->invoice_details->country_id,
             'description' => $description,
+            'discount' => $discount
         ]);
 
         return;
@@ -323,6 +325,7 @@ class ParentController extends Controller
             'phonecode' => 'required',
             'phone_number' => 'required',
             'same_address' => 'required',
+           
         ];
 
         if($same_address == 1){
@@ -360,6 +363,13 @@ class ParentController extends Controller
         if($education_option == 4 || $education_option == 5){
             $status = ParentStudent::ACTIVE;
         }
+
+        $requested_code = $request->filled('discount_code') ? trim($request->discount_code) : null;
+        $discount_code = null;
+        if(Discount::where('code', $requested_code)->where('is_active', true)->count()){
+            $discount_code = $requested_code;
+        }
+
         ParentStudent::create([
             'parent_id' => auth()->user()->id,
             'student_id'=> $student->id,
@@ -383,6 +393,7 @@ class ParentController extends Controller
             'city' => $same_address == 1 ? $request->city : auth()->user()->invoice_details->city,
             'state' => $same_address == 1 ? $request->state : auth()->user()->invoice_details->state,
             'country_id' => $same_address == 1 ? $request->country : auth()->user()->invoice_details->country_id,
+            'discount_code' => $discount_code,
             'tokens' => 1500  // Defined by marketing team (TOKENS == QUESTIONS) 
             // //After selection of plan update in case they have Pro or Elite
         ]);
@@ -589,11 +600,18 @@ class ParentController extends Controller
             ->with('student',$student);
     }
      public function applicationFee($student_id){
-        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+        $parent_student = ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->first();
+        if(!$parent_student){
             abort(403);
         }
-
+        
         $application_fee = 150;
+        $currency = 'usd';
+
+        if($parent_student->discount_code){
+            $application_fee = 100;
+            $currency = 'eur';
+        }
 
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
@@ -601,7 +619,7 @@ class ParentController extends Controller
             'line_items'  => [
                 [
                     'price_data' => [
-                        'currency'     => 'usd',
+                        'currency'     => $currency,
                         'product_data' => [
                             'name' => 'Application fee',
                         ],
@@ -617,13 +635,20 @@ class ParentController extends Controller
         return redirect()->away($session->url);
     }
     public function applicationFeeSuccess($student_id){
-        if(ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->count() < 1){
+        $parent_student = ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->first();
+        if(!$parent_student){
             abort(403);
         }
         $application_fee = 150;
+        $discount = false;
+
+        if($parent_student->discount_code){
+            $application_fee = 100;
+            $discount = true;
+        }
         
         ParentStudent::where('student_id',$student_id)->update(['status' => ParentStudent::PAID_APPLICATION_FEE]);
-        $this->createInvoice($application_fee,'Application Fee');
+        $this->createInvoice($application_fee,'Application Fee',$discount);
 
         $student = User::find($student_id);
         $this->notifyAdmins(new StudentCreatedAdmin(auth()->user(),$student));
@@ -653,18 +678,32 @@ class ParentController extends Controller
 
     public function enrollmentFee($student_id,$plan_id,$payment_type){
 
+        $parent_student = ParentStudent::where('student_id',$student_id)->where('parent_id',auth()->id())->first();
         $enrollment_fee = 300;
+        $currency = 'usd';
         $plan = Plan::find($plan_id);
         $plan_price = $payment_type == 0 ? $plan->price_per_month : $plan->price_per_year;
         $period = $payment_type == 0 ? 'per month' : 'per year';
         $amount = $plan_price + $enrollment_fee;
         $invoice_description = 'Enrollment fee and '.$plan->name. ' package ('. $period .')';
 
+        if($parent_student->discount_code){
+            $enrollment_fee = 100;
+            $currency = 'eur';
+            $plan = Plan::find($plan_id);
+            $plan_price = $payment_type == 0 ? 120 : 1200;
+            $period = $payment_type == 0 ? 'per month' : 'per year';
+            $amount = $plan_price + $enrollment_fee;
+            $invoice_description = 'Enrollment fee and '.$plan->name. ' package ('. $period .')';
+        }
+        
+
         $student_data = [
             'student_id' => $student_id,
             'status' => ParentStudent::DOCUMENTS_APPROVED,
             'plan_id' => $plan_id,
-            'payment_type' => $payment_type //montly => 0 , yearly => 1
+            'payment_type' => $payment_type, //montly => 0 , yearly => 1
+            'discount_code' => session()->pull('discount_code')
         ];
         $invoice_data = [
             'description' => $invoice_description,
@@ -680,7 +719,7 @@ class ParentController extends Controller
             'line_items'  => [
                 [
                     'price_data' => [
-                        'currency'     => 'usd',
+                        'currency'     => $currency,
                         'product_data' => [
                             'name' => $invoice_description,
                         ],
@@ -711,7 +750,8 @@ class ParentController extends Controller
             'plan_id' => $student_data['plan_id'],
             'student_id' => $student_data['student_id'],
             'expires_at' => $exprires_at,
-            'type' => $student_data['payment_type']
+            'type' => $student_data['payment_type'],
+            'discount_code' => $student_data['discount_code'] ?? null
         ]);
 
         $this->insertAdditionalCourses($student_data['plan_id'],$student_data['student_id']);
@@ -1112,6 +1152,16 @@ class ParentController extends Controller
         }
          $payment_type = $request->payment_type; # 0 => monthly 1 => yearly
          $plan_id = $request->plan;
+
+         $discount_code = trim((string) $request->discount_code);
+         if($discount_code !== ''){
+             $discount = Discount::where('code',$discount_code)->first();
+             if(!$discount || !$discount->isValid()){
+                 return redirect()->back()->withInput()->with('error','The discount code is invalid or has expired');
+             }
+         }
+         session()->put('discount_code', $discount_code !== '' ? $discount_code : null);
+
          return redirect()->route('enrollment-fee',[$student_id,$plan_id,$payment_type]);
     }
 

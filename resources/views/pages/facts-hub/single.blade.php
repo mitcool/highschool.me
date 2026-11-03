@@ -5,36 +5,66 @@
 	<meta itemprop="title" property="og:title" content="{{ strip_tags($article->meta_title)  }}"/>
 	<meta itemprop="description" name="description" content="{{ strip_tags($article->meta_description) }}" />
 	<meta property="og:description" content="{{ strip_tags($article->meta_description) }}"/>
-	<meta itemprop="url" property="og:url" content="{{ request()->url() }}"/>
-	<meta itemprop="image" property="og:image" content="{{ asset('news_images') }}/{{ $article->image }}"/>
-	<meta property="og:type" content="website">
-	<script type="application/ld+json">
-		{
-			"@context": "https://schema.org",
-			"@type": "Article",
-			"mainEntityOfPage": {
-			"@type": "WebPage",
-			"@id": "https://graduate.me/de/blog/{{$article->slug}}"
-			},
-			"headline": "{{$article->title}}",
-			"description": "{{$article->description}}",
-			"image": "https://graduate.me/public/images/{{$article->slug}}.webp",  
-			"author": {
-			"@type": "Organization",
-			"name": "ONSITES Graduate School"
-			},  
-			"publisher": {
-			"@type": "Organization",
-			"name": "ONSITES Graduate School",
-			"logo": {
-				"@type": "ImageObject",
-				"url": ""
-			}
-			},
-			"datePublished": "{{ $article->created_at }}",
-			"dateModified": "{{ $article->created_at }}}"
-		}
-	</script>
+	@php
+		$articleUrl = route('single-facts-hub', $article->slug);
+		$articleImageUrl = $article->image ? asset('images/fact-hub/'.$article->image) : null;
+		$articleHeadline = trim(strip_tags(optional($article->sections->first())->content)) ?: trim(strtok(strip_tags($article->meta_title), '|'));
+		$publishedAt = $article->created_at ? \Illuminate\Support\Carbon::parse($article->created_at) : null;
+		$modifiedAt = $article->updated_at ? \Illuminate\Support\Carbon::parse($article->updated_at) : $publishedAt;
+
+		$schema = [
+			'@context' => 'https://schema.org',
+			'@graph' => [
+				array_filter([
+					'@type' => 'Article',
+					'@id' => $articleUrl.'#article',
+					'mainEntityOfPage' => [
+						'@type' => 'WebPage',
+						'@id' => $articleUrl,
+					],
+					'headline' => $articleHeadline,
+					'description' => strip_tags($article->meta_description),
+					'image' => $articleImageUrl ? [$articleImageUrl] : null,
+					'author' => $article->author ? array_filter([
+						'@type' => 'Person',
+						'name' => $article->author->name,
+						'jobTitle' => $article->author->occupation,
+						'url' => $article->author->slug ? route('facts-hub', ['author' => $article->author->slug]) : null,
+					]) : [
+						'@type' => 'Organization',
+						'name' => 'ONSITES High School',
+						'url' => route('welcome'),
+					],
+					'publisher' => [
+						'@type' => 'EducationalOrganization',
+						'@id' => route('welcome').'#organization',
+						'name' => 'ONSITES High School',
+						'url' => route('welcome'),
+						'logo' => [
+							'@type' => 'ImageObject',
+							'url' => asset('images/onsites-graduate-school-logo.png'),
+						],
+					],
+					'datePublished' => optional($publishedAt)->toIso8601String(),
+					'dateModified' => optional($modifiedAt)->toIso8601String(),
+				]),
+				[
+					'@type' => 'BreadcrumbList',
+					'itemListElement' => [
+						['@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => route('welcome')],
+						['@type' => 'ListItem', 'position' => 2, 'name' => 'Facts Hub', 'item' => route('facts-hub')],
+						['@type' => 'ListItem', 'position' => 3, 'name' => $articleHeadline, 'item' => $articleUrl],
+					],
+				],
+			],
+		];
+	@endphp
+	<meta itemprop="url" property="og:url" content="{{ $articleUrl }}"/>
+	@if($articleImageUrl)
+		<meta itemprop="image" property="og:image" content="{{ $articleImageUrl }}"/>
+	@endif
+	<meta property="og:type" content="article">
+	<script type="application/ld+json">{!! json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
 @endsection
 
 @section('headCSS')
@@ -46,12 +76,12 @@
 <div aria-label="breadcrumb" class="col-md-6 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-1">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item"><a href="{{ route('blog') }}">Fact Hub</a></li>
+		<li class="breadcrumb-item"><a href="{{ route('facts-hub') }}">Facts Hub</a></li>
 		<li class="breadcrumb-item active" aria-current="page">{{ $article->sections[0]->content }}</li>
 	</ol>
 </div>
 <div class="container-fluid">
-	<div itemscope itemtype="https://schema.org/Article" class="row p-2">
+	<div class="row p-2">
 		<div class="col-lg-3">
 			<div id="toc_wrapper" >
 				<p id="toc_wrapper_heading" class="mb-0" style="font-size: 1.75rem;">Table of content</p>
@@ -63,15 +93,15 @@
 			</div>
 		</div>
 		<div class="col-lg-6">
-			<img itemprop="image" rel="preload" fetchpriority="high" decoding="async" 
+			<img rel="preload" fetchpriority="high" decoding="async" 
 				src="{{ asset('images/fact-hub') }}/{{ $article->image }}" 
 				class="w-100" 
 			/>
 
 			@foreach($article->sections as $key =>  $section)
-				<div itemprop="articleBody" itemscope itemtype="https://schema.org/Text" style="margin-top:20px;" class="page-content">
+				<div style="margin-top:20px;" class="page-content">
 					@if($key == 0)
-					<h1 itemprop="headline" class="h1">{!! $section->content !!}</h1>
+					<h1 class="h1">{!! $section->content !!}</h1>
 					<span class="font-weight-bold">{{ $article->author->name }}</span> <br/>
 					<span>{{ $article->author->occupation }}</span> <br/>
 					<p class="font-weight-bold"><i class="fas fa-clock"></i> {{ $article->minutes }} min.</p>
@@ -138,18 +168,17 @@
 				</div>
 				
 			@endforeach
-			<div itemprop="author" itemscope itemtype="https://schema.org/Person" class="row">
+			<div class="row">
 				<div class="col-lg-12">
 					<hr/>
 				</div>
 				<div class="col-sm-2 author-image-container">
-					<x-image-component itemprop="image" nickname="author-{{ $article->author_id }}" class="imprint-images main-pictures-pages" loading="eager"/>
+					<x-image-component nickname="author-{{ $article->author_id }}" class="imprint-images main-pictures-pages" loading="eager"/>
 				</div>
 				<div class="col-sm-10 author-description-container">
 					<form action="{{ route('facts-hub') }}">
 							<input type="hidden" name="author" value="{{ $article->author->slug}}">
 							<button class="btn btn-link text-left">
-							<span itemprop="name" itemscope itemtype="https://schema.org/Person">
 								<span class="font-weight-bold">{{ $article->author->name }}</span> <br/>
 								<span>{{ $article->author->occupation }}</span> <br/>
 								{{ $article->author->total_facts_hub() }} Articles 
@@ -162,7 +191,7 @@
 				</div>
 				<div class="col-lg-12" style="background:#EEEEEE;padding:20px;margin:20px 0;">
 
-					<div itemprop="description" class="page-content">{{ $article->author->description }}</div>
+					<div class="page-content">{{ $article->author->description }}</div>
 					
 				</div>
 				<div class="col-lg-12 d-flex justify-content-between" style="margin-top:40px">

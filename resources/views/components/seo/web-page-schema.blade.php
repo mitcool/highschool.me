@@ -12,7 +12,7 @@
         "@type": "WebSite",
         "@id": @json(route('welcome') . '#website'),
         "url": @json(route('welcome')),
-        "name": "ONSITES Graduate School"
+        "name": "ONSITES High School"
     },
     "breadcrumb": {
         "@type": "BreadcrumbList",

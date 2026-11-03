@@ -12,7 +12,7 @@
 
 		{{-- Custom Style --}}
 		@yield('headCSS')
-		<link rel="icon" type="image/png" sizes="16x16" href="{{asset('images/favicon.png')}}">
+		<link rel="icon" type="image/png" sizes="16x16" href="{{asset('images/favicon.webp')}}">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Quintessential&display=swap" rel="stylesheet">
@@ -44,11 +44,11 @@
 		gtag('config', 'G-2JV3FDFMX4');
 		</script>
 		<script src='https://www.google.com/recaptcha/api.js' async></script>
-		<meta property="og:site_name" content="graduate.me">
-		<meta property="og:image" content="{{ asset('images/onsites-graduate-school-logo.png') }}">
+		<meta property="og:site_name" content="highschool.me">
+		<meta property="og:image" content="{{ asset('images/onsites-graduate-school-logo.webp') }}">
 
 		<!-- Mobile image preload -->
-		<link fetchpriority="high" rel="preload" href="{{ asset('images/main-image-mobile.webp') }}" as="image" type="image/webp">
+		<link fetchpriority="high" rel="preload" href="{{ asset('images/onsites-graduate-school-logo.webp') }}" as="image" type="image/webp">
 
 		<!-- For the sticky menu -->
 		<style>

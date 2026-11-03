@@ -2,7 +2,7 @@
 
 
 @section('seo')
-	<title>{{ $feature->feature}}</title>
+	<title>{{ $feature->feature}} | Onsites Highschool</title>
 	<meta itemprop="description" name="description" content="" />
 
 	<meta itemprop="title" property="og:title" content=""/>

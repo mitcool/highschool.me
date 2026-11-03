@@ -246,6 +246,12 @@ Route::group(['middleware' => 'CheckAdmin','prefix' => 'admin'], function() {
 	Route::post('/transfer-course','AdminController@transfer')->name('transfer');
 	Route::post('/transfer-course-back','AdminController@transferBack')->name('transfer-back');
 
+	//Discounts
+	Route::get('/discounts','AdminController@discounts')->name('admin.discounts');
+	Route::post('/discounts/add','AdminController@addDiscount')->name('admin.discounts.add');
+	Route::post('/discounts/toggle/{discount_id}','AdminController@toggleDiscount')->name('admin.discounts.toggle');
+	Route::post('/discounts/delete/{discount_id}','AdminController@deleteDiscount')->name('admin.discounts.delete');
+
 	//Notifications
 	Route::get('/notifications', 'AdminController@showNotifications')->name('admin.notifications');
 

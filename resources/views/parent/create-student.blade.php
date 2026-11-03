@@ -219,6 +219,14 @@
     </div>
     
     <p><span class="font-weight-bold">Legal notice:</span> Additional documentation may be requested in specific legal or administrative situations.*</p>
+<div class="col-md-12 mx-auto mt-2">
+    <hr>
+    <h3 class="text-center my-2">Discount Code</h3>
+    <div class="mb-3">
+        <label class="font-weight-bold mb-0">Discount Code (optional)</label>
+        <input type="text" value="{{ old('discount_code') }}" name="discount_code" maxlength="255" class="form-control" form="add-student-form">
+    </div>
+</div>
     <form action="{{ route('student.add') }}" method="POST" enctype="multipart/form-data" class="d-flex justify-content-center" style="padding: 20px;" id="add-student-form" class="confirm-first">
         {{ csrf_field() }}
         <a href="{{ route('parent.dashboard') }}" class="blue-button-outline btn-lg btn mx-2">Cancel</a>

@@ -1,8 +1,7 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://graduate.me/en/sitemap.xml
-Sitemap: https://graduate.me/de/sitemap.xml
+Sitemap: https://hishschool.me/sitemap.xml
 
 User-agent: GPTBot
 Allow: /

@@ -5,38 +5,64 @@
 	<meta itemprop="title" property="og:title" content="{{$article->meta_title }}"/>
 	<meta itemprop="description" name="description" content="{{$article->meta_description }}" />
 	<meta property="og:description" content="{{ $article->meta_description }}"/>
-	<meta itemprop="url" property="og:url" content=""/>
-	<meta itemprop="image" property="og:image" content=""/>
-	<meta property="og:type" content="website">
+	@php
+		$articleUrl = route('single-press-release', $article->slug);
+		$articleImage = \App\Image::where('nickname', 'press-release-'.$article->id)->first();
+		$articleImageUrl = $articleImage ? asset($articleImage->src) : null;
 
+		$schema = [
+			'@context' => 'https://schema.org',
+			'@graph' => [
+				array_filter([
+					'@type' => 'NewsArticle',
+					'@id' => $articleUrl.'#article',
+					'mainEntityOfPage' => [
+						'@type' => 'WebPage',
+						'@id' => $articleUrl,
+					],
+					'headline' => strip_tags($article->heading),
+					'description' => $article->meta_description,
+					'image' => $articleImageUrl ? [$articleImageUrl] : null,
+					'author' => $article->author ? array_filter([
+						'@type' => 'Person',
+						'name' => $article->author->name,
+						'jobTitle' => $article->author->occupation,
+					]) : [
+						'@type' => 'Organization',
+						'name' => 'ONSITES High School',
+						'url' => route('welcome'),
+					],
+					'publisher' => [
+						'@type' => 'EducationalOrganization',
+						'@id' => route('welcome').'#organization',
+						'name' => 'ONSITES High School',
+						'url' => route('welcome'),
+						'logo' => [
+							'@type' => 'ImageObject',
+							'url' => asset('images/onsites-graduate-school-logo.png'),
+						],
+					],
+					'datePublished' => optional($article->created_at)->toIso8601String(),
+					'dateModified' => optional($article->updated_at ?? $article->created_at)->toIso8601String(),
+				]),
+				[
+					'@type' => 'BreadcrumbList',
+					'itemListElement' => [
+						['@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => route('welcome')],
+						['@type' => 'ListItem', 'position' => 2, 'name' => 'Press Release', 'item' => route('press-release')],
+						['@type' => 'ListItem', 'position' => 3, 'name' => strip_tags($article->heading), 'item' => $articleUrl],
+					],
+				],
+			],
+		];
+	@endphp
+	<meta itemprop="url" property="og:url" content="{{ $articleUrl }}"/>
+	@if($articleImageUrl)
+		<meta itemprop="image" property="og:image" content="{{ $articleImageUrl }}"/>
+	@endif
+	<meta property="og:type" content="article">
 
-		<script type="application/ld+json">
-            {
-              "@context": "https://schema.org",
-              "@type": "Article",
-              "mainEntityOfPage": {
-                "@type": "WebPage",
-                "@id": "https://graduate.me/en/blog/{{$article->slug}}"
-              },
-              "headline": "{{$article->title}}",
-              "description": "{{$article->description}}",
-              "image": "https://graduate.me/public/images/{{$article->slug}}.webp",  
-              "author": {
-                "@type": "Organization",
-                "name": "ONSITES Graduate School"
-              },  
-              "publisher": {
-                "@type": "Organization",
-                "name": "ONSITES Graduate School",
-                "logo": {
-                  "@type": "ImageObject",
-                  "url": ""
-                }
-              },
-              "datePublished": "{{ $article->created_at }}",
-              "dateModified": "{{ $article->created_at }}}"
-            }
-        </script>
+	<script type="application/ld+json">{!! json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
 
 @endsection
 
@@ -51,13 +77,13 @@
 <div aria-label="breadcrumb" class="col-md-6 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-1">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item"><a href="{{ route('blog') }}">Press Release</a></li>
+		<li class="breadcrumb-item"><a href="{{ route('press-release') }}">Press Release</a></li>
 		<li class="breadcrumb-item active" aria-current="page">{{ $article->heading }}</li>
 	</ol>
 </div>
 
 <div class="container-fluid">
-	<div itemscope itemtype="https://schema.org/Article" class="row p-2">
+	<div class="row p-2">
 		<div class="col-lg-3">
 			<div id="toc_wrapper" >
 				<p id="toc_wrapper_heading" class="mb-0" style="font-size: 1.75rem;">Table of content</p>
@@ -71,8 +97,8 @@
 		
 		<div class="col-lg-6">
 			<x-image-component nickname="press-release-{{ $article->id }}" class="w-100"/>
-			<h1 itemprop="headline" class="h1">{{ $article->heading  }}</h1>
-				<div itemprop="articleBody" itemscope itemtype="https://schema.org/Text" style="margin-top:20px;" class="page-content">
+			<h1 class="h1">{{ $article->heading  }}</h1>
+				<div style="margin-top:20px;" class="page-content">
 				<span class="font-weight-bold" style="font-size:1rem;">{{ $article->author->name }}</span> <br/>
 				<span>{{ $article->author->occupation }}</span> <br/>
 				<p style="font-size:1rem;" class="font-weight-bold"><i class="fas fa-clock"></i> {{ $article->minutes }} min.</p>
@@ -141,8 +167,8 @@
 							<video src="{{ $section->content }}" class="w-100" controls preload="metadata"></video>
 						@endif
 					@endif
-				</div>
-			@endforeach
+				@endforeach
+			</div>
 			<table class="table container">
 				<tr>
 					<th>Media</th>

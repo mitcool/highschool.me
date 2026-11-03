@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://graduate.me'),
+    'url' => env('APP_URL', 'https://highschool.me'),
 
     'asset_url' => env('ASSET_URL', null),
 

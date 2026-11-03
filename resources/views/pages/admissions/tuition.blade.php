@@ -169,7 +169,7 @@
     <div class="row text-center container mx-auto">
         <div class="col-md-12">
             <h1 class="text-center page-headings">{{ $texts['heading'] }}</h1> <br>
-            <h2 class="text-center font-weight-bold" style="margin-bottom:20px;">{{ $texts['subheading'] }}</h2>
+            {{-- <h2 class="text-center font-weight-bold" style="margin-bottom:20px;">{{ $texts['subheading'] }}</h2> --}}
             <div class="page-content">
                {!! $texts['intro'] !!}
             </div>
@@ -189,7 +189,6 @@
             <div class="text-justify page-content">{!! $texts['last-paragraph'] !!}</div> 
             <x-three-buttons/>
         </div>
-        
     </div>
 </div>
     

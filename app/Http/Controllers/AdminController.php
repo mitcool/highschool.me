@@ -63,6 +63,7 @@ use App\User;
 use App\Meeting;
 use App\Course;
 use App\CourseType;
+use App\Discount;
 use App\FeatureCategory;
 use App\Plan;
 use App\Feature;
@@ -797,6 +798,38 @@ class AdminController extends Controller
      public function deleteCourseType($course_type_id){
         CourseType::find($course_type_id)->delete();
         return redirect()->route('admin-courses-types')->with('success_message','Course type deleted successfully');
+     }
+
+     public function discounts(){
+        $discounts = Discount::latest('created_at')->get();
+        return view('admin.discounts')
+            ->with('discounts',$discounts);
+     }
+
+     public function addDiscount(Request $request){
+        $request->validate([
+            'code'       => 'required|string|max:255|unique:discounts,code',
+            'expired_at' => 'nullable|date|after:now',
+        ]);
+
+        Discount::create([
+            'code'       => trim($request->code),
+            'expired_at' => $request->expired_at,
+            'is_active'  => $request->boolean('is_active'),
+        ]);
+
+        return redirect()->back()->with('success_message','Discount created successfully');
+     }
+
+     public function toggleDiscount($discount_id){
+        $discount = Discount::findOrFail($discount_id);
+        $discount->update(['is_active' => !$discount->is_active]);
+        return redirect()->back()->with('success_message','Discount '.($discount->is_active ? 'activated' : 'deactivated').' successfully');
+     }
+
+     public function deleteDiscount($discount_id){
+        Discount::findOrFail($discount_id)->delete();
+        return redirect()->route('admin.discounts')->with('success_message','Discount deleted successfully');
      }
 
     
