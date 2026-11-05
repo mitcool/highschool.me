@@ -243,7 +243,7 @@ Route::group(['middleware' => 'text'],function(){
 
 	Route::get('/freshman-kit','FooterController@starterKit')->name('starter-kit');
 
-	Route::get('/newsletter','MainController@showNewsletter')->name('newsletter');
+	//Route::get('/newsletter','MainController@showNewsletter')->name('newsletter');
 
 	Route::get('/facts-hub','MainController@showFactsHub')->name('facts-hub');
 

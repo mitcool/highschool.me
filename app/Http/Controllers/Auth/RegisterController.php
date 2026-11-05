@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 use Illuminate\Support\Str;
@@ -77,13 +78,18 @@ class RegisterController extends Controller
             ],
             'g-recaptcha-response' => 'required|recaptcha',
             'terms' => 'required|accepted',
-            'country_id'=>'required'
+            'country_id'=> [
+                    'required',
+                    Rule::exists('countries', 'id')->where('is_restricted', 0)
+            ]
+        ], [
+            'country_id.exists' => 'We cannot sign students from the selected country.'
         ]);
     }
     public function showRegistrationForm()
     {
         $user_roles = UserRole::where('order', '!=', 0)->orderBy('order', 'asc')->get();
-        $countries = Country::all();
+        $countries = Country::orderBy('name', 'asc')->get();
         $restricted_countries = $countries->where('is_restricted',1);
         $allowed_countries = $countries->where('is_restricted',0);
         return view('auth.register')

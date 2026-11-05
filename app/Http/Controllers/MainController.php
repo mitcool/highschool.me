@@ -16,6 +16,7 @@ use Config;
 use DB;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Validation\Rule;
 
 use App\Mail\ContactEmail;
 use App\Mail\ApplyConferenceEmail;
@@ -134,9 +135,14 @@ class MainController extends Controller
         'message'=> 'max:2000',
         'agree'=> 'required',
         'g-recaptcha-response'=> 'required|recaptcha',
-        'country_id' => 'required'
+        'country_id' => [
+            'required',
+            Rule::exists('countries', 'id')->where('is_restricted', 0)
+        ]
+     ], [
+        'country_id.exists' => 'We cannot sign students from the selected country.'
      ]);
-     
+
      $application = $request->only('name','middlename','surname','email','education_option','message','country_id');
 
      $registration = EarlyRegistration::create($application);
