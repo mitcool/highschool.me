@@ -5,7 +5,7 @@
             @foreach($partners as $partner)
                 <div class="shadow h-100 d-flex flex-column justify-content-around partner-box align-items-stretch" style="margin-bottom:20px;">
                     <a href="{{ route('accreditation-'.app()->currentLocale()).'#'.$partner->id }}">
-                        <x-image-component loading="lazy" nickname="partner-{{ $partner->id }}" class="w-100" />
+                        <x-image-component loading="lazy" nickname="partner-{{ $partner->id }}" class="w-100 h-auto" />
                     </a>
                 </div>
             @endforeach

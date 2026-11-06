@@ -41,7 +41,7 @@
     <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
         <ol class="bg-white breadcrumb mb-0 p-0">
             <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ $texts['breadcrumb'] }}</li>
+            <li class="breadcrumb-item active" aria-current="page">Ambassador Program</li>
         </ol>
     </div>
     <div class="page-content">
@@ -50,7 +50,7 @@
     <div class="container-fluid bg-white box">
         <div class="container">
             <div class="text-center">
-                <x-image-component nickname="gold-shield-ambassador-badge-stars" class="w-25" loading="eager"/>
+                <x-image-component nickname="gold-shield-ambassador-badge-stars" class="w-25 h-auto" loading="eager"/>
             </div>
              <h1 class="page-headings">{{ $texts['heading'] }}</h1>
             {!! $texts['intro'] !!}

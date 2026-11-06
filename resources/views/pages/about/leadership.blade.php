@@ -31,11 +31,11 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ ucwords(str_replace('-', ' ', request()->segment(1))) }}</li>
+		<li class="breadcrumb-item active" aria-current="page">Predident Keynote</li>
 	</ol>
 </div>
 
-<x-image-component nickname="leadership" class="digital_studies-images main-pictures-pages"/>
+<x-image-component nickname="leadership" class="digital_studies-images main-pictures-pages h-auto"/>
 
 <div class="container-fluid bg-white main_page_container mb-3">	
     <div class="row justify-content-center" >		

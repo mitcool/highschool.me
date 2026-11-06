@@ -7,13 +7,13 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-3 single-media-container bg-white mb-4 pl-0 pr-0 ml-4 mr-4">
-                <x-image-component nickname="forbes" class="w-100 p-4" loading="eager" />
+                <x-image-component nickname="forbes" class="w-100 h-auto p-4" loading="eager" />
             </div>
             <div class="col-md-3 single-media-container bg-white mb-4 pl-0 pr-0 ml-4 mr-4">
-                <x-image-component nickname="businessinsider" class="w-100 p-4" loading="eager" />
+                <x-image-component nickname="businessinsider" class="w-100 h-auto p-4" loading="eager" />
             </div>
             <div class="col-md-3 single-media-container bg-white mb-4 pl-0 pr-0 ml-4 mr-4">
-                <x-image-component nickname="bloomberg" class="w-100 p-4" loading="eager" />
+                <x-image-component nickname="bloomberg" class="w-100 h-auto p-4" loading="eager" />
             </div>
         </div>
     </div>

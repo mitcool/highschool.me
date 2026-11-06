@@ -83,7 +83,7 @@
         </div> --}}
         <x-country.intro :country="$country"/>
     </div>
-    <x-image-component nickname="country-{{ $country->id }}" class="imprint-images main-pictures-pages" loading="eager"/>
+    <x-image-component nickname="country-{{ $country->id }}" class="imprint-images main-pictures-pages h-auto" loading="eager"/>
 </div>
 
 <x-country.recognition :country="$country"/>

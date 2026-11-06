@@ -158,11 +158,11 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ $texts['breadcrumb'] }}</li>
+		<li class="breadcrumb-item active" aria-current="page">International Diploma Recognition</li>
 	</ol>
 </div>
 
-<x-image-component nickname="country-requirements" class="imprint-images main-pictures-pages" loading="eager"/>
+<x-image-component nickname="country-requirements" class="imprint-images main-pictures-pages h-auto" loading="eager"/>
 
 <div class="container-fluid main_page_container bg-light" style="padding:20px;">
 	
@@ -254,7 +254,7 @@
                     <div class="col-md-4 my-2">
                         <a href="{{ route('single-country-requirements',$group_country->slug) }}">
                            <div class="shadow-sm d-flex justify-content-start" style="padding:20px;border-radius:5px;">
-                                <img style="height: 30px;width:50px;" src="{{ asset('images/flags') }}/{{ $group_country->flag }}" alt="" class="border">
+                                <img style="height: 30px;width:50px;" src="{{ asset('images/flags') }}/{{ $group_country->flag }}" alt="{{ $group_country->nicename }}" alt="{{ $group_country->nicename }}"  class="border">
                                 <h5 class="ml-3 mb-0">{{ $group_country->nicename }}</h5> 
                             </div>
                         </a>

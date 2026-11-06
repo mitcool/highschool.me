@@ -39,11 +39,11 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ ucwords(str_replace('-', ' ', request()->segment(1))) }}</li>
+		<li class="breadcrumb-item active" aria-current="page">International Students</li>
 	</ol>
 </div>
 
-<x-image-component nickname="colorful-world-globe-close-up" class="w-100" loading="eager"/>
+<x-image-component nickname="colorful-world-globe-close-up" class="w-100 h-auto" loading="eager"/>
 
 <div class="container-fluid bg-white main_page_container mb-2">	
 		<div class="row justify-content-center" >		
@@ -52,7 +52,7 @@
 				{!! $texts['intro'] !!}
 				<div class="row">
 					<div class="col-md-6">
-						<img src="{{ asset('images/international-students.webp') }}" alt="" class="w-100"/> 
+						<x-image-component nickname="international-students" class="h-auto w-100" /> 
 					</div>
 					<div class="col-md-6">
 						{!! $texts['content'] !!}

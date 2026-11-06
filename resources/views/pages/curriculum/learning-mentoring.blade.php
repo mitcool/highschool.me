@@ -127,11 +127,11 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
     <ol class="bg-white breadcrumb mb-0 p-0">
         <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ ucwords(str_replace('-', ' ', request()->segment(1))) }}</li>
+        <li class="breadcrumb-item active" aria-current="page">Live Sessions & Coaching</li>
     </ol>
 </div>
 
-<x-image-component nickname="teacher-one-on-one-tutoring-student-classroom" class="w-100" loading="eager"/>
+<x-image-component nickname="teacher-one-on-one-tutoring-student-classroom" class="w-100 h-auto" loading="eager"/>
 
 <div class="container-fluid" style="padding:20px;width:80%;margin:0 auto">
     <h1 class="text-center page-headings" style="word-wrap: break-word">{{ $texts['heading'] }}</h1> <br>

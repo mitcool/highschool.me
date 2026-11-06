@@ -60,7 +60,7 @@
 
 		<div class="col-lg-2 col-md-2 col-4" style="padding-left:40px;">
 			<a href="{{ route('welcome') }}">
-				<x-image-component rel="preload" fetchpriority="high" decoding="async" nickname="logo-header" class="logo-header-images logoMainPage" />
+				<x-image-component rel="preload" fetchpriority="high" decoding="async" nickname="logo-header" class="h-auto logo-header-images logoMainPage" />
 			</a>
 
 		</div>

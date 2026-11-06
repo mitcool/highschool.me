@@ -18,11 +18,11 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ ucwords(str_replace('-', ' ', request()->segment(1))) }}</li>
+		<li class="breadcrumb-item active" aria-current="page">Mission Statement</li>
 	</ol>
 </div>
 
-<x-image-component nickname="american-flag-background-independence-day" class="w-100" loading="eager"/>
+<x-image-component nickname="american-flag-background-independence-day" class="w-100 h-auto" loading="eager"/>
 
 <div class="container-fluid pb-4">
 	<div class="row justify-content-center">

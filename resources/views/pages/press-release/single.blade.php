@@ -96,7 +96,7 @@
 		</div>
 		
 		<div class="col-lg-6">
-			<x-image-component nickname="press-release-{{ $article->id }}" class="w-100"/>
+			<x-image-component nickname="press-release-{{ $article->id }}" class="w-100 h-auto"/>
 			<h1 class="h1">{{ $article->heading  }}</h1>
 				<div style="margin-top:20px;" class="page-content">
 				<span class="font-weight-bold" style="font-size:1rem;">{{ $article->author->name }}</span> <br/>

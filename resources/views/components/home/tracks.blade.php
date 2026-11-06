@@ -10,30 +10,26 @@
             <div class="row">
         <div class="col-md-3 col-sm-6 mt-3">
         <div class="text-center">
-              <img src="{{ asset('images/icons/track-2.png') }}" alt="" class="welcome-icon">
-          
-             <p class="h5">{{ $texts['tracks-1'] }}
-            </p>
+            <x-image-component nickname="track-2" class="welcome-icon w-auto" loading="eager" />          
+            <p class="h5">{{ $texts['tracks-1'] }}</p>
         </div>
     </div>
     <div class="col-md-3 col-sm-6 mt-3">
         <div class="text-center">
-             <img src="{{ asset('images/icons/track-1.png') }}" alt="" class="welcome-icon">
-            <p class="h5">{{ $texts['tracks-2'] }}
-            </p>
+            <x-image-component nickname="track-1" class="welcome-icon w-auto" loading="eager" />
+            <p class="h5">{{ $texts['tracks-2'] }}</p>
         </div>
     </div>
     <div class="col-md-3 col-sm-6 mt-3">
         <div class="text-center">
-            <img src="{{ asset('images/icons/track-3.png') }}" alt="" class="welcome-icon">
-            <p class="h5">{{ $texts['tracks-3'] }}
-            </p>
+            <x-image-component nickname="track-3" class="welcome-icon w-auto" loading="eager" />
+            <p class="h5">{{ $texts['tracks-3'] }} </p>
         </div>
     </div>
    
     <div class="col-md-3 col-sm-6 mt-3">
         <div class="text-center">
-            <img src="{{ asset('images/icons/track-4.png') }}" alt="" class="welcome-icon">
+            <x-image-component nickname="track-4" class="welcome-icon w-auto" loading="eager" />
             <p class="h5">{{ $texts['tracks-4'] }}
             </p>
         </div>

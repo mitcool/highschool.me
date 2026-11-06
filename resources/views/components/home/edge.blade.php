@@ -10,21 +10,21 @@
             <div class="row">
         <div class="col-md-3 col-sm-6 my-5">
         <div class="text-center">
-            <img src="{{ asset('images/icons/edge-1.webp') }}" alt="" class="welcome-icon">
+            <x-image-component nickname="edge-1" class="welcome-icon w-auto" loading="eager" />
             <p class="h5">{{ $texts['edge-1'] }}
             </p>
         </div>
     </div>
     <div class="col-md-3 col-sm-6 my-5">
         <div class="text-center">
-             <img src="{{ asset('images/icons/edge-2.webp') }}" alt="" class="welcome-icon">
+             <x-image-component nickname="edge-2" class="welcome-icon w-auto" loading="eager" />
             <p class="h5">{{ $texts['edge-2'] }}
             </p>
         </div>
     </div>
     <div class="col-md-3 col-sm-6 my-5">
         <div class="text-center">
-             <img src="{{ asset('images/icons/edge-3.webp') }}" alt="" class="welcome-icon">
+             <x-image-component nickname="edge-3" class="welcome-icon w-auto" loading="eager" />
             <p class="h5">{{ $texts['edge-3'] }}
             </p>
         </div>
@@ -32,35 +32,35 @@
    
     <div class="col-md-3 col-sm-6 my-5">
         <div class="text-center">
-            <img src="{{ asset('images/icons/edge-4.webp') }}" alt="" class="welcome-icon">
+            <x-image-component nickname="edge-4" class="welcome-icon w-auto" loading="eager" />
             <p class="h5">{{ $texts['edge-4'] }}
             </p>
         </div>
     </div>
     <div class="col-md-3 col-sm-6 my-5">
         <div class="text-center">
-             <img src="{{ asset('images/icons/edge-5.webp') }}" alt="" class="welcome-icon">
+             <x-image-component nickname="edge-5" class="welcome-icon w-auto" loading="eager" />
             <p class="h5">{{ $texts['edge-5'] }}
             </p>
         </div>
     </div>
     <div class="col-md-3 col-sm-6 my-5">
         <div class="text-center">
-             <img src="{{ asset('images/icons/edge-6.webp') }}" alt="" class="welcome-icon">
+             <x-image-component nickname="edge-6" class="welcome-icon w-auto" loading="eager" />
             <p class="h5">{{ $texts['edge-6'] }}
             </p>
         </div>
     </div>
     <div class="col-md-3 col-sm-6 my-5">
         <div class="text-center">
-             <img src="{{ asset('images/icons/edge-7.webp') }}" alt="" class="welcome-icon">
+             <x-image-component nickname="edge-7" class="welcome-icon w-auto" loading="eager" />
             <p class="h5">{{ $texts['edge-7'] }}
             </p>
         </div>
     </div>
     <div class="col-md-3 col-sm-6 my-5">
         <div class="text-center">
-             <img src="{{ asset('images/icons/edge-8.png') }}" alt="" class="welcome-icon">
+             <x-image-component nickname="edge-8" class="welcome-icon w-auto" loading="eager" />
             <p class="h5">{{ $texts['edge-8'] }}
             </p>
         </div>

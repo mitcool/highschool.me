@@ -170,10 +170,10 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
     <ol class="bg-white breadcrumb mb-0 p-0">
         <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ ucwords(str_replace('-', ' ', request()->segment(1))) }}</li>
+        <li class="breadcrumb-item active" aria-current="page">Freshman Kit</li>
     </ol>
 </div>
-<x-image-component nickname="freshman-kit-cover" class="digital_studies-images main-pictures-pages"/>
+<x-image-component nickname="freshman-kit-cover" class="digital_studies-images main-pictures-pages h-auto"/>
 <div class="mb-5 page-content">
     <div class="container">
         <div class="row justify-content-center">
@@ -204,35 +204,35 @@
             <h2 class="freshman-kit-subtitle">Upgrade your Daily Game with the Freshman Kit</h2>
             <div class="freshman-kit-grid">
                 <div class="freshman-kit-item">
-                    <img src="{{ asset('/images/freshman-kit/bag.webp') }}" class="feature-icon" alt="School Gear icon">
+                    <x-image-component class="feature-icon" nickname="freshman-kit-bag" loading="eager"/>
                     <p class="feature-label">School Gear</p>
                 </div>
                 <div class="freshman-kit-item">
-                    <img src="{{ asset('/images/freshman-kit/book.webp') }}" class="feature-icon" alt="Notes and Organization icon">
+                    <x-image-component class="feature-icon" nickname="freshman-kit-book" loading="eager"/>
                     <p class="feature-label">Notes &amp; Organization</p>
                 </div>
                 <div class="freshman-kit-item">
-                    <img src="{{ asset('/images/freshman-kit/headphones.webp') }}" class="feature-icon" alt="Audio and Focus icon">
+                    <x-image-component class="feature-icon" nickname="freshman-kit-headphones" loading="eager"/>
                     <p class="feature-label">Audio &amp; Focus</p>
                 </div>
                 <div class="freshman-kit-item">
-                    <img src="{{ asset('/images/freshman-kit/power.webp') }}" class="feature-icon" alt="Power and Charging icon">
+                    <x-image-component class="feature-icon" nickname="freshman-kit-power" loading="eager"/>
                     <p class="feature-label">Power &amp; Charging</p>
                 </div>
                 <div class="freshman-kit-item">
-                    <img src="{{ asset('/images/freshman-kit/usb.webp') }}" class="feature-icon" alt="Storage and Files icon">
+                    <x-image-component class="feature-icon" nickname="freshman-kit-usb" loading="eager"/>
                     <p class="feature-label">Storage &amp; Files</p>
                 </div>
                 <div class="freshman-kit-item">
-                    <img src="{{ asset('/images/freshman-kit/tablet.webp') }}" class="feature-icon" alt="Digital Learning icon">
+                    <x-image-component class="feature-icon" nickname="freshman-kit-tablet" loading="eager"/>
                     <p class="feature-label">Digital Learning</p>
                 </div>
                 <div class="freshman-kit-item">
-                    <img src="{{ asset('/images/freshman-kit/phone.webp') }}" class="feature-icon" alt="Smart Tools icon">
+                    <x-image-component class="feature-icon" nickname="freshman-kit-phone" loading="eager"/>
                     <p class="feature-label">Smart Tools</p>
                 </div>
                 <div class="freshman-kit-item">
-                    <img src="{{ asset('/images/freshman-kit/pens.webp') }}" class="feature-icon" alt="Writing Tools icon">
+                    <x-image-component class="feature-icon" nickname="freshman-kit-pens" loading="eager"/>
                     <p class="feature-label">Writing Tools</p>
                 </div>
             </div>
@@ -260,7 +260,7 @@
     <div class="container freshman-kit-cards">
         <div class="freshman-kit-card">
             <div class="freshman-kit-card-image">
-                <x-image-component nickname="onsites-freshman-kit-students-smartphone-desk" loading="eager"/>
+                <x-image-component class="h-auto" nickname="onsites-freshman-kit-students-smartphone-desk" loading="eager"/>
             </div>
             <div class="freshman-kit-card-body">
                 <h3 class="freshman-kit-card-title">
@@ -284,13 +284,13 @@
                 </p>
             </div>
             <div class="freshman-kit-card-image">
-                <x-image-component nickname="onsites-freshman-kit-students-enrollment-card-cafe" loading="eager"/>
+                <x-image-component class="h-auto" nickname="onsites-freshman-kit-students-enrollment-card-cafe" loading="eager"/>
             </div>
         </div>
 
         <div class="freshman-kit-card">
             <div class="freshman-kit-card-image">
-                <x-image-component nickname="onsites-freshman-kit-students-outdoor-picnic" loading="eager"/>
+                <x-image-component class="h-auto" nickname="onsites-freshman-kit-students-outdoor-picnic" loading="eager"/>
             </div>
             <div class="freshman-kit-card-body">
                 <h3 class="freshman-kit-card-title">
@@ -314,7 +314,7 @@
                 </p>
             </div>
             <div class="freshman-kit-card-image">
-                <x-image-component nickname="onsites-freshman-kit-students-tablet-outdoor" loading="eager"/>
+                <x-image-component class="h-auto" nickname="onsites-freshman-kit-students-tablet-outdoor" loading="eager"/>
             </div>
         </div>
     </div>

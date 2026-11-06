@@ -148,11 +148,11 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
     <ol class="bg-white breadcrumb mb-0 p-0">
         <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ ucwords(str_replace('-', ' ', request()->segment(1))) }}</li>
+        <li class="breadcrumb-item active" aria-current="page">High School Diploma Tracks</li>
     </ol>
 </div>
 
-<x-image-component nickname="students-studying-laptops-bright-classroom" class="main-pictures-pages"/>
+<x-image-component nickname="students-studying-laptops-bright-classroom" class="main-pictures-pages h-auto"/>
 
 <div class="container-fluid main-container" >
     <div class="row text-center mx-auto">
@@ -171,7 +171,7 @@
     <div class="row text-white" style="background: #045397;opacity:0.8;">
         <div class="col-xl-2"></div>
         <div class="col-xl-3 custom-padding d-flex align-items-center justify-content-center">
-            <img src="{{ asset('images/track1.webp') }}" alt="" class="w-100">
+            <x-image-component nickname="highschool-track-1" class="w-100 h-auto"/>
         </div>
         <div class="col-xl-5 custom-padding">{!! $texts['track-1'] !!}</div>
         <div class="col-xl-2"></div>
@@ -180,14 +180,14 @@
         <div class="col-xl-2"></div>
         <div class="col-xl-5 custom-padding"> {!! $texts['track-2'] !!}</div>
         <div class="col-xl-3 custom-padding d-flex align-items-center justify-content-center">
-            <img src="{{ asset('images/track2.webp') }}" alt="" class="w-100">
+            <x-image-component nickname="highschool-track-2" class="w-100 h-auto"/>    
         </div>
         <div class="col-xl-2"></div>
     </div>
     <div class="row text-white" style="background:#045397">
         <div class="col-xl-2"></div>
         <div class="col-xl-3 custom-padding d-flex align-items-center justify-content-center">
-            <img src="{{ asset('images/track3.webp') }}" alt="" class="w-100">
+            <x-image-component nickname="highschool-track-3" class="w-100 h-auto"/>
         </div>
         <div class="col-xl-5 custom-padding" > {!! $texts['track-3'] !!}</div>
         <div class="col-xl-2"></div>
@@ -196,7 +196,7 @@
         <div class="col-xl-2"></div>
         <div class="col-xl-5 custom-padding"> {!! $texts['track-4'] !!}</div>
         <div class="col-xl-3 custom-padding d-flex align-items-center justify-content-center">
-            <img src="{{ asset('images/track4.webp') }}" alt="" class="w-100">
+            <x-image-component nickname="highschool-track-4" class="w-100 h-auto"/>
         </div>
         <div class="col-xl-2"></div>
     </div>

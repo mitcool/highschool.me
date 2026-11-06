@@ -10,13 +10,13 @@
             <div class="row">
                 <div class="col-md-3 col-sm-6 my-5">
                     <div class="text-center">
-                        <img src="{{ asset('images/icons/fact-1.svg') }}" alt="" class="welcome-icon">
+                        <x-image-component nickname="fact-1" id="fact-1" class="welcome-icon w-auto h-auto" loading="eager" />
                         <p class="h5">{{ $texts['facts-1'] }}</p>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6 my-5">
                     <div class="text-center">
-                        <img src="{{ asset('images/icons/fact-8.svg') }}" alt="" class="welcome-icon">
+                         <x-image-component nickname="fact-2" id="fact-2" class="welcome-icon w-auto h-auto" loading="eager" />
                     
                         <p class="h5 mt-2">{{ $texts['facts-2'] }}
                         </p>
@@ -24,42 +24,42 @@
                 </div>
                 <div class="col-md-3 col-sm-6 my-5">
                     <div class="text-center">
-                        <img src="{{ asset('images/icons/fact-3.svg') }}" alt="" class="welcome-icon">
+                        <x-image-component nickname="fact-3" id="fact-3" class="welcome-icon w-auto h-auto" loading="eager" />
                         <p class="h5">{{ $texts['facts-3'] }}
                         </p>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6 my-5">
                     <div class="text-center">
-                        <img src="{{ asset('images/icons/fact-7.svg') }}" alt="" class="welcome-icon">
+                        <x-image-component nickname="fact-4" id="fact-4" class="welcome-icon w-auto h-auto" loading="eager" />
                         <p class="h5">{{ $texts['facts-4'] }}
                         </p>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6 mt-5">
                     <div class="text-center">
-                        <img src="{{ asset('images/icons/fact-2.svg') }}" alt="" class="welcome-icon">
+                        <x-image-component nickname="fact-5" id="fact-5" class="welcome-icon w-auto h-auto" loading="eager" />
                         <p class="h5">{{ $texts['facts-5'] }}
                         </p>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6 mt-5">
                     <div class="text-center">
-                        <img src="{{ asset('images/icons/fact-4.svg') }}" alt="" class="welcome-icon">
+                        <x-image-component nickname="fact-6" id="fact-6" class="welcome-icon w-auto h-auto" loading="eager" />
                         <p class="h5">{{ $texts['facts-6'] }}
                         </p>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6 mt-5">
                     <div class="text-center">
-                        <img src="{{ asset('images/icons/fact-5.svg') }}" alt="" class="welcome-icon">
+                        <x-image-component nickname="fact-7" id="fact-7" class="welcome-icon w-auto h-auto" loading="eager" />
                         <p class="h5">{{ $texts['facts-7'] }}
                         </p>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6 mt-5">
                     <div class="text-center">
-                        <img src="{{ asset('images/icons/fact-6.svg') }}" alt="" class="welcome-icon">
+                        <x-image-component nickname="fact-8" id="fact-8" class="welcome-icon w-auto h-auto" loading="eager" />
                         <p class="h5">{{ $texts['facts-8'] }}
                         </p>
                     </div>

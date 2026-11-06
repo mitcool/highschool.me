@@ -42,14 +42,14 @@
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
 		<li class="breadcrumb-item"><a href="{{ route('accreditation') }}">Recognition & Quality Standards</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
+		<li class="breadcrumb-item active" aria-current="page">Florida Department of Education</li>
 	</ol>
 </div>
 
 <div class="container-fluid main_page_container pt-0">
 	<div class="row justify-content-center">
 		<div class="text-center mb-4">
-			<x-image-component nickname="fldoe-recognition-diagonal-stripe" loading="eager" />
+			<x-image-component class="h-auto" nickname="fldoe-recognition-diagonal-stripe" loading="eager" />
 		</div>
 		<div class="col-md-10 col-lg-8 mb-4 text-center">
 			<h1>{{ $texts['heading'] }}</h1>

@@ -21,7 +21,7 @@
         {{ $country->nicename }} - Diploma Recognition  </h2>
     
      @if($cover)
-     <x-image-component nickname="country-{{ $country->id }}" class="w-100"/>
+     <x-image-component nickname="country-{{ $country->id }}" class="w-100 h-auto"/>
      @endif
     {{-- Change in the conception - in the past languages had to be selected from here --}}
     <form action="{{ route('add-country-languages') }}" class="row" method="POST" enctype="multipart/form-data">

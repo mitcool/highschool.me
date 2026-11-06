@@ -101,7 +101,7 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page"><a href="{{ route('academics') }}">Academics</a></li>
+		<li class="breadcrumb-item active" aria-current="page"><a href="{{ route('academics') }}">Faculty & Educators</a></li>
 		<li class="breadcrumb-item active" aria-current="page">{{ $teacher->name }}</li>
 	</ol>
 </div>
@@ -111,7 +111,7 @@
 		<div class="col-md-12 col-lg-10" style="padding:30px;">
 			<div class="single-academic-card">
 				<div class="single-academic-top">
-					<x-image-component nickname="academic-{{$teacher->id}}" class="single-academic-image" />
+					<x-image-component nickname="academic-{{$teacher->id}}" class="single-academic-image h-auto" />
 					<div class="single-academic-intro">
 						<h1 class="single-academic-name">{{ $teacher->name }}</h1>
 						{!! $teacher->single_page_description !!}

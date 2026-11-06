@@ -20,7 +20,7 @@ class ImageComponent extends Component
     {
         $this->image = Image::where('nickname', $nickname)->first();
         $image_info = getimagesize(public_path($this->image->src)); 
-        $this->class = $class.' h-auto ';
+        $this->class = $class;
         $this->id = $id;
         $this->style = $style;
         $this->width = $image_info[0];

@@ -98,6 +98,7 @@
 				class="w-100" 
 			/>
 
+
 			@foreach($article->sections as $key =>  $section)
 				<div style="margin-top:20px;" class="page-content">
 					@if($key == 0)
@@ -173,7 +174,7 @@
 					<hr/>
 				</div>
 				<div class="col-sm-2 author-image-container">
-					<x-image-component nickname="author-{{ $article->author_id }}" class="imprint-images main-pictures-pages" loading="eager"/>
+					<x-image-component nickname="author-{{ $article->author_id }}" class="imprint-images main-pictures-pages h-auto" loading="eager"/>
 				</div>
 				<div class="col-sm-10 author-description-container">
 					<form action="{{ route('facts-hub') }}">

@@ -77,7 +77,7 @@
 		</ol>
 	</div>
 
-<x-image-component nickname="press_releases" id="cover" class="main-pictures-pages" loading="eager"/>
+<x-image-component nickname="press_releases" id="cover" class="main-pictures-pages h-auto" loading="eager"/>
 
 <div itemscope itemtype="http://schema.org/Blog" class="container-fluid main_page_container">
 	<div id="blog_row" class="row justify-content-center">

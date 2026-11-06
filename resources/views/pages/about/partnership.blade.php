@@ -48,11 +48,11 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
+		<li class="breadcrumb-item active" aria-current="page">Partners & Providers</li>
 	</ol>
 </div>
 
-<x-image-component nickname="miami-city-skyline-waterfront" class="w-100" loading="eager"/>
+<x-image-component nickname="miami-city-skyline-waterfront" class="w-100 h-auto" loading="eager"/>
 
 <div class="container-fluid ">
 	<div class="row justify-content-center">
@@ -72,34 +72,34 @@
 		<div class="row">
 			<div class="col-md-4 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/partnership-1.png') }}" alt="" class="">
+					<img src="{{ asset('images/partnership-1.webp') }}" alt="" class="">
 				</div>
 			</div>
 			<div class="col-md-4 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/partnership-3.png') }}" alt="" class="">
+					<img src="{{ asset('images/partnership-3.webp') }}" alt="" class="">
 				</div>
 			</div>
 			<div class="col-md-4 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/partnership-2.png') }}" alt="" class="">
+					<img src="{{ asset('images/partnership-2.webp') }}" alt="" class="">
 				</div>
 			</div>
 		</div>
 		<div class="row mt-2" style="margin-bottom:50px;">
 			<div class="col-md-4 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/partnership-1.png') }}" alt="" class="">
+					<img src="{{ asset('images/partnership-1.webp') }}" alt="" class="">
 				</div>
 			</div>
 			<div class="col-md-4 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/partnership-3.png') }}" alt="" class="">
+					<img src="{{ asset('images/partnership-3.webp') }}" alt="" class="">
 				</div>
 			</div>
 			<div class="col-md-4 text-center box-wrapper mb-3">
 				<div class="box">
-					<img src="{{ asset('images/partnership-2.png') }}" alt="" class="">
+					<img src="{{ asset('images/partnership-2.webp') }}" alt="" class="">
 				</div>
 			</div>
 		</div>
@@ -113,88 +113,88 @@
 		<div class="row mt-2">
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<x-image-component nickname="adobe-logo" class="w-100" loading="eager" />
+					<x-image-component nickname="adobe-logo" class="w-100 h-auto" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<x-image-component nickname="cisco-logo" class="w-100" loading="eager" />
+					<x-image-component nickname="cisco-logo" class="w-100 h-auto" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<x-image-component nickname="certiport-logo" class="w-100" loading="eager" />
+					<x-image-component nickname="certiport-logo" class="w-100 h-auto" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<x-image-component nickname="nha-logo" class="w-100" loading="eager" />
+					<x-image-component nickname="nha-logo" class="w-100 h-auto" loading="eager" />
 				</div>
 			</div>
 		</div>
 		<div class="row mt-2">
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<x-image-component nickname="intuit-logo" class="w-100" loading="eager" />
+					<x-image-component nickname="intuit-logo" class="w-100 h-auto" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<x-image-component nickname="oracle-logo" class="w-100" loading="eager" />
+					<x-image-component nickname="oracle-logo" class="w-100 h-auto" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<x-image-component nickname="google-logo" class="w-100" loading="eager" />
+					<x-image-component nickname="google-logo" class="w-100 h-auto" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<x-image-component nickname="american-red-cross-logo" class="w-100" loading="eager" />
+					<x-image-component nickname="american-red-cross-logo" class="w-100 h-auto" loading="eager" />
 				</div>
 			</div>
 		</div>
 		<div class="row mt-2" >
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<x-image-component nickname="hubspot-logo" class="w-100" loading="eager" />
+					<x-image-component nickname="hubspot-logo" class="w-100 h-auto" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<x-image-component nickname="amazon-web-services-logo" class="w-100" loading="eager" />
+					<x-image-component nickname="amazon-web-services-logo" class="w-100 h-auto" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<x-image-component nickname="ncct-logo" class="w-100" loading="eager" />
+					<x-image-component nickname="ncct-logo" class="w-100 h-auto" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<x-image-component nickname="nals-logo" class="w-100" loading="eager" />
+					<x-image-component nickname="nals-logo" class="w-100 h-auto" loading="eager" />
 				</div>
 			</div>
 		</div>
 		<div class="row mt-2" style="margin-bottom: 50px;">
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<x-image-component nickname="meta-logo" class="w-100" loading="eager" />
+					<x-image-component nickname="meta-logo" class="w-100 h-auto" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<x-image-component nickname="microsoft-logo" class="w-100" loading="eager" />
+					<x-image-component nickname="microsoft-logo" class="w-100 h-auto" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<x-image-component nickname="comptia-logo" class="w-100" loading="eager" />
+					<x-image-component nickname="comptia-logo" class="w-100 h-auto" loading="eager" />
 				</div>
 			</div>
 			<div class="col-md-3 text-center box-wrapper mb-3">
 				<div class="box">
-					<x-image-component nickname="ibm-logo" class="w-100" loading="eager" />
+					<x-image-component nickname="ibm-logo" class="w-100 h-auto" loading="eager" />
 				</div>
 			</div>
 		</div>

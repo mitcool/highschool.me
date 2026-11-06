@@ -83,7 +83,7 @@
 	</div>
 
 
-<x-image-component nickname="student-laptop-open-textbook" id="cover" class="main-pictures-pages" loading="eager"/>
+<x-image-component nickname="student-laptop-open-textbook" id="cover" class="main-pictures-pages h-auto" loading="eager"/>
 
 <div itemscope itemtype="http://schema.org/Blog" class="container-fluid main-container-back">
 	<div id="blog_row" class="row justify-content-center">

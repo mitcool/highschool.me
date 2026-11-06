@@ -3,7 +3,7 @@
 		<div class="col-md-12 col-lg-10">
 			<div class="row">
 				<div class="col-md logo-address-container">
-					<x-image-component loading="lazy"  nickname="logo-header" class="logo-header-images logoFooter w-50"/>
+					<x-image-component loading="lazy"  nickname="logo-header" class="logo-header-images logoFooter w-50 h-auto"/>
 					<ul class="footer-ul px-0 company-details">
 						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; cursor: context-menu;">{{ $texts['campus'] }}</li>
 						<li class="footer-company-address-detail" style="margin-bottom: 0px!important; margin-top: 0px!important; cursor: context-menu;">{{ $texts['address-1'] }}</li>

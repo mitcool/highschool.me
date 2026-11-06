@@ -158,7 +158,7 @@
         </div>
       </div>
       <div class="company-logo">
-        <x-image-component rel="preload" fetchpriority="high" decoding="async" nickname="logo-header" class="logo-header-images logoMainPage" />
+        <x-image-component rel="preload" fetchpriority="high" decoding="async" nickname="logo-header" class="logo-header-images logoMainPage h-auto" />
       </div>
     </div>
 

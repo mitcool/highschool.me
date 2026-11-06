@@ -55,7 +55,7 @@
 	</ol>
 </div>
 
-<x-image-component nickname="student-spotlight" id="cover" class="main-pictures-pages" loading="eager"/>
+<x-image-component nickname="student-spotlight" id="cover" class="main-pictures-pages h-auto" loading="eager"/>
 
 <x-coming-soon />
 

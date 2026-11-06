@@ -44,11 +44,11 @@
 <div aria-label="breadcrumb" class="col-md-9 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ ucwords(str_replace('-', ' ', request()->segment(1))) }}</li>
+		<li class="breadcrumb-item active" aria-current="page">Awards</li>
 	</ol>
 </div>
 
-<x-image-component nickname="gold-trophy-city-lights-background" class="w-100" loading="eager"/>
+<x-image-component nickname="gold-trophy-city-lights-background" class="w-100 h-auto" loading="eager"/>
 
 <div class="container-fluid bg-white main_page_container">	
 		<div class="row justify-content-center" >		
@@ -58,7 +58,7 @@
 				<hr>
 				<div class="row p-2">
 					<div class="col-md-3">
-						<x-image-component nickname="gold-medal-ribbon-presidents-award" class="w-100" loading="eager"/>
+						<x-image-component nickname="gold-medal-ribbon-presidents-award" class="w-100 h-auto" loading="eager"/>
 					</div>
 					<div class="col-md-9 page-content">
 						{!! $texts['first-award'] !!}
@@ -70,13 +70,13 @@
 						{!! $texts['second-award'] !!}
 					</div>
 					<div class="col-md-3">
-						<x-image-component nickname="silver-medal-ribbon-presidents-award" class="w-100" loading="eager"/>
+						<x-image-component nickname="silver-medal-ribbon-presidents-award" class="w-100 h-auto" loading="eager"/>
 					</div>
 				</div>
 				<hr>
 				<div class="row p-2">
 					<div class="col-md-3">
-						<x-image-component nickname="american-citizenship-award-shield-badge" class="w-100" loading="eager"/>
+						<x-image-component nickname="american-citizenship-award-shield-badge" class="w-100 h-auto" loading="eager"/>
 					</div>
 					<div class="col-md-9 page-content">
 							{!! $texts['third-award'] !!}

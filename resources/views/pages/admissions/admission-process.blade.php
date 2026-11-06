@@ -138,11 +138,11 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
     <ol class="bg-white breadcrumb mb-0 p-0">
         <li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ $texts['heading'] }}</li>
+        <li class="breadcrumb-item active" aria-current="page">Admission Process</li>
     </ol>
 </div>
 
-<x-image-component nickname="library-corridor-tall-bookshelves" class="w-100" loading="eager"/>
+<x-image-component nickname="library-corridor-tall-bookshelves" class="w-100 h-auto" loading="eager"/>
 
 <div class="container-fluid bg-white  pl-0 pr-0 page-content">
     <div class="container">

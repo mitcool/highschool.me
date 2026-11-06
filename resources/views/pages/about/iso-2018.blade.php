@@ -42,14 +42,14 @@
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
 		<li class="breadcrumb-item"><a href="{{ route('accreditation') }}">Recognition & Quality Standards</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ $texts['breadcrumb'] }}</li>
+		<li class="breadcrumb-item active" aria-current="page">Educational Organizations Management Systems</li>
 	</ol>
 </div>
 
 <div class="container-fluid main_page_container pt-0">
 	<div class="row justify-content-center">
 		<div class="mb-4 text-center">
-			<x-image-component nickname="iso-21001-blue-teal-digital-background" loading="eager" />
+			<x-image-component class="h-auto" nickname="iso-21001-blue-teal-digital-background" loading="eager" />
 		</div>
 		<div class="col-md-10 col-lg-8 mb-4 text-center">
 			<h1>{{ $texts['heading'] }}</h1>
@@ -57,7 +57,7 @@
 				{!! $texts['teaser'] !!}
 			</div>
 			<div class="page-content text-center mt-5 mb-5">
-				<img src="{{asset('/images/recognition-pages/ISO_21001_2018.webp')}}" style="width:50%;">
+				<x-image-component class="h-auto" nickname="iso-21001-2018-certificate" loading="eager" style="width:50%;"/>
 			</div>
 			<div class="page-content">
 				{!! $texts['content'] !!}

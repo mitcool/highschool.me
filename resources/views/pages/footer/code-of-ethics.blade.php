@@ -21,7 +21,7 @@
 	</ol>
 </div>
 
-<x-image-component nickname="code-of-ethics" class="imprint-images main-pictures-pages" loading="eager"/>
+<x-image-component nickname="code-of-ethics" class="imprint-images main-pictures-pages h-auto" loading="eager"/>
 
 <div class="container-fluid main_page_container">
 	

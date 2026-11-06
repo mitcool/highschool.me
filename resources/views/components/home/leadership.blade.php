@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-md-6 col-sm-6 mt-3">
                     <div class="text-center">
-                        <img src="{{ asset('images/mathias-kunze-home.png') }}" alt="" class="w-100">
+                        <x-image-component nickname="home-leadership" alt="" class="w-100 h-auto" />
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-6 mt-3 ">

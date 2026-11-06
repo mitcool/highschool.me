@@ -49,7 +49,7 @@
 <div class="container-fluid main_page_container pt-0">
 	<div class="row justify-content-center">
 		<div class="mb-4 text-center">
-			<x-image-component nickname="iso-27001-blue-teal-digital-background" loading="eager" />
+			<x-image-component class="h-auto" nickname="iso-27001-blue-teal-digital-background" loading="eager" />
 		</div>
 		<div class="col-md-10 col-lg-8 mb-4 text-center">
 			<h1>{{ $texts['heading'] }}</h1>

@@ -41,12 +41,12 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{ ucwords(str_replace('-', ' ', request()->segment(1))) }}</li>
+		<li class="breadcrumb-item active" aria-current="page">Recognition & Quality Standards</li>
 	</ol>
 </div>
 
 
-	{{-- <x-image-component nickname="accreditation-cover" id="cover" class="main-pictures-pages " loading="eager" /> --}}
+	{{-- <x-image-component nickname="accreditation-cover" id="cover" class="main-pictures-pages h-auto" loading="eager" /> --}}
 
 
 <div class="container-fluid">
@@ -61,7 +61,7 @@
 			<div class="row" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation">
 					<div>
-						<x-image-component nickname="fldoe-logo" class="w-100" loading="eager" />
+						<x-image-component nickname="fldoe-logo" class="w-100 h-auto" loading="eager" />
 					</div>
 				</div>
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
@@ -81,14 +81,14 @@
 				</div>
 				<div class="col-12 col-md-12 col-lg-3 justify-content-end  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<x-image-component nickname="college-board-logo" class="w-100" loading="eager" />
+						<x-image-component nickname="college-board-logo" class="w-100 h-auto" loading="eager" />
 					</div>
 				</div>
 			</div>
 			<div class="row" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation">
 					<div>
-						<x-image-component nickname="act-inc-logo" class="w-100" loading="eager" />
+						<x-image-component nickname="act-inc-logo" class="w-100 h-auto" loading="eager" />
 					</div>
 				</div>
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
@@ -108,14 +108,14 @@
 				</div>
 				<div class="col-12 col-md-12 col-lg-3 justify-content-end  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<x-image-component nickname="iso-9001-logo" class="w-100" loading="eager" />
+						<x-image-component nickname="iso-9001-logo" class="w-100 h-auto" loading="eager" />
 					</div>
 				</div>
 			</div>
 			<div class="row" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<x-image-component nickname="iso-21001-logo" class="w-100" loading="eager" />
+						<x-image-component nickname="iso-21001-logo" class="w-100 h-auto" loading="eager" />
 					</div>
 				</div>
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">
@@ -135,7 +135,7 @@
 				</div>
 				<div class="col-12 col-md-12 col-lg-3 justify-content-end  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<x-image-component nickname="iso-27001-logo" class="w-100" loading="eager" />
+						<x-image-component nickname="iso-27001-logo" class="w-100 h-auto" loading="eager" />
 					</div>
 				</div>
 			</div>
@@ -149,7 +149,7 @@
 				</div>
 				<div class="col-12 col-md-12 col-lg-3 justify-content-end  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<x-image-component nickname="united-nations-logo" class="w-100" loading="eager" />
+						<x-image-component nickname="united-nations-logo" class="w-100 h-auto" loading="eager" />
 					</div>
 				</div>
 			</div>
@@ -157,7 +157,7 @@
 			<div class="row" style="padding:20px;">
 				<div class="col-12 col-md-12 col-lg-3 justify-content-start  d-flex align-items-center image-accreditation" id="collegium-humanum">
 					<div>
-						<x-image-component nickname="united-nations-logo" class="w-100" loading="eager" />
+						<x-image-component nickname="united-nations-logo" class="w-100 h-auto" loading="eager" />
 					</div>
 				</div>
 				<div class="col-12 col-md-12 col-lg-9 d-flex align-items-center ">

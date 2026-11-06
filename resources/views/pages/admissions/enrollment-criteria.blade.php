@@ -50,7 +50,7 @@
     </ol>
 </div>
 
-<x-image-component nickname="modern-school-building-atrium-windows" class="w-100" loading="eager"/>
+<x-image-component nickname="modern-school-building-atrium-windows" class="w-100 h-auto" loading="eager"/>
 
 <div class="container-fluid p-0">
     <div>

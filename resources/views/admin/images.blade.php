@@ -44,7 +44,7 @@
     <p class="text-danger text-center">In case you want to change the image please fill the Image Name field and select file less than 300KB</p>
     @foreach($images as $image)
         <div class="border text-center" style="margin:50px auto;padding:20px;">
-            <x-image-component nickname="{{ $image->nickname }}"  class="w-25 shadow mx-auto"/>
+            <x-image-component nickname="{{ $image->nickname }}"  class="w-25 shadow mx-auto h-auto"/>
             <h4 class="text-center">{{ $image->nickname }}</h4>
             <form action="{{ route('edit-image', $image->id) }}" method="POST" enctype="multipart/form-data" id="edit-feature-{{ $image->id }}" class="confirm-first">
                 {{ csrf_field() }}

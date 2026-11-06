@@ -24,7 +24,7 @@
 	</ol>
 </div>
 
-<x-image-component nickname="term_and_conditions" class="term_and_conditions-images main-pictures-pages" loading="eager"/>
+<x-image-component nickname="term_and_conditions" class="term_and_conditions-images main-pictures-pages h-auto" loading="eager"/>
 
 <div class="container-fluid main_page_container mb-5">
 	<div class="row justify-content-center">

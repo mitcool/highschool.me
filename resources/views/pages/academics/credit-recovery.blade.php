@@ -53,11 +53,11 @@
 	<div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 		<ol class="bg-white breadcrumb mb-0 p-0">
 			<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-			<li class="breadcrumb-item active" aria-current="page">{{ ucwords(str_replace('-', ' ', request()->segment(1))) }}</li>
+			<li class="breadcrumb-item active" aria-current="page">Credit Recovery</li>
 		</ol>
 	</div>
 
-	<x-image-component nickname="four-diverse-students-sharing-tablet" class="study_registration-images main-pictures-pages" loading="eager"/>
+	<x-image-component nickname="four-diverse-students-sharing-tablet" class="study_registration-images main-pictures-pages h-auto" loading="eager"/>
 
 	<div class="container-fluid p-0">
 	    <div>

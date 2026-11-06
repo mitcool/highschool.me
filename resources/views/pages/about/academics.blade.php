@@ -77,11 +77,11 @@
 <div aria-label="breadcrumb" class="col-md-8 breadcrumb-container mt-4 mb-3">
 	<ol class="bg-white breadcrumb mb-0 p-0">
 		<li class="breadcrumb-item"><a href="{{ route('welcome') }}">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{{  $texts['heading'] }}</li>
+		<li class="breadcrumb-item active" aria-current="page">Faculty & Educators</li>
 	</ol>
 </div>
 
-<x-image-component  id="cover" class="main-pictures-pages" nickname="academics-cover" loading="eager" />
+<x-image-component  id="cover" class="main-pictures-pages h-auto" nickname="academics-cover" loading="eager" />
 
 <div class="container-fluid main_page_container" style="background:#F3F3F3;">	
 	<div class="row justify-content-center">
@@ -94,7 +94,7 @@
 						<div class="educator-box">
 							<a class="row p-4 educator-box-inside" href="{{ route('single-academic', $academic->slug) }}">
 								<div class="col-md-4">
-									<x-image-component nickname="academic-{{$academic->id}}" class="w-100" style="display:block;"/>
+									<x-image-component nickname="academic-{{$academic->id}}" class="w-100 h-auto" style="display:block;"/>
 								</div>
 								<div class="col-md-8">
 									<h5 class="name" style="color:#035397;font-weight-bold;">{{ $academic->name }}</h5>

@@ -49,7 +49,7 @@
 <div class="container-fluid main_page_container pt-0">
 	<div class="row justify-content-center">
 		<div class="text-center mb-4">
-			<x-image-component nickname="college-board-recognition-diagonal-stripe" loading="eager" />
+			<x-image-component class="h-auto" nickname="college-board-recognition-diagonal-stripe" loading="eager" />
 		</div>
 		<div class="col-md-10 col-lg-8 mb-4 text-center">
 			<h1>{{ $texts['heading'] }}</h1>

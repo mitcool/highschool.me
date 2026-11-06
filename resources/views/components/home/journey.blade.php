@@ -10,28 +10,24 @@
             <div class="row">
                 <div class="col-md-4 col-sm-6 mt-3">
                     <div class="text-center">
-             <img src="{{ asset('images/icons/journey-1.svg') }}" alt="" class="welcome-icon">
-            {!! $texts['journey-1'] !!}
-        </div>
-    </div>
-    <div class="col-md-4 col-sm-6 mt-3">
-        <div class="text-center">
-             <img src="{{ asset('images/icons/journey-2.svg') }}" alt="" class="welcome-icon">
-             {!! $texts['journey-2'] !!}
-        </div>
-    </div>
-    <div class="col-md-4 col-sm-6 mt-3">
-        <div class="text-center">
-            <img src="{{ asset('images/icons/journey-3.svg') }}" alt="" class="welcome-icon">
-             {!! $texts['journey-3'] !!}
-        </div>
-    </div>
-    
-   
+                        <x-image-component nickname="journey-1" class="welcome-icon w-auto" loading="eager" />
+                        {!! $texts['journey-1'] !!}
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 mt-3">
+                    <div class="text-center">
+                        <x-image-component nickname="journey-2" class="welcome-icon w-auto" loading="eager" />
+                        {!! $texts['journey-2'] !!}
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 mt-3">
+                    <div class="text-center">
+                        <x-image-component nickname="journey-3" class="welcome-icon w-auto" loading="eager" />
+                        {!! $texts['journey-3'] !!}
+                    </div>
+                </div>
             </div>
-            
         </div>
     </div>
-    
 </section>
 

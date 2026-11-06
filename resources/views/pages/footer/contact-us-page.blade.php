@@ -136,7 +136,7 @@
 	</ol>
 </div>
 
-<x-image-component nickname="contact-form-background" class="w-100" loading="eager"/>
+<x-image-component nickname="contact-form-background" class="w-100 h-auto" loading="eager"/>
 
 <div class="container-fluid main_page_container ">
 	<div class="row justify-content-center ">
@@ -160,7 +160,7 @@
 			<div class="col-md-4 category-container">
 				<div class="contact-categories">
 					<div class="category-icon-frame mt-3">
-						<img src="{{ asset('/images/contact-page') }}/{{ $cat->icon }}" class="category-icon" alt="{{ $cat->topic }}">
+						<img src="{{ asset('/images/contact-page') }}/{{ $cat->icon }}" class="category-icon" alt="{{ $cat->alt }}" title="{{ $cat->title }}"/>
 					</div>
 					
 					<h5 class="mt-3 category-topic">{{ $cat->topic }}</h5>

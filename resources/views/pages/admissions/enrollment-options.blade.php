@@ -51,7 +51,7 @@
 </div>
 
 
-<x-image-component nickname="lecture-hall-wooden-tiered-seats" class="w-100" loading="eager"/>
+<x-image-component nickname="lecture-hall-wooden-tiered-seats" class="w-100 h-auto" loading="eager"/>
 
 <div class="container-fluid p-0">
     <div>

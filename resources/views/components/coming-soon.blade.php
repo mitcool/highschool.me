@@ -61,7 +61,7 @@
     </style>
 
     <div class="coming-soon-card">
-        <x-image-component nickname="cartoon-character-tools-gears-maintenance" loading="eager" />
+        <x-image-component class="h-auto" nickname="cartoon-character-tools-gears-maintenance" loading="eager" />
 
         <h1 class="coming-soon-title h2">Coming soon</h1>
 
